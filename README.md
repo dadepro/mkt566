@@ -12,5 +12,8 @@ For more information about this course, please look at the **[syllabus](https://
 - Wednesday, Aug. 27:
   - [Chapter 3 of R for Data Science](https://r4ds.had.co.nz/data-visualisation.html)
   - [The Groupon Effect on Yelp Ratings: A Root Cause Analysis](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2560825)
+  - Code
+    - [Chart types]()
+    - [Beautify figure]()
   
 
