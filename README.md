@@ -14,6 +14,6 @@ For more information about this course, please look at the **[syllabus](https://
   - [The Groupon Effect on Yelp Ratings: A Root Cause Analysis](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2560825)
   - Code
     - [Chart types](https://github.com/dadepro/mkt566/blob/main/w1/w1-2-chart-types-class.R)
-    - [Beautify figure]()
+    - [Beautify figure](https://github.com/dadepro/mkt566/blob/main/w1/w1-2-data-viz-beautify.R)
   
 
