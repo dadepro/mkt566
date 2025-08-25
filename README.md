@@ -7,3 +7,6 @@ For more information about this course, please look at the **[syllabus](https://
 
 ### Lectures
 
+### Week 1
+- Monday, Aug 25: [slides](https://raw.githack.com/dadepro/mkt566/main/w1/w1-1-intro.pdf)
+
