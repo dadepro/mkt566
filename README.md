@@ -13,7 +13,7 @@ For more information about this course, please look at the **[syllabus](https://
   - Required readings:
     - [Chapter 3 of R for Data Science](https://r4ds.had.co.nz/data-visualisation.html)
     - [The Groupon Effect on Yelp Ratings: A Root Cause Analysis](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2560825)
-  - Optional:
+  - Optional readings:
     - [Chapter 1 of  Data Visualization: A practical introduction](https://socviz.co/lookatdata.html)
     - [Lecture 5 of Data Storytelling for Marketers](https://raw.githack.com/dadepro/mkt-615/main/lectures/07-dataviz/07-dataviz.html#1)
 
