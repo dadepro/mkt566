@@ -10,8 +10,13 @@ For more information about this course, please look at the **[syllabus](https://
 ### Week 1
 - Monday, Aug. 25: [slides](https://raw.githack.com/dadepro/mkt566/main/w1/w1-1-intro.pdf)
 - Wednesday, Aug. 27:
-  - [Chapter 3 of R for Data Science](https://r4ds.had.co.nz/data-visualisation.html)
-  - [The Groupon Effect on Yelp Ratings: A Root Cause Analysis](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2560825)
+  - Required readings:
+    - [Chapter 3 of R for Data Science](https://r4ds.had.co.nz/data-visualisation.html)
+    - [The Groupon Effect on Yelp Ratings: A Root Cause Analysis](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2560825)
+  - Optional:
+    - [Chapter 1 of  Data Visualization: A practical introduction](https://socviz.co/lookatdata.html)
+    - [Lecture 5 of Data Storytelling for Marketers](https://raw.githack.com/dadepro/mkt-615/main/lectures/07-dataviz/07-dataviz.html#1)
+
   - Code
     - [Chart types](https://github.com/dadepro/mkt566/blob/main/w1/w1-2-chart-types-class.R)
     - [Beautify figure](https://github.com/dadepro/mkt566/blob/main/w1/w1-2-data-viz-beautify.R)
