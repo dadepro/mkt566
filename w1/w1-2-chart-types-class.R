@@ -1,3 +1,15 @@
+#### install libraries ####
+pkgs <- c(
+  "ggplot2","dplyr","forcats","treemap","tidyr",
+  "rworldmap","RColorBrewer","data.table","treemapify",
+  "scales","sf","rnaturalearth"
+)
+
+install.packages(setdiff(pkgs, rownames(installed.packages())),
+                 repos = "https://cloud.r-project.org")
+#####
+
+# load libraries
 library(ggplot2)
 library(dplyr)
 library(forcats)
