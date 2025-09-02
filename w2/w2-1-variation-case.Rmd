@@ -1,0 +1,115 @@
+---
+title: 'EDA Class Exercise: Visualizing Variation'
+author: "Marketing Analytics"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    number_sections: true
+  pdf_document:
+    toc: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(message = FALSE, warning = FALSE, fig.width = 7, fig.height = 4.5)
+library(ggplot2)
+library(dplyr)
+library(data.table)
+library(scales)
+```
+
+### Load the Data
+
+```{r load-data}
+df <- fread("data/marketing_eda.csv")
+glimpse(df)
+```
+
+### Numerical Variation: Ad Spend
+
+```{r adspend_hist}
+ggplot(df, aes(Ad_Spend)) +
+  geom_histogram(bins = 30, fill = "grey70", color = "white") +
+  geom_vline(aes(xintercept = mean(Ad_Spend)), linetype = "dashed") +
+  geom_vline(aes(xintercept = median(Ad_Spend))) +
+  labs(subtitle = "Dashed = mean, solid = median",
+       x = "Ad Spend ($)", y = "Count") +
+  theme_minimal()
+```
+
+
+Questions:
+
+- Is the distribution symmetric or skewed?
+- What does the fact the median is larger than the mean tell you?
+- What marketing strategy might create this shape?
+
+#### Ad Spend, Log Scale
+```{r adspend_log}
+ggplot(df, aes(Ad_Spend)) +
+  geom_histogram(bins = 30, fill = "grey70", color = "white") +
+  scale_x_continuous(trans = "log10") +
+  labs(title = "Ad Spend on Log Scale",
+       x = "Ad Spend ($, log10)", y = "Count") +
+  theme_minimal()
+```
+
+Questions:
+
+- Is the distribution symmetric or skewed?
+- Does log scale make it easier to see what is "typical"? Why?
+
+### Categorical Variation: Ad Channel mix
+```{r channel_mix}
+df %>%
+  count(Channel) %>%
+  mutate(p = n / sum(n)) %>%
+  ggplot(aes(reorder(Channel, n), n)) +
+  geom_col(fill = "steelblue") +
+  geom_text(aes(label = percent(p, accuracy = 0.1)),
+            vjust = -0.3, size = 3.5) +
+  labs(title = "Channel Mix",
+       x = "Channel", y = "Count") +
+  theme_minimal()
+```
+
+Questions:
+
+- Is the data balanced across channels?
+- Which channels dominate?
+- Does the distribution make intuitive sense to you? Why or why not?
+
+### Identifying Outliers in Ad Spend
+```{r adspend_outliers}
+#plot boxplot
+ggplot(df, aes(y = Ad_Spend)) +
+  geom_boxplot(fill = "lightblue") +
+  scale_y_continuous(labels = dollar_format()) +
+  labs(title = "Boxplot of Ad Spend",
+       y = "Ad Spend ($)") +
+  theme_minimal()
+
+```
+
+Questions:
+
+- Are there many outliers?
+- Are outliers generally large or small?
+- Should we drop outliers for a future analysis?
+
+### Identifying Outliers in Ad Spend (log scale)
+```{r adspend_outliers_log}
+#plot boxplot
+ggplot(df, aes(y = log(Ad_Spend+1))) +
+  geom_boxplot(fill = "lightblue") +
+  scale_y_continuous(labels = dollar_format()) +
+  labs(title = "Boxplot of Ad Spend",
+       y = "log Ad Spend ($)") +
+  theme_minimal()
+```
+
+Questions:
+
+- Does log scale help identify more subtle outliers?
+
+

@@ -23,6 +23,7 @@ library(scales)
 #maps
 library(sf)
 library(rnaturalearth)
+library(rworldmap)
 
 #set directory
 setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
