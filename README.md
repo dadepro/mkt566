@@ -28,7 +28,7 @@ For more information about this course, please look at the **[syllabus](https://
     - Optional readings:
       - Chapters 3, 4, 5 of R for Marketing Analytics
     - Code:
-      - Reproduce slides' figures: [code](https://github.com/dadepro/mkt566/blob/main/w2/w2-1-eda-marketing-economics-dataset.R)
+      - Replicate slides' figures: [code](https://github.com/dadepro/mkt566/blob/main/w2/w2-1-eda-marketing-economics-dataset.R)
       - Simulate marketing dataset: [code](w2-1-simulate-marketing-dataset.R)
       - Variation case: [html](https://raw.githack.com/dadepro/mkt566/main/w2/w2-1-variation-case.html) and [R Markdown](https://github.com/dadepro/mkt566/blob/main/w2/w2-1-variation-case.Rmd)
   
