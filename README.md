@@ -18,9 +18,18 @@ For more information about this course, please look at the **[syllabus](https://
   - Optional readings:
     - [Chapter 1 of  Data Visualization: A practical introduction](https://socviz.co/lookatdata.html)
     - [Lecture 5 of Data Storytelling for Marketers](https://raw.githack.com/dadepro/mkt-615/main/lectures/07-dataviz/07-dataviz.html#1)
-
   - Code
     - [Chart types](https://github.com/dadepro/mkt566/blob/main/w1/w1-2-chart-types-class.R)
     - [Beautify figure](https://github.com/dadepro/mkt566/blob/main/w1/w1-2-data-viz-beautify.R)
+- Wednesday, Sept. 3:
+    - [Slides](https://raw.githack.com/dadepro/mkt566/main/w2/w2-1-exploratory-data-analysis.pdf)
+    - Required readings:
+      - [Chapter 7 of R for Data Science](https://r4ds.had.co.nz/exploratory-data-analysis.html)
+    - Optional readings:
+      - Chapters 3, 4, 5 of R for Marketing Analytics
+    - Code:
+      - Reproduce slides' figures: [code](https://github.com/dadepro/mkt566/blob/main/w2/w2-1-eda-marketing-economics-dataset.R)
+      - Simulate marketing dataset: [code](w2-1-simulate-marketing-dataset.R)
+      - Variation case: [html](https://raw.githack.com/dadepro/mkt566/main/w2/w2-1-variation-case.html) and [R Markdown](https://github.com/dadepro/mkt566/blob/main/w2/w2-1-variation-case.Rmd)
   
 
