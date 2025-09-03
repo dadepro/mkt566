@@ -41,7 +41,7 @@ ggplot(df, aes(Ad_Spend)) +
 Questions:
 
 - Is the distribution symmetric or skewed?
-- What does the fact the median is larger than the mean tell you?
+- What does the fact the mean is larger than the median tell you?
 - What marketing strategy might create this shape?
 
 #### Ad Spend, Log Scale

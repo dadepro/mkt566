@@ -7,7 +7,7 @@ setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 
 # let take a quick look at the data
 head(marketing)
-
+nrow(marketing)
 #plot distribution of sales using different bandwidths
 
 # 1) bandwidth = 10
