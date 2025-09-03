@@ -30,6 +30,6 @@ For more information about this course, please look at the **[syllabus](https://
     - Code:
       - Replicate slides' figures: [code](https://github.com/dadepro/mkt566/blob/main/w2/w2-1-eda-marketing-economics-dataset.R)
       - Simulate marketing dataset: [code](w2-1-simulate-marketing-dataset.R)
-      - Variation case: [html](https://raw.githack.com/dadepro/mkt566/main/w2/w2-1-variation-case.html) and [R Markdown](https://github.com/dadepro/mkt566/blob/main/w2/w2-1-variation-case.Rmd)
+      - Variation case: [html](https://raw.githack.com/dadepro/mkt566/main/w2/w2-1-variation-case.html) and [R Markdown](https://github.com/dadepro/mkt566/blob/main/w2/w2-1-variation-case.Rmd), [data](https://github.com/dadepro/mkt566/blob/main/w2/data/marketing_eda.csv)
   
 
