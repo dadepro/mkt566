@@ -57,6 +57,7 @@ ggsave("figures/w2-1-eda-newspaper-distribution-bw5.pdf", h = 3.5, w = 5)
 marketing_long = data.table(pivot_longer(marketing, cols = everything(), names_to = "variable", values_to = "value"))
 ggplot(marketing_long[variable != "sales"], aes(x = variable, y = value, fill = variable)) + 
   geom_boxplot() +
+  scale_fill_manual(values = c("#1877F2", "black", "#FF0000")) +
   labs(title = "Boxplot of Marketing Variables", x = "Channel", y = "Ad Spend") +
   theme_minimal() +
   theme(legend.position = "none")
@@ -65,6 +66,7 @@ ggsave("figures/w2-1-eda-marketing-boxplot.png", width = 6, height = 4)
 # same but use log
 ggplot(marketing_long[variable != "sales"], aes(x = variable, y = log10(value), fill = variable)) + 
   geom_boxplot() +
+  scale_fill_manual(values = c("#1877F2", "black", "#FF0000")) +
   labs(title = "Boxplot of Marketing Variables (Log Scale)", x = "Channel", y = "log Ad Spend") +
   theme_minimal() +
   theme(legend.position = "none")
