@@ -61,7 +61,7 @@ ggplot(marketing_long[variable != "sales"], aes(x = variable, y = value, fill = 
   labs(title = "Boxplot of Marketing Variables", x = "Channel", y = "Ad Spend") +
   theme_minimal() +
   theme(legend.position = "none")
-ggsave("figures/w2-1-eda-marketing-boxplot.png", width = 6, height = 4)
+ggsave("figures/w2-1-eda-marketing-boxplot.pdf", width = 6, height = 4)
 
 # same but use log
 ggplot(marketing_long[variable != "sales"], aes(x = variable, y = log10(value), fill = variable)) + 
@@ -70,7 +70,7 @@ ggplot(marketing_long[variable != "sales"], aes(x = variable, y = log10(value), 
   labs(title = "Boxplot of Marketing Variables (Log Scale)", x = "Channel", y = "log Ad Spend") +
   theme_minimal() +
   theme(legend.position = "none")
-ggsave("figures/w2-1-eda-marketing-boxplot-log.png", width = 6, height = 4)
+ggsave("figures/w2-1-eda-marketing-boxplot-log.pdf", width = 6, height = 4)
 
 
 #################### Visualizing trends ########################
