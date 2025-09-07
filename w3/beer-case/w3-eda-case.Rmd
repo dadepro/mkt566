@@ -5,7 +5,7 @@ output:
     df_print: paged
 ---
 
-In this exercise, we will work with a dataset of beer reviews from RateBeer (you can download it [here](https://www.dropbox.com/scl/fi/mt4p0man4c9e4pee9gqbb/w3-ratebeer-sampled.csv.gz?rlkey=ff1n0w9iygg2iq0f01j4jftye&dl=0)), and perform some exploratory data analysis.
+In this exercise, we will work with a dataset of beer reviews from RateBeer (you can download it [here](https://github.com/dadepro/mkt566/blob/main/w3/beer-case/w3-ratebeer-sampled.csv.gz)), and perform some exploratory data analysis.
 
 Let's start by exploring the data and familiarizing with its structure:
 
