@@ -1,0 +1,46 @@
+---
+title: 'Exploratory data analysis: RateBeer dataset'
+output:
+  html_document:
+    df_print: paged
+---
+
+In this exercise, we will work with a dataset of beer reviews from RateBeer (you can download it [here](https://www.dropbox.com/scl/fi/mt4p0man4c9e4pee9gqbb/w3-ratebeer-sampled.csv.gz?rlkey=ff1n0w9iygg2iq0f01j4jftye&dl=0)), and perform some exploratory data analysis.
+
+Let's start by exploring the data and familiarizing with its structure:
+
+1.	How many variables are in the data?
+
+2.	How many rows?
+
+Now, let’s focus on some specific variables:
+
+3.	Explore the values of beer_style, do you see anything strange or unusual?
+
+4.	Explore the beer_ABV variable, do you see anything unusual?
+
+5.	What does the "_" value mean in the beer_ABV variable?
+
+6.	Explore the rating (review_XXX) variables. Are you able to compute the mean? If not, what is the issue?
+
+7.	Explore the variable review_time. What do you notice? How can you convert it to a date format?
+
+8.	Plot the (ordered) distribution of reviews by beer_style. Which one is the most and least popular beer?
+
+9.	Plot the distribution of beer_ABV for all beers. Does it look like you would expect? Are there any outliers? Which one is the beer with the highest ABV?
+
+10.	Plot the distribution of average beer_ABV by beer_style. Which beer_style has the most and least ABV content?
+
+Next, let’s look at ratings:
+
+11.	Plot the average review_overall by beer_style. Which one is the highest- and lowest-rated style?
+
+12.	Plot the average review_taste by beer_style. Which one is the highest- and lowest-rated style?
+
+13.	Plot the distribution of average review_overall by beer_brewerId. Do you see anything unusual? Which brewery is the most and least liked, with at least 10 reviews?
+
+Finally, let’s look at the relationship between beer styles and reviews:
+
+14.	Are breweries with a few or many beer styles those with higher reviews_overall?
+
+15. Suppose you were tasked with helping a brewery decide which and how many beers to produce. How can you use this data to answer these questions? You can utilize some of the analyses you performed above and also add new ones (for example, we did not examine time trends). Prepare a brief presentation that discusses the analyses supporting your decisions.
