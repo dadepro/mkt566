@@ -21,6 +21,8 @@ For more information about this course, please look at the **[syllabus](https://
   - Code
     - [Chart types](https://github.com/dadepro/mkt566/blob/main/w1/w1-2-chart-types-class.R)
     - [Beautify figure](https://github.com/dadepro/mkt566/blob/main/w1/w1-2-data-viz-beautify.R)
+
+### Week 2
 - Wednesday, Sept. 3:
     - [Slides](https://raw.githack.com/dadepro/mkt566/main/w2/w2-1-exploratory-data-analysis.pdf)
     - Required readings:
@@ -32,4 +34,13 @@ For more information about this course, please look at the **[syllabus](https://
       - Simulate marketing dataset: [code](w2-1-simulate-marketing-dataset.R)
       - Variation case: [html](https://raw.githack.com/dadepro/mkt566/main/w2/w2-1-variation-case.html) and [R Markdown](https://github.com/dadepro/mkt566/blob/main/w2/w2-1-variation-case.Rmd), [data](https://github.com/dadepro/mkt566/blob/main/w2/data/marketing_eda.csv)
   
-
+### Week 3
+- Monday, Sept. 8
+  - [Slides](https://raw.githack.com/dadepro/mkt566/main/w3/w3-1-exploratory-data-analysis.pdf)
+  - Required readings:
+    - [Chapter 7 of R for Data Science](https://r4ds.had.co.nz/exploratory-data-analysis.html)
+  - Optional readings:
+    - Chapters 3, 4, 5 of R for Marketing Analytics
+- Code:
+  - Replicate slides' figures: [code](https://github.com/dadepro/mkt566/blob/main/w3/w3-1-eda-marketing-dataset.R)
+  - RateBeer case: [html](https://raw.githack.com/dadepro/mkt566/main/w3/beer-case/w3-eda-case.html) and [R Markdown](https://github.com/dadepro/mkt566/blob/main/w3/beer-case/w3-eda-case.Rmd), [dataset](https://github.com/dadepro/mkt566/blob/main/w3/beer-case/w3-ratebeer-sampled.csv.gz)
