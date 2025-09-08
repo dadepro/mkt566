@@ -58,7 +58,7 @@ avg_purchases_gender <- df[, .(
   se_purchases  = sd(Purchases) / sqrt(.N)             # standard error
 ), by = Gender]
 
-ggplot(avg_purhcases_gender, aes(x = Gender, y = avg_purchases)) + 
+ggplot(avg_purchases_gender, aes(x = Gender, y = avg_purchases)) + 
   geom_bar(stat = "identity", fill = c("#1E90FF", "#FF69B4")) +
   labs(title = "Avg. Purchases by Gender", x = "\nGender", y = "Avg. Purchases\n") +
   theme_minimal() +
@@ -84,6 +84,25 @@ ggplot(avg_purchases_gender, aes(x = Gender, y = avg_purchases)) +
         axis.title=element_text(size=14),
         plot.title = element_text(size=16, hjust = 0.5)) 
 ggsave("figures/w3-1-purchases-by-gender-barplot-se.pdf", width = 5, height = 3.5)
+
+# do the same plot but facet it by channel
+avg_purchases_gender <- df[, .(
+  avg_purchases = mean(Purchases),                     # mean
+  se_purchases  = sd(Purchases) / sqrt(.N)             # standard error
+), by = .(Gender, Channel)]
+
+ggplot(avg_purchases_gender, aes(x = Gender, y = avg_purchases)) + 
+  geom_bar(stat = "identity", aes(fill = Gender)) +
+  scale_fill_manual(values = c("#1E90FF", "#FF69B4")) +
+  labs(title = "Avg. Purchases by Gender Broken Down by Ad Channel", x = "\nGender", y = "Avg. Purchases\n") +
+  facet_wrap(~Channel) +
+  theme_minimal() +
+  theme(axis.text=element_text(size=12),
+        axis.title=element_text(size=14),
+        plot.title = element_text(size=16, hjust = 0.5),
+        strip.text = element_text(size=14),
+        legend.position = "none") 
+ggsave("figures/w3-1-purchases-by-gender-channel-barplot.pdf", width = 8, height = 6)
 
 #### Explore the relationship between two categorical variables: ad spend by channel and device
 
