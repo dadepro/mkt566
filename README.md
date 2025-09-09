@@ -43,4 +43,4 @@ For more information about this course, please look at the **[syllabus](https://
     - Chapters 3, 4, 5 of R for Marketing Analytics
 - Code:
   - Replicate slides' figures: [code](https://github.com/dadepro/mkt566/blob/main/w3/w3-1-eda-marketing-dataset.R)
-  - RateBeer case: [html](https://raw.githack.com/dadepro/mkt566/main/w3/beer-case/w3-eda-case.html) and [R Markdown](https://github.com/dadepro/mkt566/blob/main/w3/beer-case/w3-eda-case.Rmd), [dataset](https://github.com/dadepro/mkt566/blob/main/w3/beer-case/w3-ratebeer-sampled.csv.gz)
+  - RateBeer case: [html](https://raw.githack.com/dadepro/mkt566/main/w3/beer-case/w3-eda-case.html) and [R Markdown](https://github.com/dadepro/mkt566/blob/main/w3/beer-case/w3-eda-case.Rmd), [dataset](https://github.com/dadepro/mkt566/blob/main/w3/beer-case/w3-ratebeer-sampled.csv.gz), [partial soluion/helper](https://raw.githack.com/dadepro/mkt566/main/w3/beer-case/w3-eda-case-helper.html)
