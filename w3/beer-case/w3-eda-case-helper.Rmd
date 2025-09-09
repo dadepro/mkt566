@@ -1,0 +1,151 @@
+---
+title: 'Exploratory data analysis: RateBeer dataset'
+output:
+  html_document:
+    df_print: paged
+---
+
+```{r, message=FALSE, warning=FALSE, eval=FALSE}
+#load libraries
+library(data.table)
+library(scales)
+library(ggplot2)
+library(stargazer)
+library(ggthemes)
+library(here)
+library(forcats)
+# set the working directory to be the location of your data file
+setwd("...")
+```
+
+In this exercise, we will work with a dataset of beer reviews from RateBeer (you can download it [here](insert_link)), and perform some exploratory data analysis.
+
+Let's start by exploring the data and familiarizing with its structure:
+
+```{r, message=FALSE, warning=FALSE, eval=FALSE}
+beer = fread("w3-ratebeer-sampled.csv.gz")
+head(beer)
+```
+
+1.	How many variables are in the data?
+```{r,eval=FALSE}
+ncol(beer)
+```
+ 
+2.	How many rows?
+```{r, eval=FALSE}
+nrow(beer)
+```
+
+Now, let’s focus on some specific variables:
+
+3.	Explore the values of beer_style, do you see anything strange or unusual? (HINT: Look for products that should not be in the list)
+
+**SOLUTION**: Yes, there are non-beer drinks in the dataset, such as "Cider" and "Mead". We will need to filter these out later.
+```{r, eval=FALSE}
+unique(beer$beer_style)
+```
+
+4.	Explore the beer_ABV variable, do you see anything unusual? (HINT: There is a non-numeric value, and ABV values that are likely outliers).
+
+**SOLUTION**: Yes, there are some values that are not numeric, such as "_". Also, there are beers with very high ABV values.
+
+5.	What does the "_" value mean in the beer_ABV variable? (HINT: Is it likely to be a zero or a missing value?)
+
+**SOLUTION**: The "_" character indicates that the ABV value is missing but it does not seem to be zero (since non-alcholic beer have ABV). We will need to handle these missing values appropriately.
+
+6.	Explore the rating (review_XXX) variables. Are you able to compute the mean? If not, what is the issue? (HINT: The variable type is not correct)
+
+**SOLUTON**: The rating variables (review_overall, review_taste, etc.) are currently stored as character strings, which prevents us from computing the mean directly. We need to convert them to numeric format first.
+
+7.	Explore the variable review_time. What do you notice? How can you convert it to a date format? (HINT: Lookup Unix timestamp format)
+
+**SOLUTION**: The review_time variable is in Unix timestamp format, which represents the number of seconds since January 1, 1970. We can convert it to a date format using the `as.POSIXct` function in R.
+
+
+Now that we are familiar with the data, let’s try to visualize it and answer some questions. Before starting, remove non-beers drinks from the dataset, and convert all variables with prefix “review_” and beer_ABV to numerical variables.
+
+```{r, message=FALSE, warning=FALSE, eval=FALSE}
+# Clean the data
+
+#convert timestamp to datatime
+beer[, datetime:= as.POSIXct(review_time, origin = "1970-01-01", tz = "UTC")]
+#remove non-beers drinks
+beer = beer[!grepl("Sak|Cider|Mead|Kombucha|Wine|Liquor", beer_style)]
+#convert all review_ variables to numeric
+for (col in c("review_overall", "review_aroma", "review_appearance", "review_palate", "review_taste")) {
+  beer[, (col) := as.numeric(sub("/.*", "", get(col)))]
+}
+# conver abv to numeric
+beer[, beer_ABV := as.numeric(beer_ABV)]
+```
+
+8.	Plot the (ordered) distribution of reviews by beer_style. Which one is the most and least popular beer? (HINT: you need to use a bar plot, i.e., geom_bar but first you need the beer_style by frequency)
+
+```{r, message=FALSE, warning=FALSE, eval=FALSE}
+beer$beer_style <- fct_infreq(beer$beer_style)
+ggplot(data = beer) +
+  geom_bar(...
+```
+
+9.	Plot the distribution of beer_ABV for all beers. Does it look like you would expect? Are there any outliers? Which one is the beer with the highest ABV? (HINT: Use a histogram, i.e., geom_histogram for the distribution; to find outliers, you can use the IQR method; to find the beer with the highest ABV, you can use which.max function)
+
+```{r, message=FALSE, warning=FALSE, eval=FALSE}
+ggplot(data = beer) +
+  geom_histogram(...
+```
+
+```{r, message=FALSE, warning=FALSE, eval=FALSE}
+# Example: Find outliers in the ABV variable
+Q1 <- quantile(beer$beer_ABV, 0.25, na.rm = TRUE)
+Q3 <- quantile(beer$beer_ABV, 0.75, na.rm = TRUE)
+IQR <- ...
+
+```
+
+
+10.	Plot the distribution of average beer_ABV by beer_style. Which beer_style has the most and least ABV content? (HINT: First, create a new dataset that computes the average beer_ABV by beer_style, then plot it using a bar plot)
+```{r, message=FALSE, warning=FALSE, eval=FALSE}
+avg.abv = beer[, .(beer_ABV = mean(as.numeric(beer_ABV), na.rm = TRUE)), by = beer_style]
+
+ggplot(data = avg.abv) +
+  geom_bar(...
+```
+
+Next, let’s look at ratings:
+
+11.	Plot the average review_overall by beer_style. Which one is the highest- and lowest-rated style? (HINT: First, create a new dataset that computes the average review_overall by beer_style, then plot it using a line + dots plot, i.e., geom_line + geom_point)
+
+```{r, message=FALSE, warning=FALSE, eval=FALSE}
+avg.review = beer[, .(review_overall = mean(review_overall, na.rm = TRUE)), by = beer_style]
+ggplot(data = avg.review, aes(x = reorder(beer_style, -review_overall), y = review_overall, group = 1)) +
+  geom...
+```
+
+12.	Plot the average review_taste by beer_style. Which one is the highest- and lowest-rated style? (HINT: First, create a new dataset taht compute the average review_taste by beer_style, then plot it using a line + dots plot, i.e., geom_line + geom_point)
+
+```{r, message=FALSE, warning=FALSE, eval=FALSE}
+avg.taste = beer[, .(review_taste = mean(review_taste, na.rm = TRUE)), by = beer_style]
+ggplot(data = avg.taste, aes(x = reorder(beer_style, -review_taste), y = review_taste, group = 1)) +
+  geom...
+```
+
+13.	Plot the distribution of average review_overall by beer_brewerId. Do you see anything unusual? Which brewery is the most and least liked, with at least 10 reviews? (HINT: First, create a new dataset that computes the average review_overall and number of reviews by beer_brewerId, then plot it using a histogram)
+
+```{r, message=FALSE, warning=FALSE, eval=FALSE}
+avg.brewer = beer[, .(review_overall = mean(review_overall, na.rm = TRUE), num_reviews = .N), by = beer_brewerId]
+ggplot(data = avg.brewer, aes(x = review_overall)) +
+  geom_histogram(...
+```
+
+Finally, let’s look at the relationship between beer styles and reviews:
+
+14.	Are breweries with a few or many beer styles those with higher reviews_overall? (HINT: First, create a new dataset taht compute the number of unique beer_style and average review_overall by beer_brewerId, then plot it using a scatter plot with a regression line, i.e., geom_point + geom_smooth(method = "lm"))
+
+```{r, message=FALSE, warning=FALSE, eval=FALSE}
+avg.brewer.style = beer[, .(num_styles = uniqueN(beer_style), review_overall = mean(review_overall, na.rm = TRUE)), by = beer_brewerId]
+ggplot(data = avg.brewer.style, aes(x = num_styles, y = review_overall)) +
+  geom_point(...
+```
+
+15. Suppose you were tasked with helping a brewery decide which and how many beers to produce. How can you use this data to answer these questions? You can utilize some of the analyses you performed above and also add new ones (for example, we did not examine time trends). Prepare a brief presentation that discusses the analyses supporting your decisions.
