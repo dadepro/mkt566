@@ -20,7 +20,7 @@ For more information about this course, please look at the **[syllabus](https://
     - [Lecture 5 of Data Storytelling for Marketers](https://raw.githack.com/dadepro/mkt-615/main/lectures/07-dataviz/07-dataviz.html#1)
   - Code
     - [Chart types](https://github.com/dadepro/mkt566/blob/main/w1/w1-2-chart-types-class.R)
-    - [Beautify figure](https://github.com/dadepro/mkt566/blob/main/w1/w1-2-data-viz-beautify.R)
+    - [Beautify plot](https://github.com/dadepro/mkt566/blob/main/w1/w1-2-data-viz-beautify.R)
 
 ### Week 2
 - Wednesday, Sept. 3:
