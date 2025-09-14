@@ -44,3 +44,19 @@ For more information about this course, please look at the **[syllabus](https://
 - Code:
   - Replicate slides' figures: [code](https://github.com/dadepro/mkt566/blob/main/w3/w3-1-eda-marketing-dataset.R)
   - RateBeer case: [html](https://raw.githack.com/dadepro/mkt566/main/w3/beer-case/w3-eda-case.html) and [R Markdown](https://github.com/dadepro/mkt566/blob/main/w3/beer-case/w3-eda-case.Rmd), [dataset](https://github.com/dadepro/mkt566/blob/main/w3/beer-case/w3-ratebeer-sampled.csv.gz), [partial solution/helper](https://raw.githack.com/dadepro/mkt566/main/w3/beer-case/w3-eda-case-helper.html), [full solution](https://raw.githack.com/dadepro/mkt566/main/w3/beer-case/w3-eda-case-solution.html)
+
+### Week 4
+- Monday, Sept. 15
+    - [Slides OLS](https://raw.githack.com/dadepro/mkt566/main/w4/w4-1-ols.pdf)
+    - [Slides Logit](https://raw.githack.com/dadepro/mkt566/main/w4/w4-1-logit.pdf)
+    - Required readings:
+      - Chapters [3.4](https://bookdown.org/content/6ef13ea6-4e86-4566-b665-ebcd19d45029/secondarydata.html#linear-regression) and [3.6](https://bookdown.org/content/6ef13ea6-4e86-4566-b665-ebcd19d45029/secondarydata.html#logistic) of R for Marketing Students
+    - Optional readings:
+      - [Lecture 6 of Data Storytelling for Marketers](https://raw.githack.com/dadepro/mkt-615/main/lectures/08-regression/08-regressions.html#1)
+      - Chapters 7, 9.2 of R for Marketing Analytics
+    - Code:
+      - [In class Airbnb analysis](https://github.com/dadepro/mkt566/blob/main/w4/w4-1-regression-example-for-class.R)
+      - [Airbnb exercise](https://raw.githack.com/dadepro/mkt566/main/w4/airbnb-case/w4-airbnb-case.html)
+    - 
+  - In class Airbnb data analysis](https://github.com/dadepro/mkt566/blob/main/w4/w4-1-regression-example-for-class.R)
+  - [Airbnb exercise](https://raw.githack.com/dadepro/mkt566/main/w4/airbnb-case/w4-airbnb-case.html)
