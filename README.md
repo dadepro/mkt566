@@ -57,6 +57,3 @@ For more information about this course, please look at the **[syllabus](https://
     - Code:
       - [In class Airbnb analysis](https://github.com/dadepro/mkt566/blob/main/w4/w4-1-regression-example-for-class.R)
       - [Airbnb exercise](https://raw.githack.com/dadepro/mkt566/main/w4/airbnb-case/w4-airbnb-case.html)
-    - 
-  - In class Airbnb data analysis](https://github.com/dadepro/mkt566/blob/main/w4/w4-1-regression-example-for-class.R)
-  - [Airbnb exercise](https://raw.githack.com/dadepro/mkt566/main/w4/airbnb-case/w4-airbnb-case.html)
