@@ -1,11 +1,11 @@
 ---
 title: "Modeling relations between variables: Airbnb exercise"
-output: pdf_document
+output: html_document
 ---
 
 
 In this exercise, we will use the 'Airbnb' dataset we used in class to continue to familiarize ourselves with regressions and data visualization in R. 
-If you already didn't do so, you can download the dataset [here](add_link]).
+If you already didn't do so, you can download the dataset [here](https://github.com/dadepro/mkt566/blob/main/w4/airbnb-case/w4-airbnb-case.csv.gz).
 
 Load the dataset and answer the following questions.
 
@@ -20,10 +20,9 @@ Load the dataset and answer the following questions.
      - log(price) ~ reviews_count
      - log(price) ~ log(reviews_count)
 
-
 3.  How do you interpret the coefficient of reviews_count in each one of the models?
 
-4. What is the R-squared of each model? What does it tell you?
+4. What is the R-squared of each model? What do they tell you?
 
 5. Let's add more predictors to the model: star_rating, bathrooms, bedrooms, guests_included. Do the coefficient you obtain make intuitive sense? What does it happen to the R-squared? What does it tell you about the model?
 
