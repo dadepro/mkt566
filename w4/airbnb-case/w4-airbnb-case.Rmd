@@ -1,0 +1,32 @@
+---
+title: "Modeling relations between variables: Airbnb exercise"
+output: pdf_document
+---
+
+
+In this exercise, we will use the 'Airbnb' dataset we used in class to continue to familiarize ourselves with regressions and data visualization in R. 
+If you already didn't do so, you can download the dataset [here](add_link]).
+
+Load the dataset and answer the following questions.
+
+**Questions**:
+
+1. In class, we plotted and predicted price as a function of reviews. We saw that the relationship is not linear. 
+   - What happens when you plot log(price) vs number of reviews? 
+   - What happens when you plot log(price) vs log(number of reviews)?
+   
+2. Now estimate the three linear models below and print the results using stargazer: 
+     - price ~ reviews_count
+     - log(price) ~ reviews_count
+     - log(price) ~ log(reviews_count)
+
+
+3.  How do you interpret the coefficient of reviews_count in each one of the models?
+
+4. What is the R-squared of each model? What does it tell you?
+
+5. Let's add more predictors to the model: star_rating, bathrooms, bedrooms, guests_included. Do the coefficient you obtain make intuitive sense? What does it happen to the R-squared? What does it tell you about the model?
+
+6. Let's add to the model a categorical variable: city. How many estimates do you get? Why? How do you interpret them? Which is the most and least expensive city in the dataset?
+
+7. Let' assume we can compute listing revenue by multiplying price by the number of reviews. Create a new variable called "Revenue" and predict revenue as a function of the variables used above BUT excluding the number of reviews. Where would you buy an Airbnb property and why?
