@@ -35,7 +35,7 @@ For more information about this course, please look at the **[syllabus](https://
       - Variation case: [html](https://raw.githack.com/dadepro/mkt566/main/w2/w2-1-variation-case.html) and [R Markdown](https://github.com/dadepro/mkt566/blob/main/w2/w2-1-variation-case.Rmd), [data](https://github.com/dadepro/mkt566/blob/main/w2/data/marketing_eda.csv)
   
 ### Week 3
-- Monday, Sept. 8
+- Monday & Wednesday, Sept. 8, 10
   - [Slides](https://raw.githack.com/dadepro/mkt566/main/w3/w3-1-exploratory-data-analysis.pdf)
   - Required readings:
     - [Chapter 7 of R for Data Science](https://r4ds.had.co.nz/exploratory-data-analysis.html)
@@ -46,7 +46,7 @@ For more information about this course, please look at the **[syllabus](https://
   - RateBeer case: [html](https://raw.githack.com/dadepro/mkt566/main/w3/beer-case/w3-eda-case.html) and [R Markdown](https://github.com/dadepro/mkt566/blob/main/w3/beer-case/w3-eda-case.Rmd), [dataset](https://github.com/dadepro/mkt566/blob/main/w3/beer-case/w3-ratebeer-sampled.csv.gz), [partial solution/helper](https://raw.githack.com/dadepro/mkt566/main/w3/beer-case/w3-eda-case-helper.html), [full solution](https://raw.githack.com/dadepro/mkt566/main/w3/beer-case/w3-eda-case-solution.html)
 
 ### Week 4
-- Monday, Sept. 15
+- Monday & Wednesday, Sept. 15, 17
     - [Slides OLS](https://raw.githack.com/dadepro/mkt566/main/w4/w4-1-ols.pdf)
     - [Slides Logit](https://raw.githack.com/dadepro/mkt566/main/w4/w4-1-logit.pdf)
     - Required readings:
