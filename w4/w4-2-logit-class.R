@@ -1,9 +1,7 @@
-library(ggplot2)
-library(ggthemes)
 library(data.table)
-library(scales)
 library(stargazer)
-library(stringi)
+library(rstudioapi)
+
 #setwd as the directory where this file is saved
 setwd(paste0(dirname(rstudioapi::getActiveDocumentContext()$path), "/airbnb-case"))
 
