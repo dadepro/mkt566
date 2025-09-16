@@ -56,4 +56,4 @@ For more information about this course, please look at the **[syllabus](https://
       - Chapters 7, 9.2 of R for Marketing Analytics
     - Code:
       - In class Airbnb analysis: [OLS](https://github.com/dadepro/mkt566/blob/main/w4/w4-1-regression-example-for-class.R), [Logit](https://github.com/dadepro/mkt566/blob/main/w4/w4-2-logit-class.R)
-      - [Airbnb exercise](https://raw.githack.com/dadepro/mkt566/main/w4/airbnb-case/w4-airbnb-case.html)
+      - Airbnb exercise: [html](https://raw.githack.com/dadepro/mkt566/main/w4/airbnb-case/w4-airbnb-case.html) and [.Rmd](https://github.com/dadepro/mkt566/blob/main/w4/airbnb-case/w4-airbnb-case.Rmd)
