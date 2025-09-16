@@ -15,7 +15,7 @@ Load the dataset and answer the following questions.
    - What happens when you plot log(price) vs number of reviews? 
    - What happens when you plot log(price) vs log(number of reviews)?
    
-2. Now estimate the three linear models below and print the results using stargazer: 
+2. Now estimate the three linear models below and print the results using the library stargazer: 
      - price ~ reviews_count
      - log(price) ~ reviews_count
      - log(price) ~ log(reviews_count)
@@ -28,4 +28,11 @@ Load the dataset and answer the following questions.
 
 6. Let's add to the model a categorical variable: city. How many estimates do you get? Why? How do you interpret them? Which is the most and least expensive city in the dataset?
 
-7. Let' assume we can compute listing revenue by multiplying price by the number of reviews. Create a new variable called "Revenue" and predict revenue as a function of the variables used above BUT excluding the number of reviews. Where would you buy an Airbnb property and why?
+7. Alternative ways to include factors in the model. Create a dummy variable for each city, i.e., a variable called "Austin" that is 1 if the city is Austin and 0 otherwise. Do the same for Boston, Los Angeles, Miami, and New York City. 
+Estimate the model again by including four of these dummies excluding Austin, and compare the results with the previous one. What do you see?
+
+8. Let' assume we can compute listing revenue by multiplying price by the number of reviews. Create a new variable called revenue and predict revenue as a function of the variables used above BUT excluding the number of reviews. Where would you buy an Airbnb property and why?
+
+9. Now, let's also add room_type to the model. How do you interpret the coefficients of room_type?  Which type of property generates more revenue?
+
+10. Working with dummy variables. Create a new dummy variable called "highQuality" that is 1 if the star_rating is 4.5 or higher and 0 otherwise. Estimate the model again by including this variable instead of star_rating. How do we interpret the coefficient of highQuality? What does it tell you about the importance of quality on Airbnb when it comes to revenue?
