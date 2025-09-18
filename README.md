@@ -48,7 +48,7 @@ For more information about this course, please look at the **[syllabus](https://
 ### Week 4
 - Monday & Wednesday, Sept. 15, 17
     - [Slides OLS](https://raw.githack.com/dadepro/mkt566/main/w4/w4-1-ols.pdf)
-    - [Slides Logit](https://raw.githack.com/dadepro/mkt566/main/w4/w4-1-logit.pdf)
+    - [Slides Logit](https://raw.githack.com/dadepro/mkt566/main/w4/w4-2-logit.pdf)
     - Required readings:
       - Chapters [3.4](https://bookdown.org/content/6ef13ea6-4e86-4566-b665-ebcd19d45029/secondarydata.html#linear-regression) and [3.6](https://bookdown.org/content/6ef13ea6-4e86-4566-b665-ebcd19d45029/secondarydata.html#logistic) of R for Marketing Students
     - Optional readings:
@@ -56,4 +56,4 @@ For more information about this course, please look at the **[syllabus](https://
       - Chapters 7, 9.2 of R for Marketing Analytics
     - Code:
       - In class Airbnb analysis: [OLS](https://github.com/dadepro/mkt566/blob/main/w4/w4-1-regression-example-for-class.R), [Logit](https://github.com/dadepro/mkt566/blob/main/w4/w4-2-logit-class.R)
-      - [Airbnb exercise](https://raw.githack.com/dadepro/mkt566/main/w4/airbnb-case/w4-airbnb-case.html)
+      - Airbnb exercise: [html](https://raw.githack.com/dadepro/mkt566/main/w4/airbnb-case/w4-airbnb-case.html) and [.Rmd](https://github.com/dadepro/mkt566/blob/main/w4/airbnb-case/w4-airbnb-case.Rmd)
