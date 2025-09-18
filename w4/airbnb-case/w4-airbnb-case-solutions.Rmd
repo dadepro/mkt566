@@ -1,0 +1,161 @@
+---
+title: 'Modeling relations between variables: Airbnb exercise'
+output:
+  html_document:
+    df_print: paged
+---
+
+
+In this exercise, we will use the 'Airbnb' dataset we used in class to continue to familiarize ourselves with regressions and data visualization in R. 
+If you already didn't do so, you can download the dataset [here](https://github.com/dadepro/mkt566/blob/main/w4/airbnb-case/w4-airbnb-case.csv.gz).
+
+Let's start by loading the libraries, setting the working directory, and reading the dataset.
+
+
+```{r, message=FALSE, warning=FALSE}
+#load libraries
+library(data.table)
+library(scales)
+library(ggplot2)
+library(stargazer)
+setwd("/Users/dproserp/Library/CloudStorage/Dropbox/teaching/mkt566-2025/w4/airbnb-case")
+```
+
+
+```{r}
+airbnb = fread("w4-airbnb-case.csv.gz")
+head(airbnb)
+nrow(airbnb[price==0])
+```
+
+### Questions
+
+1. In class, we plotted and predicted price as a function of reviews. We saw that the relationship is not linear. 
+   - What happens when you plot log(price) vs number of reviews? 
+   - What happens when you plot log(price) vs log(number of reviews)?
+   
+**SOLUTION:** Using log(price) instead of price makes the relationship with number of reviews more linear. Using log(price) and log(reviews_count) makes the relationship even more linear.
+   
+```{r, warning=FALSE, message=FALSE}
+#plot log price vs number of reviews
+ggplot(data = airbnb) +
+  geom_point(mapping = aes(x = reviews_count, y = log(price)), alpha = 0.5) +
+  labs(title = "Log Price vs Number of Reviews", x = "Number of Reviews", y = "Log Price") +
+  scale_x_continuous(breaks = seq(0, max(airbnb$reviews_count, na.rm = TRUE), 100)) +
+  scale_y_continuous(labels = dollar_format()) +
+  geom_smooth(mapping = aes(x = reviews_count, y = log(price)), method = "lm", se = FALSE, color = "blue") +
+  theme_minimal()
+```
+```{r}
+#plot log-log
+ggplot(data = airbnb) +
+  geom_point(mapping = aes(x = log(reviews_count), y = log(price)), alpha = 0.5) +
+  labs(title = "Log Price vs Log Number of Reviews", x = "Log Number of Reviews", y = "Log Price") +
+  scale_x_continuous(breaks = seq(0, max(log(airbnb$reviews_count + 1), na.rm = TRUE), 0.5)) +
+  scale_y_continuous(labels = dollar_format()) +
+  geom_smooth(mapping = aes(x = log(reviews_count + 1), y = log(price)), method = "lm", se = FALSE, color = "blue") +
+  theme_minimal()
+```
+
+2. Now estimate the three linear models below and print the results using the library stargazer: 
+     - price ~ reviews_count
+     - log(price) ~ reviews_count
+     - log(price) ~ log(reviews_count)
+
+```{r, warning=FALSE, message=FALSE}
+# level-level
+m1 = lm(price ~ reviews_count, data = airbnb)
+# log-level
+m2 = lm(log(price) ~ reviews_count, data = airbnb)
+#log-log
+m3 = lm(log(price) ~ log(reviews_count), data = airbnb)
+# print estimates with the three models
+stargazer(m1, m2, m3, type = "text", title = "Regression of Price on Number of Reviews", 
+          dep.var.labels = c("Price", "log Price", "log Price"), 
+          omit.stat = c("f", "ser", "adj.rsq"), digits = 3)
+```
+ 
+3.  How do you interpret the coefficient of reviews_count in each one of the models?
+
+**SOLUTION:** In model 1, the coefficient of reviews_count is the change in price for a one unit increase in reviews_count. In model 2, it is a percentage change in price for a one unit increase in reviews_count. In model 3, it is the percentage change in price for a one percent increase in reviews_count (elasticit)
+
+4. What is the R-squared of each model? What do they tell you?
+
+**SOLUTION:** The R-squared are 0.002, 0.0004, and 0.001. They are very small suggesting that the number of reviews alone does not explain much of the variation in prices.
+
+5. Let's add more predictors to the model: star_rating, bathrooms, bedrooms, guests_included. Do the coefficient you obtain make intuitive sense? What does it happen to the R-squared? What does it tell you about the model?
+
+**SOLUTION**: R-squared increases to 0.33, suggesting that the additional variables help explain more of the variation in prices. The coefficients make intuitive sense: higher star ratings, more bathrooms, more bedrooms, and more guests included are all associated with higher prices.
+
+```{r, warning=FALSE, message=FALSE}
+  m4 = lm(price ~ reviews_count + star_rating + bathrooms + bedrooms + guests_included, data = airbnb)
+  stargazer(m4, type = "text", 
+          dep.var.labels = c("Price"), 
+          covariate.labels = c("Number of Reviews", "Star Rating", "Bathrooms", "Bedrooms", "Guests", "Constant"), 
+          omit.stat = c("f", "ser", "adj.rsq"), digits = 3)
+```
+
+6. Let's add to the model a categorical variable: city. How many estimates do you get? Why? How do you interpret them? Which is the most and least expensive city in the dataset?
+
+**SOLUTION**: You get four estimates, one for each city excluding the baseline city. The coefficients represent the difference in price relative to the reference city (the first one alphabetically in this case). The most expensive city is Boston and the least expensive is Miami.
+
+```{r, warning=FALSE, message=FALSE}
+  m5 = lm(price ~ reviews_count + star_rating + bathrooms + bedrooms + guests_included + city, data = airbnb)
+  stargazer(m5, type = "text", 
+          dep.var.labels = c("Price"), 
+          omit.stat = c("f", "ser", "adj.rsq"), digits = 3)
+```
+
+7. Alternative ways to include factors in the model. Create a dummy variable for each city, i.e., a variable called "Austin" that is 1 if the city is Austin and 0 otherwise. Do the same for Boston, Los Angeles, Miami, and New York City. 
+Estimate the model again by including four of these dummies excluding Austin, and compare the results with the previous one. What do you see? Why?
+
+**SOLUTION**: The results are the same as before, confirming that including the city variable as a factor or as individual dummy variables yields the same estimates.
+
+```{r, warning=FALSE, message=FALSE}
+  airbnb[, austin := ifelse(city == "Austin", 1, 0)]
+  airbnb[, boston := ifelse(city == "Boston", 1, 0)]
+  airbnb[, la := ifelse(city == "Los Angeles", 1, 0)]
+  airbnb[, miami := ifelse(city == "Miami", 1, 0)]
+  airbnb[, nyc := ifelse(city == "New York City", 1, 0)]
+  
+  m5b = lm(price ~ reviews_count + star_rating + bathrooms + bedrooms + guests_included + boston + la + miami + nyc, data = airbnb)
+  stargazer(m5b, type = "text", 
+          dep.var.labels = c("Price"), 
+          omit.stat = c("f", "ser", "adj.rsq"), digits = 3)
+```
+
+
+8. Let' assume we can compute listing revenue by multiplying price by the number of reviews. Create a new variable called revenue and predict revenue as a function of the variables used above BUT excluding the number of reviews. Where would you buy an Airbnb property and why?
+
+**SOLUTION**: New York City has the highest coefficient among the five cities but it is not statistically significant. The highest statistically significant coefficient is Boston suggesting is the city generating the highest expected revenue.
+
+```{r, warning=FALSE, message=FALSE}
+  airbnb[, revenue := price * reviews_count]
+  m6 = lm(revenue ~ star_rating + bathrooms + bedrooms + guests_included + city, data = airbnb)
+  stargazer(m6, type = "text", 
+          dep.var.labels = c("Revenue"), 
+          omit.stat = c("f", "ser", "adj.rsq"), digits = 3)
+```
+
+9. Now, let's also add room_type to the model. How do you interpret the coefficients of room_type?  Which type of property generates more revenue?
+
+**SOLUTION**: The baseline is "Entire home" so the coefficients represent the difference in expected revenue compared to the "Entire home". "Entire home" generates the most revenue, followed by "Private room", and "Shared room" generates the least revenue. 
+
+```{r, warning=FALSE, message=FALSE}
+  m6b = lm(revenue ~ star_rating + bathrooms + bedrooms + guests_included + city + room_type, data = airbnb)
+  stargazer(m6b, type = "text", 
+          dep.var.labels = c("Revenue"), 
+          omit.stat = c("f", "ser", "adj.rsq"), digits = 3)
+```
+
+10. Working with dummy variables. Create a new dummy variable called "highQuality" that is 1 if the star_rating is 4.5 or higher and 0 otherwise. Estimate the model above again by including this variable instead of star_rating. How do we interpret the coefficient of highQuality? What does it tell you about the importance of quality on Airbnb when it comes to revenue?
+
+**SOLUTION**: The coefficient of highQuality indicates the increase in expected revenue for listings with a star rating of 4.5 or higher compared to those with lower ratings, holding other factors constant. The coefficient suggests that quality, as measured by star rating, has a significant positive impact on revenue.
+
+```{r, warning=FALSE, message=FALSE}
+  airbnb[, highQuality := ifelse(star_rating >= 4.5, 1, 0)]
+  m7 = lm(revenue ~ highQuality + bathrooms + bedrooms + guests_included + city + room_type, data = airbnb)
+  stargazer(m7, type = "text", 
+          dep.var.labels = c("Revenue"), 
+          omit.stat = c("f", "ser", "adj.rsq"), digits = 3)
+```
