@@ -33,7 +33,8 @@ if (requireNamespace("rstudioapi", quietly = TRUE) && rstudioapi::isAvailable())
 #   
 #   respondent_id is an identifier for our observations
 # 
-# Respondents rated the importance of each of the following attributes on a 1-10 scale: variety_of_choice, electronics, furniture, quality_of_service, low_prices, return_policy.
+# Respondents rated the importance of each of the following attributes on a 1-10 scale: 
+# variety_of_choice, electronics, furniture, quality_of_service, low_prices, return_policy.
 # 
 # professional: 1 for professionals, 0 for non-professionals
 # 
