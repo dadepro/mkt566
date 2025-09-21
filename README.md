@@ -60,12 +60,12 @@ For more information about this course, please look at the **[syllabus](https://
 
 ### Week 5
 - Monday & Wednesday, Sept 22, 24
-- Slides
-  - [Clustering](https://raw.githack.com/dadepro/mkt566/main/w5/w5-1-clustering.pdf)
-  - [Reccommenders](https://raw.githack.com/dadepro/mkt566/main/w5/w5-2-recommendations.pdf)
-- Required readings:
+  - Slides
+    - [Clustering](https://raw.githack.com/dadepro/mkt566/main/w5/w5-1-clustering.pdf)
+    - [Reccommenders](https://raw.githack.com/dadepro/mkt566/main/w5/w5-2-recommendations.pdf)
+  - Required readings:
     - Chapters [5](https://bookdown.org/content/6ef13ea6-4e86-4566-b665-ebcd19d45029/pca_office.html), [6](https://bookdown.org/content/6ef13ea6-4e86-4566-b665-ebcd19d45029/pca_toothpase.html), and [7](https://bookdown.org/content/6ef13ea6-4e86-4566-b665-ebcd19d45029/cluster.html) of R for Marketing Students
-- Optional readings:
+  - Optional readings:
     - Chapter 11.1–11.3 of R for Marketing Analytics
     - [Two decades of recommender systems at Amazon](https://assets.amazon.science/76/9e/7eac89c14a838746e91dde0a5e9f/two-decades-of-recommender-systems-at-amazon.pdf)
 
