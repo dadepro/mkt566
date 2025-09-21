@@ -53,7 +53,17 @@ For more information about this course, please look at the **[syllabus](https://
       - Chapters [3.4](https://bookdown.org/content/6ef13ea6-4e86-4566-b665-ebcd19d45029/secondarydata.html#linear-regression) and [3.6](https://bookdown.org/content/6ef13ea6-4e86-4566-b665-ebcd19d45029/secondarydata.html#logistic) of R for Marketing Students
     - Optional readings:
       - [Lecture 6 of Data Storytelling for Marketers](https://raw.githack.com/dadepro/mkt-615/main/lectures/08-regression/08-regressions.html#1)
-      - Chapters 7, 9.2 of R for Marketing Analytics
+      - - Chapters 7, 9.2 of R for Marketing Analytics
     - Code:
       - In class Airbnb analysis: [OLS](https://github.com/dadepro/mkt566/blob/main/w4/w4-1-regression-example-for-class.R), [Logit](https://github.com/dadepro/mkt566/blob/main/w4/w4-2-logit-class.R)
       - Airbnb exercise: [html](https://raw.githack.com/dadepro/mkt566/main/w4/airbnb-case/w4-airbnb-case.html) and [.Rmd](https://github.com/dadepro/mkt566/blob/main/w4/airbnb-case/w4-airbnb-case.Rmd), solution [html](https://raw.githack.com/dadepro/mkt566/main/w4/airbnb-case/w4-airbnb-case-solutions.html) and [R Markdown](https://github.com/dadepro/mkt566/blob/main/w4/airbnb-case/w4-airbnb-case-solutions.Rmd)
+
+### Week 5
+- Monday & Wednesday, Sept 22, 24
+- [Slides Clustering](https://raw.githack.com/dadepro/mkt566/main/w5/w5-1-clustering.pdf)
+- Required readings:
+    - Chapters [5](https://bookdown.org/content/6ef13ea6-4e86-4566-b665-ebcd19d45029/pca_office.html), [6](https://bookdown.org/content/6ef13ea6-4e86-4566-b665-ebcd19d45029/pca_toothpase.html), and [7](https://bookdown.org/content/6ef13ea6-4e86-4566-b665-ebcd19d45029/cluster.html) of R for Marketing Students
+- Code:
+    - PCA exercise: [code](https://github.com/dadepro/mkt566/blob/main/w5/w5-1-pca.R) and [data](https://github.com/dadepro/mkt566/blob/main/w5/data/perceptual_map_office.csv)
+    - Clustering exercise: [code](https://github.com/dadepro/mkt566/blob/main/w5/w5-1-clustering.R) and [data](https://github.com/dadepro/mkt566/blob/main/w5/data/segmentation_office.xlsx)
+      
