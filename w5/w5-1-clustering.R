@@ -11,9 +11,11 @@
 # ggplot2   -> visualization
 # data.table-> fast data frames + group-by syntax
 # readxl    -> read Excel files (.xlsx)
+# ggrepel   -> better text labels in ggplot2
 library(ggplot2)
 library(data.table)
 library(readxl)
+library(ggrepel)
 
 # ------------------------------------------------------------#
 # 1) Set working directory to the folder that holds this file  #
@@ -163,7 +165,7 @@ pca_data <- data.frame(pca_result$x[, 1:2], cluster = dd$cluster)
 # Loadings tell you how each original variable contributes to each PC.
 pca_loadings <- as.data.frame(pca_result$rotation[, 1:2]) # 2 columns: PC1, PC2
 pca_loadings$variable <- rownames(pca_loadings)           # keep var names for plotting
-pca_loadings
+pca_loadings[,1:2]
 
 # Scale loadings for better visibility in plots
 arrow_scale <- 10   # tweak if arrows are too short/long
