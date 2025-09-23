@@ -65,7 +65,7 @@ For more information about this course, please look at the **[syllabus](https://
     - [Recommender systems](https://raw.githack.com/dadepro/mkt566/main/w5/w5-2-recommendations.pdf)
   - Required readings:
     - Chapters [5](https://bookdown.org/content/6ef13ea6-4e86-4566-b665-ebcd19d45029/pca_office.html), [6](https://bookdown.org/content/6ef13ea6-4e86-4566-b665-ebcd19d45029/pca_toothpase.html), and [7](https://bookdown.org/content/6ef13ea6-4e86-4566-b665-ebcd19d45029/cluster.html) of R for Marketing Students
-    - [Netflix Prize](https://ajay1997.medium.com/from-a-million-dollar-prize-to-a-billion-dollar-engine-inside-the-netflix-recommendation-system-1bcdbf5e69ed)
+    - [Netflix Billion Dollar Secret](https://www.linkedin.com/pulse/netflixs-billion-dollar-secret-how-recommendation-systems-qin-phd-7zece/)
     - [Marketing Automation: Recommendation Systems](https://medium.com/geekculture/marketing-automation-recommendation-systems-ae39d61aa38)
   - Optional readings:
     - Chapter 11.1–11.3 of R for Marketing Analytics
