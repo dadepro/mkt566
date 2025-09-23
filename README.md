@@ -69,6 +69,7 @@ For more information about this course, please look at the **[syllabus](https://
   - Optional readings:
     - Chapter 11.1–11.3 of R for Marketing Analytics
     - [Two decades of recommender systems at Amazon](https://assets.amazon.science/76/9e/7eac89c14a838746e91dde0a5e9f/two-decades-of-recommender-systems-at-amazon.pdf)
+    - [Netflix Price](https://en.wikipedia.org/wiki/Netflix_Prize)
   - Code:
     - PCA exercise: [code](https://github.com/dadepro/mkt566/blob/main/w5/w5-1-pca.R) and [data](https://github.com/dadepro/mkt566/blob/main/w5/data/perceptual_map_office.csv)
     - Clustering exercise: [code](https://github.com/dadepro/mkt566/blob/main/w5/w5-1-clustering.R) and [data](https://github.com/dadepro/mkt566/blob/main/w5/data/segmentation_office.xlsx)
