@@ -79,6 +79,6 @@ For more information about this course, please look at the **[syllabus](https://
 - Monday, Sept 29
   - Guest speaker: [Jonathan Elliot](https://www.linkedin.com/in/jonnynelliott/)
 - Wednesday, Oct 1
-  - In class exercise: Clustering Analysis
+  - In-class exercise: [Clustering Analysis](https://raw.githack.com/dadepro/mkt566/main/w5/case/w5-clustering-exe.html)
     
       
