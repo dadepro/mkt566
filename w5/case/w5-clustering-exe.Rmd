@@ -196,7 +196,7 @@ biplot <- ggplot() +
   theme_minimal()
 biplot
 ```
-- How do the clusters relate to the original features based on the biplot? Do you see a correspondence with the clustering means table above?
+- How do the clusters relate to the original features based on the biplot? Do you see a correspondence with the clustering means table above (part 6)?
 
 - Now that you performed the whole clustering analysis, answer the following questions:
   - Which cluster looks most valuable? 
