@@ -1,0 +1,207 @@
+---
+title: "Clustering Exercise: Customer Segmentation"
+author: "Author: Davide Proserpio"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    number_sections: true
+---
+
+```{r setup}
+#load packages
+set.seed(123)
+knitr::opts_chunk$set(message = FALSE, warning = FALSE, fig.width = 7, fig.height = 5)
+
+# Load packages
+library(ggplot2)
+library(data.table)
+library(ggrepel)
+```
+
+## Load the Data
+
+```{r load, eval=FALSE}
+filename <- "customer_clustering_data.csv"
+
+#TODO: use fread to load the data into a data.table called df
+df = ...
+
+```
+
+## Quick EDA (Scatter & Distributions)
+
+Let's plot the scatter plot of Online (x axis) vs In-Store Spend (y axis), income, and age distribution
+
+```{r eda, eval=FALSE}
+# TODO: Create the three plots: (1) online vs offline spend, (2) income distribution, (3) age distribution
+p1 = ggplot(df, ...)
+
+p2 = ggplot(df, ...)
+
+p3 = ggplot(df, ...)
+
+p1
+p2
+p3
+```
+
+- Do you see natural groupings by spend/income/age (e.g., online-heavy, in-store-heavy, omni-channel (i.e., customer who spend in both channels))?
+
+
+## Choose features for clustering and scale them
+
+The features we will use are Online_Spend, InStore_Spend, Age, Income.
+
+```{r scale, eval=FALSE}
+# This is done for you 
+
+features <- df[, .(Online_Spend, InStore_Spend, Age, Income)]
+X <- scale(features)  # mean=0, sd=1
+summary(X)
+```
+
+- Why do we scale before k-means?
+
+## Choose k: Elbow Method (WSS)
+
+```{r elbow, eval=FALSE}
+# this code computes the within-cluster sum of squares (wss) for k=2 to k=10
+wss <- sapply(2:10, function(k){
+  kmeans(X, centers = k, nstart = 25)$tot.withinss
+})
+
+# TODO: plot the within-cluster sum of squares (wss vs number of clusters)
+elbow_plot <- data.frame(k = 2:10, wss = wss)
+ggplot(elbow_plot, ...)
+```
+
+- Inspect the plot. Where is the “elbow”? Propose a k.
+
+
+## Fit K-means with the optimal K identified above
+
+```{r kmeans-fit, eval=FALSE}
+# TODO: set K and run kmeans
+k = ...
+
+# run kmeans
+km = 
+  
+#add cluster label to df as a new variable called "cluster"
+
+```
+
+## Cluster Profiling (Means by Cluster)
+
+```{r profiling, eval=FALSE}
+# TODO: compute means of features by cluster
+
+```
+
+- What business personas do these clusters represent?
+
+
+## PCA Projection
+
+
+### Run PCA
+
+```{r pca, eval=FALSE}
+# This is done for you
+
+# run PCA on scaled data
+pca_result <- prcomp(X, center = FALSE, scale. = FALSE)
+# check variance explained
+summary(pca_result)
+```
+
+- How many PCs explain >80% of variance?
+
+### Extract PCA Loadings
+
+```{r pca-loadings, eval=FALSE}
+# This is done for you
+
+# Keep first two principal components (scores) and add cluster labels
+pca_data <- data.frame(pca_result$x[, 1:2], cluster = df$cluster)
+
+# Extract loadings which tell you how each original variable contributes to each PC.
+pca_loadings <- as.data.frame(pca_result$rotation[, 1:2]) # 2 columns: PC1, PC2
+pca_loadings$variable <- rownames(pca_loadings)           # keep var names for plotting
+pca_loadings[,1:2]
+```
+
+- What do the loadings tell you about how each original variable contributes to each PC?
+
+### Plot PCA loadings
+
+```{r pca-loadings-plot, eval=FALSE}
+# This is done for you
+
+# Scale arrows for better visibility in plots
+arrow_scale <- 10   # tweak if arrows are too short/long
+
+# Plot loadings alone (annotated with variables names)
+p_loadings <- ggplot(pca_loadings, aes(x = PC1 * arrow_scale, y = PC2 * arrow_scale, label = variable)) +
+  geom_segment(aes(x = 0, y = 0, xend = PC1 * arrow_scale, yend = PC2 * arrow_scale),
+               arrow = arrow(length = unit(0.3, "cm")), color = "blue") +
+  geom_text(size = 5) +
+  labs(
+    title = "PCA Loadings: Store attributes",
+    x = "\nPrincipal Component 1",
+    y = "Principal Component 2\n"
+  ) +
+  geom_vline(xintercept = 0, linetype = "dashed", color = "gray") +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "gray") +
+  theme_minimal() +
+  coord_cartesian(xlim = c(-2, 8), ylim = c(-10, 4))  # adjust as needed
+p_loadings
+```
+
+- Do the directions of the arrow align with you previous description of the PCs? (Interpretation tip: A long arrow toward PC1+ means that variable increases as you move right; toward PC2+ means it increases as you move up. Opposite directions imply negative association with that PC.)
+
+### Plot PCA scores with clusters
+
+```{r pca-scores-plot, eval=FALSE}
+# TODO: plot the PCA scores (i.e, the value of PC1 and PC2 for each row of the dataset) and color them by cluster
+ggplot(pca_data, ...)
+```
+
+- Do clusters separate cleanly in the first two PCs?
+
+### PCA Biplot (Scores + Loadings)
+
+```{r pca-biplot, eval=FALSE}
+# This is done for you
+
+arrow_scale <- 2   # tweak if arrows are too short/long
+
+biplot <- ggplot() +
+  geom_point(data = pca_data, aes(x = PC1, y = PC2, color = cluster), size = 2, alpha = 0.8) +
+  geom_segment(data = pca_loadings,
+               aes(x = 0, y = 0, xend = PC1*arrow_scale, yend = PC2*arrow_scale),
+               arrow = arrow(length = unit(0.2, "cm")),
+               color = "blue") +
+  geom_text(data = pca_loadings,
+            aes(x = PC1 * 1.4, y = PC2 * 1.4, label = variable),
+            size = 4) +
+  labs(
+    title = "Biplot of PCA",
+    x = "\nPrincipal Component 1",
+    y = "Principal Component 2\n"
+  ) +
+  geom_vline(xintercept = 0, linetype = "dashed", color = "gray") +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "gray") +
+  theme_minimal()
+biplot
+```
+- How do the clusters relate to the original features based on the biplot? Do you see a correspondence with the clustering means table above?
+
+- Now that you performed the whole clustering analysis, answer the following questions:
+  - Which cluster looks most valuable? 
+  - What marketing actions would you take for each segment? (e.g., how would you target them? how? what offers?)
+
+
+
+
