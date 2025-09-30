@@ -169,9 +169,8 @@ pca_loadings[,1:2]
 
 # Scale loadings for better visibility in plots
 arrow_scale <- 10   # tweak if arrows are too short/long
-loadings[, `:=`(xend = PC1 * arrow_scale, yend = PC2 * arrow_scale)]
 
-# Plot loadings alone (labels at the loading coordinates)
+# Plot loadings alone (annotated with variables names)
 p_loadings <- ggplot(pca_loadings, aes(x = PC1 * arrow_scale, y = PC2 * arrow_scale, label = variable)) +
   geom_segment(aes(x = 0, y = 0, xend = PC1 * arrow_scale, yend = PC2 * arrow_scale),
                arrow = arrow(length = unit(0.3, "cm")), color = "blue") +
