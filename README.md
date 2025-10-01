@@ -79,6 +79,6 @@ For more information about this course, please look at the **[syllabus](https://
 - Monday, Sept 29
   - Guest speaker: [Jonathan Elliot](https://www.linkedin.com/in/jonnynelliott/), [Slides](https://raw.githack.com/dadepro/mkt566/main/articles-papers/Investing%20in%20Film%20with%20Machine%20Learning.pdf)
 - Wednesday, Oct 1
-  - In-class exercise: [Clustering Analysis](https://raw.githack.com/dadepro/mkt566/main/w5/case/w5-clustering-exe.html), [R Markdown](http://github.com/dadepro/mkt566/blob/main/w5/case/w5-clustering-exe.Rmd), [data](https://github.com/dadepro/mkt566/blob/main/w5/data/customer_clustering_data.csv)
+  - In-class exercise: [Clustering Analysis](https://raw.githack.com/dadepro/mkt566/main/w5/case/w5-clustering-exe.html), [R Markdown](http://github.com/dadepro/mkt566/blob/main/w5/case/w5-clustering-exe.Rmd), [data](https://github.com/dadepro/mkt566/blob/main/w5/case/customer_clustering_data.csv)
     
       
