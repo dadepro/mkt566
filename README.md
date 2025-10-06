@@ -81,4 +81,8 @@ For more information about this course, please look at the **[syllabus](https://
 - Wednesday, Oct 1
   - In-class exercise (clustering analysis): [html](https://raw.githack.com/dadepro/mkt566/main/w5/case/w5-clustering-exe.html), [R Markdown](http://github.com/dadepro/mkt566/blob/main/w5/case/w5-clustering-exe.Rmd), [data](https://github.com/dadepro/mkt566/blob/main/w5/case/customer_clustering_data.csv)
     
-      
+## Week 7
+- Monday, Oct 6
+  - Work on group project
+- Wednesday, Oct 8
+  - No class (Fall recess)
