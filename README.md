@@ -73,7 +73,7 @@ For more information about this course, please look at the **[syllabus](https://
   - Code:
     - PCA in-class exercise: [code](https://github.com/dadepro/mkt566/blob/main/w5/w5-1-pca.R) and [data](https://github.com/dadepro/mkt566/blob/main/w5/data/perceptual_map_office.csv)
     - Clustering in-class exercise: [code](https://github.com/dadepro/mkt566/blob/main/w5/w5-1-clustering.R) and [data](https://github.com/dadepro/mkt566/blob/main/w5/data/segmentation_office.xlsx)
-    - [Streaming platforms in-class discussion](https://raw.githack.com/dadepro/mkt566/main/w5/case/recommender-discussion-assigment.pdf)
+    - [Streaming platforms in-class discussion](https://raw.githack.com/dadepro/mkt566/main/w5/case/recommender-discussion-assigment.pdf), [solution](https://raw.githack.com/dadepro/mkt566/main/w5/case/w5-clustering-exe-solution.html)
 
 ### Week 6
 - Monday, Sept 29
