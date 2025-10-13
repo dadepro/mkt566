@@ -86,3 +86,6 @@ For more information about this course, please look at the **[syllabus](https://
   - Work on group project ([slides](https://raw.githack.com/dadepro/mkt566/main/w7/w7-1-class-work.pdf))
 - Wednesday, Oct 8
   - No class (Fall recess)
+
+## Week 8
+- Mid-term project proposal presentations
