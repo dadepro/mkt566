@@ -96,4 +96,4 @@ For more information about this course, please look at the **[syllabus](https://
   - Optional readings:
     - Chapter 11.4–11.6 of R for Marketing Analytics
 - Wednesday, Oct 22
-  - Exercise: Predicting Click-Through-Rate with Logistic Regression: [R Markdown](https://github.com/dadepro/mkt566/blob/main/w9/case/w9-predicting-ad-click-w-logit.Rmd), [HTML](https://raw.githack.com/dadepro/mkt566/main/w9/case/w9-predicting-ad-click-w-logit.html)
+  - Exercise: Predicting Click-Through-Rate with Logistic Regression: [R Markdown](https://github.com/dadepro/mkt566/blob/main/w9/case/w9-predicting-ad-click-w-logit.Rmd), [HTML](https://raw.githack.com/dadepro/mkt566/main/w9/case/w9-predicting-ad-click-w-logit.html), [click data](https://github.com/dadepro/mkt566/blob/main/w9/data/ad_click_data.csv)
