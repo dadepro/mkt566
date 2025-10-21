@@ -28,7 +28,7 @@ invisible(lapply(pkgs, library, character.only = TRUE))
 # Load Data & Explore Baseline Click Rate
 ```{r load}
 # Load the ad-click data (one row per impression) from CSV into a data.frame
-df <- read.csv("data/ad_click_data.csv")
+df <- read.csv("ad_click_data.csv")
 
 # Inspect the first few rows and summary statistics.
 # Quick peek at the first rows to sanity-check columns and types
