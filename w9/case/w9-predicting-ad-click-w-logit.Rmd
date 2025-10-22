@@ -17,7 +17,7 @@ knitr::opts_chunk$set(message = FALSE, warning = FALSE, fig.width = 7, fig.heigh
 
 # Load packages (install if missing)
 # List of required packages for this notebook
-pkgs <- c("pROC", "ggplot2", "stargazer")
+pkgs <- c("pROC", "ggplot2", "stargazer", "data.table")
 # Identify packages that aren't installed yet (so students can knit end-to-end)
 to_install <- pkgs[!pkgs %in% installed.packages()[,1]]
 if (length(to_install) > 0) install.packages(to_install, quiet = TRUE)
@@ -28,7 +28,7 @@ invisible(lapply(pkgs, library, character.only = TRUE))
 # Load Data & Explore Baseline Click Rate
 ```{r load}
 # Load the ad-click data (one row per impression) from CSV into a data.frame
-df <- read.csv("ad_click_data.csv")
+df <- fread("ad_click_data.csv")
 
 # Inspect the first few rows and summary statistics.
 # Quick peek at the first rows to sanity-check columns and types
