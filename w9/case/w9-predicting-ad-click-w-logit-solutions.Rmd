@@ -1,0 +1,214 @@
+---
+title: "Exercise: Predict Ad Click Probability (Logistic Regression) — With Solutions"
+author: "Davide Proserpio"
+date: "`r format(Sys.Date(), '%Y-%m-%d')`"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    number_sections: true
+---
+
+```{r setup, include=FALSE}
+# Set a fixed random seed so results (splits/metrics) are reproducible across runs
+set.seed(123)
+# Configure how code chunks render (suppress noisy messages, set figure size, etc.)
+knitr::opts_chunk$set(message = FALSE, warning = FALSE, fig.width = 7, fig.height = 5)
+
+# Load packages (install if missing)
+# List of required packages for this notebook
+pkgs <- c("pROC", "ggplot2", "stargazer", "data.table")
+# Identify packages that aren't installed yet (so students can knit end-to-end)
+to_install <- pkgs[!pkgs %in% installed.packages()[,1]]
+if (length(to_install) > 0) install.packages(to_install, quiet = TRUE)
+# Load all required packages into the session
+invisible(lapply(pkgs, library, character.only = TRUE))
+```
+
+# Load Data & Explore Baseline Click Rate
+```{r load}
+# Load the ad-click data (one row per impression) from CSV into a data.frame
+df <- fread("../data/ad_click_data.csv")
+
+# Inspect the first few rows and summary statistics.
+# Quick peek at the first rows to sanity-check columns and types
+head(df)
+# Summary stats: distribution of numeric vars and levels of factors
+summary(df)
+
+```
+**Questions**
+
+- What is the dependent variable here, and how is it coded?  
+- Which variables are categorical vs numeric predictors?
+
+**Solutions**
+
+- The dependent variable is **`click`**, typically coded as **0/1** (0 = no click, 1 = click). If it's not numeric, coerce to 0/1 before modeling.  
+- Categorical predictors include things like **`ad_position`**, **`device`**, **`user_segment`**, while numeric features include **`pages_viewed`**, **`time_on_site`**, **`topic_match`**, and **`past_ctr_hi`**.
+
+# Create Train/Test Split (70%/30%)
+```{r split}
+# Split dataset into train (70%) and test (30%) to evaluate generalization.
+
+# Randomly select ~30% of rows to form the test set (holdout)
+test_idx <- sample(nrow(df), size = 0.3 * nrow(df))
+# Training set: all rows NOT in the test index
+train <- df[-test_idx, ]
+# Test set: rows reserved for honest model evaluation
+test  <- df[test_idx, ]
+```
+**Questions**
+
+- Why is it important to separate training and testing sets?  
+- What would happen if we trained and evaluated on the same data?
+
+**Solutions**
+
+- We separate train/test to obtain an **unbiased estimate** of out-of-sample performance. It prevents overfitting from inflating our evaluation.  
+- If we train and evaluate on the same data, metrics will likely be **optimistic** because the model has already seen (and possibly overfit) those examples.
+
+# Fit Logistic Regression
+```{r fit}
+# Fit a logistic regression to predict clicks using selected predictors.
+# Here we use "pages_viewed" and "ad_position" as features.
+logit_fit <- glm(
+  click ~ pages_viewed + ad_position,
+  data = train,
+  family = binomial()
+)
+
+# Summarize coefficients in a clean format
+# Nicely formatted regression table to inspect coefficient signs and magnitudes
+stargazer(logit_fit, type = "text", single.row = TRUE, no.space = TRUE)
+```
+**Questions**
+
+- Interpret the sign of the coefficients. Which variables increase/decrease the odds of clicking?  
+
+**Solutions**
+
+- A **positive** coefficient increases the **log-odds** of a click (odds ratio > 1), while a **negative** coefficient decreases the log-odds (odds ratio < 1). For factors (e.g., `ad_position`), interpret **relative to the reference level**.  
+
+# Predict Probabilities & Classify (Threshold = 0.5)
+```{r predict}
+# Predict probability of clicking on the test set.
+test$p_hat <- predict(logit_fit, newdata = test, type = "response")
+
+# Classify each impression as "predicted click" (1) if p >= 0.5, else 0.
+test$y_hat <- as.integer(test$p_hat >= 0.5)
+# Inspect true label vs predicted probability and classification for a few rows
+head(test[, c("click","p_hat","y_hat")])
+```
+**Questions**
+
+- What does the threshold of 0.5 mean in practice?  
+- How would results change if we used 0.3 or 0.7 instead?
+
+**Solutions**
+
+- A **0.5 threshold** means we label a case positive when the predicted probability of a click is at least 50%. It balances FN/FP only under certain conditions (equal misclassification costs and class balance).  
+- Lowering to **0.3** usually **increases recall** (false negative decrease, or, in other words, the model gets better at identifying consumers that click) but **reduces precision** (false positive increase, i.e., we will target consumers not likely to click). Raising to **0.7** tends to **increase precision** (we waste less money on targeting consumers that won't click) but **reduce recall** (we miss more consumers likely to click). Choose the threshold based on business costs/benefits.
+
+# Evaluation Metrics (Accuracy, Precision, Recall, F1)
+```{r metrics}
+# Confusion matrix elements
+# True Positives: predicted click and actually clicked
+TP <- sum(test$y_hat==1 & test$click==1, na.rm = TRUE)
+# False Positives: predicted click but actually no click
+FP <- sum(test$y_hat==1 & test$click==0, na.rm = TRUE)
+# False Negatives: predicted no click but actually clicked
+FN <- sum(test$y_hat==0 & test$click==1, na.rm = TRUE)
+# True Negatives: predicted no click and actually no click
+TN <- sum(test$y_hat==0 & test$click==0, na.rm = TRUE)
+
+print(paste("TP:", TP, "FP:", FP, "FN:", FN, "TN:", TN))
+
+# Compute standard metrics
+# Accuracy: overall fraction of correct predictions (can be misleading with class imbalance)
+accuracy  <- (TP + TN) / (TP + FP + FN + TN)  # overall correctness
+# Precision: among predicted clicks, how many were real clicks
+precision <- ifelse((TP + FP)==0, NA, TP/(TP+FP))  # quality of positive predictions
+# Recall (sensitivity): among real clicks, how many we correctly predicted
+recall    <- TP/(TP+FN)  # coverage of actual positives
+# F1: harmonic mean of precision and recall (balances the two)
+f1        <- ifelse(is.na(precision) | (precision+recall)==0, NA, 2*precision*recall/(precision+recall))  # balance between precision and recall
+
+data.frame(
+  Threshold = 0.50,
+  Accuracy = round(accuracy, 3),
+  Precision = round(precision, 3),
+  Recall = round(recall, 3),
+  F1 = round(f1, 3)
+)
+```
+**Student Questions**
+
+- If the business cares more about "catching all potential clickers," which metric should we prioritize?  
+- What tradeoff exists between precision and recall?
+
+**Instructor Solutions**
+
+- Prioritize **recall** when missing a positive is costly (e.g., missing potential buyers). But also consider **precision** to avoid wasting spend. **F1** balances both.  
+- Precision–recall tradeoff: **increasing one typically decreases the other** when threshold changes; you must pick a threshold aligned with **business objectives and costs**.
+
+# ROC Curve
+```{r rocplot}
+# ROC curve plots tradeoff between True Positive Rate and False Positive Rate
+
+# Build ROC object from true labels and predicted probabilities
+roc_obj <- roc(response = test$click, predictor = test$p_hat, quiet = TRUE)
+# False Positive Rate (x-axis) derived from specificities (1 - TNR)
+fpr <- 1 - roc_obj$specificities   # False Positive Rate
+# True Positive Rate (y-axis), also called recall
+tpr <- roc_obj$sensitivities       # True Positive Rate
+
+# Plot ROC curve with the random-guess diagonal as a baseline
+ggplot(data = data.frame(FPR = fpr, TPR = tpr), aes(x = FPR, y = TPR)) +
+  geom_line(size = 1) +
+  geom_abline(slope = 1, intercept = 0, linetype = "dashed") +
+  labs(title = "ROC Curve", x = "False Positive Rate (FPR)", y = "True Positive Rate (TPR)") +
+  theme_minimal(base_size = 13)
+```
+**Questions**
+
+- Why is the diagonal red line a "random guess" baseline?  
+- What does it mean if our curve is very close to that line?
+
+**Solutions**
+
+- A random classifier yields TPR ≈ FPR at all thresholds → a **45° line**. Anything above that indicates skill.  
+- If our ROC is close to the diagonal, the model has **little discriminatory power**—it hardly distinguishes clickers from non-clickers.
+
+# AUC-ROC
+```{r auc}
+# Area under the ROC curve (AUC) gives a single-number measure of model performance.
+# AUC: single-number summary of ROC (probability a random positive ranks above a random negative)
+auc_val <- as.numeric(auc(roc_obj))
+round(auc_val, 3)
+```
+**Questions**
+
+- What is the maximum possible AUC? What would an AUC of 0.5 mean?
+
+**Solutions**
+
+- **Max AUC = 1.0**, perfect ranking (all positives ranked above all negatives).  
+- **AUC = 0.5** implies **no better than random** ranking.
+
+# Interpretability: Odds Ratios (exp(beta))
+```{r odds}
+# Convert log-odds coefficients into odds ratios for manager-friendly interpretation
+or <- exp(coef(logit_fit))
+round(or, 3)
+```
+**Questions**
+
+- If "`ad_positiontop`" has an odds ratio of 2, how should we interpret this?  
+- Why might odds ratios be more intuitive for managers than raw coefficients?
+
+**Solutions**
+
+- An odds ratio of **2** for "`ad_positiontop`" means the **odds** of a click are **twice as high** for top-position ads compared to the reference position, **holding other variables constant**.  
+- Odds ratios express **multiplicative changes** in an intuitive way (e.g., “2× the odds”), whereas log-odds coefficients are less interpretable for non-technical audiences.
+
