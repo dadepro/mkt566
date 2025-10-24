@@ -7,7 +7,7 @@ For more information about this course, please look at the **[syllabus](https://
 
 ### Lectures
 
-### Week 1
+### Week 1: Intro and data viz
 - Monday, Aug. 25: [slides](https://raw.githack.com/dadepro/mkt566/main/w1/w1-1-intro.pdf)
     - [Install R/Rstudio](https://bookdown.org/content/6ef13ea6-4e86-4566-b665-ebcd19d45029/#download-and-install-r-and-rstudio) 
 - Wednesday, Aug. 27:
@@ -22,7 +22,8 @@ For more information about this course, please look at the **[syllabus](https://
     - [Chart types](https://github.com/dadepro/mkt566/blob/main/w1/w1-2-chart-types-class.R)
     - [Beautify plot](https://github.com/dadepro/mkt566/blob/main/w1/w1-2-data-viz-beautify.R)
 
-### Week 2
+### Week 2: Exploratory data analysis: Variation
+
 - Wednesday, Sept. 3:
     - [Slides](https://raw.githack.com/dadepro/mkt566/main/w2/w2-1-exploratory-data-analysis.pdf)
     - Required readings:
@@ -34,7 +35,8 @@ For more information about this course, please look at the **[syllabus](https://
       - Simulate marketing dataset: [code](w2-1-simulate-marketing-dataset.R)
       - Variation case: [html](https://raw.githack.com/dadepro/mkt566/main/w2/w2-1-variation-case.html) and [R Markdown](https://github.com/dadepro/mkt566/blob/main/w2/w2-1-variation-case.Rmd), [data](https://github.com/dadepro/mkt566/blob/main/w2/data/marketing_eda.csv)
   
-### Week 3
+### Week 3: Exploratory data analysis: Covariation
+
 - Monday & Wednesday, Sept. 8, 10
   - [Slides](https://raw.githack.com/dadepro/mkt566/main/w3/w3-1-exploratory-data-analysis.pdf)
   - Required readings:
@@ -45,7 +47,7 @@ For more information about this course, please look at the **[syllabus](https://
   - Replicate slides' figures: [code](https://github.com/dadepro/mkt566/blob/main/w3/w3-1-eda-marketing-dataset.R)
   - RateBeer case: [html](https://raw.githack.com/dadepro/mkt566/main/w3/beer-case/w3-eda-case.html) and [R Markdown](https://github.com/dadepro/mkt566/blob/main/w3/beer-case/w3-eda-case.Rmd), [dataset](https://github.com/dadepro/mkt566/blob/main/w3/beer-case/w3-ratebeer-sampled.csv.gz), [partial solution/helper](https://raw.githack.com/dadepro/mkt566/main/w3/beer-case/w3-eda-case-helper.html), [full solution](https://raw.githack.com/dadepro/mkt566/main/w3/beer-case/w3-eda-case-solution.html)
 
-### Week 4
+### Week 4: Modeling relations between variables: OLS & Logit
 - Monday & Wednesday, Sept. 15, 17
     - [Slides OLS](https://raw.githack.com/dadepro/mkt566/main/w4/w4-1-ols.pdf)
     - [Slides Logit](https://raw.githack.com/dadepro/mkt566/main/w4/w4-2-logit.pdf)
@@ -58,7 +60,7 @@ For more information about this course, please look at the **[syllabus](https://
       - In class Airbnb analysis: [OLS](https://github.com/dadepro/mkt566/blob/main/w4/w4-1-regression-example-for-class.R), [Logit](https://github.com/dadepro/mkt566/blob/main/w4/w4-2-logit-class.R)
       - Airbnb exercise: [html](https://raw.githack.com/dadepro/mkt566/main/w4/airbnb-case/w4-airbnb-case.html) and [.Rmd](https://github.com/dadepro/mkt566/blob/main/w4/airbnb-case/w4-airbnb-case.Rmd), solution [html](https://raw.githack.com/dadepro/mkt566/main/w4/airbnb-case/w4-airbnb-case-solutions.html) and [R Markdown](https://github.com/dadepro/mkt566/blob/main/w4/airbnb-case/w4-airbnb-case-solutions.Rmd)
 
-### Week 5
+### Week 5: Clustering and recommendation systems
 - Monday & Wednesday, Sept 22, 24
   - Slides
     - [Clustering](https://raw.githack.com/dadepro/mkt566/main/w5/w5-1-clustering.pdf)
@@ -75,22 +77,22 @@ For more information about this course, please look at the **[syllabus](https://
     - Clustering in-class exercise: [code](https://github.com/dadepro/mkt566/blob/main/w5/w5-1-clustering.R) and [data](https://github.com/dadepro/mkt566/blob/main/w5/data/segmentation_office.xlsx)
     - [Streaming platforms in-class discussion](https://raw.githack.com/dadepro/mkt566/main/w5/case/recommender-discussion-assigment.pdf), [solution](https://raw.githack.com/dadepro/mkt566/main/w5/case/w5-clustering-exe-solution.html)
 
-### Week 6
+### Week 6: Clustering and recommendation systems
 - Monday, Sept 29
   - Guest speaker: [Jonathan Elliot](https://www.linkedin.com/in/jonnynelliott/), [Slides](https://raw.githack.com/dadepro/mkt566/main/articles-papers/Investing%20in%20Film%20with%20Machine%20Learning.pdf)
 - Wednesday, Oct 1
   - In-class exercise (clustering analysis): [html](https://raw.githack.com/dadepro/mkt566/main/w5/case/w5-clustering-exe.html), [R Markdown](http://github.com/dadepro/mkt566/blob/main/w5/case/w5-clustering-exe.Rmd), [data](https://github.com/dadepro/mkt566/blob/main/w5/case/customer_clustering_data.csv)
     
-## Week 7
+### Week 7: Work on group project
 - Monday, Oct 6
   - Work on group project ([slides](https://raw.githack.com/dadepro/mkt566/main/w7/w7-1-class-work.pdf))
 - Wednesday, Oct 8
   - No class (Fall recess)
 
-## Week 8
+### Week 8: Project proposals
 - Mid-term project proposal presentations
 
-## Week 9
+### Week 9: Classifiers
 - Monday, Oct 20
   - [Slides](https://raw.githack.com/dadepro/mkt566/main/w9/w9-classifiers.pdf)
   - Optional readings:
@@ -98,7 +100,7 @@ For more information about this course, please look at the **[syllabus](https://
 - Wednesday, Oct 22
   - Exercise: Predicting Click-Through-Rate with Logistic Regression: [R Markdown](https://github.com/dadepro/mkt566/blob/main/w9/case/w9-predicting-ad-click-w-logit.Rmd), [HTML](https://raw.githack.com/dadepro/mkt566/main/w9/case/w9-predicting-ad-click-w-logit.html), [click data](https://github.com/dadepro/mkt566/blob/main/w9/data/ad_click_data.csv), [R Markdown solution](https://github.com/dadepro/mkt566/blob/main/w9/case/w9-predicting-ad-click-w-logit-solutions.Rmd), [HTML solution](https://raw.githack.com/dadepro/mkt566/main/w9/case/w9-predicting-ad-click-w-logit-solutions.html)
 
-## Week 10
+### Week 10: User generated content and text analysis
 - Monday, Oct 27
   - Readings:
     - [Chapter 8 of  Introduction to R for Data Science](https://bookdown.org/jdholster1/idsr/text-analysis.html)
