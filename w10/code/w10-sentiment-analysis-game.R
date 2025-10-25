@@ -1,8 +1,3 @@
-# ============================================================
-# Sentiment classification with sentimentr, TF-IDF, and PRETRAINED Word2Vec
-# Single-file R script (copy-paste). Set PRETRAINED_PATH below.
-# ============================================================
-
 set.seed(123)
 
 # ---- Packages ----
