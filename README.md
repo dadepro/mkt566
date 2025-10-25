@@ -102,6 +102,9 @@ For more information about this course, please look at the **[syllabus](https://
 
 ### Week 10: User-generated content, text analysis, and sentiment predictions
 - Monday, Oct 27
+  - Slides
+      - [Basics of tex analysis](https://raw.githack.com/dadepro/mkt566/main/w10/w10-1-text-analysis.pdf)
+      - [Regularized Logit](https://github.com/dadepro/mkt566/blob/main/w10/w10-2-glmnet.pdf)
   - Readings:
     - [Chapter 8 of  Introduction to R for Data Science](https://bookdown.org/jdholster1/idsr/text-analysis.html)
     - [Reputation Systems](https://dl.acm.org/doi/pdf/10.1145/355112.355122)
