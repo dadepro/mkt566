@@ -111,6 +111,6 @@ For more information about this course, please look at the **[syllabus](https://
     - [Fake It Till You Make It: Reputation, Competition, and Yelp Review Fraud](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2293164)
     - [Using Traditional Text Analysis and Large Language Models in Service Failure and Recovery](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5139918)
 - Wednesday, Oct. 29
-  - Replica Harry Potter books analysis from Chapter 8 of  Introduction to R for Data Science: [R Markdown](https://github.com/dadepro/mkt566/blob/main/w10/code/w10-harry_potter_sentiment_datatable_commented.Rmd), [HTML](https://raw.githack.com/dadepro/mkt566/main/w10/code/w10-harry_potter_sentiment_datatable_commented.html)
+  - Replica of the Harry Potter books analysis from Chapter 8 of  Introduction to R for Data Science: [R Markdown](https://github.com/dadepro/mkt566/blob/main/w10/code/w10-harry_potter_sentiment_datatable_commented.Rmd), [HTML](https://raw.githack.com/dadepro/mkt566/main/w10/code/w10-harry_potter_sentiment_datatable_commented.html)
   - Cleaning online review text and computing Tf-Idf by hand: [R Markdown](https://github.com/dadepro/mkt566/blob/main/w10/code/mini_tfidf_exercise_commented.Rmd), [HTML](https://raw.githack.com/dadepro/mkt566/main/w10/code/mini_tfidf_exercise_commented.html)
   - [Predict online reviews sentiment using Tf-Idf](https://github.com/dadepro/mkt566/blob/main/w10/code/w10-sentiment-analysis-game.R)
