@@ -259,8 +259,8 @@ res_bad <- run_tfidf_experiment(
   remove_popular = FALSE,           # keep very common terms
   l2_norm = FALSE,                  # no L2 normalization
   use_cv = FALSE,                   # no CV tuning
-  lambda_no_cv = 0,              # tiny lambda ~ almost no regularization
-  alpha = 1,                        # Lasso path, but with tiny lambda it won’t shrink
+  lambda_no_cv = 0,                 # 0 lambda = no regularization
+  alpha = 1,                        # Lasso path, but with 0 lambda it won’t shrink
   keep_words_only = FALSE           # keep numbers too (adds noise)
 )
 print(res_bad$metrics)
