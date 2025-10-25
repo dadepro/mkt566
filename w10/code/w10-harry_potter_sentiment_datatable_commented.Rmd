@@ -12,8 +12,11 @@ output:
 ```{r setup, include=FALSE}
 # =====================  COMMENTS =====================
 # Purpose: Configure reproducibility and knitting behavior for this document.
-# - set.seed(): ensures deterministic results for any random steps.
-# - knitr::opts_chunk$set(): controls echo/messages/warnings and figure defaults.
+# - knitr::opts_chunk$set(): sets quiet output and figure defaults for clean slides.
+# - set.seed(): ensures reproducible sampling/ordering when needed.
+# Notes:
+# * We don't load heavy packages here to keep setup fast.
+# * fig.width/height can be adjusted per-plot in their own chunks if needed.
 # =============================================================
 knitr::opts_chunk$set(message = FALSE, warning = FALSE, fig.width = 8, fig.height = 5)
 set.seed(123)
@@ -21,21 +24,18 @@ set.seed(123)
 
 ```{r packages}
 # =====================  COMMENTS =====================
-# Purpose: Load the R packages needed for this analysis (data handling, NLP, visualization, modeling).
-# Tip: If a package is missing, install it first: install.packages("<name>").
-# Purpose: Clean/transform the dataset into an analysis-ready structure.
-# Why: Downstream tokenization/modeling expects specific columns and types.
-# Purpose: Tokenize text into words (and possibly bigrams) and prepare a document–term structure.
-# Notes: Consider lowercasing, removing stopwords, handling negation via bigrams (e.g., 'not good').
-# Purpose: Compute lexicon-based sentiment/emotion scores on text segments.
-# Purpose: Visualize distributions and model outputs (e.g., top TF–IDF terms, ROC curve).
-# Design: Use clear labels and facets; consider ordering factors for readability.
+# Purpose: Load dependencies. If missing, install them.
+# Why these:
+# - data.table: fast tables and group-bys for large token lists.
+# - ggplot2: flexible plotting.
+# - stringi: robust Unicode-aware string ops (tokenization here).
+# - tidytext: provides sentiment lexicons as data frames and stop_words.
+# - textdata: dependency to fetch lexicons (bing/afinn) the first time.
+# - zoo: rolling window operations for smoothing.
+# - devtools: only to install the 'harrypotter' package from GitHub once.
 # =============================================================
-# Core
-pkgs <- c("data.table", "ggplot2", "stringi", "tidytext", "textdata")
-# Only used to fetch lexicons (bing/afinn) as data frames
+pkgs <- c("data.table", "ggplot2", "stringi", "tidytext", "textdata", "zoo")
 pkgs_lex <- c("tidytext")
-# To install harrypotter from GitHub
 pkgs_dev <- c("devtools")
 
 for (p in c(pkgs, pkgs_lex, pkgs_dev)) if (!requireNamespace(p, quietly=TRUE)) install.packages(p)
@@ -43,7 +43,9 @@ invisible(lapply(pkgs, require, character.only=TRUE))
 invisible(lapply(pkgs_lex, require, character.only=TRUE))
 invisible(lapply(pkgs_dev, require, character.only=TRUE))
 
-# Install the Harry Potter text package if missing (provides chapter vectors)
+# Install once if missing:
+# - The 'harrypotter' package exposes each book as a character vector of chapters.
+# - Installation pulls from GitHub; may require tools (Rtools/Xcode) on fresh machines.
 if (!requireNamespace("harrypotter", quietly = TRUE)) {
   devtools::install_github("bradleyboehmke/harrypotter")
 }
@@ -53,8 +55,17 @@ library(harrypotter)
 # Build a tidy corpus with data.table
 ```{r build-corpus}
 # =====================  COMMENTS =====================
-# Purpose: Clean/transform the dataset into an analysis-ready structure.
-# Why: Downstream tokenization/modeling expects specific columns and types.
+# Purpose: Convert the 7 books into a single tidy table (book, chapter, word).
+# Steps:
+# 1) Build a named list of book vectors (each vector = chapters).
+# 2) For each chapter: lowercase, split into words with stringi, and store as rows.
+# Notes:
+# - We deliberately keep punctuation out by extracting "words" with stringi.
+# - Lowercasing here helps lexicon joins match consistently (lexicons are lowercase).
+# - If you want to KEEP numbers (e.g., "9¾"), adjust the tokenizer accordingly.
+# Pitfalls:
+# - Empty chapters (rare) produce length 0; we skip them.
+# - Factor the 'book' column to enforce series order in plots.
 # =============================================================
 books <- list(
   `Philosopher's Stone` = philosophers_stone,
@@ -66,41 +77,72 @@ books <- list(
   `Deathly Hallows` = deathly_hallows
 )
 
+# Helper: Turn one book into a (book, chapter, word) data.table.
 chapters_to_dt <- function(book_title, chapters) {
   dt_list <- vector("list", length(chapters))
   for (i in seq_along(chapters)) {
-    w <- stri_extract_all_words(tolower(chapters[i]))[[1]]
-    if (length(w) == 0) next
+    # stringi tokenization: extract alphabetic "words"; tolower for lexicon consistency
+    w <- stringi::stri_extract_all_words(tolower(chapters[i]))[[1]]
+    if (length(w) == 0) next  # skip chapters that tokenize to nothing (safety)
     dt_list[[i]] <- data.table(book = book_title, chapter = i, word = w)
   }
-  rbindlist(dt_list, use.names = TRUE, fill = TRUE)
+  # rbindlist is fast and preserves column types; fill=TRUE handles any empties
+  data.table::rbindlist(dt_list, use.names = TRUE, fill = TRUE)
 }
 
-series <- rbindlist(
+# Apply to all books and bind; results in millions of rows in larger corpora
+series <- data.table::rbindlist(
   lapply(names(books), function(b) chapters_to_dt(b, books[[b]])),
   use.names = TRUE
 )
 
+# Order books in their canonical series order for facets/legends
 book_levels <- c("Philosopher's Stone","Chamber of Secrets","Prisoner of Azkaban",
                  "Goblet of Fire","Order of the Phoenix","Half-Blood Prince","Deathly Hallows")
 series[, book := factor(book, levels = book_levels)]
+
+# Optional sanity checks:
+# series[, .N, by = book]                 # token counts per book
+# series[chapter == 1][1:10]              # peek at first chapter tokens
 ```
 
 # Top words & stopword filtering
 ```{r top-words}
 # =====================  COMMENTS =====================
-# Purpose: General analysis step contributing to the pipeline.
+# Purpose: Get a feel for the corpus by looking at frequent terms, then remove stopwords.
+# Why:
+# - Raw top words are dominated by stopwords (the, and, of...). Removing them
+#   surfaces character/place names and content words.
+# Implementation:
+# - tidytext::stop_words provides a union of common English stopword lists.
+# - Anti-join: series[!stop_dt, on="word"] removes rows whose word appears in stop_dt.
+# Caveats:
+# - Depending on your analysis, some names (e.g., "harry") might dominate;
+#   consider removing character names via a custom list if desired.
+# - If you need stemming/lemmatization, do it *before* counting or joining lexicons.
 # =============================================================
 top_all <- series[, .N, by = word][order(-N)][1:10]
-stop_dt <- as.data.table(stop_words)
+
+# Stopwords as a data.table for fast keyed joins
+stop_dt <- as.data.table(tidytext::stop_words)
+
+# Remove stopwords (anti-join) to reveal more meaningful content words
 series_nostop <- series[!stop_dt, on = "word"]
+
+# Top content words after stopword removal
 top_nostop <- series_nostop[, .N, by = word][order(-N)][1:20]
+
+# Optional: inspect
+# head(top_all); head(top_nostop)
 ```
 
 ```{r viz-top-words, fig.height=6}
 # =====================  COMMENTS =====================
-# Purpose: Visualize distributions and model outputs (e.g., top TF–IDF terms, ROC curve).
-# Design: Use clear labels and facets; consider ordering factors for readability.
+# Purpose: Visualize the most frequent content words after stopword removal.
+# Notes:
+# - reorder(word, N) orders bars by frequency.
+# - coord_flip() makes labels readable when there are many bars.
+# - Consider scaling by chapter length if comparing chapters (not done here).
 # =============================================================
 ggplot(top_nostop, aes(x = reorder(word, N), y = N)) +
   geom_col() +
@@ -112,18 +154,36 @@ ggplot(top_nostop, aes(x = reorder(word, N), y = N)) +
 # Bing (positive/negative) sentiment — most frequent words
 ```{r bing-join}
 # =====================  COMMENTS =====================
-# Purpose: Tokenize text into words (and possibly bigrams) and prepare a document–term structure.
-# Notes: Consider lowercasing, removing stopwords, handling negation via bigrams (e.g., 'not good').
+# Purpose: Join tokens with the Bing lexicon (binary pos/neg) and list frequent sentiment words.
+# Steps:
+# 1) Get 'bing' as a data.frame(word, sentiment).
+# 2) Inner-join on 'word' to keep only matches.
+# 3) Count per (sentiment, word) and take the top-N.
+# Notes:
+# - Joins are lowercased, matching our earlier tolower() step.
+# - Proper nouns not in the lexicon will be dropped (expected).
+# - This is *lexicon coverage dependent*; don't interpret as exhaustive.
 # =============================================================
 bing_dt <- as.data.table(tidytext::get_sentiments("bing"))
-hp_bing <- series[bing_dt, on = "word", nomatch = 0L]
-overall_bing <- hp_bing[, .N, by = .(sentiment, word)][order(sentiment, -N), .SD[1:10], by = sentiment]
+
+# data.table join: hp_bing keeps only words present in Bing (nomatch = 0)
+hp_bing <- series[bing_dt, on = "word", nomatch = 0]
+
+# For each sentiment, pick the top 10 frequent matched words
+overall_bing <- hp_bing[, .N, by = .(sentiment, word)][
+  order(sentiment, -N), .SD[1:10], by = sentiment
+]
 ```
 
 ```{r plot-bing-overall, fig.height=5}
 # =====================  COMMENTS =====================
-# Purpose: Visualize distributions and model outputs (e.g., top TF–IDF terms, ROC curve).
-# Design: Use clear labels and facets; consider ordering factors for readability.
+# Purpose: Show the most frequent positive vs negative words across the whole series.
+# Interpretation:
+# - Counts reflect *occurrence* of lexicon-matched tokens, not chapter weighting.
+# - A word’s sentiment is context-agnostic; sarcasm/negation are not handled here.
+# Extensions:
+# - Use bigrams to capture "not good".
+# - Weight by TF-IDF to de-emphasize ubiquitous words.
 # =============================================================
 ggplot(overall_bing,
        aes(x = reorder(word, N), y = N, fill = sentiment)) +
@@ -138,25 +198,39 @@ ggplot(overall_bing,
 # AFINN (−5 … +5) — sentiment by chapter and smoothed by book
 ```{r afinn-aggregate}
 # =====================  COMMENTS =====================
-# Purpose: Clean/transform the dataset into an analysis-ready structure.
-# Why: Downstream tokenization/modeling expects specific columns and types.
-# Purpose: Tokenize text into words (and possibly bigrams) and prepare a document–term structure.
-# Notes: Consider lowercasing, removing stopwords, handling negation via bigrams (e.g., 'not good').
-# Purpose: Compute lexicon-based sentiment/emotion scores on text segments.
+# Purpose: Compute AFINN sentiment per chapter and standardize by token count.
+# Steps:
+# 1) Join tokens to AFINN lexicon (word → integer score from −5 to +5).
+# 2) Aggregate by (book, chapter): sum scores and count matched words.
+# 3) Compute mean per-chapter sentiment = (sum score) / (matched words).
+# Why mean? It normalizes for chapter length and lexicon coverage.
+# Caveats:
+# - Chapters with few matched words can be noisy; consider a minimum n_words threshold.
+# - Words not in AFINN are dropped (nomatch=0); this is normal for lexicon methods.
 # =============================================================
 afinn_dt <- as.data.table(tidytext::get_sentiments("afinn"))
+
+# Keep only tokens that have an AFINN entry
 hp_afinn <- series[afinn_dt, on = "word", nomatch = 0L]
+
+# Aggregate to chapter level: total sentiment and matched-token count
 chapter_sent <- hp_afinn[, .(sent_sum = sum(value), n_words = .N),
                          by = .(book, chapter)][order(book, chapter)]
+
+# Mean sentiment per chapter (avoid division by zero; NA if no matched words)
 chapter_sent[, sent_mean := fifelse(n_words > 0, sent_sum / n_words, NA_real_)]
+
+# Optional: filter tiny n_words chapters to reduce noise (e.g., n_words >= 20)
+# chapter_sent[n_words < 20, sent_mean := NA_real_]
 ```
 
 ```{r plot-afinn-series, fig.height=6}
 # =====================  COMMENTS =====================
-# Purpose: Compute lexicon-based sentiment/emotion scores on text segments.
-# Caveat: Lexicon methods can miss sarcasm or domain-specific meanings; use as baseline.
-# Purpose: Visualize distributions and model outputs (e.g., top TF–IDF terms, ROC curve).
-# Design: Use clear labels and facets; consider ordering factors for readability.
+# Purpose: Visualize chapter-level AFINN sentiment over the story for each book.
+# Notes:
+# - A dashed zero line separates positive/negative average sentiment.
+# - 'scales = "free_x"' allows different chapter lengths across books.
+# - Consider smoothing if the lines are jagged (done in the next section).
 # =============================================================
 ggplot(chapter_sent, aes(x = chapter, y = sent_mean, group = book)) +
   geom_line(alpha = 0.6) +
@@ -170,23 +244,24 @@ ggplot(chapter_sent, aes(x = chapter, y = sent_mean, group = book)) +
 # Rolling sentiment within book (smoother)
 ```{r afinn-rolling, message=FALSE}
 # =====================  COMMENTS =====================
-# Purpose: Load the R packages needed for this analysis (data handling, NLP, visualization, modeling).
-# Tip: If a package is missing, install it first: install.packages("<name>").
-# Purpose: Clean/transform the dataset into an analysis-ready structure.
-# Why: Downstream tokenization/modeling expects specific columns and types.
+# Purpose: Smooth the mean chapter sentiment within each book to reveal trends.
+# Method: 3-chapter right-aligned rolling mean (includes the current and previous 2 chapters).
+# Why right-aligned? It mimics a "so far" evolution; centered windows are also valid.
+# Edge handling: partial=TRUE uses fewer points near the beginning (returns non-NA).
 # =============================================================
-if (!requireNamespace("zoo", quietly = TRUE)) install.packages("zoo")
-library(zoo)
-
 roll3 <- function(x) zoo::rollapplyr(x, width = 3, FUN = mean, fill = NA, partial = TRUE)
+
+# Apply by book to avoid leaking across book boundaries
 chapter_sent[, sent_roll3 := roll3(sent_mean), by = book]
 ```
 
 ```{r plot-rolling, fig.height=6}
 # =====================  COMMENTS =====================
-# Purpose: Compute lexicon-based sentiment/emotion scores on text segments.
-# Purpose: Visualize distributions and model outputs (e.g., top TF–IDF terms, ROC curve).
-# Design: Use clear labels and facets; consider ordering factors for readability.
+# Purpose: Plot the smoothed trajectory per book.
+# Notes:
+# - Colors distinguish books; legend is hidden to keep facets clean.
+# - If you want a single-series view, remove faceting and color by 'book'.
+# - Consider also a 5-chapter window to emphasize long arcs (width=5).
 # =============================================================
 ggplot(chapter_sent, aes(x = chapter, y = sent_roll3, color = book)) +
   geom_line(show.legend = FALSE) +
