@@ -40,20 +40,20 @@ dt = dt[, .(id, review, target)]
 # ===================================================================
 
 run_tfidf_experiment <- function(
-    dt,                                  # data.table with columns: id, review, target (factor c("neg","pos"))
+    dt,                                 # data.table with columns: id, review, target (factor c("neg","pos"))
     ngram_min = 1,                      # minimum n in n-grams (1 = unigrams)
     ngram_max = 1,                      # maximum n in n-grams (2 = include bigrams); set =1L for unigrams-only
-    remove_rare = FALSE,                  # prune rare terms?
-    term_count_min = 0,                  # min corpus count for a term to be kept (if remove_rare = TRUE)
-    remove_popular = FALSE,               # prune overly common terms?
-    doc_proportion_max = 1,            # max fraction of documents a term may appear in (if remove_popular = TRUE)
-    l2_norm = FALSE,                      # L2-normalize TF-IDF rows? (recommended for linear models)
-    use_cv = FALSE,                       # use cross-validation to choose lambda?
-    alpha = 0.5,                           # glmnet mixing: 1=Lasso (some coefficient are set exactly to zero), 0=Ridge (shrink coefficients towards zero), (0..1)=Elastic Net
-    nfolds = 5,                          # number of folds if use_cv = TRUE
-    lambda_no_cv = 0,                    # lambda value when use_cv = FALSE,  (Small λ → weak penalty → low bias, higher variance (risk of overfitting).
-                                         #Large λ → strong penalty → higher bias, lower variance (simpler model).)
-    keep_words_only = FALSE               # drop tokens containing any digits (keep only alphabetic words)
+    remove_rare = FALSE,                # prune rare terms?
+    term_count_min = 0,                 # min corpus count for a term to be kept (if remove_rare = TRUE)
+    remove_popular = FALSE,             # prune overly common terms?
+    doc_proportion_max = 1,             # max fraction of documents a term may appear in (if remove_popular = TRUE)
+    l2_norm = FALSE,                    # L2-normalize TF-IDF rows? (recommended for linear models)
+    use_cv = FALSE,                     # use cross-validation to choose lambda?
+    alpha = 0.5,                        # glmnet mixing: 1=Lasso (some coefficient are set exactly to zero), 0=Ridge (shrink coefficients towards zero), (0..1)=Elastic Net
+    nfolds = 5,                         # number of folds if use_cv = TRUE
+    lambda_no_cv = 0,                   # lambda value when use_cv = FALSE,  (Small λ → weak penalty → low bias, higher variance (risk of overfitting).
+                                        #Large λ → strong penalty → higher bias, lower variance (simpler model).)
+    keep_words_only = FALSE             # drop tokens containing any digits (keep only alphabetic words)
 ) {
   # --------- Basic input checks (fail fast with helpful messages) ----------
   stopifnot(all(c("id","review","target") %in% names(dt)))
