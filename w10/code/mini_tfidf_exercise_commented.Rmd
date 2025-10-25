@@ -1,0 +1,160 @@
+---
+title: "Exercise: Compute & Visualize TF–IDF on a Tiny Corpus"
+author: "Davide Proserpio"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    number_sections: true
+---
+
+```{r setup, include=FALSE}
+set.seed(123)                                        # make results reproducible
+knitr::opts_chunk$set(message = FALSE, warning = FALSE)  # cleaner output
+```
+
+# Install/load packages
+```{r packages}
+# ------------------------------------------------------------
+# Install missing packages and load them
+# ------------------------------------------------------------
+
+# List of required packages
+packages <- c(
+  "data.table",  # fast tables and grouped ops
+  "text2vec",    # tokenization utilities
+  "stopwords",   # multilingual stopword lists
+  "ggplot2",     # plotting
+  "glmnet",      # logistic regression (optional)
+  "pROC",        # AUC calculation (optional)
+  "sentimentr"   # sentiment analysis
+)
+
+# Identify which packages are not yet installed
+new_packages <- packages[!(packages %in% installed.packages()[, "Package"])]
+
+# Install missing ones quietly
+if (length(new_packages)) {
+  install.packages(new_packages, dependencies = TRUE)
+}
+
+# Load all packages
+invisible(lapply(packages, library, character.only = TRUE))
+```
+
+# Tiny corpus (3 reviews, ~40–50 words total)
+
+```{r}
+# set mini_corpus = FALSE to use a larger dataset (100 movie reviews)
+mini_corpus = TRUE
+# Mini corpus designed for transparency in class
+if (mini_corpus) {
+docs <- data.table(
+  doc_id = c("r1","r2","r3"),
+  text = c(
+    "Amazing camera and battery life; great photos, fast performance. Highly recommend this phone.",
+    "Battery drains quickly, camera mediocre, app crashes, not good value. I regret buying this phone.",
+    "Camera is good for daylight, battery ok, screen sharp; low-light noise, but overall decent value."
+  )
+)
+docs
+} else {
+data("movie_review", package = "text2vec")                 # load a small movie-review dataset that ships with {text2vec}
+docs <- as.data.table(movie_review)
+docs <- docs[, .(id, review)][1:100]
+setnames(docs, c("doc_id", "text"))
+head(docs)
+}
+
+numdocs = nrow(docs)
+```
+
+# Tokenize → clean → keep unigrams
+
+```{r}
+# Preprocessing decisions (keep simple for pedagogy):
+# - lowercase words so 'Amazing' and 'amazing' match
+# - tokenize into unigrams (one word at a time)
+# - remove stopwords and tokens that are only punctuation
+
+prep_fun <- tolower
+tok_fun  <- word_tokenizer
+stops    <- stopwords("en")
+
+# Tokenize each document into a character vector of tokens
+tokens <- tok_fun(prep_fun(docs$text))
+
+# Clean tokens: strip punctuation, drop empties, remove stopwords
+tokens <- lapply(tokens, function(x) {
+  x <- gsub("[^a-z0-9']+", "", x)  # keep letters/numbers/apostrophes
+  x <- x[nchar(x) > 0]             # drop empty tokens
+  x[!x %in% stops]                  # remove stopwords
+})
+
+# Inspect tokens per doc
+data.table(doc_id = docs$doc_id, tokens = I(tokens))[1:min(numdocs, 10)]
+```
+
+# Build counts (Document–Term Matrix, DTM) as a long table
+
+```{r}
+# Unnest tokens into a long table of (doc_id, term) rows
+long <- data.table(
+  doc_id = rep(docs$doc_id, lengths(tokens)),
+  term   = unlist(tokens)
+)
+
+# Count term frequency n per (doc, term)
+tf_counts <- long[, .(n = .N), by = .(doc_id, term)]
+tf_counts[order(doc_id, -n)][1:min(numdocs, 10)]
+```
+
+# Compute TF, DF, IDF, and TF–IDF (by hand)
+
+```{r}
+# N = number of documents
+N <- nrow(docs)
+
+# For each doc: total token count (denominator for TF)
+tf_counts[, total_terms := sum(n), by = doc_id]
+
+# TF (term frequency within doc) = n / total_terms
+tf_counts[, tf := n / total_terms]
+
+# DF (document frequency) = number of docs containing the term at least once
+df <- unique(tf_counts[, .(doc_id, term)])[, .(df = .N), by = term]
+
+# Merge DF into TF table, compute IDF and TF–IDF
+# IDF (plain) = log(N / df); 
+dt <- merge(tf_counts, df, by = "term")
+dt[, idf := log(N / df)]
+dt[, tf_idf := tf * idf]
+
+# Order to see most distinctive terms per document
+dt <- dt[order(doc_id, -tf_idf)]
+dt[1:min(numdocs, 10)]
+```
+
+# Make compact DTM & TF–IDF matrices (wide form)
+
+```{r}
+# Build matrices with documents as rows and terms as columns:
+# - DTM_counts: raw counts
+# - TFIDF_mat : TF–IDF weights
+DTM_counts <- dcast(tf_counts, doc_id ~ term, value.var = "n", fill = 0)
+TFIDF_mat  <- dcast(dt[, .(doc_id, term, tf_idf)],
+                    doc_id ~ term, value.var = "tf_idf", fill = 0)
+
+DTM_counts[1:min(numdocs, 10), 1:10]
+TFIDF_mat[1:min(numdocs, 10),1:10]
+```
+
+# Visualize: Top-k TF–IDF terms per document
+
+```{r}
+# Choose top-k TF–IDF terms per doc to summarize each review
+topk <- 3
+top_dt <- dt[, .SD[order(-tf_idf)][1:topk], by = doc_id]
+top_dt[1:min(numdocs*3, 20)]
+```
+
