@@ -107,8 +107,8 @@ For more information about this course, please look at the **[syllabus](https://
     - [Reputation Systems](https://dl.acm.org/doi/pdf/10.1145/355112.355122)
     - [HBR: How fake Customer Reviews do-and don't-work](https://hbr.org/2020/11/how-fake-customer-reviews-do-and-dont-work)
     - [Detecting Fake Review Buyers Using Network Structure: Direct Evidence from Amazon](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4147920)
-    - [Fake It Till You Make It: Reputation, Competition, and Yelp Review Fraud](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2293164)
   - Optional readings:
+    - [Fake It Till You Make It: Reputation, Competition, and Yelp Review Fraud](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2293164)
     - [Using Traditional Text Analysis and Large Language Models in Service Failure and Recovery](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5139918)
 - Wednesday, Oct. 29
   - Predict online reviews sentiment
