@@ -104,7 +104,7 @@ For more information about this course, please look at the **[syllabus](https://
 - Monday, Oct 27
   - Slides
       - [Basics of tex analysis](https://raw.githack.com/dadepro/mkt566/main/w10/w10-1-text-analysis.pdf)
-      - [Regularized Logit](https://github.com/dadepro/mkt566/blob/main/w10/w10-2-glmnet.pdf)
+      - [Regularized Logit](https://raw.githack.com/dadepro/mkt566/main/w10/w10-2-glmnet.pdf)
   - Readings:
     - [Chapter 8 of  Introduction to R for Data Science](https://bookdown.org/jdholster1/idsr/text-analysis.html)
     - Text analysis in R: [Word embeddings](https://m-clark.github.io/text-analysis-with-R/word-embeddings.html)
