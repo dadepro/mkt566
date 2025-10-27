@@ -104,9 +104,11 @@ For more information about this course, please look at the **[syllabus](https://
 - Monday, Oct 27
   - Slides
       - [Basics of tex analysis](https://raw.githack.com/dadepro/mkt566/main/w10/w10-1-text-analysis.pdf)
-      - [Regularized Logit](https://github.com/dadepro/mkt566/blob/main/w10/w10-2-glmnet.pdf)
+      - [Regularized Logit](https://raw.githack.com/dadepro/mkt566/main/w10/w10-2-glmnet.pdf)
   - Readings:
     - [Chapter 8 of  Introduction to R for Data Science](https://bookdown.org/jdholster1/idsr/text-analysis.html)
+    - Text analysis in R: [Word embeddings](https://m-clark.github.io/text-analysis-with-R/word-embeddings.html)
+    - [GMLNET R Package](https://www.geeksforgeeks.org/r-language/what-is-the-glmnet-package-in-r/)
     - [Reputation Systems](https://dl.acm.org/doi/pdf/10.1145/355112.355122)
     - [HBR: How fake Customer Reviews do-and don't-work](https://hbr.org/2020/11/how-fake-customer-reviews-do-and-dont-work)
     - [Detecting Fake Review Buyers Using Network Structure: Direct Evidence from Amazon](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4147920)
@@ -117,4 +119,4 @@ For more information about this course, please look at the **[syllabus](https://
   - Replica of the Harry Potter books analysis from Chapter 8 of  Introduction to R for Data Science: [R Markdown](https://github.com/dadepro/mkt566/blob/main/w10/code/w10-harry_potter_sentiment_datatable_commented.Rmd), [HTML](https://raw.githack.com/dadepro/mkt566/main/w10/code/w10-harry_potter_sentiment_datatable_commented.html)
   - Cleaning online review text and computing Tf-Idf by hand: [R Markdown](https://github.com/dadepro/mkt566/blob/main/w10/code/mini_tfidf_exercise_commented.Rmd), [HTML](https://raw.githack.com/dadepro/mkt566/main/w10/code/mini_tfidf_exercise_commented.html)
   - [Predict online reviews sentiment using Tf-Idf](https://github.com/dadepro/mkt566/blob/main/w10/code/w10-sentiment-analysis-game.R)
-  - Comparing a classifier using Tf-Idf vs Word2Vec: [R script](https://github.com/dadepro/mkt566/blob/main/w10/code/w10-sentiment-analysis-tfidf-vs-w2v.R) [Pre-trained W2V model](https://www.kaggle.com/datasets/leadbest/googlenewsvectorsnegative300) (needed to compute document vectors using W2V)
+  - Comparing a classifier using Tf-Idf vs Word2Vec: [R script](https://github.com/dadepro/mkt566/blob/main/w10/code/w10-sentiment-analysis-tfidf-vs-w2v.R), [Pre-trained W2V model](https://www.kaggle.com/datasets/leadbest/googlenewsvectorsnegative300) (needed to compute document vectors using W2V)
