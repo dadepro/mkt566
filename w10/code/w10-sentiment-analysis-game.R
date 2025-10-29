@@ -35,6 +35,7 @@ dt <- merge(
 dt[, target := factor(ifelse(polarity > 0, "pos", "neg"))]
 dt = dt[, .(id, review, target)]
 
+View(dt)
 # ===================================================================
 # TF-IDF + Logistic (glmnet) with flexible knobs for experimentation
 # ===================================================================

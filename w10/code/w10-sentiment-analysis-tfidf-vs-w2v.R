@@ -4,6 +4,9 @@
 
 set.seed(123)
 
+#set working dir to be same as script
+setwd("~/Dropbox/teaching/mkt566-2025/mkt566/w10/code/")
+
 # ---- Packages ----
 # install.packages(c("data.table","sentimentr","text2vec","glmnet","Matrix","pROC","yardstick","stopwords","wordVectors"))
 library(data.table)
@@ -14,8 +17,8 @@ library(Matrix)
 library(pROC)         # ROC/AUC
 library(yardstick)    # confusion matrix & metrics
 library(stopwords)
-library(word2vec)
 library(ggplot2)
+library(word2vec)
 
 
 # ---- Data ----
@@ -175,7 +178,7 @@ PRETRAINED_PATH <- "GoogleNews-vectors-negative300.bin"  # <- change if needed
 
 # Load pretrained embeddings. GoogleNews is binary word2vec; set binary=TRUE.
 # normalize=FALSE keeps original norms; we’ll L2-normalize document vectors later.
-w2v_model <- read.word2vec(PRETRAINED_PATH, binary = TRUE, normalize = FALSE)
+w2v_model <- word2vec::read.word2vec(PRETRAINED_PATH)
 
 # Convert to a dense matrix:
 #   rownames(w2v) = tokens, columns = embedding dimensions (e.g., 300)
