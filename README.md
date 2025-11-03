@@ -129,4 +129,4 @@ For more information about this course, please look at the **[syllabus](https://
     - [Measuring advertising incrementality using Ghost Ads](https://medium.com/@eric_seufert/measuring-advertising-incrementality-using-ghost-ads-2357bb465191)
     - [What is the difference between attribution vs. incrementality?](https://www.measured.com/faq/attribution-vs-incrementality/)
   - Optional readings:
-    - Retail Media ROAS Demystified](https://ovative.com/wp-content/uploads/2025/05/Retail-Media-ROAS-Demystified-Ovative-Albertsons-Kellogg-Business-School.pdf)
+    - [Retail Media ROAS Demystified](https://ovative.com/wp-content/uploads/2025/05/Retail-Media-ROAS-Demystified-Ovative-Albertsons-Kellogg-Business-School.pdf)
