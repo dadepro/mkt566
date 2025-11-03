@@ -123,8 +123,8 @@ For more information about this course, please look at the **[syllabus](https://
 
 ### Week 11: Randomized experiments and ad measurements
 
-- Monday, Nov 2
-  - Slides
+- Monday, Nov 3
+  - [Slides](https://raw.githack.com/dadepro/mkt566/main/w11/w11-1-experiments.pdf)
   - Readings:
     - [Measuring advertising incrementality using Ghost Ads](https://medium.com/@eric_seufert/measuring-advertising-incrementality-using-ghost-ads-2357bb465191)
     - [What is the difference between attribution vs. incrementality?](https://www.measured.com/faq/attribution-vs-incrementality/)
