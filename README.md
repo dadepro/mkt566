@@ -1,4 +1,4 @@
-# MKT566: Decision Making using Marketing Analytics
+<img width="468" height="12" alt="image" src="https://github.com/user-attachments/assets/8c41734c-c187-4ca7-9a8b-5f74b5b2dbd4" /># MKT566: Decision Making using Marketing Analytics
 
 ### Course Description
 This course is designed to equip you with the skills necessary to effectively utilize marketing data and reports, enabling you to make informed and critical decisions based on that data. The instructor will guide students on a journey of data exploration, beginning with data collection, visualization, and analysis, and concluding with the application of new methods (such as machine learning) and the utilization of diverse data types (including unstructured big data, such as text data) to address various marketing challenges faced by firms.
@@ -120,3 +120,11 @@ For more information about this course, please look at the **[syllabus](https://
   - Cleaning online review text and computing Tf-Idf by hand: [R Markdown](https://github.com/dadepro/mkt566/blob/main/w10/code/mini_tfidf_exercise_commented.Rmd), [HTML](https://raw.githack.com/dadepro/mkt566/main/w10/code/mini_tfidf_exercise_commented.html)
   - [Predict online reviews sentiment using Tf-Idf](https://github.com/dadepro/mkt566/blob/main/w10/code/w10-sentiment-analysis-game.R)
   - Comparing a classifier using Tf-Idf vs Word2Vec: [R script](https://github.com/dadepro/mkt566/blob/main/w10/code/w10-sentiment-analysis-tfidf-vs-w2v.R), [Pre-trained W2V model](https://www.kaggle.com/datasets/leadbest/googlenewsvectorsnegative300) (needed to compute document vectors using W2V)
+
+### Week 11: Randomized experiments and ad measurements
+
+- Monday, Nov 2
+  - Slides
+  - Readings:
+    - [Measuring advertising incrementality using Ghost Ads](https://medium.com/@eric_seufert/measuring-advertising-incrementality-using-ghost-ads-2357bb465191)
+    - [What is the difference between attribution vs. incrementality?](https://www.measured.com/faq/attribution-vs-incrementality/)
