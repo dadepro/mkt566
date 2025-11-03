@@ -130,3 +130,5 @@ For more information about this course, please look at the **[syllabus](https://
     - [What is the difference between attribution vs. incrementality?](https://www.measured.com/faq/attribution-vs-incrementality/)
   - Optional readings:
     - [Retail Media ROAS Demystified](https://ovative.com/wp-content/uploads/2025/05/Retail-Media-ROAS-Demystified-Ovative-Albertsons-Kellogg-Business-School.pdf)
+- Wednesday, Nov 5
+  - Guest speaker: [Yang Wang](https://www.linkedin.com/in/yangyang2000/), Principal Economist at Amazon
