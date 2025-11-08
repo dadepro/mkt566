@@ -136,5 +136,5 @@ For more information about this course, please look at the **[syllabus](https://
 - Monday, Nov 10
   - Slides
   - Readings:
-    - [HBR: Research: Products Labeled as Sustainable Sell Better](https://raw.githack.com/dadepro/mkt566/main/articles-papers/leveraging-social-media-to-buy-fake-reviews.pdf)
+    - [HBR: Research: Products Labeled as Sustainable Sell Better](https://raw.githack.com/dadepro/mkt566/main/articles-papers/Products-Labeled-Sustainable-Sell-Better.pdf)
     - [The impact of sustainability programs on consumer purchase behavior: Evidence from Amazon](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5045830)
