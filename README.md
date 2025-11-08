@@ -121,8 +121,7 @@ For more information about this course, please look at the **[syllabus](https://
   - [Predict online reviews sentiment using Tf-Idf](https://github.com/dadepro/mkt566/blob/main/w10/code/w10-sentiment-analysis-game.R)
   - Comparing a classifier using Tf-Idf vs Word2Vec: [R script](https://github.com/dadepro/mkt566/blob/main/w10/code/w10-sentiment-analysis-tfidf-vs-w2v.R), [Pre-trained W2V model](https://www.kaggle.com/datasets/leadbest/googlenewsvectorsnegative300) (needed to compute document vectors using W2V)
 
-### Week 11: Randomized experiments and ad measurements
-
+### Week 11: Causality: Randomized experiments and ad measurements
 - Monday, Nov 3
   - [Slides](https://raw.githack.com/dadepro/mkt566/main/w11/w11-1-experiments.pdf), [alternative link](https://www.dropbox.com/scl/fi/rpps32sm2diltjfd00b8y/w11-1-experiments.pdf?rlkey=kt5aw58jz4j0ec0n332dngohq&st=ms5blw7b&dl=0)
   - Readings:
@@ -132,3 +131,10 @@ For more information about this course, please look at the **[syllabus](https://
     - [Retail Media ROAS Demystified](https://ovative.com/wp-content/uploads/2025/05/Retail-Media-ROAS-Demystified-Ovative-Albertsons-Kellogg-Business-School.pdf)
 - Wednesday, Nov 5
   - Guest speaker: [Yang Wang](https://www.linkedin.com/in/yangyang2000/), Principal Economist at Amazon
+
+### Week 12: Causality: Observational data
+- Monday, Nov 10
+  - Slides
+  - Readings:
+    - [HBR: Research: Products Labeled as Sustainable Sell Better](https://hbr.org/2025/06/research-products-labeled-as-sustainable-sell-better)
+    - [The impact of sustainability programs on consumer purchase behavior: Evidence from Amazon](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5045830)
