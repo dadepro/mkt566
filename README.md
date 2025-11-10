@@ -138,3 +138,6 @@ For more information about this course, please look at the **[syllabus](https://
   - Readings:
     - [HBR: Research: Products Labeled as Sustainable Sell Better](https://raw.githack.com/dadepro/mkt566/main/articles-papers/Products-Labeled-Sustainable-Sell-Better.pdf)
     - [The impact of sustainability programs on consumer purchase behavior: Evidence from Amazon](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5045830)
+  - Optional readings:
+    - [Difference-in-Differences](https://bookdown.org/mike/data_analysis/sec-difference-in-differences.html)
+    - [Matching methods](https://bookdown.org/mike/data_analysis/sec-matching-methods.html)
