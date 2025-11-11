@@ -1,6 +1,6 @@
 # =============================================================
-# Causality with Observational Data — Classroom Exercises (STUDENT VERSION)
-# Master’s in Marketing Analytics
+# MKT 566: Marketing Analytics
+# Causality — Classroom Exercises
 # -------------------------------------------------------------
 # READ ME
 # - This script *generates synthetic data* for three causal scenarios using realistic variables
