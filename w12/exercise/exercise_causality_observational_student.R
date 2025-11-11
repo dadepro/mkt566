@@ -15,6 +15,7 @@
 #   mobile           : observed covariate (1 if mobile device)
 #   intent_to_buy    : latent demand (only in Scenario 3; NOT observed by analyst)
 # =============================================================
+library(stargazer)
 
 set.seed(123)  # Reproducibility: same random draw each run
 
