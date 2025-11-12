@@ -142,5 +142,5 @@ For more information about this course, please look at the **[syllabus](https://
     - [Difference-in-Differences](https://bookdown.org/mike/data_analysis/sec-difference-in-differences.html)
     - [Matching methods](https://bookdown.org/mike/data_analysis/sec-matching-methods.html)
 - Wednesday, Nov 12
-  - [Causal inference exercise](https://github.com/dadepro/mkt566/blob/main/w12/exercise/exercise_causality_observational_student.R)
-  - [Mathing](https://github.com/dadepro/mkt566/blob/main/w12/exercise/exercise_matching_student.R)
+  - [Causal inference exercise (selection)](https://github.com/dadepro/mkt566/blob/main/w12/exercise/exercise_causality_observational_student.R)
+  - [Matching](https://github.com/dadepro/mkt566/blob/main/w12/exercise/exercise_matching_student.R)
