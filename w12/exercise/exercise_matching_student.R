@@ -38,7 +38,7 @@ cat("\n=== PART 1: Baselines ===\n")
 # TODO: OLS (with/without controls)
 
 cat("\n=== PART 2: Propensity score estimation ===\n")
-# TODO: use matchit on price_sensitivity and mobile with nearest neighbor matching and caliper=0.01 (see ?matching for the function helper)
+# TODO: use matchit on price_sensitivity and mobile with nearest neighbor matching and caliper=0.01 (see ?matchit for the function helper)
 
 
 cat("\n=== PART 3: Estimate ATT on matched data ===\n")
