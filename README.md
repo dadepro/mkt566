@@ -153,3 +153,4 @@ For more information about this course, please look at the **[syllabus](https://
   - Readings:
     - [Study: Generative AI results depend on user prompts as much as models](https://mitsloan.mit.edu/ideas-made-to-matter/study-generative-ai-results-depend-user-prompts-much-models?utm_source=mitsloanlinkedin&utm_medium=social&utm_campaign=promptadapt)
     - [Forget What You Know About Search. Optimize Your Brand for LLMs](https://hbr.org/2025/06/forget-what-you-know-about-seo-heres-how-to-optimize-your-brand-for-llms)
+    - [Using LLM for Market Research](https://papers.ssrn.com/sol3/Papers.cfm?abstract_id=4395751)
