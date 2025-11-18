@@ -142,4 +142,16 @@ For more information about this course, please look at the **[syllabus](https://
     - [Difference-in-Differences](https://bookdown.org/mike/data_analysis/sec-difference-in-differences.html)
     - [Matching methods](https://bookdown.org/mike/data_analysis/sec-matching-methods.html)
 - Wednesday, Nov 12
-  - [Causal inference exercise](https://github.com/dadepro/mkt566/blob/main/w12/exercise/exercise_causality_observational_student.R)
+  - [Causal inference exercise (selection)](https://github.com/dadepro/mkt566/blob/main/w12/exercise/exercise_causality_observational_student.R)
+  - [Matching](https://github.com/dadepro/mkt566/blob/main/w12/exercise/exercise_matching_student.R)
+
+### Week 13: Large Language Models in Marketing
+- Monday, Nov 17
+  - Guest speaker: [Giovanni Marano](https://www.linkedin.com/in/giovanni-marano-aa070360/), Analytics Senior Director at FanDuel
+- Wednesday, Nov 19
+  - Slides
+  - Readings:
+    - [Study: Generative AI results depend on user prompts as much as models](https://mitsloan.mit.edu/ideas-made-to-matter/study-generative-ai-results-depend-user-prompts-much-models?utm_source=mitsloanlinkedin&utm_medium=social&utm_campaign=promptadapt)
+    - [Forget What You Know About Search. Optimize Your Brand for LLMs](https://hbr.org/2025/06/forget-what-you-know-about-seo-heres-how-to-optimize-your-brand-for-llms)
+    - [Using LLM for Market Research](https://papers.ssrn.com/sol3/Papers.cfm?abstract_id=4395751)
+    - [Applying Large Language Models to Sponsored Search Advertising](https://thearf-org-unified-admin.s3.amazonaws.com/MSI_Report_23-136.pdf)
