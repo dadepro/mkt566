@@ -5,6 +5,8 @@ This course is designed to equip you with the skills necessary to effectively ut
 
 For more information about this course, please look at the **[syllabus](https://raw.githack.com/dadepro/mkt566/main/syllabus/mkt566-syllabus-proserpio.pdf)**.
 
+**[Peer evaluations form](https://github.com/dadepro/mkt566/blob/main/syllabus/peer-eval-form.docx)**
+
 ### Lectures
 
 ### Week 1: Intro and data viz
