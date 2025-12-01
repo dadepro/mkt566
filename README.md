@@ -157,3 +157,33 @@ For more information about this course, please look at the **[syllabus](https://
     - [Forget What You Know About Search. Optimize Your Brand for LLMs](https://raw.githack.com/dadepro/mkt566/main/articles-papers/brand-optimization-hbr.pdf)
     - [Using LLM for Market Research](https://papers.ssrn.com/sol3/Papers.cfm?abstract_id=4395751)
     - [Applying Large Language Models to Sponsored Search Advertising](https://thearf-org-unified-admin.s3.amazonaws.com/MSI_Report_23-136.pdf)
+   
+### Week 14: Thanksgiving break
+
+### Week 15: Group project presentations
+- Monday, Dec 1
+  - Presentation order (12 - 1:20 pm):
+    - Group 9: Spotify
+    - Group 2 Netflix
+    - Group 3: Brazilian e-commerce
+    - Group 6: Megamart
+  - Presentation order (2 - 3:20 pm):
+    - Group 5: Spotify
+    - Group 2: Fake reviews
+    - Group 10: Adidas
+    - Group 4: Marvel
+    - Group 6: Google Apps
+- Wednesday, Dec 3
+  - Presentation order (12 - 1:20 pm):
+    - Group 7: Spotify
+    - Group 5: Customer shopping
+    - Group 8: Chewy-Pet Smart
+    - Group 10: Housing
+  - Presentation order (2 - 3:20 pm):
+    - Group 1: Spotify
+    - Group 3: Flight satisfaction
+    - Group 7: Amazon
+    - Group 9: Interstellar
+    - Group 8: Spotify
+
+  
