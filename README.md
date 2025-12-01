@@ -181,7 +181,7 @@ For more information about this course, please look at the **[syllabus](https://
     - Group 10: Housing
   - Presentation order (2 - 3:20 pm):
     - Group 1: Spotify
-    - Group 3: Flight satisfaction
+    - Group 3: Airlines satisfaction
     - Group 7: Amazon
     - Group 9: Interstellar
     - Group 8: Spotify
