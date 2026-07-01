@@ -1,0 +1,176 @@
+# MKT566: Decision Making using Marketing Analytics
+
+**Fall 2026 — Tuesdays & Thursdays, 11:00–12:20 pm, JKP 202**
+
+Instructor: Davide Proserpio
+
+**Key dates (Fall 2026):** Classes begin Aug. 24 · Labor Day Sept. 7 (no class) · Fall recess Oct. 8–9 (no class Thu. Oct. 8) · Veterans Day Nov. 11 · Thanksgiving holiday Nov. 25–29 (no class Nov. 24 & 26) · Classes end Dec. 4 · Final exams Dec. 9–16
+
+### Course Description
+This course is designed to equip you with the skills necessary to effectively utilize marketing data and reports, enabling you to make informed and critical decisions based on that data. The instructor will guide students on a journey of data exploration, beginning with data collection, visualization, and analysis, and concluding with the application of new methods (such as machine learning) and the utilization of diverse data types (including unstructured big data, such as text data) to address various marketing challenges faced by firms.
+
+For more information about this course, please look at the **[syllabus](https://raw.githack.com/dadepro/mkt566/main/syllabus/mkt566-syllabus-proserpio.pdf)**.
+
+**[Peer evaluations form](https://github.com/dadepro/mkt566/blob/main/syllabus/peer-eval-form.docx)**
+
+### Lectures
+
+### Week 1: Intro and data viz
+- Tuesday, Aug. 25: [slides](https://raw.githack.com/dadepro/mkt566/main/w1/w1-1-intro.pdf)
+    - [Install R/Rstudio](https://bookdown.org/content/6ef13ea6-4e86-4566-b665-ebcd19d45029/#download-and-install-r-and-rstudio) 
+- Thursday, Aug. 27:
+  - [Slides](https://raw.githack.com/dadepro/mkt566/main/w1/w1-2-data-viz.pdf)
+  - Required readings:
+    - [Chapter 3 of R for Data Science](https://r4ds.had.co.nz/data-visualisation.html)
+    - [The Groupon Effect on Yelp Ratings: A Root Cause Analysis](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2560825)
+  - Optional readings:
+    - [Chapter 1 of  Data Visualization: A practical introduction](https://socviz.co/lookatdata.html)
+    - [Lecture 5 of Data Storytelling for Marketers](https://raw.githack.com/dadepro/mkt-615/main/lectures/07-dataviz/07-dataviz.html#1)
+  - Code
+    - [Chart types](https://github.com/dadepro/mkt566/blob/main/w1/w1-2-chart-types-class.R)
+    - [Beautify plot](https://github.com/dadepro/mkt566/blob/main/w1/w1-2-data-viz-beautify.R)
+
+### Week 2: Exploratory data analysis: Variation
+
+- Tuesday & Thursday, Sept. 1, 3:
+    - [Slides](https://raw.githack.com/dadepro/mkt566/main/w2/w2-1-exploratory-data-analysis.pdf)
+    - Required readings:
+      - [Chapter 7 of R for Data Science](https://r4ds.had.co.nz/exploratory-data-analysis.html)
+    - Optional readings:
+      - Chapters 3, 4, 5 of R for Marketing Analytics
+    - Code:
+      - Replicate slides' figures: [code](https://github.com/dadepro/mkt566/blob/main/w2/w2-1-eda-marketing-economics-dataset.R)
+      - Simulate marketing dataset: [code](w2-1-simulate-marketing-dataset.R)
+      - Variation case: [html](https://raw.githack.com/dadepro/mkt566/main/w2/w2-1-variation-case.html) and [R Markdown](https://github.com/dadepro/mkt566/blob/main/w2/w2-1-variation-case.Rmd), [data](https://github.com/dadepro/mkt566/blob/main/w2/data/marketing_eda.csv)
+  
+### Week 3: Exploratory data analysis: Covariation
+
+- Tuesday & Thursday, Sept. 8, 10
+  - [Slides](https://raw.githack.com/dadepro/mkt566/main/w3/w3-1-exploratory-data-analysis.pdf)
+  - Required readings:
+    - [Chapter 7 of R for Data Science](https://r4ds.had.co.nz/exploratory-data-analysis.html)
+  - Optional readings:
+    - Chapters 3, 4, 5 of R for Marketing Analytics
+- Code:
+  - Replicate slides' figures: [code](https://github.com/dadepro/mkt566/blob/main/w3/w3-1-eda-marketing-dataset.R)
+  - RateBeer case: [html](https://raw.githack.com/dadepro/mkt566/main/w3/beer-case/w3-eda-case.html) and [R Markdown](https://github.com/dadepro/mkt566/blob/main/w3/beer-case/w3-eda-case.Rmd), [dataset](https://github.com/dadepro/mkt566/blob/main/w3/beer-case/w3-ratebeer-sampled.csv.gz), [partial solution/helper](https://raw.githack.com/dadepro/mkt566/main/w3/beer-case/w3-eda-case-helper.html), [full solution](https://raw.githack.com/dadepro/mkt566/main/w3/beer-case/w3-eda-case-solution.html)
+
+### Week 4: Modeling relations between variables: OLS & Logit
+- Tuesday & Thursday, Sept. 15, 17
+    - [Slides OLS](https://raw.githack.com/dadepro/mkt566/main/w4/w4-1-ols.pdf)
+    - [Slides Logit](https://raw.githack.com/dadepro/mkt566/main/w4/w4-2-logit.pdf)
+    - Required readings:
+      - Chapters [3.4](https://bookdown.org/content/6ef13ea6-4e86-4566-b665-ebcd19d45029/secondarydata.html#linear-regression) and [3.6](https://bookdown.org/content/6ef13ea6-4e86-4566-b665-ebcd19d45029/secondarydata.html#logistic) of R for Marketing Students
+    - Optional readings:
+      - [Lecture 6 of Data Storytelling for Marketers](https://raw.githack.com/dadepro/mkt-615/main/lectures/08-regression/08-regressions.html#1)
+      - - Chapters 7, 9.2 of R for Marketing Analytics
+    - Code:
+      - In class Airbnb analysis: [OLS](https://github.com/dadepro/mkt566/blob/main/w4/w4-1-regression-example-for-class.R), [Logit](https://github.com/dadepro/mkt566/blob/main/w4/w4-2-logit-class.R)
+      - Airbnb exercise: [html](https://raw.githack.com/dadepro/mkt566/main/w4/airbnb-case/w4-airbnb-case.html) and [.Rmd](https://github.com/dadepro/mkt566/blob/main/w4/airbnb-case/w4-airbnb-case.Rmd), solution [html](https://raw.githack.com/dadepro/mkt566/main/w4/airbnb-case/w4-airbnb-case-solutions.html) and [R Markdown](https://github.com/dadepro/mkt566/blob/main/w4/airbnb-case/w4-airbnb-case-solutions.Rmd)
+
+### Week 5: Clustering and recommendation systems
+- Tuesday & Thursday, Sept 22, 24
+  - Slides
+    - [Clustering](https://raw.githack.com/dadepro/mkt566/main/w5/w5-1-clustering.pdf)
+    - [Recommender systems](https://raw.githack.com/dadepro/mkt566/main/w5/w5-2-recommendations.pdf)
+  - Required readings:
+    - Chapters [5](https://bookdown.org/content/6ef13ea6-4e86-4566-b665-ebcd19d45029/pca_office.html), [6](https://bookdown.org/content/6ef13ea6-4e86-4566-b665-ebcd19d45029/pca_toothpase.html), and [7](https://bookdown.org/content/6ef13ea6-4e86-4566-b665-ebcd19d45029/cluster.html) of R for Marketing Students
+    - [Netflix Billion Dollar Secret](https://www.linkedin.com/pulse/netflixs-billion-dollar-secret-how-recommendation-systems-qin-phd-7zece/)
+    - [Marketing Automation: Recommendation Systems](https://medium.com/geekculture/marketing-automation-recommendation-systems-ae39d61aa38)
+  - Optional readings:
+    - Chapter 11.1–11.3 of R for Marketing Analytics
+    - [Two decades of recommender systems at Amazon](https://assets.amazon.science/76/9e/7eac89c14a838746e91dde0a5e9f/two-decades-of-recommender-systems-at-amazon.pdf)
+  - Code:
+    - PCA in-class exercise: [code](https://github.com/dadepro/mkt566/blob/main/w5/w5-1-pca.R) and [data](https://github.com/dadepro/mkt566/blob/main/w5/data/perceptual_map_office.csv)
+    - Clustering in-class exercise: [code](https://github.com/dadepro/mkt566/blob/main/w5/w5-1-clustering.R) and [data](https://github.com/dadepro/mkt566/blob/main/w5/data/segmentation_office.xlsx)
+    - [Streaming platforms in-class discussion](https://raw.githack.com/dadepro/mkt566/main/w5/case/recommender-discussion-assigment.pdf), [solution](https://raw.githack.com/dadepro/mkt566/main/w5/case/w5-clustering-exe-solution.html)
+
+### Week 6: Clustering and recommendation systems
+- Tuesday, Sept 29
+  - Guest speaker: [Jonathan Elliot](https://www.linkedin.com/in/jonnynelliott/), [Slides](https://raw.githack.com/dadepro/mkt566/main/articles-papers/Investing%20in%20Film%20with%20Machine%20Learning.pdf)
+- Thursday, Oct 1
+  - In-class exercise (clustering analysis): [html](https://raw.githack.com/dadepro/mkt566/main/w5/case/w5-clustering-exe.html), [R Markdown](http://github.com/dadepro/mkt566/blob/main/w5/case/w5-clustering-exe.Rmd), [data](https://github.com/dadepro/mkt566/blob/main/w5/case/customer_clustering_data.csv)
+    
+### Week 7: Work on group project
+- Tuesday, Oct 6
+  - Work on group project ([slides](https://raw.githack.com/dadepro/mkt566/main/w7/w7-1-class-work.pdf))
+- Thursday, Oct 8
+  - No class (Fall recess)
+
+### Week 8: Project proposals
+- Tuesday & Thursday, Oct 13, 15
+  - Mid-term project proposal presentations
+
+### Week 9: Classifiers
+- Tuesday, Oct 20
+  - [Slides](https://raw.githack.com/dadepro/mkt566/main/w9/w9-classifiers.pdf)
+  - Optional readings:
+    - Chapter 11.4–11.6 of R for Marketing Analytics
+- Thursday, Oct 22
+  - Exercise: Predicting Click-Through-Rate with Logistic Regression: [R Markdown](https://github.com/dadepro/mkt566/blob/main/w9/case/w9-predicting-ad-click-w-logit.Rmd), [HTML](https://raw.githack.com/dadepro/mkt566/main/w9/case/w9-predicting-ad-click-w-logit.html), [click data](https://github.com/dadepro/mkt566/blob/main/w9/data/ad_click_data.csv), [R Markdown solution](https://github.com/dadepro/mkt566/blob/main/w9/case/w9-predicting-ad-click-w-logit-solutions.Rmd), [HTML solution](https://raw.githack.com/dadepro/mkt566/main/w9/case/w9-predicting-ad-click-w-logit-solutions.html)
+
+### Week 10: User-generated content, text analysis, and sentiment predictions
+- Tuesday, Oct 27
+  - Slides
+      - [Basics of tex analysis](https://raw.githack.com/dadepro/mkt566/main/w10/w10-1-text-analysis.pdf)
+      - [Regularized Logit](https://raw.githack.com/dadepro/mkt566/main/w10/w10-2-glmnet.pdf)
+  - Readings:
+    - [Chapter 8 of  Introduction to R for Data Science](https://bookdown.org/jdholster1/idsr/text-analysis.html)
+    - Text analysis in R: [Word embeddings](https://m-clark.github.io/text-analysis-with-R/word-embeddings.html)
+    - [GMLNET R Package](https://www.geeksforgeeks.org/r-language/what-is-the-glmnet-package-in-r/)
+    - [Reputation Systems](https://dl.acm.org/doi/pdf/10.1145/355112.355122)
+    - [HBR: How fake Customer Reviews do-and don't-work](https://hbr.org/2020/11/how-fake-customer-reviews-do-and-dont-work)
+    - [Detecting Fake Review Buyers Using Network Structure: Direct Evidence from Amazon](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4147920)
+  - Optional readings:
+    - [Fake It Till You Make It: Reputation, Competition, and Yelp Review Fraud](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2293164)
+    - [Using Traditional Text Analysis and Large Language Models in Service Failure and Recovery](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5139918)
+- Thursday, Oct. 29
+  - Replica of the Harry Potter books analysis from Chapter 8 of  Introduction to R for Data Science: [R Markdown](https://github.com/dadepro/mkt566/blob/main/w10/code/w10-harry_potter_sentiment_datatable_commented.Rmd), [HTML](https://raw.githack.com/dadepro/mkt566/main/w10/code/w10-harry_potter_sentiment_datatable_commented.html)
+  - Cleaning online review text and computing Tf-Idf by hand: [R Markdown](https://github.com/dadepro/mkt566/blob/main/w10/code/mini_tfidf_exercise_commented.Rmd), [HTML](https://raw.githack.com/dadepro/mkt566/main/w10/code/mini_tfidf_exercise_commented.html)
+  - [Predict online reviews sentiment using Tf-Idf](https://github.com/dadepro/mkt566/blob/main/w10/code/w10-sentiment-analysis-game.R)
+  - Comparing a classifier using Tf-Idf vs Word2Vec: [R script](https://github.com/dadepro/mkt566/blob/main/w10/code/w10-sentiment-analysis-tfidf-vs-w2v.R), [Pre-trained W2V model](https://www.kaggle.com/datasets/leadbest/googlenewsvectorsnegative300) (needed to compute document vectors using W2V)
+
+### Week 11: Causality: Randomized experiments and ad measurements
+- Tuesday, Nov 3
+  - [Slides](https://raw.githack.com/dadepro/mkt566/main/w11/w11-1-experiments.pdf), [alternative link](https://www.dropbox.com/scl/fi/rpps32sm2diltjfd00b8y/w11-1-experiments.pdf?rlkey=kt5aw58jz4j0ec0n332dngohq&st=ms5blw7b&dl=0)
+  - Readings:
+    - [Measuring advertising incrementality using Ghost Ads](https://medium.com/@eric_seufert/measuring-advertising-incrementality-using-ghost-ads-2357bb465191)
+    - [What is the difference between attribution vs. incrementality?](https://www.measured.com/faq/attribution-vs-incrementality/)
+  - Optional readings:
+    - [Retail Media ROAS Demystified](https://ovative.com/wp-content/uploads/2025/05/Retail-Media-ROAS-Demystified-Ovative-Albertsons-Kellogg-Business-School.pdf)
+- Thursday, Nov 5
+  - Guest speaker: [Yang Wang](https://www.linkedin.com/in/yangyang2000/), Principal Economist at Amazon
+
+### Week 12: Causality: Observational data
+- Tuesday, Nov 10
+  - [Slides](https://raw.githack.com/dadepro/mkt566/main/w12/w12-1-obs-data.pdf)
+  - Readings:
+    - [HBR: Research: Products Labeled as Sustainable Sell Better](https://raw.githack.com/dadepro/mkt566/main/articles-papers/Products-Labeled-Sustainable-Sell-Better.pdf)
+    - [The impact of sustainability programs on consumer purchase behavior: Evidence from Amazon](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5045830)
+  - Optional readings:
+    - [Difference-in-Differences](https://bookdown.org/mike/data_analysis/sec-difference-in-differences.html)
+    - [Matching methods](https://bookdown.org/mike/data_analysis/sec-matching-methods.html)
+- Thursday, Nov 12
+  - [Causal inference exercise (selection)](https://github.com/dadepro/mkt566/blob/main/w12/exercise/exercise_causality_observational_student.R)
+  - [Matching](https://github.com/dadepro/mkt566/blob/main/w12/exercise/exercise_matching_student.R)
+
+### Week 13: Large Language Models in Marketing
+- Tuesday, Nov 17
+  - Guest speaker: [Giovanni Marano](https://www.linkedin.com/in/giovanni-marano-aa070360/), Analytics Senior Director at FanDuel
+- Thursday, Nov 19
+  - [Slides](https://raw.githack.com/dadepro/mkt566/main/w13/w13-1-llms.pdf)
+  - Readings:
+    - [Study: Generative AI results depend on user prompts as much as models](https://mitsloan.mit.edu/ideas-made-to-matter/study-generative-ai-results-depend-user-prompts-much-models?utm_source=mitsloanlinkedin&utm_medium=social&utm_campaign=promptadapt)
+    - [Forget What You Know About Search. Optimize Your Brand for LLMs](https://raw.githack.com/dadepro/mkt566/main/articles-papers/brand-optimization-hbr.pdf)
+    - [Using LLM for Market Research](https://papers.ssrn.com/sol3/Papers.cfm?abstract_id=4395751)
+    - [Applying Large Language Models to Sponsored Search Advertising](https://thearf-org-unified-admin.s3.amazonaws.com/MSI_Report_23-136.pdf)
+   
+### Week 14: Thanksgiving break
+
+### Week 15: Group project presentations
+- Tuesday, Dec 1
+  - Group project presentations (order TBA)
+- Thursday, Dec 3
+  - Group project presentations (order TBA)
+
+  

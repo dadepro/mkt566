@@ -1,0 +1,37 @@
+# Public repo: only README.md is visible for now.
+# Weekly material is added intentionally during the semester with:
+#   git add -f w1/        (force past this ignore)
+# or by removing the relevant line below.
+
+# Week folders (course material released weekly)
+/w1/
+/w2/
+/w3/
+/w4/
+/w5/
+/w6/
+/w7/
+/w8/
+/w9/
+/w10/
+/w11/
+/w12/
+/w13/
+/w14/
+/w15/
+
+# Syllabus and readings
+/syllabus/
+/articles-papers/
+
+# OS / editor / R junk
+.DS_Store
+.Rhistory
+.Rapp.history
+.RData
+.Ruserdata
+
+# Slide sources and large binaries
+*.pptx
+*.bin
+*.bin.zip
