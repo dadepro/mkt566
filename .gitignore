@@ -24,6 +24,10 @@
 /syllabus/
 /articles-papers/
 
+# Local backup of the full README (kept out of the public repo;
+# restore the weekly schedule from here week-by-week)
+/README-full.md
+
 # OS / editor / R junk
 .DS_Store
 .Rhistory
