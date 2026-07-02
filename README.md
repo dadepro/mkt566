@@ -4,7 +4,7 @@
 
 Instructor: Davide Proserpio
 
-**Key dates (Fall 2026):** Classes begin Aug. 24 · Labor Day Sept. 7 (no class) · Fall recess Oct. 8–9 (no class Thu. Oct. 8) · Veterans Day Nov. 11 · Thanksgiving holiday Nov. 25–29 (no class Nov. 24 & 26) · Classes end Dec. 4 · Final exams Dec. 9–16
+**Key dates (Fall 2026):** Classes begin Aug. 24 · Fall recess Oct. 8–9 · Veterans Day Nov. 11 · Thanksgiving holiday Nov. 25–29 (no class Nov. 24 & 26) · Classes end Dec. 4 · Final exams Dec. 9–16
 
 ### Course Description
 This course is designed to equip you with the skills necessary to effectively utilize marketing data and reports, enabling you to make informed and critical decisions based on that data. The instructor will guide students on a journey of data exploration, beginning with data collection, visualization, and analysis, and concluding with the application of new methods (such as machine learning) and the utilization of diverse data types (including unstructured big data, such as text data) to address various marketing challenges faced by firms.
