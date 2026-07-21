@@ -4,6 +4,8 @@
 
 Instructor: Davide Proserpio
 
+Teaching Assistant: Raghav Sarmukaddam (sarmukad@usc.edu)
+
 **Key dates (Fall 2026):** Classes begin Aug. 24 · Fall recess Oct. 8–9 · Veterans Day Nov. 11 · Thanksgiving holiday Nov. 25–29 (no class Nov. 24 & 26) · Classes end Dec. 4 · Final exams Dec. 9–16
 
 ### Course Description
