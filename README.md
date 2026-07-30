@@ -11,7 +11,7 @@ Teaching Assistant: Raghav Sarmukaddam (sarmukad@usc.edu)
 ### Course Description
 This course is designed to equip you with the skills necessary to effectively utilize marketing data and reports, enabling you to make informed and critical decisions based on that data. The instructor will guide students on a journey of data exploration, beginning with data collection, visualization, and analysis, and concluding with the application of new methods (such as machine learning) and the utilization of diverse data types (including unstructured big data, such as text data) to address various marketing challenges faced by firms.
 
-For more information about this course, please look at the **[syllabus](https://github.com/dadepro/mkt566/blob/main/syllabus/mkt566-syllabus-proserpio.docx)**.
+For more information about this course, please look at the **[syllabus](https://raw.githack.com/dadepro/mkt566/main/syllabus/mkt566-syllabus-proserpio.pdf)**.
 
 ### Lectures
 

@@ -20,10 +20,10 @@
 /w14/
 /w15/
 
-# Syllabus and readings (only the current syllabus docx is public;
-# add !/syllabus/mkt566-syllabus-proserpio.pdf once the PDF is regenerated)
+# Syllabus and readings (only the current syllabus is public)
 /syllabus/*
 !/syllabus/mkt566-syllabus-proserpio.docx
+!/syllabus/mkt566-syllabus-proserpio.pdf
 /articles-papers/
 
 # Local backup of the full README (kept out of the public repo;
