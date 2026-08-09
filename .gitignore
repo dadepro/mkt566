@@ -24,6 +24,7 @@
 /syllabus/*
 !/syllabus/mkt566-syllabus-proserpio.docx
 !/syllabus/mkt566-syllabus-proserpio.pdf
+!/syllabus/peer-eval-form.docx
 /articles-papers/
 
 # Local backup of the full README (kept out of the public repo;
