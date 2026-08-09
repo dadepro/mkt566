@@ -2,7 +2,7 @@
 
 **Fall 2026 — Tuesdays & Thursdays, 11:00–12:20 pm, JKP 202**
 
-Instructor: Davide Proserpio
+Instructor: Davide Proserpio (proserpi@usc.edu)
 
 Teaching Assistant: Raghav Sarmukaddam (sarmukad@usc.edu)
 
