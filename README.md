@@ -13,6 +13,8 @@ This course is designed to equip you with the skills necessary to effectively ut
 
 For more information about this course, please look at the **[syllabus](https://raw.githack.com/dadepro/mkt566/main/syllabus/mkt566-syllabus-proserpio.pdf)**.
 
+**Group project:** add your group members to the **[sign-up sheet](https://docs.google.com/spreadsheets/d/1Jna-Noy_q3fSUGYgK7wW49jKpS5l3lKt2Q14QZ004xw/edit?usp=sharing)**.
+
 ### Lectures
 
 Course materials (slides, cases, code, and the syllabus) will be posted here as the semester progresses.
