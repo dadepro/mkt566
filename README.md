@@ -2,9 +2,9 @@
 
 **Fall 2026 — Tuesdays & Thursdays, 11:00–12:20 pm, JKP 202**
 
-Instructor: Davide Proserpio (proserpi@usc.edu)
+Instructor: Davide Proserpio (proserpi@usc.edu). Office hours: Tuesdays 2–4 pm, HOH 332
 
-Teaching Assistant: Raghav Sarmukaddam (sarmukad@usc.edu)
+Teaching Assistant: Raghav Sarmukaddam (sarmukad@usc.edu). Office hours: Wednesdays 2:30–4:30 pm, HOH 332
 
 **Key dates (Fall 2026):** Classes begin Aug. 24 · Fall recess Oct. 8–9 · Veterans Day Nov. 11 · Thanksgiving holiday Nov. 25–29 (no class Nov. 24 & 26) · Classes end Dec. 4 · Final exams Dec. 9–16
 
