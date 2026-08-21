@@ -23,7 +23,9 @@ Course materials (slides, cases, code, and the syllabus) will be posted here as 
 
 ### Week 1: Intro and data viz
 - Tuesday, Aug. 25: slides ([html](https://raw.githack.com/dadepro/mkt566/main/w1/w1-1-intro.html), [pdf](https://raw.githack.com/dadepro/mkt566/main/w1/w1-1-intro.pdf))
-    - [Install R/Rstudio](https://bookdown.org/content/6ef13ea6-4e86-4566-b665-ebcd19d45029/#download-and-install-r-and-rstudio) 
+    - [Install R/Rstudio](https://bookdown.org/content/6ef13ea6-4e86-4566-b665-ebcd19d45029/#download-and-install-r-and-rstudio)
+    - [Install VS Code](https://code.visualstudio.com/download) and configure it with [Claude Code](https://code.claude.com/docs/en/vs-code) or [Codex](https://developers.openai.com/codex/ide)
+    - [An easy introduction to Git/GitHub](https://raw.githack.com/dadepro/mkt-615/main/lectures/02-git/02-git.html) (from my MKT 615 course)
 - Thursday, Aug. 27:
   - Slides ([html](https://raw.githack.com/dadepro/mkt566/main/w1/w1-2-data-viz.html), [pdf](https://raw.githack.com/dadepro/mkt566/main/w1/w1-2-data-viz.pdf))
   - Required readings:
