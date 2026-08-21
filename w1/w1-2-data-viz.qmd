@@ -87,19 +87,15 @@ Anscombe's quartet: all four datasets share the same means, variances, correlati
 (r = 0.82), and regression line (y = 3 + 0.5x). **Always plot your data first.**
 :::
 
-<!-- TODO(Davide): export slide 4 of w1-2-data-viz.pptx as images/dv-groupon.png,
-     then uncomment this slide (the original figure is an EMF file that browsers
-     cannot display).
-
 ## An (almost) perfect example
 
-![](images/dv-groupon.png){fig-align="center" width="72%"}
+![](images/dv-groupon.png){fig-align="center" width="88%"}
 
 ::: {.smaller-80 .muted}
-Source: *The Groupon Effect on Yelp Ratings: A Root Cause Analysis*
-(Byers, Mitzenmacher, and Zervas 2012)
+Source: [*The Groupon Effect on Yelp Ratings: A Root Cause
+Analysis*](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2560825)
+(Byers, Mitzenmacher, and Zervas 2012), Figure 1.
 :::
--->
 
 ## What we will learn
 
