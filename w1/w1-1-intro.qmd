@@ -140,8 +140,8 @@ Before the next class, install:
    [Cursor](https://cursor.com)
 
 Optional: course materials live on GitHub, so skim
-[an easy introduction to Git/GitHub](https://raw.githack.com/dadepro/mkt-615/main/lectures/02-git/02-git.html)
-from my MKT 615 course.
+[git - the simple guide](https://rogerdudler.github.io/git-guide/) and the
+[GitHub quickstart](https://docs.github.com/en/get-started/start-your-journey/hello-world).
 
 ::: {.box-warn}
 If this is the **first time** you have heard any of these terms,
