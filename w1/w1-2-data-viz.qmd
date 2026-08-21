@@ -89,12 +89,12 @@ Anscombe's quartet: all four datasets share the same means, variances, correlati
 
 ## An (almost) perfect example
 
-![](images/dv-groupon.png){fig-align="center" width="88%"}
+![](images/dv-groupon.png){fig-align="center" width="62%"}
 
 ::: {.smaller-80 .muted}
 Source: [*The Groupon Effect on Yelp Ratings: A Root Cause
 Analysis*](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2560825)
-(Byers, Mitzenmacher, and Zervas 2012), Figure 1.
+(Byers, Mitzenmacher, and Zervas 2012), Figure 1a.
 :::
 
 ## What we will learn
