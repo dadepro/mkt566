@@ -20,7 +20,7 @@ format:
     footer: "MKT 566 · Marketing Analytics"
 ---
 
-# Introductions {.divider}
+# Introduction {.divider}
 
 ## A little about me
 
@@ -293,6 +293,19 @@ I have data on **Airbnb, TripAdvisor, Expedia, and Yelp**. Ask me if you want it
 : {tbl-colwidths="[62,38]"}
 
 Do you want me to form the groups, or would you rather do it yourselves?
+
+## Participation
+
+**10% of your grade**, and it is not just coming to class.
+
+- This course is an **active learning experience**: participation is graded on the
+  **quality and quantity** of your contributions in each lecture
+- I record **attendance** at the beginning of most classes
+  - You can miss up to **two sessions** without penalty; more than two will lower
+    your participation grade
+  - If you miss a class, getting the notes and handouts is your responsibility
+- **Course norms count**: be on time, do not leave early, and no phones or other
+  off-task devices; violations affect your participation grade
 
 ## Read the syllabus
 
