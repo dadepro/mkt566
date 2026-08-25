@@ -1,0 +1,97 @@
+---
+title: "Running R Code in VS Code"
+subtitle: "MKT 566 · Decision Making Using Marketing Analytics · Fall 2026"
+format:
+  html:
+    toc: true
+    toc-depth: 2
+    embed-resources: true
+    link-external-newwindow: true
+---
+
+In the [VS Code setup guide](vscode-setup.html) you installed VS Code and an AI assistant. This guide adds the last ingredient: **R**, the language we use for all the analysis in this course.
+
+Three pieces have to talk to each other, and this guide installs them in order:
+
+- **R** is the engine that actually runs the code (Step 1).
+- The **R extension** connects R to VS Code, so you can run code straight from a script (Step 2).
+- A handful of **packages** are add-ons to R that we use for graphing and data work (Step 3).
+
+The whole thing takes about 15 minutes, most of it waiting for downloads. If you get stuck, see [If something goes wrong](#if-something-goes-wrong) at the bottom.
+
+## Step 1: Install R
+
+R is free and comes from a website called CRAN (the official R repository).
+
+### On a Mac
+
+1. First, check which chip your Mac has: click the **Apple menu** (top-left corner) → **About This Mac**. Look at the **Chip** line: it says either **Apple M1/M2/M3/M4** (Apple silicon) or **Intel**.
+2. Go to <https://cran.r-project.org> and click **Download R for macOS**.
+3. Download the installer that matches your chip:
+   - Apple silicon (M1 and later): the file ending in **arm64.pkg**.
+   - Intel: the file ending in **x86_64.pkg**.
+4. Double-click the downloaded `.pkg` file and click through the installer: **Continue**, **Agree**, **Install**. You may need to type your Mac password.
+
+### On Windows
+
+1. Go to <https://cran.r-project.org> and click **Download R for Windows**.
+2. Click **base**, then the big **Download R-4.x.x for Windows** link at the top.
+3. Double-click the downloaded `.exe` file and click through the installer, keeping all the default choices: **Next**, **Next**, ..., **Finish**.
+
+The exact version number changes over time; anything starting with 4 is fine.
+
+## Step 2: Install the R extension in VS Code
+
+1. Open VS Code. If it was already open, **quit it completely and reopen it** so it notices that R is now installed.
+2. Press `Cmd+Shift+X` (Mac) or `Ctrl+Shift+X` (Windows) to open the **Extensions** panel.
+3. In the search box, type **R**.
+4. Click the result named **R**, published by **REditorSupport** (it is usually the top result), then click the blue **Install** button.
+
+## Step 3: Install the course packages
+
+Packages are add-ons to R, like apps on a phone. One command installs everything we need for the first weeks.
+
+1. In VS Code, press `Cmd+Shift+P` (Mac) or `Ctrl+Shift+P` (Windows), type **R: Create R Terminal**, and press Enter. A panel opens at the bottom of the window ending in a `>` symbol. That is the **R console**: the place where R code runs.
+2. Copy the line below, paste it into the console, and press Enter:
+
+```r
+install.packages(c("languageserver", "httpgd", "ggplot2", "dplyr", "tidyr",
+                   "forcats", "scales", "data.table", "ggthemes", "patchwork",
+                   "treemapify", "RColorBrewer", "sf", "rnaturalearth"))
+```
+
+3. A lot of text will scroll by for a few minutes. That is normal. Two questions might come up:
+   - If R asks you to **select a CRAN mirror**, pick the first option (0-Cloud).
+   - If R asks *"Do you want to install from sources the package which needs compilation?"*, type **no** and press Enter.
+4. You are done when the scrolling stops and the `>` prompt comes back.
+
+For the curious: `languageserver` gives you autocomplete and help inside VS Code, `httpgd` makes charts show up in a VS Code tab, and the rest are the graphing and data packages our scripts use.
+
+## Step 4: Make charts appear inside VS Code
+
+One checkbox, so charts open in a VS Code tab instead of a separate window:
+
+1. Press `Cmd+,` (Mac) or `Ctrl+,` (Windows) to open **Settings**.
+2. In the search box, type **httpgd**.
+3. Check the box for **R > Plot: Use Httpgd**.
+
+## Step 5: Run your first real script
+
+1. Unzip the week 1 code folder you downloaded from the course site.
+2. In VS Code, choose **File → Open Folder...** and open that folder.
+3. In the left sidebar, click a script (a file ending in `.R`) to open it.
+4. Click anywhere on the first line of code and press `Cmd+Enter` (Mac) or `Ctrl+Enter` (Windows). Two things happen: an R console opens at the bottom (the first time takes a few seconds), and that line runs in it. The cursor then jumps to the next line.
+5. Keep pressing `Cmd+Enter` / `Ctrl+Enter` to walk through the script one line at a time, watching what each line prints. To run several lines at once, select them first, then press the same shortcut.
+6. When a line makes a chart, the chart appears in a new tab on the right.
+
+That is the whole workflow for this course: open a script, run it line by line, and look at what each line does. If a line confuses you, select it and ask your AI assistant what it does. That is exactly what it is for.
+
+## If something goes wrong
+
+- **`Cmd+Enter` / `Ctrl+Enter` does nothing.** Make sure the file name ends in `.R`, then press `Cmd+Shift+P` / `Ctrl+Shift+P`, type "Reload Window", and press Enter.
+- **VS Code cannot find R, or the R console never opens.** Make sure Step 1 actually finished, then quit VS Code completely and reopen it. Installing R *after* VS Code was already open is the most common cause.
+- **A popup says the R language server is not installed and offers to install it.** Click **Install**: it is the `languageserver` package from Step 3.
+- **Running a line prints garbage like `[200~` or an error ending in `~`.** Open Settings (`Cmd+,` / `Ctrl+,`), search for **bracketed paste**, and make sure **R > Bracketed Paste** is unchecked.
+- **An error says `there is no package called 'ggplot2'`** (or any other package name). The packages did not finish installing: redo Step 3 and let it run to the end.
+- **Anything else.** Paste the full error message into your AI assistant and ask what to do. This works surprisingly often, and building that habit is half the point of the course.
+- Still stuck? Bring your laptop to office hours: Davide (Tue 2 to 4 pm, HOH 332) or Raghav, our TA (Thu 2:30 to 4:30 pm, HOH 311). We will get you running in a few minutes.

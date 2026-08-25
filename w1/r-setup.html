@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Setting Up VS Code with an AI Coding Assistant</title>
+<title>Running R Code in VS Code</title>
 <style>
 
 span.smallcaps{font-variant: small-caps;}
@@ -22,6 +22,41 @@ ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
 width: 0.8em;
 margin: 0 0.8em 0.2em -1em;  vertical-align: middle;
+}
+
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+}
+pre.numberSource { margin-left: 3em; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -2175,9 +2210,11 @@ vertical-align: -.125em;
     <h2 id="toc-title">Table of contents</h2>
    
   <ul class="collapse">
-  <li><a href="#step-1-install-vs-code" id="toc-step-1-install-vs-code" class="nav-link active" data-scroll-target="#step-1-install-vs-code">Step 1: Install VS Code</a></li>
-  <li><a href="#step-2-pick-one-ai-assistant-and-set-it-up" id="toc-step-2-pick-one-ai-assistant-and-set-it-up" class="nav-link" data-scroll-target="#step-2-pick-one-ai-assistant-and-set-it-up">Step 2: Pick ONE AI assistant and set it up</a></li>
-  <li><a href="#step-3-test-that-it-works" id="toc-step-3-test-that-it-works" class="nav-link" data-scroll-target="#step-3-test-that-it-works">Step 3: Test that it works</a></li>
+  <li><a href="#step-1-install-r" id="toc-step-1-install-r" class="nav-link active" data-scroll-target="#step-1-install-r">Step 1: Install R</a></li>
+  <li><a href="#step-2-install-the-r-extension-in-vs-code" id="toc-step-2-install-the-r-extension-in-vs-code" class="nav-link" data-scroll-target="#step-2-install-the-r-extension-in-vs-code">Step 2: Install the R extension in VS Code</a></li>
+  <li><a href="#step-3-install-the-course-packages" id="toc-step-3-install-the-course-packages" class="nav-link" data-scroll-target="#step-3-install-the-course-packages">Step 3: Install the course packages</a></li>
+  <li><a href="#step-4-make-charts-appear-inside-vs-code" id="toc-step-4-make-charts-appear-inside-vs-code" class="nav-link" data-scroll-target="#step-4-make-charts-appear-inside-vs-code">Step 4: Make charts appear inside VS Code</a></li>
+  <li><a href="#step-5-run-your-first-real-script" id="toc-step-5-run-your-first-real-script" class="nav-link" data-scroll-target="#step-5-run-your-first-real-script">Step 5: Run your first real script</a></li>
   <li><a href="#if-something-goes-wrong" id="toc-if-something-goes-wrong" class="nav-link" data-scroll-target="#if-something-goes-wrong">If something goes wrong</a></li>
   </ul>
 </nav>
@@ -2186,7 +2223,7 @@ vertical-align: -.125em;
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Setting Up VS Code with an AI Coding Assistant</h1>
+<h1 class="title">Running R Code in VS Code</h1>
 <p class="subtitle lead">MKT 566 · Decision Making Using Marketing Analytics · Fall 2026</p>
 </div>
 
@@ -2204,131 +2241,99 @@ vertical-align: -.125em;
 </header>
 
 
-<p>This guide assumes you have never installed a programming tool before. Follow it top to bottom and you will end up with everything you need for this course: <strong>VS Code</strong> (the program where we will write and run code) and <strong>one AI coding assistant</strong> working inside it.</p>
-<p>Two things before you start:</p>
+<p>In the <a href="vscode-setup.html">VS Code setup guide</a> you installed VS Code and an AI assistant. This guide adds the last ingredient: <strong>R</strong>, the language we use for all the analysis in this course.</p>
+<p>Three pieces have to talk to each other, and this guide installs them in order:</p>
 <ul>
-<li>You only need <strong>one</strong> AI assistant: Claude Code, Codex, <strong>or</strong> GitHub Copilot. Pick one in Step 2; the comparison table will help you choose.</li>
-<li>The whole process takes about 15 minutes. If you get stuck, see <a href="#if-something-goes-wrong">If something goes wrong</a> at the bottom.</li>
+<li><strong>R</strong> is the engine that actually runs the code (Step 1).</li>
+<li>The <strong>R extension</strong> connects R to VS Code, so you can run code straight from a script (Step 2).</li>
+<li>A handful of <strong>packages</strong> are add-ons to R that we use for graphing and data work (Step 3).</li>
 </ul>
-<section id="step-1-install-vs-code" class="level2">
-<h2 class="anchored" data-anchor-id="step-1-install-vs-code">Step 1: Install VS Code</h2>
-<p>VS Code (Visual Studio Code) is a free program from Microsoft. It is a text editor for code: think of it as Word, but for programs and data analysis. All three AI assistants run inside it.</p>
+<p>The whole thing takes about 15 minutes, most of it waiting for downloads. If you get stuck, see <a href="#if-something-goes-wrong">If something goes wrong</a> at the bottom.</p>
+<section id="step-1-install-r" class="level2">
+<h2 class="anchored" data-anchor-id="step-1-install-r">Step 1: Install R</h2>
+<p>R is free and comes from a website called CRAN (the official R repository).</p>
 <section id="on-a-mac" class="level3">
 <h3 class="anchored" data-anchor-id="on-a-mac">On a Mac</h3>
 <ol type="1">
-<li>Go to <a href="https://code.visualstudio.com/download" class="uri">https://code.visualstudio.com/download</a> and click the blue <strong>Mac</strong> button. A file like <code>VSCode-darwin-universal.zip</code> lands in your <strong>Downloads</strong> folder.</li>
-<li>Open your Downloads folder and double-click the zip file. It unpacks into an app called <strong>Visual Studio Code</strong>.</li>
-<li>Drag <strong>Visual Studio Code</strong> into your <strong>Applications</strong> folder (open a Finder window, Applications is in the left sidebar).</li>
-<li>Open your Applications folder and double-click <strong>Visual Studio Code</strong>. If macOS asks whether you are sure you want to open an app downloaded from the internet, click <strong>Open</strong>.</li>
+<li>First, check which chip your Mac has: click the <strong>Apple menu</strong> (top-left corner) → <strong>About This Mac</strong>. Look at the <strong>Chip</strong> line: it says either <strong>Apple M1/M2/M3/M4</strong> (Apple silicon) or <strong>Intel</strong>.</li>
+<li>Go to <a href="https://cran.r-project.org" class="uri">https://cran.r-project.org</a> and click <strong>Download R for macOS</strong>.</li>
+<li>Download the installer that matches your chip:
+<ul>
+<li>Apple silicon (M1 and later): the file ending in <strong>arm64.pkg</strong>.</li>
+<li>Intel: the file ending in <strong>x86_64.pkg</strong>.</li>
+</ul></li>
+<li>Double-click the downloaded <code>.pkg</code> file and click through the installer: <strong>Continue</strong>, <strong>Agree</strong>, <strong>Install</strong>. You may need to type your Mac password.</li>
 </ol>
 </section>
 <section id="on-windows" class="level3">
 <h3 class="anchored" data-anchor-id="on-windows">On Windows</h3>
 <ol type="1">
-<li>Go to <a href="https://code.visualstudio.com/download" class="uri">https://code.visualstudio.com/download</a> and click the blue <strong>Windows</strong> button. An installer like <code>VSCodeUserSetup-x64.exe</code> lands in your <strong>Downloads</strong> folder.</li>
-<li>Double-click the installer and click through it: accept the agreement, then keep clicking <strong>Next</strong> (the default choices are all fine), then <strong>Install</strong>, then <strong>Finish</strong>.</li>
-<li>VS Code opens automatically. Later you can start it from the Start menu.</li>
+<li>Go to <a href="https://cran.r-project.org" class="uri">https://cran.r-project.org</a> and click <strong>Download R for Windows</strong>.</li>
+<li>Click <strong>base</strong>, then the big <strong>Download R-4.x.x for Windows</strong> link at the top.</li>
+<li>Double-click the downloaded <code>.exe</code> file and click through the installer, keeping all the default choices: <strong>Next</strong>, <strong>Next</strong>, …, <strong>Finish</strong>.</li>
+</ol>
+<p>The exact version number changes over time; anything starting with 4 is fine.</p>
+</section>
+</section>
+<section id="step-2-install-the-r-extension-in-vs-code" class="level2">
+<h2 class="anchored" data-anchor-id="step-2-install-the-r-extension-in-vs-code">Step 2: Install the R extension in VS Code</h2>
+<ol type="1">
+<li>Open VS Code. If it was already open, <strong>quit it completely and reopen it</strong> so it notices that R is now installed.</li>
+<li>Press <code>Cmd+Shift+X</code> (Mac) or <code>Ctrl+Shift+X</code> (Windows) to open the <strong>Extensions</strong> panel.</li>
+<li>In the search box, type <strong>R</strong>.</li>
+<li>Click the result named <strong>R</strong>, published by <strong>REditorSupport</strong> (it is usually the top result), then click the blue <strong>Install</strong> button.</li>
 </ol>
 </section>
-<section id="first-launch" class="level3">
-<h3 class="anchored" data-anchor-id="first-launch">First launch</h3>
-<p>The first time VS Code opens you will see a Welcome tab, and possibly popups asking about themes or settings. You can close all of that. The two parts of the window you need to know:</p>
+<section id="step-3-install-the-course-packages" class="level2">
+<h2 class="anchored" data-anchor-id="step-3-install-the-course-packages">Step 3: Install the course packages</h2>
+<p>Packages are add-ons to R, like apps on a phone. One command installs everything we need for the first weeks.</p>
+<ol type="1">
+<li>In VS Code, press <code>Cmd+Shift+P</code> (Mac) or <code>Ctrl+Shift+P</code> (Windows), type <strong>R: Create R Terminal</strong>, and press Enter. A panel opens at the bottom of the window ending in a <code>&gt;</code> symbol. That is the <strong>R console</strong>: the place where R code runs.</li>
+<li>Copy the line below, paste it into the console, and press Enter:</li>
+</ol>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="fu">c</span>(<span class="st">&quot;languageserver&quot;</span>, <span class="st">&quot;httpgd&quot;</span>, <span class="st">&quot;ggplot2&quot;</span>, <span class="st">&quot;dplyr&quot;</span>, <span class="st">&quot;tidyr&quot;</span>,</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>                   <span class="st">&quot;forcats&quot;</span>, <span class="st">&quot;scales&quot;</span>, <span class="st">&quot;data.table&quot;</span>, <span class="st">&quot;ggthemes&quot;</span>, <span class="st">&quot;patchwork&quot;</span>,</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>                   <span class="st">&quot;treemapify&quot;</span>, <span class="st">&quot;RColorBrewer&quot;</span>, <span class="st">&quot;sf&quot;</span>, <span class="st">&quot;rnaturalearth&quot;</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ol start="3" type="1">
+<li>A lot of text will scroll by for a few minutes. That is normal. Two questions might come up:
 <ul>
-<li>The <strong>left sidebar</strong> has a column of icons. The one made of four squares is <strong>Extensions</strong>: the app store for VS Code add-ons. That is where you install your AI assistant.</li>
-<li>The <strong>bottom bar</strong> (the thin strip at the very bottom) is called the <strong>Status Bar</strong>. Copilot lives there.</li>
-</ul>
-</section>
-</section>
-<section id="step-2-pick-one-ai-assistant-and-set-it-up" class="level2">
-<h2 class="anchored" data-anchor-id="step-2-pick-one-ai-assistant-and-set-it-up">Step 2: Pick ONE AI assistant and set it up</h2>
-<p>All three assistants do the same job for this course: you type a request in plain English (“read this CSV file and plot sales by month”) and they write, explain, and fix code with you. Pick based on what you already pay for:</p>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 33%">
-<col style="width: 33%">
-<col style="width: 33%">
-</colgroup>
-<thead>
-<tr class="header">
-<th></th>
-<th>Account you need</th>
-<th>Cost</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><strong>Claude Code</strong></td>
-<td>A Claude account</td>
-<td>Requires a paid Claude plan (Pro, about $20/month, or higher). If you already pay for Claude, use this.</td>
-</tr>
-<tr class="even">
-<td><strong>Codex</strong></td>
-<td>A ChatGPT account</td>
-<td>Included with paid ChatGPT plans (Plus, about $20/month, and up). If you already pay for ChatGPT, use this.</td>
-</tr>
-<tr class="odd">
-<td><strong>GitHub Copilot</strong></td>
-<td>A free GitHub account</td>
-<td>Has a <strong>free plan</strong>, and verified students get the paid tier <strong>free</strong> through GitHub Education. If you do not want to pay anything, use this.</td>
-</tr>
-</tbody>
-</table>
-<p>They are all good. If you have no subscriptions and no preference, GitHub Copilot with the free student upgrade is the budget option.</p>
-<section id="option-a-claude-code" class="level3">
-<h3 class="anchored" data-anchor-id="option-a-claude-code">Option A: Claude Code</h3>
-<p>You need a Claude account with a paid plan (Pro or higher). If you do not have one, sign up at <a href="https://claude.ai" class="uri">https://claude.ai</a> first.</p>
-<ol type="1">
-<li>In VS Code, press <code>Cmd+Shift+X</code> (Mac) or <code>Ctrl+Shift+X</code> (Windows). This opens the <strong>Extensions</strong> panel.</li>
-<li>In the search box at the top, type <strong>Claude Code</strong>.</li>
-<li>Click the result named <strong>Claude Code</strong>, published by <strong>Anthropic</strong>, then click the blue <strong>Install</strong> button.</li>
-<li>A spark-shaped icon appears in the left sidebar. Click it: the Claude Code panel opens.</li>
-<li>Click <strong>Sign in</strong>. Your web browser opens; log in with your Claude account and click <strong>Authorize</strong>. Then return to VS Code.</li>
-<li>A short <strong>Learn Claude Code</strong> checklist appears the first time; it is a good two-minute tour, or dismiss it with the X.</li>
+<li>If R asks you to <strong>select a CRAN mirror</strong>, pick the first option (0-Cloud).</li>
+<li>If R asks <em>“Do you want to install from sources the package which needs compilation?”</em>, type <strong>no</strong> and press Enter.</li>
+</ul></li>
+<li>You are done when the scrolling stops and the <code>&gt;</code> prompt comes back.</li>
 </ol>
-<p>If the icon does not appear after installing, quit and reopen VS Code.</p>
-<p>Full official instructions: <a href="https://code.claude.com/docs/en/vs-code" class="uri">https://code.claude.com/docs/en/vs-code</a></p>
+<p>For the curious: <code>languageserver</code> gives you autocomplete and help inside VS Code, <code>httpgd</code> makes charts show up in a VS Code tab, and the rest are the graphing and data packages our scripts use.</p>
 </section>
-<section id="option-b-codex" class="level3">
-<h3 class="anchored" data-anchor-id="option-b-codex">Option B: Codex</h3>
-<p>You need a ChatGPT account on a paid plan (Plus or higher). If you do not have one, sign up at <a href="https://chatgpt.com" class="uri">https://chatgpt.com</a> first.</p>
+<section id="step-4-make-charts-appear-inside-vs-code" class="level2">
+<h2 class="anchored" data-anchor-id="step-4-make-charts-appear-inside-vs-code">Step 4: Make charts appear inside VS Code</h2>
+<p>One checkbox, so charts open in a VS Code tab instead of a separate window:</p>
 <ol type="1">
-<li>In VS Code, press <code>Cmd+Shift+X</code> (Mac) or <code>Ctrl+Shift+X</code> (Windows) to open the <strong>Extensions</strong> panel.</li>
-<li>In the search box, type <strong>Codex</strong>.</li>
-<li>Click the result named <strong>Codex – OpenAI’s coding agent</strong>, published by <strong>OpenAI</strong>, then click <strong>Install</strong>.</li>
-<li>A Codex icon appears in the left sidebar. Click it and choose <strong>Sign in with ChatGPT</strong>; your browser opens to log in, then return to VS Code.</li>
+<li>Press <code>Cmd+,</code> (Mac) or <code>Ctrl+,</code> (Windows) to open <strong>Settings</strong>.</li>
+<li>In the search box, type <strong>httpgd</strong>.</li>
+<li>Check the box for <strong>R &gt; Plot: Use Httpgd</strong>.</li>
 </ol>
-<p>Full official instructions: <a href="https://developers.openai.com/codex/ide" class="uri">https://developers.openai.com/codex/ide</a></p>
 </section>
-<section id="option-c-github-copilot" class="level3">
-<h3 class="anchored" data-anchor-id="option-c-github-copilot">Option C: GitHub Copilot</h3>
-<p>Copilot is built into VS Code; there is nothing extra to install. You just need a GitHub account (GitHub is a website where programmers store code; our course materials live there too).</p>
+<section id="step-5-run-your-first-real-script" class="level2">
+<h2 class="anchored" data-anchor-id="step-5-run-your-first-real-script">Step 5: Run your first real script</h2>
 <ol type="1">
-<li>If you do not have a GitHub account: go to <a href="https://github.com" class="uri">https://github.com</a> and click <strong>Sign up</strong> (it is free; use any email).</li>
-<li>In VS Code, look at the <strong>Status Bar</strong> at the very bottom of the window and click the <strong>Copilot icon</strong> (or the chat icon at the top of the window), then choose <strong>Use AI Features</strong> / <strong>Set up Copilot</strong>.</li>
-<li>Click <strong>Sign in</strong>, and log in with your GitHub account in the browser when it opens.</li>
-<li>That is it: without a subscription you automatically get <strong>Copilot Free</strong> (a monthly allowance of code completions and chat).</li>
+<li>Unzip the week 1 code folder you downloaded from the course site.</li>
+<li>In VS Code, choose <strong>File → Open Folder…</strong> and open that folder.</li>
+<li>In the left sidebar, click a script (a file ending in <code>.R</code>) to open it.</li>
+<li>Click anywhere on the first line of code and press <code>Cmd+Enter</code> (Mac) or <code>Ctrl+Enter</code> (Windows). Two things happen: an R console opens at the bottom (the first time takes a few seconds), and that line runs in it. The cursor then jumps to the next line.</li>
+<li>Keep pressing <code>Cmd+Enter</code> / <code>Ctrl+Enter</code> to walk through the script one line at a time, watching what each line prints. To run several lines at once, select them first, then press the same shortcut.</li>
+<li>When a line makes a chart, the chart appears in a new tab on the right.</li>
 </ol>
-<p><strong>Free upgrade for students:</strong> verified students get Copilot’s paid tier for free. Go to <a href="https://github.com/education" class="uri">https://github.com/education</a>, click <strong>Join GitHub Education</strong>, and verify with your USC email address and proof of enrollment. Approval usually takes a few days, and Copilot then unlocks automatically on your account.</p>
-<p>Full official instructions: <a href="https://code.visualstudio.com/docs/copilot/setup" class="uri">https://code.visualstudio.com/docs/copilot/setup</a></p>
-</section>
-</section>
-<section id="step-3-test-that-it-works" class="level2">
-<h2 class="anchored" data-anchor-id="step-3-test-that-it-works">Step 3: Test that it works</h2>
-<ol type="1">
-<li>In VS Code, choose <strong>File → Open Folder…</strong> and open any folder (for example, create an empty folder called <code>mkt566</code> in your Documents first, and after Thursday’s class use the course <code>code</code> folder you downloaded).</li>
-<li>Open your assistant’s chat: click the spark icon (Claude Code), the Codex icon, or the chat icon at the top (Copilot).</li>
-<li>Type: <em>“Create a file called hello.R that prints Hello MKT566, and explain what it does.”</em></li>
-</ol>
-<p>If the assistant answers and creates the file, you are done. Welcome to coding in 2026.</p>
-<p>Next step: install R itself and learn to run course scripts with the companion guide, <a href="r-setup.html">Running R Code in VS Code</a>.</p>
+<p>That is the whole workflow for this course: open a script, run it line by line, and look at what each line does. If a line confuses you, select it and ask your AI assistant what it does. That is exactly what it is for.</p>
 </section>
 <section id="if-something-goes-wrong" class="level2">
 <h2 class="anchored" data-anchor-id="if-something-goes-wrong">If something goes wrong</h2>
 <ul>
-<li><strong>The extension installed but its icon does not show up.</strong> Quit VS Code completely and reopen it. (Or press <code>Cmd+Shift+P</code> / <code>Ctrl+Shift+P</code>, type “Reload Window”, and press Enter.)</li>
-<li><strong>The sign-in browser page never appears, or sign-in seems stuck.</strong> Reload the window (previous bullet) and click Sign in again.</li>
-<li><strong>Claude Code / Codex asks you to subscribe.</strong> Those two require a paid Claude / ChatGPT plan. If you do not want one, use GitHub Copilot (Option C) instead.</li>
-<li><strong>Anything else.</strong> Ask the assistant that IS working (even the chatbot on claude.ai or chatgpt.com): paste the error message and ask what to do. This is a genuinely useful habit for the whole course.</li>
+<li><strong><code>Cmd+Enter</code> / <code>Ctrl+Enter</code> does nothing.</strong> Make sure the file name ends in <code>.R</code>, then press <code>Cmd+Shift+P</code> / <code>Ctrl+Shift+P</code>, type “Reload Window”, and press Enter.</li>
+<li><strong>VS Code cannot find R, or the R console never opens.</strong> Make sure Step 1 actually finished, then quit VS Code completely and reopen it. Installing R <em>after</em> VS Code was already open is the most common cause.</li>
+<li><strong>A popup says the R language server is not installed and offers to install it.</strong> Click <strong>Install</strong>: it is the <code>languageserver</code> package from Step 3.</li>
+<li><strong>Running a line prints garbage like <code>[200~</code> or an error ending in <code>~</code>.</strong> Open Settings (<code>Cmd+,</code> / <code>Ctrl+,</code>), search for <strong>bracketed paste</strong>, and make sure <strong>R &gt; Bracketed Paste</strong> is unchecked.</li>
+<li><strong>An error says <code>there is no package called &#39;ggplot2&#39;</code></strong> (or any other package name). The packages did not finish installing: redo Step 3 and let it run to the end.</li>
+<li><strong>Anything else.</strong> Paste the full error message into your AI assistant and ask what to do. This works surprisingly often, and building that habit is half the point of the course.</li>
 <li>Still stuck? Bring your laptop to office hours: Davide (Tue 2 to 4 pm, HOH 332) or Raghav, our TA (Thu 2:30 to 4:30 pm, HOH 311). We will get you running in a few minutes.</li>
 </ul>
 </section>

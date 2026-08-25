@@ -99,6 +99,8 @@ Full official instructions: <https://code.visualstudio.com/docs/copilot/setup>
 
 If the assistant answers and creates the file, you are done. Welcome to coding in 2026.
 
+Next step: install R itself and learn to run course scripts with the companion guide, [Running R Code in VS Code](r-setup.html).
+
 ## If something goes wrong
 
 - **The extension installed but its icon does not show up.** Quit VS Code completely and reopen it. (Or press `Cmd+Shift+P` / `Ctrl+Shift+P`, type "Reload Window", and press Enter.)
