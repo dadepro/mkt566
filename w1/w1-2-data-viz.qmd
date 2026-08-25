@@ -92,7 +92,31 @@ you get back**.
 :::
 
 ::: {.smaller-80 .muted}
-Reminder: every assignment includes a log of the LLM prompts you used.
+Reminder: every assignment includes a log of your AI use. How? Next slide.
+:::
+
+## The AI log: let the AI do the bookkeeping {.smaller-90}
+
+- Every assignment is submitted with an **`ai-log.md`**: a short record of how
+  you used AI
+- You do not write it. **The assistant does.** Before closing each chat
+  session, paste this as your last message:
+
+```
+Append a short log of this session to a file called ai-log.md in this folder:
+each request I made, one line each, in order, plus anything you got wrong
+that we fixed.
+```
+
+- Sessions accumulate into one log per assignment; submit the file with your work
+- Timing matters: do it **before the chat closes**. A new chat cannot see the
+  old conversation
+
+::: {.box}
+**Pro move:** save this prompt as a reusable command in your tool (Claude Code:
+a *skill*; Codex: a custom prompt; Copilot: a prompt file), so ending a session
+with a log takes one keystroke. Ask your assistant how: "create a skill that
+appends a session log to ai-log.md when I ask for it."
 :::
 
 # Why Visualize? {.divider}
