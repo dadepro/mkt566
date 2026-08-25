@@ -1,6 +1,6 @@
 # MKT566: Decision Making using Marketing Analytics
 
-**Fall 2026 — Tuesdays & Thursdays, 11:00–12:20 pm, JKP 202**
+**Fall 2026 — Tuesdays & Thursdays, 11:00–12:20 pm, JKP 112**
 
 Instructor: Davide Proserpio (proserpi@usc.edu). Office hours: Tuesdays 2–4 pm, HOH 332
 
