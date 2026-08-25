@@ -129,7 +129,7 @@ Cursor.
 Before the next class, install:
 
 1. **R and/or Python** (Python ships with macOS):
-   [install R/RStudio](https://bookdown.org/content/6ef13ea6-4e86-4566-b665-ebcd19d45029/#download-and-install-r-and-rstudio)
+   [install R](https://cran.r-project.org/)
 2. **An IDE or editor**
    - RStudio for R
    - [VS Code](https://code.visualstudio.com/download) for essentially any language,

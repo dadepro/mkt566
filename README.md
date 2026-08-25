@@ -23,7 +23,7 @@ Course materials (slides, cases, code, and the syllabus) will be posted here as 
 
 ### Week 1: Intro and data viz
 - Tuesday, Aug. 25: slides ([html](https://raw.githack.com/dadepro/mkt566/main/w1/w1-1-intro.html), [pdf](https://raw.githack.com/dadepro/mkt566/main/w1/w1-1-intro.pdf))
-    - [Install R/Rstudio](https://bookdown.org/content/6ef13ea6-4e86-4566-b665-ebcd19d45029/#download-and-install-r-and-rstudio)
+    - [Install R](https://cran.r-project.org/)
     - [Install VS Code](https://code.visualstudio.com/download) and configure it with [Claude Code](https://code.claude.com/docs/en/vs-code), [Codex](https://developers.openai.com/codex/ide), or [GitHub Copilot](https://code.visualstudio.com/docs/copilot/overview)
     - Git basics: [git - the simple guide](https://rogerdudler.github.io/git-guide/) and the [GitHub quickstart](https://docs.github.com/en/get-started/start-your-journey/hello-world) (all in the browser, no command line needed); or use the point-and-click [GitHub Desktop app](https://docs.github.com/en/desktop/overview/getting-started-with-github-desktop)
 - Thursday, Aug. 27:
