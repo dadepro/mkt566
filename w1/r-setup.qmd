@@ -19,6 +19,20 @@ Three pieces have to talk to each other, and this guide installs them in order:
 
 The whole thing takes about 15 minutes, most of it waiting for downloads. If you get stuck, see [If something goes wrong](#if-something-goes-wrong) at the bottom.
 
+## The shortcut: ask your AI assistant to do it
+
+You installed an AI assistant in the previous guide, and setup chores like this one are exactly what it is good at. Instead of doing Steps 1 to 4 by hand, you can ask it to do them for you:
+
+1. Open your assistant's chat: the spark icon (Claude Code), the Codex icon, or the chat panel (Copilot). If you use Copilot, switch the dropdown at the bottom of the chat from **Ask** to **Agent**, so it is allowed to run commands.
+2. Paste this request:
+
+   > Set up my computer so I can run R scripts in VS Code. Check whether R is installed and install it if it is not. Install the VS Code R extension by REditorSupport. Then install these R packages: languageserver, httpgd, ggplot2, dplyr, tidyr, forcats, scales, data.table, ggthemes, patchwork, treemapify, RColorBrewer, sf, and rnaturalearth. If a package fails to install, do not install anything from source; skip it and tell me at the end. Finally, enable the httpgd plot viewer in the VS Code settings, and tell me how to check that everything works.
+
+3. The assistant will suggest commands and ask your permission before running each one. Read what it plans to do and click **Allow**. Expect a few of these; the whole thing still takes 10 to 15 minutes because the downloads are the slow part.
+4. When it says it is done, jump to [Step 5](#step-5-run-your-first-real-script) and try running a script. If something does not work, tell the assistant exactly what you saw, or fall back to the manual steps below.
+
+If you would rather see what is actually being installed (a good instinct), do Steps 1 to 4 yourself:
+
 ## Step 1: Install R
 
 R is free and comes from a website called CRAN (the official R repository).

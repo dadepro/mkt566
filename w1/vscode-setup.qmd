@@ -91,17 +91,17 @@ Copilot is built into VS Code; there is nothing extra to install. You just need 
 
 Full official instructions: <https://code.visualstudio.com/docs/copilot/setup>
 
-## Step 3: Test that it works
+## Step 3: Set up R
+
+VS Code and your AI assistant are ready, but they still need R itself: the program that actually runs our analysis code. That is a separate 15-minute setup with its own companion guide: **[Running R Code in VS Code](r-setup.html)**. Follow it now (it picks up exactly where this guide leaves off), then come back here for the final test.
+
+## Step 4: Test that everything works
 
 1. In VS Code, choose **File → Open Folder...** and open any folder (for example, create an empty folder called `mkt566` in your Documents first, and after Thursday's class use the course `code` folder you downloaded).
 2. Open your assistant's chat: click the spark icon (Claude Code), the Codex icon, or the chat icon at the top (Copilot).
-3. Type: *"Create a file called hello.R that prints Hello MKT566, and explain what it does."*
+3. Type: *"Create a file called hello.R that prints Hello MKT566, run it, and explain what it does."*
 
-If the assistant answers and creates the file, you are done. Welcome to coding in 2026.
-
-## Step 4: Set up R
-
-VS Code and your AI assistant are ready, but they still need R itself: the program that actually runs our analysis code. That is a separate 15-minute setup with its own companion guide: **[Running R Code in VS Code](r-setup.html)**. Follow it next; it picks up exactly where this guide leaves off.
+If the assistant creates the file, runs it, and you see `Hello MKT566` in the output, you are done. Welcome to coding in 2026.
 
 ## If something goes wrong
 

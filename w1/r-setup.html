@@ -2210,7 +2210,8 @@ vertical-align: -.125em;
     <h2 id="toc-title">Table of contents</h2>
    
   <ul class="collapse">
-  <li><a href="#step-1-install-r" id="toc-step-1-install-r" class="nav-link active" data-scroll-target="#step-1-install-r">Step 1: Install R</a></li>
+  <li><a href="#the-shortcut-ask-your-ai-assistant-to-do-it" id="toc-the-shortcut-ask-your-ai-assistant-to-do-it" class="nav-link active" data-scroll-target="#the-shortcut-ask-your-ai-assistant-to-do-it">The shortcut: ask your AI assistant to do it</a></li>
+  <li><a href="#step-1-install-r" id="toc-step-1-install-r" class="nav-link" data-scroll-target="#step-1-install-r">Step 1: Install R</a></li>
   <li><a href="#step-2-install-the-r-extension-in-vs-code" id="toc-step-2-install-the-r-extension-in-vs-code" class="nav-link" data-scroll-target="#step-2-install-the-r-extension-in-vs-code">Step 2: Install the R extension in VS Code</a></li>
   <li><a href="#step-3-install-the-course-packages" id="toc-step-3-install-the-course-packages" class="nav-link" data-scroll-target="#step-3-install-the-course-packages">Step 3: Install the course packages</a></li>
   <li><a href="#step-4-make-charts-appear-inside-vs-code" id="toc-step-4-make-charts-appear-inside-vs-code" class="nav-link" data-scroll-target="#step-4-make-charts-appear-inside-vs-code">Step 4: Make charts appear inside VS Code</a></li>
@@ -2249,6 +2250,20 @@ vertical-align: -.125em;
 <li>A handful of <strong>packages</strong> are add-ons to R that we use for graphing and data work (Step 3).</li>
 </ul>
 <p>The whole thing takes about 15 minutes, most of it waiting for downloads. If you get stuck, see <a href="#if-something-goes-wrong">If something goes wrong</a> at the bottom.</p>
+<section id="the-shortcut-ask-your-ai-assistant-to-do-it" class="level2">
+<h2 class="anchored" data-anchor-id="the-shortcut-ask-your-ai-assistant-to-do-it">The shortcut: ask your AI assistant to do it</h2>
+<p>You installed an AI assistant in the previous guide, and setup chores like this one are exactly what it is good at. Instead of doing Steps 1 to 4 by hand, you can ask it to do them for you:</p>
+<ol type="1">
+<li><p>Open your assistant’s chat: the spark icon (Claude Code), the Codex icon, or the chat panel (Copilot). If you use Copilot, switch the dropdown at the bottom of the chat from <strong>Ask</strong> to <strong>Agent</strong>, so it is allowed to run commands.</p></li>
+<li><p>Paste this request:</p>
+<blockquote class="blockquote">
+<p>Set up my computer so I can run R scripts in VS Code. Check whether R is installed and install it if it is not. Install the VS Code R extension by REditorSupport. Then install these R packages: languageserver, httpgd, ggplot2, dplyr, tidyr, forcats, scales, data.table, ggthemes, patchwork, treemapify, RColorBrewer, sf, and rnaturalearth. If a package fails to install, do not install anything from source; skip it and tell me at the end. Finally, enable the httpgd plot viewer in the VS Code settings, and tell me how to check that everything works.</p>
+</blockquote></li>
+<li><p>The assistant will suggest commands and ask your permission before running each one. Read what it plans to do and click <strong>Allow</strong>. Expect a few of these; the whole thing still takes 10 to 15 minutes because the downloads are the slow part.</p></li>
+<li><p>When it says it is done, jump to <a href="#step-5-run-your-first-real-script">Step 5</a> and try running a script. If something does not work, tell the assistant exactly what you saw, or fall back to the manual steps below.</p></li>
+</ol>
+<p>If you would rather see what is actually being installed (a good instinct), do Steps 1 to 4 yourself:</p>
+</section>
 <section id="step-1-install-r" class="level2">
 <h2 class="anchored" data-anchor-id="step-1-install-r">Step 1: Install R</h2>
 <p>R is free and comes from a website called CRAN (the official R repository).</p>
