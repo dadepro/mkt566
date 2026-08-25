@@ -50,6 +50,51 @@ knitr::opts_knit$set(root.dir = "code")
 store.df <- read.csv("code/data/store-sales.csv")
 ```
 
+# Before We Start {.divider}
+
+## Recap: your toolkit
+
+Everything in this course runs on three pieces from Tuesday's setup guides:
+
+1. **VS Code**: the editor where everything happens
+2. **An AI assistant** inside it:
+   [Claude Code](https://code.claude.com/docs/en/vs-code),
+   [Codex](https://developers.openai.com/codex/ide),
+   [Copilot](https://code.visualstudio.com/docs/copilot/overview), or
+   [Cursor](https://cursor.com)
+3. **R + the R extension**: open a script, run it one line at a time with
+   `Cmd+Enter` (Mac) / `Ctrl+Enter` (Windows); charts appear in a VS Code tab
+
+::: {.box}
+**Ready check:** open a course script, press `Cmd+Enter` on a chart line, and a
+chart appears in a tab. Not there yet? Follow the
+[VS Code + AI setup guide](https://raw.githack.com/dadepro/mkt566/main/w1/vscode-setup.html)
+and [Running R Code in VS Code](https://raw.githack.com/dadepro/mkt566/main/w1/r-setup.html),
+or bring your laptop to office hours.
+:::
+
+## Vibecoding: how you will actually write code {.smaller-90}
+
+- **Vibecoding** (Karpathy, 2025): describe what you want in plain English, let
+  the AI write the code, run it, look at what comes out, refine, repeat
+- Most code in this class (and, increasingly, in industry) gets written this
+  way. That changes *which* skills are scarce:
+  - **Asking precisely**: "a histogram of weekly sales, 30 bins" beats "make a chart"
+  - **Reading results**: does the chart answer the question? Is the number plausible?
+  - **Debugging by conversation**: paste the error, ask why, ask for the fix
+- What it does not change: **you own everything you submit**, including the
+  AI's mistakes
+
+::: {.box}
+Today builds the vocabulary this workflow needs: once you know the chart types
+by name and what each is for, you can ask for the right one **and judge what
+you get back**.
+:::
+
+::: {.smaller-80 .muted}
+Reminder: every assignment includes a log of the LLM prompts you used.
+:::
+
 # Why Visualize? {.divider}
 
 ## Why visualize?
