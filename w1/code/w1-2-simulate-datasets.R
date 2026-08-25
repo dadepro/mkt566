@@ -1,6 +1,11 @@
 # Simulate the small marketing datasets used in the w1-2 data-viz slides.
 # Run once; writes CSVs into data/.
 # (data/store-sales.csv is real data from Chapman & Feit and is not created here.)
+#
+# STUDENTS: you do NOT need to run this script. The files it creates are
+# already in the data folder. It is included so you can see exactly how the
+# simulated datasets were made, and so you can regenerate them if you ever
+# delete one by accident.
 
 # point R at the folder that contains this script, so "data/..." paths work
 if (requireNamespace("rstudioapi", quietly = TRUE) && rstudioapi::isAvailable()) {
@@ -18,6 +23,8 @@ if (!dir.exists("data")) {
 # create the data output folder if it does not exist
 dir.create("data", showWarnings = FALSE)
 
+# set.seed() pins down the random numbers, so everyone who runs this script
+# gets exactly the same "random" data.
 set.seed(566)
 
 # 1) U.S. job postings by coding skill (approximate counts)
