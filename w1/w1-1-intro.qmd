@@ -142,7 +142,9 @@ Before the next class, install:
 
 Optional: course materials live on GitHub, so skim
 [git - the simple guide](https://rogerdudler.github.io/git-guide/) and the
-[GitHub quickstart](https://docs.github.com/en/get-started/start-your-journey/hello-world).
+[GitHub quickstart](https://docs.github.com/en/get-started/start-your-journey/hello-world),
+or use the point-and-click
+[GitHub Desktop app](https://docs.github.com/en/desktop/overview/getting-started-with-github-desktop).
 
 ::: {.box-warn}
 If this is the **first time** you have heard any of these terms,
