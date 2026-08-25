@@ -34,7 +34,7 @@ Course materials (slides, cases, code, and the syllabus) will be posted here as 
   - Optional readings:
     - [Chapter 1 of  Data Visualization: A practical introduction](https://socviz.co/01-look-at-data.html)
     - [Lecture 5 of Data Storytelling for Marketers](https://raw.githack.com/dadepro/mkt-615/main/lectures/07-dataviz/07-dataviz.html#1)
-  - Code and data (all in the [w1/code](https://github.com/dadepro/mkt566/tree/main/w1/code) folder):
+  - Code and data (download everything: [w1-code.zip](https://github.com/dadepro/mkt566/raw/main/w1/w1-code.zip), or browse the [w1/code](https://github.com/dadepro/mkt566/tree/main/w1/code) folder):
     - [Chart types](https://github.com/dadepro/mkt566/blob/main/w1/code/w1-2-chart-types-class.R)
     - [Beautify plot](https://github.com/dadepro/mkt566/blob/main/w1/code/w1-2-data-viz-beautify.R)
     - [Datasets](https://github.com/dadepro/mkt566/tree/main/w1/code/data)

@@ -121,8 +121,8 @@ Two R scripts on the course website, in the `code/` folder:
    a simple figure beautification process
 
 ::: {.box}
-Download the whole
-[`code/` folder](https://github.com/dadepro/mkt566/tree/main/w1/code)
+Download the whole `code/` folder as a zip:
+[**`w1-code.zip`**](https://github.com/dadepro/mkt566/raw/main/w1/w1-code.zip)
 (it includes the datasets in `data/`), open the scripts in RStudio (or VS Code), and
 (try to) install the required libraries. These slides are themselves generated with
 Quarto + R: every chart you see is drawn live from those scripts' code.
@@ -951,6 +951,8 @@ elasticity**; we will estimate it with regression in week 4.
 ::: {.box}
 Code and data to reproduce today's charts, all on the course website:
 
+- [**`w1-code.zip`**](https://github.com/dadepro/mkt566/raw/main/w1/w1-code.zip):
+  one-click download of everything below (scripts + data)
 - [**`w1-2-chart-types-class.R`**](https://github.com/dadepro/mkt566/blob/main/w1/code/w1-2-chart-types-class.R):
   every chart type shown today
 - [**`w1-2-data-viz-beautify.R`**](https://github.com/dadepro/mkt566/blob/main/w1/code/w1-2-data-viz-beautify.R):
