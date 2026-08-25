@@ -121,7 +121,7 @@ Slides, plus open-source reading links provided for each topic.
   you are new to coding
 
 
-**IDE suggestions:** VS Code (pretty much any programming language, integrates with Codex and Claude), RStudio (R only),
+**IDE suggestions:** VS Code (pretty much any programming language, integrates with Codex, Claude, and Copilot), RStudio (R only),
 Cursor.
 
 ## Setup
@@ -136,7 +136,8 @@ Before the next class, install:
      including R and Python
 3. **An AI coding tool**, whichever you prefer:
    [Claude Code](https://code.claude.com/docs/en/vs-code),
-   [Codex](https://developers.openai.com/codex/ide), or
+   [Codex](https://developers.openai.com/codex/ide),
+   [GitHub Copilot](https://code.visualstudio.com/docs/copilot/overview), or
    [Cursor](https://cursor.com)
 
 Optional: course materials live on GitHub, so skim
