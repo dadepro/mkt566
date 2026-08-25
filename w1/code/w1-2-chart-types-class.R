@@ -24,9 +24,17 @@ library(RColorBrewer)
 library(sf)
 library(rnaturalearth)
 
-# set directory (works in RStudio; in VS Code / Rscript, cd to w1/code/ first)
+# point R at the folder that contains this script, so "data/..." paths work
 if (requireNamespace("rstudioapi", quietly = TRUE) && rstudioapi::isAvailable()) {
   setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
+}
+for (p in c("code", "w1/code", "mkt566/w1/code")) {
+  if (!dir.exists("data") && dir.exists(file.path(p, "data"))) setwd(p)
+}
+if (!dir.exists("data")) {
+  stop('R cannot find the "data" folder. In VS Code, use File > Open Folder ',
+       'and open the unzipped "code" folder (the one that contains this script), ',
+       'then run the script again from the top.')
 }
 
 # create the figure output folder if it does not exist
