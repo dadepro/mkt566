@@ -2257,7 +2257,7 @@ vertical-align: -.125em;
 <li><p>Open your assistant’s chat: the spark icon (Claude Code), the Codex icon, or the chat panel (Copilot). If you use Copilot, switch the dropdown at the bottom of the chat from <strong>Ask</strong> to <strong>Agent</strong>, so it is allowed to run commands.</p></li>
 <li><p>Paste this request:</p>
 <blockquote class="blockquote">
-<p>Set up my computer so I can run R scripts in VS Code. Check whether R is installed and install it if it is not. Install the VS Code R extension by REditorSupport. Then install these R packages: languageserver, httpgd, ggplot2, dplyr, tidyr, forcats, scales, data.table, ggthemes, patchwork, treemapify, RColorBrewer, sf, and rnaturalearth. If a package fails to install, do not install anything from source; skip it and tell me at the end. Finally, enable the httpgd plot viewer in the VS Code settings, and tell me how to check that everything works.</p>
+<p>Set up my computer so I can run R scripts in VS Code. Check whether R is installed and install it if it is not. Install the VS Code R extension by REditorSupport. Then install these R packages: languageserver, httpgd, ggplot2, dplyr, tidyr, forcats, scales, data.table, ggthemes, patchwork, treemapify, RColorBrewer, sf, and rnaturalearth. If a package fails to install, do not install anything from source; skip it and tell me at the end. Next, enable the httpgd plot viewer in the VS Code settings. Then apply the known workaround for REditorSupport/vscode-R issue #1696 (R 4.5+ no longer runs the extension’s <code>.First.sys</code> startup hook, so plots open in a separate window instead of a VS Code tab): append to my <code>~/.Rprofile</code> a <code>.First</code> function that looks up <code>globalenv()$.First.sys</code>, and if it is a function, removes <code>.First</code> from globalenv and calls the hook. Finally, tell me how to check that everything works.</p>
 </blockquote></li>
 <li><p>The assistant will suggest commands and ask your permission before running each one. Read what it plans to do and click <strong>Allow</strong>. Expect a few of these; the whole thing still takes 10 to 15 minutes because the downloads are the slow part.</p></li>
 <li><p>When it says it is done, jump to <a href="#step-5-run-your-first-real-script">Step 5</a> and try running a script. If something does not work, tell the assistant exactly what you saw, or fall back to the manual steps below.</p></li>
@@ -2321,12 +2321,25 @@ vertical-align: -.125em;
 </section>
 <section id="step-4-make-charts-appear-inside-vs-code" class="level2">
 <h2 class="anchored" data-anchor-id="step-4-make-charts-appear-inside-vs-code">Step 4: Make charts appear inside VS Code</h2>
-<p>One checkbox, so charts open in a VS Code tab instead of a separate window:</p>
+<p>Two small things, so charts open in a VS Code tab instead of a separate floating window.</p>
+<p>First, a checkbox:</p>
 <ol type="1">
 <li>Press <code>Cmd+,</code> (Mac) or <code>Ctrl+,</code> (Windows) to open <strong>Settings</strong>.</li>
 <li>In the search box, type <strong>httpgd</strong>.</li>
 <li>Check the box for <strong>R &gt; Plot: Use Httpgd</strong>.</li>
 </ol>
+<p>Second, a one-time fix. Recent versions of R (4.5 and newer, which is what you just installed) changed how R starts up, and the R extension has a known bug with it (<a href="https://github.com/REditorSupport/vscode-R/issues/1696">issue #1696</a>): without the fix, charts still open in a separate window. Copy the block below, paste it into the R console from Step 3 (the panel ending in <code>&gt;</code>), and press Enter:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&#39;</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="st"># Show charts in a VS Code tab (fix for R 4.5+, vscode-R extension issue #1696)</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="st">.First &lt;- function() {</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="st">  hook &lt;- globalenv()$.First.sys</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="st">  if (is.function(hook)) {</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="st">    suppressWarnings(rm(&quot;.First&quot;, envir = globalenv()))</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="st">    hook()</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="st">  }</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="st">}</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="st">&#39;</span>, <span class="at">file =</span> <span class="st">&quot;~/.Rprofile&quot;</span>, <span class="at">append =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>You do not need to understand the code in the box; it simply reconnects R to VS Code each time R starts. It writes the fix into a file called <code>.Rprofile</code>, which R reads every time it starts, so you only do this once. Then close the R console (hover over <strong>R Interactive</strong> in the panel’s right-side list and click the trash-can icon): the fix takes effect the next time a console opens, which happens automatically when you run code in Step 5.</p>
 </section>
 <section id="step-5-run-your-first-real-script" class="level2">
 <h2 class="anchored" data-anchor-id="step-5-run-your-first-real-script">Step 5: Run your first real script</h2>
@@ -2347,6 +2360,7 @@ vertical-align: -.125em;
 <li><strong>VS Code cannot find R, or the R console never opens.</strong> Make sure Step 1 actually finished, then quit VS Code completely and reopen it. Installing R <em>after</em> VS Code was already open is the most common cause.</li>
 <li><strong>A popup says the R language server is not installed and offers to install it.</strong> Click <strong>Install</strong>: it is the <code>languageserver</code> package from Step 3.</li>
 <li><strong>Running a line prints garbage like <code>[200~</code> or an error ending in <code>~</code>.</strong> Open Settings (<code>Cmd+,</code> / <code>Ctrl+,</code>), search for <strong>bracketed paste</strong>, and make sure <strong>R &gt; Bracketed Paste</strong> is unchecked.</li>
+<li><strong>Charts open in a separate floating window (called “Quartz” on a Mac, “R Graphics” on Windows) instead of a VS Code tab.</strong> One of the two parts of Step 4 is missing: check the <strong>httpgd</strong> box in Settings and paste the one-time fix into the R console. Then close the R console (trash-can icon) and run a chart line again. The first chart after a restart can take a few seconds.</li>
 <li><strong>An error says <code>there is no package called &#39;ggplot2&#39;</code></strong> (or any other package name). The packages did not finish installing: redo Step 3 and let it run to the end.</li>
 <li><strong>Anything else.</strong> Paste the full error message into your AI assistant and ask what to do. This works surprisingly often, and building that habit is half the point of the course.</li>
 <li>Still stuck? Bring your laptop to office hours: Davide (Tue 2 to 4 pm, HOH 332) or Raghav, our TA (Thu 2:30 to 4:30 pm, HOH 311). We will get you running in a few minutes.</li>
