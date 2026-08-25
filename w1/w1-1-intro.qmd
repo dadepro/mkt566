@@ -418,14 +418,6 @@ opportunities**, and **maximize their return on marketing investment**.
 - **LLMs and agents**: new challenges for brands (e.g. search), and how firms are
   leveraging them
 
-## What we will cover
-
-![](images/image11.png){fig-align="center" width="58%"}
-
-::: {.smaller-80 .muted}
-[Source](https://www.linkedin.com/posts/kuangxu_whats-your-full-stack-product-agentic-setup-activity-7362161983476912132-SJ4C)
-:::
-
 ## What we will *not* cover {.smaller-90}
 
 - **This is not a programming course.** Learning to code is mostly up to you and your LLM
