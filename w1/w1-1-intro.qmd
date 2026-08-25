@@ -142,7 +142,8 @@ Before the next class, install:
 
 ::: {.box}
 Never installed a coding tool before? Follow the step-by-step
-[**VS Code + AI assistant setup guide**](https://raw.githack.com/dadepro/mkt566/main/w1/vscode-setup.html).
+[**VS Code + AI assistant setup guide**](https://raw.githack.com/dadepro/mkt566/main/w1/vscode-setup.html),
+then the [**Running R Code in VS Code guide**](https://raw.githack.com/dadepro/mkt566/main/w1/r-setup.html).
 :::
 
 Optional: course materials live on GitHub, so skim

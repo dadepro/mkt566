@@ -99,7 +99,9 @@ Full official instructions: <https://code.visualstudio.com/docs/copilot/setup>
 
 If the assistant answers and creates the file, you are done. Welcome to coding in 2026.
 
-Next step: install R itself and learn to run course scripts with the companion guide, [Running R Code in VS Code](r-setup.html).
+## Step 4: Set up R
+
+VS Code and your AI assistant are ready, but they still need R itself: the program that actually runs our analysis code. That is a separate 15-minute setup with its own companion guide: **[Running R Code in VS Code](r-setup.html)**. Follow it next; it picks up exactly where this guide leaves off.
 
 ## If something goes wrong
 
