@@ -1,0 +1,108 @@
+---
+title: "Setting Up VS Code with an AI Coding Assistant"
+subtitle: "MKT 566 · Decision Making Using Marketing Analytics · Fall 2026"
+format:
+  html:
+    toc: true
+    toc-depth: 2
+    embed-resources: true
+    link-external-newwindow: true
+---
+
+This guide assumes you have never installed a programming tool before. Follow it top to bottom and you will end up with everything you need for this course: **VS Code** (the program where we will write and run code) and **one AI coding assistant** working inside it.
+
+Two things before you start:
+
+- You only need **one** AI assistant: Claude Code, Codex, **or** GitHub Copilot. Pick one in Step 2; the comparison table will help you choose.
+- The whole process takes about 15 minutes. If you get stuck, see [If something goes wrong](#if-something-goes-wrong) at the bottom.
+
+## Step 1: Install VS Code
+
+VS Code (Visual Studio Code) is a free program from Microsoft. It is a text editor for code: think of it as Word, but for programs and data analysis. All three AI assistants run inside it.
+
+### On a Mac
+
+1. Go to <https://code.visualstudio.com/download> and click the blue **Mac** button. A file like `VSCode-darwin-universal.zip` lands in your **Downloads** folder.
+2. Open your Downloads folder and double-click the zip file. It unpacks into an app called **Visual Studio Code**.
+3. Drag **Visual Studio Code** into your **Applications** folder (open a Finder window, Applications is in the left sidebar).
+4. Open your Applications folder and double-click **Visual Studio Code**. If macOS asks whether you are sure you want to open an app downloaded from the internet, click **Open**.
+
+### On Windows
+
+1. Go to <https://code.visualstudio.com/download> and click the blue **Windows** button. An installer like `VSCodeUserSetup-x64.exe` lands in your **Downloads** folder.
+2. Double-click the installer and click through it: accept the agreement, then keep clicking **Next** (the default choices are all fine), then **Install**, then **Finish**.
+3. VS Code opens automatically. Later you can start it from the Start menu.
+
+### First launch
+
+The first time VS Code opens you will see a Welcome tab, and possibly popups asking about themes or settings. You can close all of that. The two parts of the window you need to know:
+
+- The **left sidebar** has a column of icons. The one made of four squares is **Extensions**: the app store for VS Code add-ons. That is where you install your AI assistant.
+- The **bottom bar** (the thin strip at the very bottom) is called the **Status Bar**. Copilot lives there.
+
+## Step 2: Pick ONE AI assistant and set it up
+
+All three assistants do the same job for this course: you type a request in plain English ("read this CSV file and plot sales by month") and they write, explain, and fix code with you. Pick based on what you already pay for:
+
+| | Account you need | Cost |
+|---|---|---|
+| **Claude Code** | A Claude account | Requires a paid Claude plan (Pro, about $20/month, or higher). If you already pay for Claude, use this. |
+| **Codex** | A ChatGPT account | Included with paid ChatGPT plans (Plus, about $20/month, and up). If you already pay for ChatGPT, use this. |
+| **GitHub Copilot** | A free GitHub account | Has a **free plan**, and verified students get the paid tier **free** through GitHub Education. If you do not want to pay anything, use this. |
+
+They are all good. If you have no subscriptions and no preference, GitHub Copilot with the free student upgrade is the budget option.
+
+### Option A: Claude Code
+
+You need a Claude account with a paid plan (Pro or higher). If you do not have one, sign up at <https://claude.ai> first.
+
+1. In VS Code, press `Cmd+Shift+X` (Mac) or `Ctrl+Shift+X` (Windows). This opens the **Extensions** panel.
+2. In the search box at the top, type **Claude Code**.
+3. Click the result named **Claude Code**, published by **Anthropic**, then click the blue **Install** button.
+4. A spark-shaped icon appears in the left sidebar. Click it: the Claude Code panel opens.
+5. Click **Sign in**. Your web browser opens; log in with your Claude account and click **Authorize**. Then return to VS Code.
+6. A short **Learn Claude Code** checklist appears the first time; it is a good two-minute tour, or dismiss it with the X.
+
+If the icon does not appear after installing, quit and reopen VS Code.
+
+Full official instructions: <https://code.claude.com/docs/en/vs-code>
+
+### Option B: Codex
+
+You need a ChatGPT account on a paid plan (Plus or higher). If you do not have one, sign up at <https://chatgpt.com> first.
+
+1. In VS Code, press `Cmd+Shift+X` (Mac) or `Ctrl+Shift+X` (Windows) to open the **Extensions** panel.
+2. In the search box, type **Codex**.
+3. Click the result named **Codex – OpenAI's coding agent**, published by **OpenAI**, then click **Install**.
+4. A Codex icon appears in the left sidebar. Click it and choose **Sign in with ChatGPT**; your browser opens to log in, then return to VS Code.
+
+Full official instructions: <https://developers.openai.com/codex/ide>
+
+### Option C: GitHub Copilot
+
+Copilot is built into VS Code; there is nothing extra to install. You just need a GitHub account (GitHub is a website where programmers store code; our course materials live there too).
+
+1. If you do not have a GitHub account: go to <https://github.com> and click **Sign up** (it is free; use any email).
+2. In VS Code, look at the **Status Bar** at the very bottom of the window and click the **Copilot icon** (or the chat icon at the top of the window), then choose **Use AI Features** / **Set up Copilot**.
+3. Click **Sign in**, and log in with your GitHub account in the browser when it opens.
+4. That is it: without a subscription you automatically get **Copilot Free** (a monthly allowance of code completions and chat).
+
+**Free upgrade for students:** verified students get Copilot's paid tier for free. Go to <https://github.com/education>, click **Join GitHub Education**, and verify with your USC email address and proof of enrollment. Approval usually takes a few days, and Copilot then unlocks automatically on your account.
+
+Full official instructions: <https://code.visualstudio.com/docs/copilot/setup>
+
+## Step 3: Test that it works
+
+1. In VS Code, choose **File → Open Folder...** and open any folder (for example, create an empty folder called `mkt566` in your Documents first, and after Thursday's class use the course `code` folder you downloaded).
+2. Open your assistant's chat: click the spark icon (Claude Code), the Codex icon, or the chat icon at the top (Copilot).
+3. Type: *"Create a file called hello.R that prints Hello MKT566, and explain what it does."*
+
+If the assistant answers and creates the file, you are done. Welcome to coding in 2026.
+
+## If something goes wrong
+
+- **The extension installed but its icon does not show up.** Quit VS Code completely and reopen it. (Or press `Cmd+Shift+P` / `Ctrl+Shift+P`, type "Reload Window", and press Enter.)
+- **The sign-in browser page never appears, or sign-in seems stuck.** Reload the window (previous bullet) and click Sign in again.
+- **Claude Code / Codex asks you to subscribe.** Those two require a paid Claude / ChatGPT plan. If you do not want one, use GitHub Copilot (Option C) instead.
+- **Anything else.** Ask the assistant that IS working (even the chatbot on claude.ai or chatgpt.com): paste the error message and ask what to do. This is a genuinely useful habit for the whole course.
+- Still stuck? Bring your laptop to office hours: Davide (Tue 2 to 4 pm, HOH 332) or Raghav, our TA (Thu 2:30 to 4:30 pm, HOH 311). We will get you running in a few minutes.

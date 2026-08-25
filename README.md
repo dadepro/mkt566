@@ -25,6 +25,7 @@ Course materials (slides, cases, code, and the syllabus) will be posted here as 
 - Tuesday, Aug. 25: slides ([html](https://raw.githack.com/dadepro/mkt566/main/w1/w1-1-intro.html), [pdf](https://raw.githack.com/dadepro/mkt566/main/w1/w1-1-intro.pdf))
     - [Install R](https://cran.r-project.org/)
     - [Install VS Code](https://code.visualstudio.com/download) and configure it with [Claude Code](https://code.claude.com/docs/en/vs-code), [Codex](https://developers.openai.com/codex/ide), or [GitHub Copilot](https://code.visualstudio.com/docs/copilot/overview)
+    - New to coding? Follow our beginner-friendly, step-by-step **[VS Code + AI assistant setup guide](https://raw.githack.com/dadepro/mkt566/main/w1/vscode-setup.html)**
     - Git basics: [git - the simple guide](https://rogerdudler.github.io/git-guide/) and the [GitHub quickstart](https://docs.github.com/en/get-started/start-your-journey/hello-world) (all in the browser, no command line needed); or use the point-and-click [GitHub Desktop app](https://docs.github.com/en/desktop/overview/getting-started-with-github-desktop)
 - Thursday, Aug. 27:
   - Slides ([html](https://raw.githack.com/dadepro/mkt566/main/w1/w1-2-data-viz.html), [pdf](https://raw.githack.com/dadepro/mkt566/main/w1/w1-2-data-viz.pdf))
