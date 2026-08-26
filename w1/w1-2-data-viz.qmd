@@ -152,7 +152,7 @@ ggplot(ans, aes(x, y)) +
 ```
 
 ::: {.smaller-80 .muted}
-Anscombe's quartet: all four datasets share the same means, variances, correlation
+All four datasets share the same means, variances, correlation
 (r = 0.82), and regression line (y = 3 + 0.5x). **Always plot your data first.**
 :::
 
@@ -192,9 +192,8 @@ Two R scripts on the course website, in the `code/` folder:
 ::: {.box}
 Download the whole `code/` folder as a zip:
 [**`w1-code.zip`**](https://github.com/dadepro/mkt566/raw/main/w1/w1-code.zip)
-(it includes the datasets in `data/`), open the scripts in RStudio (or VS Code), and
-(try to) install the required libraries. These slides are themselves generated with
-Quarto + R: every chart you see is drawn live from those scripts' code.
+(it includes the datasets in `data/`), open the scripts in VS Code, and
+(try to) install the required libraries.
 :::
 
 # Chart Types {.divider}
