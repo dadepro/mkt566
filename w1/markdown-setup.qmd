@@ -67,6 +67,11 @@ product 1 fall as its price rises.
 ## The code that made the figure
 
 ```r
+library(ggplot2)
+library(ggthemes)
+
+store.df <- read.csv("data/store-sales.csv")
+
 ggplot(data = store.df) +
   geom_jitter(mapping = aes(x = p1price, y = p1sales),
               width = 0.02, alpha = 0.4) +
