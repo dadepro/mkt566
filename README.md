@@ -39,3 +39,4 @@ Course materials (slides, cases, code, and the syllabus) will be posted here as 
     - [Chart types](https://github.com/dadepro/mkt566/blob/main/w1/code/w1-2-chart-types-class.R)
     - [Beautify plot](https://github.com/dadepro/mkt566/blob/main/w1/code/w1-2-data-viz-beautify.R)
     - [Datasets](https://github.com/dadepro/mkt566/tree/main/w1/code/data)
+  - After class, try the **[Writing in Markdown guide](https://raw.githack.com/dadepro/mkt566/main/w1/markdown-setup.html)**: turn the beautify script's code and figures into a shareable PDF report (10 minutes, beginner friendly)

@@ -1,0 +1,107 @@
+---
+title: "Writing in Markdown"
+subtitle: "MKT 566 · Decision Making Using Marketing Analytics · Fall 2026"
+format:
+  html:
+    toc: true
+    toc-depth: 2
+    embed-resources: true
+    link-external-newwindow: true
+---
+
+Markdown is plain text with a few formatting marks. It is how you will turn code and figures into something you can hand to another human: a short report with a title, a paragraph of explanation, and a chart.
+
+You have already met it without noticing: every README on the course GitHub is markdown, and the `ai-log.md` file your AI assistant writes is markdown too.
+
+Good news: **there is nothing to set up for writing it.** VS Code understands markdown out of the box. Only the PDF export at the end needs one small extension.
+
+## Markdown in 60 seconds
+
+A markdown file is a text file whose name ends in `.md`. These marks cover 95% of what you will ever need:
+
+| You type | You get |
+|---|---|
+| `# Big heading` | a title |
+| `## Smaller heading` | a section header |
+| `**bold**` and `*italic*` | **bold** and *italic* |
+| `- item` (one per line) | a bullet list |
+| `1. item` | a numbered list |
+| `[USC Marshall](https://www.marshall.usc.edu)` | a link: [USC Marshall](https://www.marshall.usc.edu) |
+| `![](chart-types/my-plot.png)` | that image, inserted into the page |
+
+To show code, put a "fence" of three backticks around it (the backtick ` is the key above Tab):
+
+````markdown
+```r
+ggplot(store.df, aes(x = p1price, y = p1sales)) +
+  geom_point()
+```
+````
+
+One thing to understand: a markdown file **displays** code, it does not **run** it. You run the code in your R script, the script saves the figure, and your markdown file embeds the saved image. (Tools like Quarto can run code inside documents; we do not need that yet.)
+
+## Preview it in VS Code
+
+Open any `.md` file and press `Cmd+Shift+V` (Mac) or `Ctrl+Shift+V` (Windows): VS Code shows the formatted result. Even better, click the **split-preview icon** in the top-right corner of the editor (a small page with a magnifying glass): text on the left, result on the right, updating as you type.
+
+## One extension for PDF and HTML export
+
+1. Open the Extensions panel: `Cmd+Shift+X` (Mac) or `Ctrl+Shift+X` (Windows).
+2. Search for **Markdown PDF** (publisher: **yzane**) and click **Install**.
+3. To export: right-click anywhere in the markdown **editor** (not the preview) and choose **Markdown PDF: Export (pdf)** or **Markdown PDF: Export (html)**. The exported file appears next to your `.md` file.
+
+## Try it: your first report (5 minutes)
+
+You will build a one-page report around the demand-curve chart from class.
+
+1. In VS Code, open the week 1 `code` folder (**File → Open Folder...**), the same folder you used in class.
+2. Create a file: **File → New Text File**, then save it (`Cmd+S` / `Ctrl+S`) as `my-first-report.md` **inside the `code` folder**. The location matters: the image path below is relative to where this file is saved.
+3. Paste this into the file and save:
+
+````markdown
+# My first markdown report
+
+The chart below shows the **demand curve** from class: weekly sales of
+product 1 fall as its price rises.
+
+## The code that made the figure
+
+```r
+ggplot(data = store.df) +
+  geom_jitter(mapping = aes(x = p1price, y = p1sales),
+              width = 0.02, alpha = 0.4) +
+  geom_smooth(mapping = aes(x = p1price, y = p1sales),
+              method = "lm", color = "blue") +
+  theme_few()
+```
+
+## The figure
+
+![Weekly P1 sales decline with price](chart-types/beautify-step6.png)
+
+*Written by YOUR NAME.*
+````
+
+4. Preview it: `Cmd+Shift+V` / `Ctrl+Shift+V`. You should see a formatted page with the chart in it.
+5. Export it: right-click in the editor, **Markdown PDF: Export (pdf)**, and open the PDF that appears next to your file.
+
+That is a shareable report, made from a plain text file, in five minutes.
+
+::: {.callout-note}
+The figure `chart-types/beautify-step6.png` comes with the code folder, and it is re-created whenever you run `w1-2-data-viz-beautify.R` from class.
+:::
+
+## The real exercise: let the AI write the report
+
+Converting a whole script into a readable report is exactly the kind of chore your AI assistant is for. With the `code` folder open, paste this into your assistant:
+
+> Read w1-2-data-viz-beautify.R and create a file beautify-report.md in this folder: a short markdown report that walks through the six steps of improving the chart. For each step, show the code block, embed the matching beautify-step PNG from chart-types/ where one exists, and add one plain-English sentence about what changed and why it helps. Do not run any code; just write the markdown file.
+
+Then do the part only you can do: preview the file, **read it**, and fix what you do not like (ask the assistant, or just edit the text: it is only text). Export it to PDF. You have now produced and quality-checked your first AI-written deliverable, which is the whole workflow of this course in miniature.
+
+## If something goes wrong
+
+- **The image shows as a broken icon.** The path is relative to the `.md` file: make sure your file is saved inside the `code` folder and that `chart-types/beautify-step6.png` exists (run `w1-2-data-viz-beautify.R` to recreate it).
+- **No "Markdown PDF" entries in the right-click menu.** The extension is not installed yet, or you right-clicked in the preview pane: right-click in the text editor instead.
+- **The preview shortcut does nothing.** The file name must end in `.md`, and the editor (not some other panel) must be focused.
+- **Anything else.** Paste the problem into your AI assistant. Still stuck? Bring your laptop to office hours: Davide (Tue 2 to 4 pm, HOH 332) or Raghav, our TA (Thu 2:30 to 4:30 pm, HOH 311).
