@@ -246,7 +246,7 @@ ggplot(df_skills, aes(x = fct_reorder(skill, -count), y = count)) +
 ```
 
 ::: {.smaller-80 .muted}
-Alphabetical order is an accident; sorted order is a statement. `fct_reorder()` in R.
+Alphabetical order is by default; sorted order requires `fct_reorder()` in R.
 :::
 
 ## Pareto chart
