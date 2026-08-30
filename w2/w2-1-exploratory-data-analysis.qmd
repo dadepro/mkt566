@@ -146,7 +146,7 @@ The loop matters: what you find in deeper EDA often sends you back to cleaning.
 In the `code/` folder on the course website:
 
 1. **`w2-1-eda-variation-class.R`**: reproduces every chart in today's deck
-2. **`w2-1-simulate-marketing-dataset.R`**: generates Thursday's case dataset,
+2. **`w2-1-simulate-marketing-dataset.R`**: generates the case dataset,
    `data/marketing_eda.csv` (you do not need to run it)
 
 ::: {.box}
@@ -156,7 +156,7 @@ open the scripts in VS Code, and run along.
 :::
 
 ::: {.smaller-80 .muted}
-Thursday's in-class case is a separate handout, and it has **no starter code**
+The in-class case is a separate handout, and it has **no starter code**
 on purpose: you will vibecode it. More on the last slides.
 :::
 
@@ -599,22 +599,22 @@ into a story: each spike has a cause.
   the most interesting finding in the data
 :::
 
-::: {.box}
+::: {.box .fragment}
 In marketing: sales trends, seasonality in demand, and campaign-driven spikes
 are exactly these three patterns. You will look for them in every dataset you
 touch.
 :::
 
-# Thursday: The Variation Case {.divider}
+# The Variation Case {.divider}
 
 ## The variation case
 
-In class on Thursday you will apply all of this to a fresh dataset:
+In class you will apply all of this to a fresh dataset:
 **1,000 customers** of an online retailer, with age, gender, device, ad
 channel, ad spend, clicks, purchases, and revenue.
 
 Here is the twist: **there is no starter code**. You will **vibecode** the
-whole analysis, exactly as discussed on Tuesday: you describe the chart, your
+whole analysis, exactly as we discussed: you describe the chart, your
 AI assistant writes the R, you run it, look, refine, and **you** interpret.
 
 You will answer questions like:
@@ -640,11 +640,6 @@ Deliverables, both made with your assistant: an **R Markdown report knitted
 to HTML** with your charts and your written answers (the exact format you
 will submit for the homeworks), and your **`ai-log.md`**.
 
-::: {.box}
-Bring your laptop Thursday, with the [week 1
-setup](https://raw.githack.com/dadepro/mkt566/main/w1/vscode-setup.html)
-working: VS Code, an AI assistant, and R. That is all you need.
-:::
 
 ## Wrap-up
 
@@ -660,7 +655,7 @@ Code and data to reproduce today's charts, all on the course website:
 - [**`data/marketing_eda.csv`**](https://github.com/dadepro/mkt566/blob/main/w2/code/data/marketing_eda.csv):
   the case dataset
 - [**The variation case handout**](https://raw.githack.com/dadepro/mkt566/main/w2/w2-1-variation-case.html):
-  Thursday's vibecoding exercise (bring your laptop!)
+  the in-class vibecoding exercise (bring your laptop!)
 :::
 
 ::: {.smaller-80 .muted}
