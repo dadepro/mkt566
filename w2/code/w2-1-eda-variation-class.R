@@ -80,7 +80,7 @@ summary(marketing)
 # 1) binwidth = 10: each bar covers 10 units of sales. Too coarse --
 #    three bars, almost no information.
 ggplot(marketing, aes(x = sales)) +
-  geom_histogram(binwidth = 10, fill = "steelblue", color = "white") +
+  geom_histogram(binwidth = 10, fill = "steelblue", color = "grey20") +
   labs(title = "Distribution of Sales", x = "Sales", y = "Frequency") +
   theme_minimal()
 ggsave("figures/w2-1-eda-sales-distribution-bw10.pdf", h = 3.5, w = 5)
@@ -88,14 +88,14 @@ ggsave("figures/w2-1-eda-sales-distribution-bw10.pdf", h = 3.5, w = 5)
 # 2) binwidth = 1: now the shape appears -- most values between 10 and 20,
 #    with a right tail of strong weeks.
 ggplot(marketing, aes(x = sales)) +
-  geom_histogram(binwidth = 1, fill = "steelblue", color = "white") +
+  geom_histogram(binwidth = 1, fill = "steelblue", color = "grey20") +
   labs(title = "Distribution of Sales", x = "Sales", y = "Frequency") +
   theme_minimal()
 ggsave("figures/w2-1-eda-sales-distribution-bw1.pdf", h = 3.5, w = 5)
 
 # 3) binwidth = 0.1: too fine -- mostly noise. Always try a few values.
 ggplot(marketing, aes(x = sales)) +
-  geom_histogram(binwidth = 0.1, fill = "steelblue", color = "white") +
+  geom_histogram(binwidth = 0.1, fill = "steelblue", color = "grey20") +
   labs(title = "Distribution of Sales", x = "Sales", y = "Frequency") +
   theme_minimal()
 ggsave("figures/w2-1-eda-sales-distribution-bw01.pdf", h = 3.5, w = 5)

@@ -445,22 +445,44 @@ flowchart LR
  Max.   :355.68   Max.   :59.52   Max.   :136.80   Max.   :32.40  </code></pre>
 </div>
 </div>
+<div class="smaller-80 muted">
+<p>One line of R. What do you notice?</p>
+</div>
+</section>
+<section id="summary-statistics-what-they-tell-us" class="slide level2">
+<h2>Summary statistics: what they tell us</h2>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>    youtube          facebook       newspaper          sales      
+ Min.   :  0.84   Min.   : 0.00   Min.   :  0.36   Min.   : 1.92  
+ 1st Qu.: 89.25   1st Qu.:11.97   1st Qu.: 15.30   1st Qu.:12.45  
+ Median :179.70   Median :27.48   Median : 30.90   Median :15.48  
+ Mean   :176.45   Mean   :27.92   Mean   : 36.66   Mean   :16.83  
+ 3rd Qu.:262.59   3rd Qu.:43.83   3rd Qu.: 54.12   3rd Qu.:20.88  
+ Max.   :355.68   Max.   :59.52   Max.   :136.80   Max.   :32.40  </code></pre>
+</div>
+</div>
 <div class="smaller-90">
-<p>Already informative: no missing values, <code>facebook</code> spend starts at <strong>zero</strong> (some campaigns skip it), <code>youtube</code> gets by far the largest budgets, and <code>sales</code> vary by a factor of ~17.</p>
+<ul>
+<li><strong>No missing values</strong> in any column</li>
+<li><code>facebook</code> spend starts at <strong>zero</strong>: some campaigns skip it entirely</li>
+<li><code>youtube</code> gets by far the <strong>largest budgets</strong></li>
+<li><code>sales</code> vary by a factor of <strong>~17</strong> across campaigns</li>
+</ul>
 </div>
 </section>
 <section id="distribution-of-sales" class="slide level2">
 <h2>Distribution of sales</h2>
 <div class="cell columns column-output-location">
 <div class="column">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7" data-code-line-numbers="3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="" aria-label="1"></a><span class="fu">ggplot</span>(marketing, <span class="fu">aes</span>(<span class="at">x =</span> sales)) <span class="sc">+</span></span>
-<span id="cb7-2"><a href="" aria-label="2"></a>  <span class="fu">geom_histogram</span>(</span>
-<span id="cb7-3"><a href="" aria-label="3"></a>    <span class="at">binwidth =</span> <span class="dv">10</span>,</span>
-<span id="cb7-4"><a href="" aria-label="4"></a>    <span class="at">fill =</span> <span class="st">"steelblue"</span>, <span class="at">color =</span> <span class="st">"white"</span></span>
-<span id="cb7-5"><a href="" aria-label="5"></a>  ) <span class="sc">+</span></span>
-<span id="cb7-6"><a href="" aria-label="6"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Distribution of Sales"</span>,</span>
-<span id="cb7-7"><a href="" aria-label="7"></a>       <span class="at">x =</span> <span class="st">"Sales"</span>, <span class="at">y =</span> <span class="st">"Frequency"</span>) <span class="sc">+</span></span>
-<span id="cb7-8"><a href="" aria-label="8"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8" data-code-line-numbers="3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="" aria-label="1"></a><span class="fu">ggplot</span>(marketing, <span class="fu">aes</span>(<span class="at">x =</span> sales)) <span class="sc">+</span></span>
+<span id="cb8-2"><a href="" aria-label="2"></a>  <span class="fu">geom_histogram</span>(</span>
+<span id="cb8-3"><a href="" aria-label="3"></a>    <span class="at">binwidth =</span> <span class="dv">10</span>,</span>
+<span id="cb8-4"><a href="" aria-label="4"></a>    <span class="at">fill =</span> <span class="st">"steelblue"</span>, <span class="at">color =</span> <span class="st">"grey20"</span></span>
+<span id="cb8-5"><a href="" aria-label="5"></a>  ) <span class="sc">+</span></span>
+<span id="cb8-6"><a href="" aria-label="6"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Distribution of Sales"</span>,</span>
+<span id="cb8-7"><a href="" aria-label="7"></a>       <span class="at">x =</span> <span class="st">"Sales"</span>, <span class="at">y =</span> <span class="st">"Frequency"</span>) <span class="sc">+</span></span>
+<span id="cb8-8"><a href="" aria-label="8"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div><div class="column">
 <div class="cell-output-display">
 <div>
@@ -471,21 +493,21 @@ flowchart LR
 </div>
 </div></div>
 <div class="smaller-80 muted">
-<p><code>binwidth</code> controls how wide each bar is. Here each bar covers 10 units of sales: only three bars, almost no information.</p>
+<p><code>binwidth</code> controls how wide each bar is: here each bar covers 10 units of sales.</p>
 </div>
 </section>
 <section id="distribution-of-sales-smaller-bins" class="slide level2">
 <h2>Distribution of sales: smaller bins</h2>
 <div class="cell columns column-output-location">
 <div class="column">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8" data-code-line-numbers="3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="" aria-label="1"></a><span class="fu">ggplot</span>(marketing, <span class="fu">aes</span>(<span class="at">x =</span> sales)) <span class="sc">+</span></span>
-<span id="cb8-2"><a href="" aria-label="2"></a>  <span class="fu">geom_histogram</span>(</span>
-<span id="cb8-3"><a href="" aria-label="3"></a>    <span class="at">binwidth =</span> <span class="dv">1</span>,</span>
-<span id="cb8-4"><a href="" aria-label="4"></a>    <span class="at">fill =</span> <span class="st">"steelblue"</span>, <span class="at">color =</span> <span class="st">"white"</span></span>
-<span id="cb8-5"><a href="" aria-label="5"></a>  ) <span class="sc">+</span></span>
-<span id="cb8-6"><a href="" aria-label="6"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Distribution of Sales"</span>,</span>
-<span id="cb8-7"><a href="" aria-label="7"></a>       <span class="at">x =</span> <span class="st">"Sales"</span>, <span class="at">y =</span> <span class="st">"Frequency"</span>) <span class="sc">+</span></span>
-<span id="cb8-8"><a href="" aria-label="8"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9" data-code-line-numbers="3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="" aria-label="1"></a><span class="fu">ggplot</span>(marketing, <span class="fu">aes</span>(<span class="at">x =</span> sales)) <span class="sc">+</span></span>
+<span id="cb9-2"><a href="" aria-label="2"></a>  <span class="fu">geom_histogram</span>(</span>
+<span id="cb9-3"><a href="" aria-label="3"></a>    <span class="at">binwidth =</span> <span class="dv">1</span>,</span>
+<span id="cb9-4"><a href="" aria-label="4"></a>    <span class="at">fill =</span> <span class="st">"steelblue"</span>, <span class="at">color =</span> <span class="st">"grey20"</span></span>
+<span id="cb9-5"><a href="" aria-label="5"></a>  ) <span class="sc">+</span></span>
+<span id="cb9-6"><a href="" aria-label="6"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Distribution of Sales"</span>,</span>
+<span id="cb9-7"><a href="" aria-label="7"></a>       <span class="at">x =</span> <span class="st">"Sales"</span>, <span class="at">y =</span> <span class="st">"Frequency"</span>) <span class="sc">+</span></span>
+<span id="cb9-8"><a href="" aria-label="8"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div><div class="column">
 <div class="cell-output-display">
 <div>
@@ -495,22 +517,19 @@ flowchart LR
 </div>
 </div>
 </div></div>
-<div class="smaller-80 muted">
-<p>Now we can see the shape: most weeks sell 10–20, with a right tail of strong weeks.</p>
-</div>
 </section>
 <section id="distribution-of-sales-too-small" class="slide level2">
 <h2>Distribution of sales: too small</h2>
 <div class="cell columns column-output-location">
 <div class="column">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9" data-code-line-numbers="3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="" aria-label="1"></a><span class="fu">ggplot</span>(marketing, <span class="fu">aes</span>(<span class="at">x =</span> sales)) <span class="sc">+</span></span>
-<span id="cb9-2"><a href="" aria-label="2"></a>  <span class="fu">geom_histogram</span>(</span>
-<span id="cb9-3"><a href="" aria-label="3"></a>    <span class="at">binwidth =</span> <span class="fl">0.1</span>,</span>
-<span id="cb9-4"><a href="" aria-label="4"></a>    <span class="at">fill =</span> <span class="st">"steelblue"</span>, <span class="at">color =</span> <span class="st">"white"</span></span>
-<span id="cb9-5"><a href="" aria-label="5"></a>  ) <span class="sc">+</span></span>
-<span id="cb9-6"><a href="" aria-label="6"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Distribution of Sales"</span>,</span>
-<span id="cb9-7"><a href="" aria-label="7"></a>       <span class="at">x =</span> <span class="st">"Sales"</span>, <span class="at">y =</span> <span class="st">"Frequency"</span>) <span class="sc">+</span></span>
-<span id="cb9-8"><a href="" aria-label="8"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10" data-code-line-numbers="3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="" aria-label="1"></a><span class="fu">ggplot</span>(marketing, <span class="fu">aes</span>(<span class="at">x =</span> sales)) <span class="sc">+</span></span>
+<span id="cb10-2"><a href="" aria-label="2"></a>  <span class="fu">geom_histogram</span>(</span>
+<span id="cb10-3"><a href="" aria-label="3"></a>    <span class="at">binwidth =</span> <span class="fl">0.1</span>,</span>
+<span id="cb10-4"><a href="" aria-label="4"></a>    <span class="at">fill =</span> <span class="st">"steelblue"</span>, <span class="at">color =</span> <span class="st">"grey20"</span></span>
+<span id="cb10-5"><a href="" aria-label="5"></a>  ) <span class="sc">+</span></span>
+<span id="cb10-6"><a href="" aria-label="6"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Distribution of Sales"</span>,</span>
+<span id="cb10-7"><a href="" aria-label="7"></a>       <span class="at">x =</span> <span class="st">"Sales"</span>, <span class="at">y =</span> <span class="st">"Frequency"</span>) <span class="sc">+</span></span>
+<span id="cb10-8"><a href="" aria-label="8"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div><div class="column">
 <div class="cell-output-display">
 <div>
@@ -520,6 +539,14 @@ flowchart LR
 </div>
 </div>
 </div></div>
+</section>
+<section id="binwidth-what-did-we-just-see" class="slide level2">
+<h2>Binwidth: what did we just see?</h2>
+<ul>
+<li><code>binwidth = 10</code>: too coarse. Three bars, the shape is hidden</li>
+<li><code>binwidth = 1</code>: the shape appears: most weeks sell 10–20, with a right tail of strong weeks</li>
+<li><code>binwidth = 0.1</code>: too fine. Mostly noise</li>
+</ul>
 <div class="box-warn">
 <p>Bin width is a <strong>choice</strong>, and it changes what you see: too wide hides the shape, too narrow shows noise. Always try a few values.</p>
 </div>
@@ -528,7 +555,18 @@ flowchart LR
 <h2>Spend across the three channels</h2>
 
 <img data-src="w2-1-exploratory-data-analysis_files/figure-revealjs/spend-three-1.png" width="1056" class="r-stretch"><div class="smaller-80 muted">
-<p>Same variable type, three different shapes: YouTube spend is spread almost uniformly, Facebook is flat-ish with a low mode, newspaper is <strong>right-skewed</strong>: a few campaigns spend a lot.</p>
+<p>Same variable (ad spend), three channels. What do you see?</p>
+</div>
+</section>
+<section id="spend-across-the-three-channels-three-shapes" class="slide level2">
+<h2>Spend across the three channels: three shapes</h2>
+
+<img data-src="w2-1-exploratory-data-analysis_files/figure-revealjs/spend-three-2-1.png" width="1056" class="r-stretch"><div class="smaller-90">
+<ul>
+<li><strong>YouTube</strong>: spread almost uniformly across its range</li>
+<li><strong>Facebook</strong>: flat-ish, with a mode at low spend</li>
+<li><strong>Newspaper</strong>: <strong>right-skewed</strong>, a few campaigns spend a lot</li>
+</ul>
 </div>
 </section>
 <section id="what-can-we-learn-from-distribution-charts" class="slide level2">
@@ -566,14 +604,34 @@ flowchart LR
 <h2>Example with ad spend</h2>
 
 <img data-src="w2-1-exploratory-data-analysis_files/figure-revealjs/boxplot-1.png" width="672" class="r-stretch"><div class="smaller-80 muted">
-<p>Newspaper shows flagged outliers, but the three channels live on very different scales, so the small ones are squashed. Sound familiar?</p>
+<p>What do you see?</p>
+</div>
+</section>
+<section id="example-with-ad-spend-reading-it" class="slide level2">
+<h2>Example with ad spend: reading it</h2>
+
+<img data-src="w2-1-exploratory-data-analysis_files/figure-revealjs/boxplot-2-1.png" width="672" class="r-stretch"><div class="smaller-90">
+<ul>
+<li><strong>Newspaper</strong> shows flagged outliers on the high side</li>
+<li>But the three channels live on very <strong>different scales</strong>, so the smaller ones are squashed against the axis</li>
+</ul>
 </div>
 </section>
 <section id="example-with-logged-ad-spend" class="slide level2">
 <h2>Example with logged ad spend</h2>
 
 <img data-src="w2-1-exploratory-data-analysis_files/figure-revealjs/boxplot-log-1.png" width="672" class="r-stretch"><div class="smaller-80 muted">
-<p>On the log scale the comparison is fair, and a different picture appears: now <strong>low-spend</strong> outliers become visible too.</p>
+<p>Same data, log scale. What changed?</p>
+</div>
+</section>
+<section id="example-with-logged-ad-spend-reading-it" class="slide level2">
+<h2>Example with logged ad spend: reading it</h2>
+
+<img data-src="w2-1-exploratory-data-analysis_files/figure-revealjs/boxplot-log-2-1.png" width="672" class="r-stretch"><div class="smaller-90">
+<ul>
+<li>On the log scale the comparison across channels is <strong>fair</strong></li>
+<li>A different picture appears: now <strong>low-spend</strong> outliers become visible too</li>
+</ul>
 </div>
 </section>
 <section id="what-the-log-transformation-does" class="slide level2">
@@ -620,7 +678,7 @@ flowchart LR
 <h2>The <code>economics</code> dataset</h2>
 <p>The second way to visualize variation: how a variable <strong>evolves over time</strong>. Example with ggplot2’s <code>economics</code> dataset, monthly US indicators from <a href="https://fred.stlouisfed.org/">FRED</a>:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="" aria-label="1"></a><span class="fu">head</span>(economics)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="" aria-label="1"></a><span class="fu">head</span>(economics)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 6 × 6
   date         pce    pop psavert uempmed unemploy
@@ -641,13 +699,13 @@ flowchart LR
 <h2>Unemployment over time</h2>
 <div class="cell columns column-output-location">
 <div class="column">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="" aria-label="1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> economics) <span class="sc">+</span></span>
-<span id="cb12-2"><a href="" aria-label="2"></a>  <span class="fu">geom_line</span>(</span>
-<span id="cb12-3"><a href="" aria-label="3"></a>    <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> date, <span class="at">y =</span> unemploy)</span>
-<span id="cb12-4"><a href="" aria-label="4"></a>  ) <span class="sc">+</span></span>
-<span id="cb12-5"><a href="" aria-label="5"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Unemployment over time"</span>,</span>
-<span id="cb12-6"><a href="" aria-label="6"></a>       <span class="at">x =</span> <span class="st">"Date"</span>,</span>
-<span id="cb12-7"><a href="" aria-label="7"></a>       <span class="at">y =</span> <span class="st">"Unemployed (thousands)"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="" aria-label="1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> economics) <span class="sc">+</span></span>
+<span id="cb13-2"><a href="" aria-label="2"></a>  <span class="fu">geom_line</span>(</span>
+<span id="cb13-3"><a href="" aria-label="3"></a>    <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> date, <span class="at">y =</span> unemploy)</span>
+<span id="cb13-4"><a href="" aria-label="4"></a>  ) <span class="sc">+</span></span>
+<span id="cb13-5"><a href="" aria-label="5"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Unemployment over time"</span>,</span>
+<span id="cb13-6"><a href="" aria-label="6"></a>       <span class="at">x =</span> <span class="st">"Date"</span>,</span>
+<span id="cb13-7"><a href="" aria-label="7"></a>       <span class="at">y =</span> <span class="st">"Unemployed (thousands)"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div><div class="column">
 <div class="cell-output-display">
 <div>
@@ -665,17 +723,17 @@ flowchart LR
 <h2>Long-run direction</h2>
 <div class="cell columns column-output-location">
 <div class="column">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13" data-code-line-numbers="8-11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="" aria-label="1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> economics) <span class="sc">+</span></span>
-<span id="cb13-2"><a href="" aria-label="2"></a>  <span class="fu">geom_line</span>(</span>
-<span id="cb13-3"><a href="" aria-label="3"></a>    <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> date, <span class="at">y =</span> unemploy)</span>
-<span id="cb13-4"><a href="" aria-label="4"></a>  ) <span class="sc">+</span></span>
-<span id="cb13-5"><a href="" aria-label="5"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Unemployment over time"</span>,</span>
-<span id="cb13-6"><a href="" aria-label="6"></a>       <span class="at">x =</span> <span class="st">"Date"</span>,</span>
-<span id="cb13-7"><a href="" aria-label="7"></a>       <span class="at">y =</span> <span class="st">"Unemployed (thousands)"</span>) <span class="sc">+</span></span>
-<span id="cb13-8"><a href="" aria-label="8"></a>  <span class="fu">geom_smooth</span>(</span>
-<span id="cb13-9"><a href="" aria-label="9"></a>    <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> date, <span class="at">y =</span> unemploy),</span>
-<span id="cb13-10"><a href="" aria-label="10"></a>    <span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">color =</span> <span class="st">"blue"</span></span>
-<span id="cb13-11"><a href="" aria-label="11"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14" data-code-line-numbers="8-11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="" aria-label="1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> economics) <span class="sc">+</span></span>
+<span id="cb14-2"><a href="" aria-label="2"></a>  <span class="fu">geom_line</span>(</span>
+<span id="cb14-3"><a href="" aria-label="3"></a>    <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> date, <span class="at">y =</span> unemploy)</span>
+<span id="cb14-4"><a href="" aria-label="4"></a>  ) <span class="sc">+</span></span>
+<span id="cb14-5"><a href="" aria-label="5"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Unemployment over time"</span>,</span>
+<span id="cb14-6"><a href="" aria-label="6"></a>       <span class="at">x =</span> <span class="st">"Date"</span>,</span>
+<span id="cb14-7"><a href="" aria-label="7"></a>       <span class="at">y =</span> <span class="st">"Unemployed (thousands)"</span>) <span class="sc">+</span></span>
+<span id="cb14-8"><a href="" aria-label="8"></a>  <span class="fu">geom_smooth</span>(</span>
+<span id="cb14-9"><a href="" aria-label="9"></a>    <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> date, <span class="at">y =</span> unemploy),</span>
+<span id="cb14-10"><a href="" aria-label="10"></a>    <span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">color =</span> <span class="st">"blue"</span></span>
+<span id="cb14-11"><a href="" aria-label="11"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div><div class="column">
 <div class="cell-output-display">
 <div>
@@ -693,19 +751,19 @@ flowchart LR
 <h2>Cycles and anomalies</h2>
 <div class="cell columns column-output-location">
 <div class="column">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14" data-code-line-numbers="8-13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="" aria-label="1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> economics) <span class="sc">+</span></span>
-<span id="cb14-2"><a href="" aria-label="2"></a>  <span class="fu">geom_line</span>(</span>
-<span id="cb14-3"><a href="" aria-label="3"></a>    <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> date, <span class="at">y =</span> unemploy)</span>
-<span id="cb14-4"><a href="" aria-label="4"></a>  ) <span class="sc">+</span></span>
-<span id="cb14-5"><a href="" aria-label="5"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Unemployment over time"</span>,</span>
-<span id="cb14-6"><a href="" aria-label="6"></a>       <span class="at">x =</span> <span class="st">"Date"</span>,</span>
-<span id="cb14-7"><a href="" aria-label="7"></a>       <span class="at">y =</span> <span class="st">"Unemployed (thousands)"</span>) <span class="sc">+</span></span>
-<span id="cb14-8"><a href="" aria-label="8"></a>  <span class="fu">geom_vline</span>(</span>
-<span id="cb14-9"><a href="" aria-label="9"></a>    <span class="at">xintercept =</span> <span class="fu">as.Date</span>(<span class="fu">c</span>(</span>
-<span id="cb14-10"><a href="" aria-label="10"></a>      <span class="st">"1975-03-01"</span>, <span class="st">"1983-01-01"</span>, <span class="st">"1992-08-01"</span>,</span>
-<span id="cb14-11"><a href="" aria-label="11"></a>      <span class="st">"2003-08-01"</span>, <span class="st">"2009-11-01"</span>)),</span>
-<span id="cb14-12"><a href="" aria-label="12"></a>    <span class="at">color =</span> <span class="st">"red"</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span></span>
-<span id="cb14-13"><a href="" aria-label="13"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15" data-code-line-numbers="8-13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="" aria-label="1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> economics) <span class="sc">+</span></span>
+<span id="cb15-2"><a href="" aria-label="2"></a>  <span class="fu">geom_line</span>(</span>
+<span id="cb15-3"><a href="" aria-label="3"></a>    <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> date, <span class="at">y =</span> unemploy)</span>
+<span id="cb15-4"><a href="" aria-label="4"></a>  ) <span class="sc">+</span></span>
+<span id="cb15-5"><a href="" aria-label="5"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Unemployment over time"</span>,</span>
+<span id="cb15-6"><a href="" aria-label="6"></a>       <span class="at">x =</span> <span class="st">"Date"</span>,</span>
+<span id="cb15-7"><a href="" aria-label="7"></a>       <span class="at">y =</span> <span class="st">"Unemployed (thousands)"</span>) <span class="sc">+</span></span>
+<span id="cb15-8"><a href="" aria-label="8"></a>  <span class="fu">geom_vline</span>(</span>
+<span id="cb15-9"><a href="" aria-label="9"></a>    <span class="at">xintercept =</span> <span class="fu">as.Date</span>(<span class="fu">c</span>(</span>
+<span id="cb15-10"><a href="" aria-label="10"></a>      <span class="st">"1975-03-01"</span>, <span class="st">"1983-01-01"</span>, <span class="st">"1992-08-01"</span>,</span>
+<span id="cb15-11"><a href="" aria-label="11"></a>      <span class="st">"2003-08-01"</span>, <span class="st">"2009-11-01"</span>)),</span>
+<span id="cb15-12"><a href="" aria-label="12"></a>    <span class="at">color =</span> <span class="st">"red"</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span></span>
+<span id="cb15-13"><a href="" aria-label="13"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div><div class="column">
 <div class="cell-output-display">
 <div>

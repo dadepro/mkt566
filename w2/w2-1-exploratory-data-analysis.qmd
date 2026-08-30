@@ -237,10 +237,21 @@ in thousands of dollars / units.
 summary(marketing)
 ```
 
+::: {.smaller-80 .muted}
+One line of R. What do you notice?
+:::
+
+## Summary statistics: what they tell us
+
+```{r marketing-summary-2}
+summary(marketing)
+```
+
 ::: {.smaller-90}
-Already informative: no missing values, `facebook` spend starts at **zero**
-(some campaigns skip it), `youtube` gets by far the largest budgets, and
-`sales` vary by a factor of ~17.
+- **No missing values** in any column
+- `facebook` spend starts at **zero**: some campaigns skip it entirely
+- `youtube` gets by far the **largest budgets**
+- `sales` vary by a factor of **~17** across campaigns
 :::
 
 ## Distribution of sales
@@ -254,7 +265,7 @@ Already informative: no missing values, `facebook` spend starts at **zero**
 ggplot(marketing, aes(x = sales)) +
   geom_histogram(
     binwidth = 10,
-    fill = "steelblue", color = "white"
+    fill = "steelblue", color = "grey20"
   ) +
   labs(title = "Distribution of Sales",
        x = "Sales", y = "Frequency") +
@@ -262,8 +273,8 @@ ggplot(marketing, aes(x = sales)) +
 ```
 
 ::: {.smaller-80 .muted}
-`binwidth` controls how wide each bar is. Here each bar covers 10 units of
-sales: only three bars, almost no information.
+`binwidth` controls how wide each bar is: here each bar covers 10 units of
+sales.
 :::
 
 ## Distribution of sales: smaller bins
@@ -277,17 +288,12 @@ sales: only three bars, almost no information.
 ggplot(marketing, aes(x = sales)) +
   geom_histogram(
     binwidth = 1,
-    fill = "steelblue", color = "white"
+    fill = "steelblue", color = "grey20"
   ) +
   labs(title = "Distribution of Sales",
        x = "Sales", y = "Frequency") +
   theme_minimal()
 ```
-
-::: {.smaller-80 .muted}
-Now we can see the shape: most weeks sell 10–20, with a right tail of strong
-weeks.
-:::
 
 ## Distribution of sales: too small
 
@@ -300,12 +306,19 @@ weeks.
 ggplot(marketing, aes(x = sales)) +
   geom_histogram(
     binwidth = 0.1,
-    fill = "steelblue", color = "white"
+    fill = "steelblue", color = "grey20"
   ) +
   labs(title = "Distribution of Sales",
        x = "Sales", y = "Frequency") +
   theme_minimal()
 ```
+
+## Binwidth: what did we just see?
+
+- `binwidth = 10`: too coarse. Three bars, the shape is hidden
+- `binwidth = 1`: the shape appears: most weeks sell 10–20, with a right tail
+  of strong weeks
+- `binwidth = 0.1`: too fine. Mostly noise
 
 ::: {.box-warn}
 Bin width is a **choice**, and it changes what you see: too wide hides the
@@ -329,13 +342,26 @@ p_np <- ggplot(marketing, aes(x = newspaper)) +
   geom_histogram(binwidth = 5, fill = "grey20", color = "white") +
   labs(title = "Newspaper", x = "Spend", y = NULL) +
   theme_minimal()
-p_yt + p_fb + p_np
+p_spend3 <- p_yt + p_fb + p_np
+p_spend3
 ```
 
 ::: {.smaller-80 .muted}
-Same variable type, three different shapes: YouTube spend is spread almost
-uniformly, Facebook is flat-ish with a low mode, newspaper is **right-skewed**:
-a few campaigns spend a lot.
+Same variable (ad spend), three channels. What do you see?
+:::
+
+## Spend across the three channels: three shapes
+
+```{r spend-three-2}
+#| fig-width: 11
+#| fig-height: 3.6
+p_spend3
+```
+
+::: {.smaller-90}
+- **YouTube**: spread almost uniformly across its range
+- **Facebook**: flat-ish, with a mode at low spend
+- **Newspaper**: **right-skewed**, a few campaigns spend a lot
 :::
 
 ## What can we learn from distribution charts?
@@ -372,7 +398,7 @@ marketing_long <- data.table(
   pivot_longer(marketing, cols = everything(),
                names_to = "variable", values_to = "value")
 )
-ggplot(marketing_long[variable != "sales"],
+p_box <- ggplot(marketing_long[variable != "sales"],
        aes(x = variable, y = value, fill = variable)) +
   geom_boxplot() +
   scale_fill_manual(values = c("#1877F2", "grey20", "#FF0000")) +
@@ -380,17 +406,29 @@ ggplot(marketing_long[variable != "sales"],
        x = "Channel", y = "Ad Spend") +
   theme_minimal() +
   theme(legend.position = "none")
+p_box
 ```
 
 ::: {.smaller-80 .muted}
-Newspaper shows flagged outliers, but the three channels live on very
-different scales, so the small ones are squashed. Sound familiar?
+What do you see?
+:::
+
+## Example with ad spend: reading it
+
+```{r boxplot-2}
+p_box
+```
+
+::: {.smaller-90}
+- **Newspaper** shows flagged outliers on the high side
+- But the three channels live on very **different scales**, so the smaller
+  ones are squashed against the axis
 :::
 
 ## Example with logged ad spend
 
 ```{r boxplot-log}
-ggplot(marketing_long[variable != "sales"],
+p_boxlog <- ggplot(marketing_long[variable != "sales"],
        aes(x = variable, y = log10(value), fill = variable)) +
   geom_boxplot() +
   scale_fill_manual(values = c("#1877F2", "grey20", "#FF0000")) +
@@ -398,11 +436,22 @@ ggplot(marketing_long[variable != "sales"],
        x = "Channel", y = "log Ad Spend") +
   theme_minimal() +
   theme(legend.position = "none")
+p_boxlog
 ```
 
 ::: {.smaller-80 .muted}
-On the log scale the comparison is fair, and a different picture appears:
-now **low-spend** outliers become visible too.
+Same data, log scale. What changed?
+:::
+
+## Example with logged ad spend: reading it
+
+```{r boxplot-log-2}
+p_boxlog
+```
+
+::: {.smaller-90}
+- On the log scale the comparison across channels is **fair**
+- A different picture appears: now **low-spend** outliers become visible too
 :::
 
 ## What the log transformation does
