@@ -53,5 +53,5 @@ Course materials (slides, cases, code, and the syllabus) will be posted here as 
     - [Every chart from the slides](https://github.com/dadepro/mkt566/blob/main/w2/code/w2-1-eda-variation-class.R)
     - [Simulate the case dataset](https://github.com/dadepro/mkt566/blob/main/w2/code/w2-1-simulate-marketing-dataset.R) (no need to run it: the dataset is already saved in [w2/code/data](https://github.com/dadepro/mkt566/tree/main/w2/code/data))
 - Thursday, Sept. 3:
-  - In-class exercise, the variation case: **[handout](https://raw.githack.com/dadepro/mkt566/main/w2/w2-1-variation-case.html)** and [data](https://github.com/dadepro/mkt566/blob/main/w2/code/data/marketing_eda.csv). A vibecoding exercise with no starter code: bring your laptop with the [week 1 setup](https://raw.githack.com/dadepro/mkt566/main/w1/vscode-setup.html) working
+  - In-class exercise, the variation case: **[handout](https://raw.githack.com/dadepro/mkt566/main/w2/w2-1-variation-case.html)** and [data](https://github.com/dadepro/mkt566/raw/main/w2/variation-case-data.zip). A vibecoding exercise with no starter code: bring your laptop with the [week 1 setup](https://raw.githack.com/dadepro/mkt566/main/w1/vscode-setup.html) working
   

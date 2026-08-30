@@ -17,8 +17,8 @@ The tasks start with training wheels on (we give you the exact prompt to paste) 
 
 ## Setup (5 minutes)
 
-1. Download the dataset: [**`marketing_eda.csv`**](https://github.com/dadepro/mkt566/raw/main/w2/code/data/marketing_eda.csv) (if it opens in the browser instead of downloading, right-click the link → Save Link As...).
-2. Make a new folder for today (for example `variation-case`), put the file in it, and in VS Code choose **File → Open Folder...** to open that folder.
+1. Download the dataset: [**`variation-case-data.zip`**](https://github.com/dadepro/mkt566/raw/main/w2/variation-case-data.zip). Unzip it (double-click; Safari may have unzipped it for you already) to get `marketing_eda.csv`.
+2. Make a new folder for today (for example `variation-case`), put `marketing_eda.csv` in it, and in VS Code choose **File → Open Folder...** to open that folder.
 3. Open your AI assistant panel (Claude Code, Codex, Copilot, or Cursor), the one you configured in the [week 1 setup guide](https://raw.githack.com/dadepro/mkt566/main/w1/vscode-setup.html).
 4. Make sure the **R extension** (publisher: **REditorSupport**) is installed; you did this in the [Running R Code guide](https://raw.githack.com/dadepro/mkt566/main/w1/r-setup.html). It is what puts the preview and knit buttons on `.Rmd` files at the end of this case. Quick check: open the Extensions panel (`Cmd+Shift+X` / `Ctrl+Shift+X`), search for **R**, and confirm it says installed.
 5. Two one-time pieces used at the very end, to **knit** your report: the **rmarkdown** R package and a free converter tool called **pandoc**. Let your assistant sort this out; paste:
