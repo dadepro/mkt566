@@ -17,8 +17,8 @@ The tasks start with training wheels on (we give you the exact prompt to paste) 
 
 ## Setup (5 minutes)
 
-1. Download [**`w2-code.zip`**](https://github.com/dadepro/mkt566/raw/main/w2/w2-code.zip) from the course website and unzip it.
-2. In VS Code: **File → Open Folder...** and open the unzipped `code` folder.
+1. Download the dataset: [**`marketing_eda.csv`**](https://github.com/dadepro/mkt566/raw/main/w2/code/data/marketing_eda.csv) (if it opens in the browser instead of downloading, right-click the link → Save Link As...).
+2. Make a new folder for today (for example `variation-case`), put the file in it, and in VS Code choose **File → Open Folder...** to open that folder.
 3. Open your AI assistant panel (Claude Code, Codex, Copilot, or Cursor), the one you configured in the [week 1 setup guide](https://raw.githack.com/dadepro/mkt566/main/w1/vscode-setup.html).
 4. Make sure the **R extension** (publisher: **REditorSupport**) is installed; you did this in the [Running R Code guide](https://raw.githack.com/dadepro/mkt566/main/w1/r-setup.html). It is what puts the preview and knit buttons on `.Rmd` files at the end of this case. Quick check: open the Extensions panel (`Cmd+Shift+X` / `Ctrl+Shift+X`), search for **R**, and confirm it says installed.
 5. Two one-time pieces used at the very end, to **knit** your report: the **rmarkdown** R package and a free converter tool called **pandoc**. Let your assistant sort this out; paste:
@@ -30,7 +30,7 @@ The tasks start with training wheels on (we give you the exact prompt to paste) 
 
 ## The data
 
-`data/marketing_eda.csv` contains 1,000 customers of an online retailer:
+`marketing_eda.csv` contains 1,000 customers of an online retailer:
 
 | Column | What it is |
 |---|---|
@@ -69,7 +69,7 @@ If you did the week 1 "pro move" and saved this as a reusable command in your to
 
 The first move of any analysis, straight from Tuesday's lecture: **look at the raw data before charting it**. Paste this into your assistant, exactly as written:
 
-> Create a file called variation-case.R in this folder. It should: load data/marketing_eda.csv, show the first few rows with head(), and print the number of rows with nrow(). Also create a folder called figures; we will save charts there later. Add a short comment above each step explaining what it does. Do not run it; I will run it myself.
+> Create a file called variation-case.R in this folder. It should: load marketing_eda.csv, show the first few rows with head(), and print the number of rows with nrow(). Also create a folder called figures; we will save charts there later. Add a short comment above each step explaining what it does. Do not run it; I will run it myself.
 
 Open `variation-case.R` and run it line by line (`Cmd+Enter` / `Ctrl+Enter`), reading the output as you go.
 
