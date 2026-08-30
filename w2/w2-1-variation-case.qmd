@@ -1,0 +1,185 @@
+---
+title: "The Variation Case: Your First Vibecoded Analysis"
+subtitle: "MKT 566 · Decision Making Using Marketing Analytics · Fall 2026"
+format:
+  html:
+    toc: true
+    toc-depth: 2
+    embed-resources: true
+    link-external-newwindow: true
+---
+
+Today you will explore a dataset you have never seen, using everything from Tuesday's EDA lecture: distributions, skew, log scales, and outliers. Here is the twist: **you will not write a single line of code yourself**. You describe what you want, your AI assistant writes the R code, you run it, look at the chart, and refine. That loop is vibecoding, and it is how you will work all semester.
+
+The AI handles the code. What it cannot do is the part that makes you valuable: **deciding what to ask next and judging whether the answer makes marketing sense**. Every task below ends with interpretation questions. Those are yours.
+
+The tasks start with training wheels on (we give you the exact prompt to paste) and take them off as you go (by the end, you write your own prompts from scratch).
+
+## Setup (5 minutes)
+
+1. Download [**`w2-code.zip`**](https://github.com/dadepro/mkt566/raw/main/w2/w2-code.zip) from the course website and unzip it.
+2. In VS Code: **File → Open Folder...** and open the unzipped `code` folder.
+3. Open your AI assistant panel (Claude Code, Codex, Copilot, or Cursor), the one you configured in the [week 1 setup guide](https://raw.githack.com/dadepro/mkt566/main/w1/vscode-setup.html).
+4. Make sure the **R extension** (publisher: **REditorSupport**) is installed; you did this in the [Running R Code guide](https://raw.githack.com/dadepro/mkt566/main/w1/r-setup.html). It is what puts the preview and knit buttons on `.Rmd` files at the end of this case. Quick check: open the Extensions panel (`Cmd+Shift+X` / `Ctrl+Shift+X`), search for **R**, and confirm it says installed.
+5. Two one-time pieces used at the very end, to **knit** your report: the **rmarkdown** R package and a free converter tool called **pandoc**. Let your assistant sort this out; paste:
+
+   > Check that the R package rmarkdown is installed and that pandoc is available on this machine. Install anything missing and tell me what you did.
+
+   (The manual route: run `install.packages("rmarkdown")` once in R, and install pandoc from [pandoc.org/installing](https://pandoc.org/installing.html): the .pkg installer on Mac, the .msi on Windows.)
+6. That's it. If you followed the week 1 guides ([VS Code + AI](https://raw.githack.com/dadepro/mkt566/main/w1/vscode-setup.html), [Running R Code](https://raw.githack.com/dadepro/mkt566/main/w1/r-setup.html), [Markdown](https://raw.githack.com/dadepro/mkt566/main/w1/markdown-setup.html)), nothing else to install.
+
+## The data
+
+`data/marketing_eda.csv` contains 1,000 customers of an online retailer:
+
+| Column | What it is |
+|---|---|
+| `CustomerID` | customer identifier |
+| `Age`, `Gender`, `Device` | who they are and what they browse on (Mobile/Desktop) |
+| `Channel` | the ad channel that reached them (Search, Social, Display, Email, Video) |
+| `Ad_Spend` | dollars spent advertising to this customer |
+| `Clicks`, `Purchases` | how they responded |
+| `Revenue` | dollars they generated |
+
+## The vibecoding loop
+
+Every task below is the same five steps:
+
+1. **Ask precisely.** Name the variable, the chart type, and anything specific ("30 bins", "log scale", "sorted bars"). "A histogram of Ad_Spend with 30 bins" beats "make a chart of spend".
+2. **Run it.** Your assistant adds code to a script; you run it line by line with `Cmd+Enter` / `Ctrl+Enter`, like in class.
+3. **Look.** Does the chart show what you asked for? Are the axes labeled? Is the number plausible?
+4. **Refine.** Not right, or not clear? Tell the assistant what to change. Error message? Paste it back and ask why.
+5. **Interpret.** Answer the questions yourself, in plain English. This is the deliverable.
+
+::: {.callout-tip}
+Any time the assistant writes something you do not understand, ask: *"Explain this code line by line, I have never coded before."* That is not cheating; that is the fastest R course you will ever take.
+:::
+
+::: {.callout-important}
+## Remember the AI log
+
+Every deliverable in this course ships with an `ai-log.md`. You do not write it; the assistant does, but **only if you ask before closing the chat** (a new chat cannot see the old conversation). The last step of this case is pasting the log prompt from Tuesday's slides:
+
+> Append a short log of this session to a file called ai-log.md in this folder: each request I made, one line each, in order, plus anything you got wrong that we fixed.
+
+If you did the week 1 "pro move" and saved this as a reusable command in your tool, it is one keystroke.
+:::
+
+## Task 1: look at the data (exact prompt provided)
+
+The first move of any analysis, straight from Tuesday's lecture: **look at the raw data before charting it**. Paste this into your assistant, exactly as written:
+
+> Create a file called variation-case.R in this folder. It should: load data/marketing_eda.csv, show the first few rows with head(), and print the number of rows with nrow(). Also create a folder called figures; we will save charts there later. Add a short comment above each step explaining what it does. Do not run it; I will run it myself.
+
+Open `variation-case.R` and run it line by line (`Cmd+Enter` / `Ctrl+Enter`), reading the output as you go.
+
+**Answer in plain English:**
+
+- How many customers are in the data? What does one row represent?
+- Just from `head()`: which columns are categorical and which are numeric?
+
+## Task 2: summary statistics (exact prompt provided)
+
+Also from the lecture: summary statistics come **at the beginning** of any analysis, and in R they are one line. Paste this:
+
+> Add to variation-case.R: print summary statistics for every column, with a comment saying what to look for in the output.
+
+Run the new lines.
+
+**Answer:**
+
+- Are there any missing values?
+- Look at `Ad_Spend`: the mean is noticeably larger than the median. From Tuesday's lecture, what does that gap usually tell you about the shape of a distribution?
+
+## Task 3: the distribution of ad spend (prompt skeleton)
+
+Now the training wheels loosen: here is the prompt with blanks, fill them in yourself.
+
+> Add to variation-case.R: a histogram of ______ with 30 bins, with a dashed vertical line at the ______ and a solid vertical line at the ______, clear axis labels, and theme_minimal(). Save it with ggsave as figures/adspend-hist.png.
+
+Run the new lines and look at the chart.
+
+**Answer:**
+
+- Is the distribution symmetric or skewed?
+- What does the position of the mean relative to the median tell you, now that you can see it?
+- What marketing strategy might create this shape? (Think: does a firm spend the same on every customer?)
+
+## Task 4: the same chart, on a log scale
+
+From the lecture: when a few big values dominate, put the variable on a **log scale**. Write the prompt yourself this time; it needs to say which chart to modify (or add), which axis becomes log, and what file name to save (`figures/adspend-hist-log.png`).
+
+**Answer:**
+
+- What can you see now that was invisible before?
+- Is it easier to say what a "typical" customer's ad spend is? Why?
+
+## Task 5: the channel mix (you're on your own)
+
+We want to know how customers are spread across ad channels. You know the drill from the lecture: categorical variable, so a **bar chart**. Ask for one that is sorted, shows the percentage on each bar, and is saved as `figures/channel-mix.png`.
+
+**Answer:**
+
+- Is the data balanced across channels? Which dominate?
+- Does the mix make intuitive sense for an online retailer? Why or why not?
+
+## Task 6: hunting outliers
+
+Ask for a **boxplot** of `Ad_Spend` (saved as `figures/adspend-box.png`), and then a second one on a log scale (`figures/adspend-box-log.png`). Recall the rule from class: the flagged points are beyond 1.5 × IQR.
+
+**Answer:**
+
+- Are there many outliers? Are they mostly large or mostly small values?
+- Should we drop them before a future analysis? Use the lecture's best practice (with and without, disclose, robust statistics) to justify your answer in 2 or 3 sentences.
+
+## Task 7: your question (no training wheels)
+
+EDA is a creative process: the best analysts are the ones who ask the next question. Pick **one** question this data can answer, for example:
+
+- Does the age distribution look like what you'd expect for an online retailer?
+- Do Mobile and Desktop customers get different amounts of ad spend?
+- What does the distribution of `Purchases` look like, and why might it have that shape?
+
+...or invent your own. Vibecode one chart that answers it (saved to `figures/`), and write **two sentences**: what you asked, and what you found.
+
+## Deliverable: a knitted report, the homework way
+
+This is a dress rehearsal: **every homework in this course is submitted as an R Markdown report knitted to HTML**, exactly like this.
+
+**R Markdown** (`.Rmd`) is markdown's big sibling: the same text formatting you met in the [markdown guide](https://raw.githack.com/dadepro/mkt566/main/w1/markdown-setup.html), but the R code lives *inside* the document, in chunks. **Knitting** the file runs every chunk top to bottom and weaves the output (your charts) into a polished HTML page. Your figures can never be stale or mismatched: they are rebuilt from the code on every knit.
+
+Ask your assistant:
+
+> Convert variation-case.R into variation-report.Rmd in this folder: an R Markdown report titled "The Variation Case", output format html_document. Right under the title, put my first name, last name, and 10-digit USC ID: ______ . Give it one section per task, each containing the code chunk that makes that chart, with a "**My answer:**" placeholder under each chunk for me to fill in.
+
+(Fill in the blank with your actual name and ID, so the assistant writes them in for you.)
+
+Then do the part only you can do: **write your answers** into the placeholders. To see the result while you work, click the preview button ![](images/open-preview.svg){width=16px style="vertical-align: text-bottom;"} in the **top-right corner of the editor** (or `Cmd+Shift+V` / `Ctrl+Shift+V`). The preview is just for looking; it does not create any file.
+
+When you are happy with it, produce the file you will submit, `variation-report.html`: click the **play button** at the top right of the editor (hover text: "Knit Rmd"). It knits the document and drops `variation-report.html` right next to your `.Rmd`. The button lives here:
+
+![](images/vscode-knit-button.png)
+
+No play button, or an error? The vibecoding way works too:
+
+> Knit variation-report.Rmd to variation-report.html and tell me if anything fails.
+
+(Either way needs the one-time pieces from Setup steps 4 and 5.)
+
+Open `variation-report.html` in your browser and check three things: your **name and USC ID** are at the top, every figure shows up, and every answer is there. What you see is what you will submit for the homeworks, so make it something you would be comfortable handing to a manager.
+
+Finally, before you close the chat, the bookkeeping from Tuesday's slides:
+
+> Append a short log of this session to a file called ai-log.md in this folder: each request I made, one line each, in order, plus anything you got wrong that we fixed.
+
+**Submit:** `variation-report.html` and `ai-log.md` (upload to Brightspace if asked; otherwise be ready to show them in class).
+
+## If something goes wrong
+
+- **The assistant writes code but no file appears.** Ask it explicitly: "create the file variation-case.R in this folder". Some assistants answer in chat unless told to write files.
+- **An error when you run a line.** Copy the whole error message, paste it into the chat, and ask "why did this fail and how do I fix it?" This is the single most useful vibecoding habit.
+- **"Error: there is no package called 'ggplot2'" (or any other package).** A library is missing on your computer. Paste the error into the chat and the assistant will give you the one-line fix (`install.packages(...)`, run it once). The [Running R Code guide](https://raw.githack.com/dadepro/mkt566/main/w1/r-setup.html) has a single line that installs every package the course uses.
+- **Knitting fails mentioning pandoc** ("pandoc: command not found", "pandoc version ... required"). Pandoc is missing: go back to Setup step 5 (the assistant prompt, or the [pandoc.org](https://pandoc.org/installing.html) installer), then knit again.
+- **Knitting stops with an error in a chunk.** The message names the chunk and the line. Paste the whole message into the chat; the assistant will fix the chunk. Re-knit until it runs clean.
+- **The chart opens in a separate window instead of a VS Code tab.** See the troubleshooting section of the [Running R Code guide](https://raw.githack.com/dadepro/mkt566/main/w1/r-setup.html).
+- **A chart looks wrong (weird axis, missing bars).** Describe what you see and what you expected. The assistant cannot see the chart; your description is its eyes.

@@ -1,0 +1,1210 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="w2-1-exploratory-data-analysis_files/libs/clipboard/clipboard.min.js"></script>
+<script src="w2-1-exploratory-data-analysis_files/libs/quarto-html/tabby.min.js"></script>
+<script src="w2-1-exploratory-data-analysis_files/libs/quarto-html/popper.min.js"></script>
+<script src="w2-1-exploratory-data-analysis_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="w2-1-exploratory-data-analysis_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="w2-1-exploratory-data-analysis_files/libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="w2-1-exploratory-data-analysis_files/libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.10.18">
+
+  <meta name="author" content="Davide Proserpio">
+  <title>Exploratory Data Analysis: Variation</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="w2-1-exploratory-data-analysis_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="w2-1-exploratory-data-analysis_files/libs/revealjs/dist/reveal.css">
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      { color: #003b4f; background-color: #f1f3f5; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #003b4f; } /* Normal */
+    code span.al { color: #ad0000; } /* Alert */
+    code span.an { color: #5e5e5e; } /* Annotation */
+    code span.at { color: #657422; } /* Attribute */
+    code span.bn { color: #ad0000; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #003b4f; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #20794d; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #5e5e5e; } /* Comment */
+    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+    code span.dt { color: #ad0000; } /* DataType */
+    code span.dv { color: #ad0000; } /* DecVal */
+    code span.er { color: #ad0000; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #ad0000; } /* Float */
+    code span.fu { color: #4758ab; } /* Function */
+    code span.im { color: #00769e; } /* Import */
+    code span.in { color: #5e5e5e; } /* Information */
+    code span.kw { color: #003b4f; font-weight: bold; } /* Keyword */
+    code span.op { color: #5e5e5e; } /* Operator */
+    code span.ot { color: #003b4f; } /* Other */
+    code span.pp { color: #ad0000; } /* Preprocessor */
+    code span.sc { color: #5e5e5e; } /* SpecialChar */
+    code span.ss { color: #20794d; } /* SpecialString */
+    code span.st { color: #20794d; } /* String */
+    code span.va { color: #111111; } /* Variable */
+    code span.vs { color: #20794d; } /* VerbatimString */
+    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="w2-1-exploratory-data-analysis_files/libs/revealjs/dist/theme/quarto-80bfa77cf879cdeec7850b9befca25f7.css">
+  <link href="w2-1-exploratory-data-analysis_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="w2-1-exploratory-data-analysis_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="w2-1-exploratory-data-analysis_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="w2-1-exploratory-data-analysis_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+  <script src="w2-1-exploratory-data-analysis_files/libs/quarto-diagram/mermaid.min.js"></script>
+  <script src="w2-1-exploratory-data-analysis_files/libs/quarto-diagram/mermaid-init.js"></script>
+  <link href="w2-1-exploratory-data-analysis_files/libs/quarto-diagram/mermaid.css" rel="stylesheet">
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">Exploratory Data Analysis: Variation</h1>
+  <p class="subtitle">MKT 566 · Fall 2026</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Davide Proserpio
+</div>
+        <p class="quarto-title-affiliation">
+            USC Marshall School of Business
+          </p>
+    </div>
+</div>
+
+</section>
+<section>
+<section id="what-is-eda" class="title-slide slide level1 divider center">
+<h1>What is EDA?</h1>
+
+</section>
+<section id="from-charts-to-questions" class="slide level2">
+<h2>From charts to questions</h2>
+<ul>
+<li>Last week you built the <strong>vocabulary</strong>: which chart types exist, what each is for, and how to make a figure worth showing</li>
+<li>This week you put them to work: using charts <strong>systematically</strong> to understand a dataset you have never seen before</li>
+<li>That process has a name: <strong>Exploratory Data Analysis</strong> (EDA)</li>
+</ul>
+<div class="smaller-80 muted">
+<p>Partially based on Chapter 7 of <a href="https://r4ds.had.co.nz/exploratory-data-analysis.html">R for Data Science</a> (this week’s required reading).</p>
+</div>
+</section>
+<section id="what-we-will-learn" class="slide level2">
+<h2>What we will learn</h2>
+<p>How to use visualization to explore your data in a systematic way:</p>
+<ol type="1">
+<li><strong>Generate questions</strong> about your data</li>
+<li><strong>Search for answers</strong> by visualizing, transforming, and modeling your data</li>
+<li>Use what you learn to <strong>refine</strong> your questions and/or generate new ones</li>
+</ol>
+</section>
+<section id="eda-goal" class="slide level2">
+<h2>EDA goal</h2>
+<ul>
+<li>Develop an <strong>understanding of your data</strong></li>
+<li>The easiest way to do this is to use <strong>questions as tools</strong> to guide your investigation</li>
+<li>EDA is fundamentally a <strong>creative process</strong></li>
+</ul>
+<div class="box">
+<p>There is no fixed recipe: the quality of your EDA depends on the quality of the questions you ask, and each answer suggests the next question.</p>
+</div>
+</section>
+<section id="start-with-summary-statistics" class="slide level2">
+<h2>Start with summary statistics</h2>
+<p>Computing summary statistics is also very useful and should be done at the beginning of any analysis:</p>
+<ul>
+<li>Mean, median</li>
+<li>Standard deviation</li>
+<li>Min, max</li>
+<li>Number of <strong>missing values</strong></li>
+</ul>
+<p>These descriptive statistics can provide valuable insights into your data, and they are one line of R (<code>summary()</code>, as we will see shortly).</p>
+</section>
+<section id="data-cleaning" class="slide level2">
+<h2>Data cleaning</h2>
+<p>During EDA you will perform what is called <strong>data cleaning</strong>, which involves things like:</p>
+<ul>
+<li>Finding and removing <strong>erroneous data</strong> (impossible ages, negative prices, duplicated rows)</li>
+<li>Deciding what to do with <strong>outliers</strong></li>
+<li>Deciding what to do with <strong>missing data</strong></li>
+</ul>
+<div class="smaller-80 muted">
+<p>Rule of thumb: you will spend far more time cleaning than modeling. Budget for it.</p>
+</div>
+</section>
+<section id="feature-engineering" class="slide level2">
+<h2>Feature engineering</h2>
+<p>Very often you will create new variables from existing ones. This process is referred to as <strong>feature engineering</strong>, e.g.:</p>
+<ul>
+<li>Extract the <strong>week number</strong> from a date variable</li>
+<li>Sum up <strong>total ad spend</strong> across all advertising channels</li>
+<li>Compute the <strong>cumulative average review rating</strong> for each product</li>
+</ul>
+</section>
+<section id="the-eda-workflow" class="slide level2">
+<h2>The EDA workflow</h2>
+<div class="cell" data-reveal="true" data-fig-width="12" data-layout-align="center">
+<div class="cell-output-display">
+<div>
+<p></p><figure class=""><p></p>
+<div>
+<pre class="mermaid mermaid-js">%%{init: {"themeVariables": {"fontSize": "22px"}, "flowchart": {"nodeSpacing": 35, "rankSpacing": 55, "padding": 12}}}%%
+flowchart LR
+  A[("Raw&lt;br/&gt;data")] --&gt; B["Initial&lt;br/&gt;EDA"]
+  B --&gt; C["Data&lt;br/&gt;cleaning"]
+  C --&gt; D[("Cleaned&lt;br/&gt;data")]
+  D --&gt; E["Deeper&lt;br/&gt;EDA"]
+  E --&gt; F[("Feature-rich&lt;br/&gt;data")]
+  F --&gt; G["Final EDA&lt;br/&gt;&amp; viz"]
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<ul>
+<li><strong>Initial EDA</strong>: spot errors, outliers, and missing data → clean them up</li>
+<li><strong>Deeper EDA</strong>: uncover patterns and group effects, engineer features</li>
+</ul>
+<div class="smaller-80 muted">
+<p>The loop matters: what you find in deeper EDA often sends you back to cleaning.</p>
+</div>
+</section>
+<section id="the-rules-of-eda" class="slide level2">
+<h2>The rules of EDA</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/eda-rules-feit.png" class="quarto-figure quarto-figure-center" height="600"></p>
+</figure>
+</div>
+</section>
+<section id="r-scripts-for-this-week" class="slide level2">
+<h2>R scripts for this week</h2>
+<p>In the <code>code/</code> folder on the course website:</p>
+<ol type="1">
+<li><strong><code>w2-1-eda-variation-class.R</code></strong>: reproduces every chart in today’s deck</li>
+<li><strong><code>w2-1-simulate-marketing-dataset.R</code></strong>: generates Thursday’s case dataset, <code>data/marketing_eda.csv</code> (you do not need to run it)</li>
+</ol>
+<div class="box">
+<p>Download everything as one zip: <a href="https://github.com/dadepro/mkt566/raw/main/w2/w2-code.zip"><strong><code>w2-code.zip</code></strong></a>, open the scripts in VS Code, and run along.</p>
+</div>
+<div class="smaller-80 muted">
+<p>Thursday’s in-class case is a separate handout, and it has <strong>no starter code</strong> on purpose: you will vibecode it. More on the last slides.</p>
+</div>
+</section></section>
+<section>
+<section id="how-do-we-explore-the-data" class="title-slide slide level1 divider center">
+<h1>How Do We Explore the Data?</h1>
+
+</section>
+<section id="variation-and-covariation" class="slide level2">
+<h2>Variation and covariation</h2>
+<ul>
+<li>There is <strong>no rule</strong> about which questions you should ask to guide your exploration</li>
+<li>However, two types of questions will always be useful for making discoveries within your data:</li>
+</ul>
+<div class="box">
+<ol type="1">
+<li>What type of <strong>variation</strong> occurs <em>within</em> my variables? <em>(today)</em></li>
+<li>What type of <strong>covariation</strong> occurs <em>between</em> my variables? <em>(next week)</em></li>
+</ol>
+</div>
+</section>
+<section id="what-is-variation" class="slide level2">
+<h2>What is variation?</h2>
+<p><strong>Variation</strong> is the tendency of the values of a variable to change from measurement to measurement.</p>
+<ul>
+<li>We are interested in “<strong>within-the-same-variable</strong>” patterns</li>
+</ul>
+<p>We can observe variation:</p>
+<ul>
+<li>For the same <strong>continuous</strong> variable over two different measures, e.g., temperature measured at 10 am and 4 pm</li>
+<li>For the same <strong>categorical</strong> variable across different “subjects”, e.g., eye color across individuals</li>
+</ul>
+</section>
+<section id="how-to-visualize-variation" class="slide level2">
+<h2>How to visualize variation</h2>
+<p>The best way to understand patterns of variation is to visualize:</p>
+<ol type="1">
+<li>The <strong>distribution</strong> of the variable’s values</li>
+<li>How the variable <strong>evolves over repeated observations</strong> (e.g., when we have repeated observations over time, i.e., panel data or time series)</li>
+</ol>
+<p>We will look at both, using two datasets.</p>
+</section>
+<section id="visualizing-distributions" class="slide level2">
+<h2>Visualizing distributions</h2>
+<p>Different charts depending on the type of variable:</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 55%">
+<col style="width: 45%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Variable type</th>
+<th>Chart</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Continuous</strong> (sales, ad spend, prices)</td>
+<td>Histogram, density plot</td>
+</tr>
+<tr class="even">
+<td><strong>Categorical / discrete</strong> (channel, device, star rating)</td>
+<td>Bar chart</td>
+</tr>
+</tbody>
+</table>
+<p>And for spotting outliers: the <strong>box plot</strong> (coming up).</p>
+</section></section>
+<section>
+<section id="visualizing-distributions-1" class="title-slide slide level1 divider center">
+<h1>Visualizing Distributions</h1>
+
+</section>
+<section id="the-marketing-dataset" class="slide level2">
+<h2>The <code>marketing</code> dataset</h2>
+<p>From the R library <strong><code>datarium</code></strong>: a marketing experiment with the advertising budget spent on three channels and the resulting sales.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="" aria-label="1"></a><span class="fu">library</span>(datarium)</span>
+<span id="cb1-2"><a href="" aria-label="2"></a><span class="fu">head</span>(marketing)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  youtube facebook newspaper sales
+1  276.12    45.36     83.04 26.52
+2   53.40    47.16     54.12 12.48
+3   20.64    55.08     83.16 11.16
+4  181.80    49.56     70.20 22.20
+5  216.96    12.96     70.08 15.48
+6   10.44    58.68     90.00  8.64</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="" aria-label="1"></a><span class="fu">nrow</span>(marketing)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 200</code></pre>
+</div>
+</div>
+<div class="smaller-80 muted">
+<p>200 observations. Budgets (<code>youtube</code>, <code>facebook</code>, <code>newspaper</code>) and <code>sales</code> are in thousands of dollars / units.</p>
+</div>
+</section>
+<section id="summary-statistics-first" class="slide level2">
+<h2>Summary statistics first</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="" aria-label="1"></a><span class="fu">summary</span>(marketing)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>    youtube          facebook       newspaper          sales      
+ Min.   :  0.84   Min.   : 0.00   Min.   :  0.36   Min.   : 1.92  
+ 1st Qu.: 89.25   1st Qu.:11.97   1st Qu.: 15.30   1st Qu.:12.45  
+ Median :179.70   Median :27.48   Median : 30.90   Median :15.48  
+ Mean   :176.45   Mean   :27.92   Mean   : 36.66   Mean   :16.83  
+ 3rd Qu.:262.59   3rd Qu.:43.83   3rd Qu.: 54.12   3rd Qu.:20.88  
+ Max.   :355.68   Max.   :59.52   Max.   :136.80   Max.   :32.40  </code></pre>
+</div>
+</div>
+<div class="smaller-90">
+<p>Already informative: no missing values, <code>facebook</code> spend starts at <strong>zero</strong> (some campaigns skip it), <code>youtube</code> gets by far the largest budgets, and <code>sales</code> vary by a factor of ~17.</p>
+</div>
+</section>
+<section id="distribution-of-sales" class="slide level2">
+<h2>Distribution of sales</h2>
+<div class="cell columns column-output-location">
+<div class="column">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7" data-code-line-numbers="3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="" aria-label="1"></a><span class="fu">ggplot</span>(marketing, <span class="fu">aes</span>(<span class="at">x =</span> sales)) <span class="sc">+</span></span>
+<span id="cb7-2"><a href="" aria-label="2"></a>  <span class="fu">geom_histogram</span>(</span>
+<span id="cb7-3"><a href="" aria-label="3"></a>    <span class="at">binwidth =</span> <span class="dv">10</span>,</span>
+<span id="cb7-4"><a href="" aria-label="4"></a>    <span class="at">fill =</span> <span class="st">"steelblue"</span>, <span class="at">color =</span> <span class="st">"white"</span></span>
+<span id="cb7-5"><a href="" aria-label="5"></a>  ) <span class="sc">+</span></span>
+<span id="cb7-6"><a href="" aria-label="6"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Distribution of Sales"</span>,</span>
+<span id="cb7-7"><a href="" aria-label="7"></a>       <span class="at">x =</span> <span class="st">"Sales"</span>, <span class="at">y =</span> <span class="st">"Frequency"</span>) <span class="sc">+</span></span>
+<span id="cb7-8"><a href="" aria-label="8"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="w2-1-exploratory-data-analysis_files/figure-revealjs/sales-bw10-1.png" width="528"></p>
+</figure>
+</div>
+</div>
+</div></div>
+<div class="smaller-80 muted">
+<p><code>binwidth</code> controls how wide each bar is. Here each bar covers 10 units of sales: only three bars, almost no information.</p>
+</div>
+</section>
+<section id="distribution-of-sales-smaller-bins" class="slide level2">
+<h2>Distribution of sales: smaller bins</h2>
+<div class="cell columns column-output-location">
+<div class="column">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8" data-code-line-numbers="3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="" aria-label="1"></a><span class="fu">ggplot</span>(marketing, <span class="fu">aes</span>(<span class="at">x =</span> sales)) <span class="sc">+</span></span>
+<span id="cb8-2"><a href="" aria-label="2"></a>  <span class="fu">geom_histogram</span>(</span>
+<span id="cb8-3"><a href="" aria-label="3"></a>    <span class="at">binwidth =</span> <span class="dv">1</span>,</span>
+<span id="cb8-4"><a href="" aria-label="4"></a>    <span class="at">fill =</span> <span class="st">"steelblue"</span>, <span class="at">color =</span> <span class="st">"white"</span></span>
+<span id="cb8-5"><a href="" aria-label="5"></a>  ) <span class="sc">+</span></span>
+<span id="cb8-6"><a href="" aria-label="6"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Distribution of Sales"</span>,</span>
+<span id="cb8-7"><a href="" aria-label="7"></a>       <span class="at">x =</span> <span class="st">"Sales"</span>, <span class="at">y =</span> <span class="st">"Frequency"</span>) <span class="sc">+</span></span>
+<span id="cb8-8"><a href="" aria-label="8"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="w2-1-exploratory-data-analysis_files/figure-revealjs/sales-bw1-1.png" width="528"></p>
+</figure>
+</div>
+</div>
+</div></div>
+<div class="smaller-80 muted">
+<p>Now we can see the shape: most weeks sell 10–20, with a right tail of strong weeks.</p>
+</div>
+</section>
+<section id="distribution-of-sales-too-small" class="slide level2">
+<h2>Distribution of sales: too small</h2>
+<div class="cell columns column-output-location">
+<div class="column">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9" data-code-line-numbers="3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="" aria-label="1"></a><span class="fu">ggplot</span>(marketing, <span class="fu">aes</span>(<span class="at">x =</span> sales)) <span class="sc">+</span></span>
+<span id="cb9-2"><a href="" aria-label="2"></a>  <span class="fu">geom_histogram</span>(</span>
+<span id="cb9-3"><a href="" aria-label="3"></a>    <span class="at">binwidth =</span> <span class="fl">0.1</span>,</span>
+<span id="cb9-4"><a href="" aria-label="4"></a>    <span class="at">fill =</span> <span class="st">"steelblue"</span>, <span class="at">color =</span> <span class="st">"white"</span></span>
+<span id="cb9-5"><a href="" aria-label="5"></a>  ) <span class="sc">+</span></span>
+<span id="cb9-6"><a href="" aria-label="6"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Distribution of Sales"</span>,</span>
+<span id="cb9-7"><a href="" aria-label="7"></a>       <span class="at">x =</span> <span class="st">"Sales"</span>, <span class="at">y =</span> <span class="st">"Frequency"</span>) <span class="sc">+</span></span>
+<span id="cb9-8"><a href="" aria-label="8"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="w2-1-exploratory-data-analysis_files/figure-revealjs/sales-bw01-1.png" width="528"></p>
+</figure>
+</div>
+</div>
+</div></div>
+<div class="box-warn">
+<p>Bin width is a <strong>choice</strong>, and it changes what you see: too wide hides the shape, too narrow shows noise. Always try a few values.</p>
+</div>
+</section>
+<section id="spend-across-the-three-channels" class="slide level2">
+<h2>Spend across the three channels</h2>
+
+<img data-src="w2-1-exploratory-data-analysis_files/figure-revealjs/spend-three-1.png" width="1056" class="r-stretch"><div class="smaller-80 muted">
+<p>Same variable type, three different shapes: YouTube spend is spread almost uniformly, Facebook is flat-ish with a low mode, newspaper is <strong>right-skewed</strong>: a few campaigns spend a lot.</p>
+</div>
+</section>
+<section id="what-can-we-learn-from-distribution-charts" class="slide level2">
+<h2>What can we learn from distribution charts?</h2>
+<ul>
+<li><strong>Common vs.&nbsp;rare values</strong>: high vs.&nbsp;low bars</li>
+<li><strong>Shape</strong>: symmetric or skewed? One mode or several?</li>
+<li><strong>Unusual patterns</strong>: gaps, spikes, values that should not exist</li>
+<li><strong>Candidate outliers</strong>: bars far from the rest</li>
+</ul>
+<p>The last one deserves its own tool…</p>
+</section></section>
+<section>
+<section id="outliers" class="title-slide slide level1 divider center">
+<h1>Outliers</h1>
+
+</section>
+<section id="how-to-specifically-look-for-outliers" class="slide level2">
+<h2>How to specifically look for outliers</h2>
+<p><strong>Box plots</strong> (or scatter plots) are often more useful than histograms:</p>
+<ul>
+<li>Box plots automatically flag outliers using a mathematical rule</li>
+<li>Any point beyond <strong>1.5 × IQR</strong> (interquartile range):
+<ul>
+<li>IQR = Quartile 3 − Quartile 1</li>
+<li>Lower bound = Q1 − 1.5 × IQR</li>
+<li>Upper bound = Q3 + 1.5 × IQR</li>
+</ul></li>
+</ul>
+<div class="smaller-80 muted">
+<p>Recall from last week: the box is the middle 50% of the data, the line is the median, the whiskers reach the last point inside the bounds, and dots beyond them are flagged as outliers.</p>
+</div>
+</section>
+<section id="example-with-ad-spend" class="slide level2">
+<h2>Example with ad spend</h2>
+
+<img data-src="w2-1-exploratory-data-analysis_files/figure-revealjs/boxplot-1.png" width="672" class="r-stretch"><div class="smaller-80 muted">
+<p>Newspaper shows flagged outliers, but the three channels live on very different scales, so the small ones are squashed. Sound familiar?</p>
+</div>
+</section>
+<section id="example-with-logged-ad-spend" class="slide level2">
+<h2>Example with logged ad spend</h2>
+
+<img data-src="w2-1-exploratory-data-analysis_files/figure-revealjs/boxplot-log-1.png" width="672" class="r-stretch"><div class="smaller-80 muted">
+<p>On the log scale the comparison is fair, and a different picture appears: now <strong>low-spend</strong> outliers become visible too.</p>
+</div>
+</section>
+<section id="what-the-log-transformation-does" class="slide level2">
+<h2>What the log transformation does</h2>
+<p><strong>Log makes small values more visible</strong>: it expands small values and compresses large ones.</p>
+<p>When and why to use log:</p>
+<ul>
+<li>To handle <strong>skewed data</strong> (common in marketing: spend, sales, and clicks distributions)</li>
+<li>To make patterns at the <strong>low end</strong> visible when a few big values dominate</li>
+<li>To turn <strong>multiplicative growth</strong> into a straight line (e.g., exponential trends)</li>
+</ul>
+</section>
+<section id="why-logs-matter-in-eda" class="slide level2 smaller-90">
+<h2>Why logs matter in EDA</h2>
+<ul>
+<li>Log makes small values visible: you don’t lose them at the bottom of the plot</li>
+<li>It can also reveal <strong>negative outliers</strong> (very low spend, clicks, sales) that were hidden on the linear scale</li>
+<li>It emphasizes <strong>relative differences (ratios)</strong> instead of absolute differences: <span class="math inline">\(\log(a) - \log(b) = \log(a/b)\)</span></li>
+</ul>
+<div class="box">
+<p>Example: sales increase from $100 to $110</p>
+<ul>
+<li>Actual % change: <span class="math inline">\(\frac{110-100}{100} = 0.10 \rightarrow\)</span> <strong>10%</strong></li>
+<li>Using logs: <span class="math inline">\(\log(110) - \log(100) = \log(1.1) \approx 0.095 \rightarrow\)</span> <strong>9.5%</strong></li>
+</ul>
+<p>For small changes, a log difference <strong>is</strong> (approximately) the % change. We will use this all the time when we get to regression.</p>
+</div>
+</section>
+<section id="best-practice-for-outliers" class="slide level2">
+<h2>Best practice for outliers</h2>
+<ul>
+<li>It’s good practice to <strong>repeat your analysis with and without</strong> the outliers</li>
+<li>If they have <strong>minimal effect</strong> on the results, and you can’t figure out why they’re there, it’s reasonable to replace them with missing values and move on</li>
+<li>If they have a <strong>substantial effect</strong>, you shouldn’t drop them without justification: figure out what caused them (e.g., a data entry error) and <strong>disclose</strong> that you removed them in your write-up</li>
+<li>Generally, rely on <strong>robust statistics</strong> (median over mean, quantiles over ranges)</li>
+</ul>
+</section></section>
+<section>
+<section id="visualizing-trends" class="title-slide slide level1 divider center">
+<h1>Visualizing Trends</h1>
+
+</section>
+<section id="the-economics-dataset" class="slide level2">
+<h2>The <code>economics</code> dataset</h2>
+<p>The second way to visualize variation: how a variable <strong>evolves over time</strong>. Example with ggplot2’s <code>economics</code> dataset, monthly US indicators from <a href="https://fred.stlouisfed.org/">FRED</a>:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="" aria-label="1"></a><span class="fu">head</span>(economics)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 6
+  date         pce    pop psavert uempmed unemploy
+  &lt;date&gt;     &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;
+1 1967-07-01  507. 198712    12.6     4.5     2944
+2 1967-08-01  510. 198911    12.6     4.7     2945
+3 1967-09-01  516. 199113    11.9     4.6     2958
+4 1967-10-01  512. 199311    12.9     4.9     3143
+5 1967-11-01  517. 199498    12.8     4.7     3066
+6 1967-12-01  525. 199657    11.8     4.8     3018</code></pre>
+</div>
+</div>
+<div class="smaller-80 muted">
+<p><code>unemploy</code> is the number of unemployed, in thousands.</p>
+</div>
+</section>
+<section id="unemployment-over-time" class="slide level2">
+<h2>Unemployment over time</h2>
+<div class="cell columns column-output-location">
+<div class="column">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="" aria-label="1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> economics) <span class="sc">+</span></span>
+<span id="cb12-2"><a href="" aria-label="2"></a>  <span class="fu">geom_line</span>(</span>
+<span id="cb12-3"><a href="" aria-label="3"></a>    <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> date, <span class="at">y =</span> unemploy)</span>
+<span id="cb12-4"><a href="" aria-label="4"></a>  ) <span class="sc">+</span></span>
+<span id="cb12-5"><a href="" aria-label="5"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Unemployment over time"</span>,</span>
+<span id="cb12-6"><a href="" aria-label="6"></a>       <span class="at">x =</span> <span class="st">"Date"</span>,</span>
+<span id="cb12-7"><a href="" aria-label="7"></a>       <span class="at">y =</span> <span class="st">"Unemployed (thousands)"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="w2-1-exploratory-data-analysis_files/figure-revealjs/trend-line-1.png" width="528"></p>
+</figure>
+</div>
+</div>
+</div></div>
+<div class="smaller-80 muted">
+<p>A line chart is the default for time series. What patterns do you see?</p>
+</div>
+</section>
+<section id="long-run-direction" class="slide level2">
+<h2>Long-run direction</h2>
+<div class="cell columns column-output-location">
+<div class="column">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13" data-code-line-numbers="8-11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="" aria-label="1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> economics) <span class="sc">+</span></span>
+<span id="cb13-2"><a href="" aria-label="2"></a>  <span class="fu">geom_line</span>(</span>
+<span id="cb13-3"><a href="" aria-label="3"></a>    <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> date, <span class="at">y =</span> unemploy)</span>
+<span id="cb13-4"><a href="" aria-label="4"></a>  ) <span class="sc">+</span></span>
+<span id="cb13-5"><a href="" aria-label="5"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Unemployment over time"</span>,</span>
+<span id="cb13-6"><a href="" aria-label="6"></a>       <span class="at">x =</span> <span class="st">"Date"</span>,</span>
+<span id="cb13-7"><a href="" aria-label="7"></a>       <span class="at">y =</span> <span class="st">"Unemployed (thousands)"</span>) <span class="sc">+</span></span>
+<span id="cb13-8"><a href="" aria-label="8"></a>  <span class="fu">geom_smooth</span>(</span>
+<span id="cb13-9"><a href="" aria-label="9"></a>    <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> date, <span class="at">y =</span> unemploy),</span>
+<span id="cb13-10"><a href="" aria-label="10"></a>    <span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">color =</span> <span class="st">"blue"</span></span>
+<span id="cb13-11"><a href="" aria-label="11"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="w2-1-exploratory-data-analysis_files/figure-revealjs/trend-lm-1.png" width="528"></p>
+</figure>
+</div>
+</div>
+</div></div>
+<div class="smaller-80 muted">
+<p>A fitted line summarizes the <strong>long-run directional trend</strong>: unemployment drifts up as the labor force grows.</p>
+</div>
+</section>
+<section id="cycles-and-anomalies" class="slide level2">
+<h2>Cycles and anomalies</h2>
+<div class="cell columns column-output-location">
+<div class="column">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14" data-code-line-numbers="8-13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="" aria-label="1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> economics) <span class="sc">+</span></span>
+<span id="cb14-2"><a href="" aria-label="2"></a>  <span class="fu">geom_line</span>(</span>
+<span id="cb14-3"><a href="" aria-label="3"></a>    <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> date, <span class="at">y =</span> unemploy)</span>
+<span id="cb14-4"><a href="" aria-label="4"></a>  ) <span class="sc">+</span></span>
+<span id="cb14-5"><a href="" aria-label="5"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Unemployment over time"</span>,</span>
+<span id="cb14-6"><a href="" aria-label="6"></a>       <span class="at">x =</span> <span class="st">"Date"</span>,</span>
+<span id="cb14-7"><a href="" aria-label="7"></a>       <span class="at">y =</span> <span class="st">"Unemployed (thousands)"</span>) <span class="sc">+</span></span>
+<span id="cb14-8"><a href="" aria-label="8"></a>  <span class="fu">geom_vline</span>(</span>
+<span id="cb14-9"><a href="" aria-label="9"></a>    <span class="at">xintercept =</span> <span class="fu">as.Date</span>(<span class="fu">c</span>(</span>
+<span id="cb14-10"><a href="" aria-label="10"></a>      <span class="st">"1975-03-01"</span>, <span class="st">"1983-01-01"</span>, <span class="st">"1992-08-01"</span>,</span>
+<span id="cb14-11"><a href="" aria-label="11"></a>      <span class="st">"2003-08-01"</span>, <span class="st">"2009-11-01"</span>)),</span>
+<span id="cb14-12"><a href="" aria-label="12"></a>    <span class="at">color =</span> <span class="st">"red"</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span></span>
+<span id="cb14-13"><a href="" aria-label="13"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="w2-1-exploratory-data-analysis_files/figure-revealjs/trend-peaks-1.png" width="528"></p>
+</figure>
+</div>
+</div>
+</div></div>
+<div class="smaller-80 muted">
+<p>Annotating events (here, unemployment peaks after recessions) turns a line into a story: each spike has a cause.</p>
+</div>
+</section>
+<section id="what-can-we-learn-from-trends" class="slide level2">
+<h2>What can we learn from trends?</h2>
+<ul>
+<li class="fragment"><strong>Long-run directional trends</strong>: is the series drifting up, down, or flat?</li>
+<li class="fragment"><strong>Seasonality &amp; cyclicality</strong>: regular patterns that repeat (weekly, yearly, business cycles)</li>
+<li class="fragment"><strong>Anomalies &amp; outliers</strong>: spikes and drops that demand an explanation, often the most interesting finding in the data</li>
+</ul>
+<div class="box">
+<p>In marketing: sales trends, seasonality in demand, and campaign-driven spikes are exactly these three patterns. You will look for them in every dataset you touch.</p>
+</div>
+</section></section>
+<section>
+<section id="thursday-the-variation-case" class="title-slide slide level1 divider center">
+<h1>Thursday: The Variation Case</h1>
+
+</section>
+<section id="the-variation-case" class="slide level2">
+<h2>The variation case</h2>
+<p>In class on Thursday you will apply all of this to a fresh dataset: <strong>1,000 customers</strong> of an online retailer, with age, gender, device, ad channel, ad spend, clicks, purchases, and revenue.</p>
+<p>Here is the twist: <strong>there is no starter code</strong>. You will <strong>vibecode</strong> the whole analysis, exactly as discussed on Tuesday: you describe the chart, your AI assistant writes the R, you run it, look, refine, and <strong>you</strong> interpret.</p>
+<p>You will answer questions like:</p>
+<ul>
+<li>Is ad spend <strong>symmetric or skewed</strong>, and what marketing strategy could create that shape?</li>
+<li>Is the data <strong>balanced across channels</strong>?</li>
+<li>Are there <strong>outliers</strong>, and should we drop them?</li>
+</ul>
+</section>
+<section id="how-the-case-works" class="slide level2 smaller-90">
+<h2>How the case works</h2>
+<p>The handout (<a href="https://raw.githack.com/dadepro/mkt566/main/w2/w2-1-variation-case.html"><strong><code>w2-1-variation-case.html</code></strong></a>) takes the training wheels off gradually:</p>
+<ol type="1">
+<li><strong>Tasks 1–2</strong> (look at the data, summary stats): we give you the exact prompts to paste</li>
+<li><strong>Tasks 3–4</strong>: a prompt skeleton with blanks, then just a hint</li>
+<li><strong>Tasks 5–7</strong>: only the goal; the prompt is yours (the last task is a question <strong>you</strong> invent)</li>
+</ol>
+<p>Deliverables, both made with your assistant: an <strong>R Markdown report knitted to HTML</strong> with your charts and your written answers (the exact format you will submit for the homeworks), and your <strong><code>ai-log.md</code></strong>.</p>
+<div class="box">
+<p>Bring your laptop Thursday, with the <a href="https://raw.githack.com/dadepro/mkt566/main/w1/vscode-setup.html">week 1 setup</a> working: VS Code, an AI assistant, and R. That is all you need.</p>
+</div>
+</section>
+<section id="wrap-up" class="slide level2">
+<h2>Wrap-up</h2>
+<div class="box">
+<p>Code and data to reproduce today’s charts, all on the course website:</p>
+<ul>
+<li><a href="https://github.com/dadepro/mkt566/raw/main/w2/w2-code.zip"><strong><code>w2-code.zip</code></strong></a>: one-click download of everything below</li>
+<li><a href="https://github.com/dadepro/mkt566/blob/main/w2/code/w2-1-eda-variation-class.R"><strong><code>w2-1-eda-variation-class.R</code></strong></a>: every chart shown today</li>
+<li><a href="https://github.com/dadepro/mkt566/blob/main/w2/code/w2-1-simulate-marketing-dataset.R"><strong><code>w2-1-simulate-marketing-dataset.R</code></strong></a>: generates the case dataset</li>
+<li><a href="https://github.com/dadepro/mkt566/blob/main/w2/code/data/marketing_eda.csv"><strong><code>data/marketing_eda.csv</code></strong></a>: the case dataset</li>
+<li><a href="https://raw.githack.com/dadepro/mkt566/main/w2/w2-1-variation-case.html"><strong>The variation case handout</strong></a>: Thursday’s vibecoding exercise (bring your laptop!)</li>
+</ul>
+</div>
+<div class="smaller-80 muted">
+<p>Required reading: <a href="https://r4ds.had.co.nz/exploratory-data-analysis.html">Chapter 7 of R for Data Science</a>. Optional: Chapters 3–5 of <em>R for Marketing Research and Analytics</em>.</p>
+</div>
+</section></section>
+<section id="questions" class="title-slide slide level1 divider center">
+<h1>Questions?</h1>
+
+</section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<div class="footer footer-default">
+<p>MKT 566 · Marketing Analytics</p>
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="w2-1-exploratory-data-analysis_files/libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="w2-1-exploratory-data-analysis_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="w2-1-exploratory-data-analysis_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="w2-1-exploratory-data-analysis_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="w2-1-exploratory-data-analysis_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="w2-1-exploratory-data-analysis_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="w2-1-exploratory-data-analysis_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="w2-1-exploratory-data-analysis_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="w2-1-exploratory-data-analysis_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="w2-1-exploratory-data-analysis_files/libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': false,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: true,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'fade',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'fast',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1280,
+
+        height: 720,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    
+    <script>
+      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+      // slide changes (different for each slide format).
+      (function () {
+        // dispatch for htmlwidgets
+        function fireSlideEnter() {
+          const event = window.document.createEvent("Event");
+          event.initEvent("slideenter", true, true);
+          window.document.dispatchEvent(event);
+        }
+
+        function fireSlideChanged(previousSlide, currentSlide) {
+          fireSlideEnter();
+
+          // dispatch for shiny
+          if (window.jQuery) {
+            if (previousSlide) {
+              window.jQuery(previousSlide).trigger("hidden");
+            }
+            if (currentSlide) {
+              window.jQuery(currentSlide).trigger("shown");
+            }
+          }
+        }
+
+        // hookup for slidy
+        if (window.w3c_slidy) {
+          window.w3c_slidy.add_observer(function (slide_num) {
+            // slide_num starts at position 1
+            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+          });
+        }
+
+      })();
+    </script>
+
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+                // target, if specified
+                link.setAttribute("target", "_blank");
+                if (link.getAttribute("rel") === null) {
+                  link.setAttribute("rel", "noopener");
+                }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>

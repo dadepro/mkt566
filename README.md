@@ -40,3 +40,18 @@ Course materials (slides, cases, code, and the syllabus) will be posted here as 
     - [Beautify plot](https://github.com/dadepro/mkt566/blob/main/w1/code/w1-2-data-viz-beautify.R)
     - [Datasets](https://github.com/dadepro/mkt566/tree/main/w1/code/data)
   - After class, try the **[Writing in Markdown guide](https://raw.githack.com/dadepro/mkt566/main/w1/markdown-setup.html)**: turn the beautify script's code and figures into a shareable PDF report (10 minutes, beginner friendly)
+
+### Week 2: Exploratory data analysis: Variation
+
+- Tuesday, Sept. 1:
+  - Slides ([html](https://raw.githack.com/dadepro/mkt566/main/w2/w2-1-exploratory-data-analysis.html), [pdf](https://raw.githack.com/dadepro/mkt566/main/w2/w2-1-exploratory-data-analysis.pdf))
+  - Required readings:
+    - [Chapter 7 of R for Data Science](https://r4ds.had.co.nz/exploratory-data-analysis.html)
+  - Optional readings:
+    - Chapters 3, 4, 5 of R for Marketing Research and Analytics
+  - Code and data (download everything: [w2-code.zip](https://github.com/dadepro/mkt566/raw/main/w2/w2-code.zip), or browse the [w2/code](https://github.com/dadepro/mkt566/tree/main/w2/code) folder):
+    - [Every chart from the slides](https://github.com/dadepro/mkt566/blob/main/w2/code/w2-1-eda-variation-class.R)
+    - [Simulate the case dataset](https://github.com/dadepro/mkt566/blob/main/w2/code/w2-1-simulate-marketing-dataset.R)
+- Thursday, Sept. 3:
+  - In-class exercise, the variation case: **[handout](https://raw.githack.com/dadepro/mkt566/main/w2/w2-1-variation-case.html)** and [data](https://github.com/dadepro/mkt566/blob/main/w2/code/data/marketing_eda.csv). A vibecoding exercise with no starter code: bring your laptop with the [week 1 setup](https://raw.githack.com/dadepro/mkt566/main/w1/vscode-setup.html) working
+  
