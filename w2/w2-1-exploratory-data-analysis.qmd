@@ -155,11 +155,6 @@ Download everything as one zip:
 open the scripts in VS Code, and run along.
 :::
 
-::: {.smaller-80 .muted}
-The in-class case is a separate handout, and it has **no starter code**
-on purpose: you will vibecode it. More on the last slides.
-:::
-
 # How Do We Explore the Data? {.divider}
 
 ## Variation and covariation
