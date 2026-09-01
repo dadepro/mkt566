@@ -172,7 +172,7 @@ Finally, before you close the chat, the bookkeeping from Tuesday's slides:
 
 > Append a short log of this session to a file called ai-log.md in this folder: each request I made, one line each, in order, plus anything you got wrong that we fixed.
 
-**Submit:** `variation-report.html` and `ai-log.md` (upload to Brightspace if asked; otherwise be ready to show them in class).
+**Submit:** `variation-report.html` and `ai-log.md`, on **Brightspace**, by **Sunday, Sept. 6, 11:59 pm**. Every student submits their own report, even if you worked side by side in class.
 
 ## If something goes wrong
 
