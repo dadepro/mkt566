@@ -852,7 +852,7 @@ sales", not "spend **drives** sales".
 
 ## The case {.smaller-90}
 
-Thursday you get **292,680 beer reviews** from [RateBeer](https://www.ratebeer.com/),
+Thursday you get **292,680 beer reviews** from RateBeer (a beer-review site, now closed),
 2000–2012: beer, brewery, style, alcohol content, five ratings, and a date.
 
 The client: a **new craft brewery** deciding **which styles to brew and how
