@@ -204,7 +204,7 @@ You are advising the new brewery on **which styles to launch and how many**. Wri
 
 As in the variation case, and as in every homework:
 
-> Convert ratebeer-case.R into ratebeer-report.Rmd in this folder: an R Markdown report titled "The RateBeer Case", output format html_document. Right under the title, put my first name, last name, and 10-digit USC ID: ______ . One section per task, each containing the code chunk for that task, followed by three placeholders: "**My prediction:**", "**My answer:**", and "**Explain it back:**". Use fread with the file name ratebeer.csv so it knits from this folder.
+> Convert ratebeer-case.R into ratebeer-report.Rmd in this folder: an R Markdown report titled "The RateBeer Case", output format html_document. Right under the title, put my first name, last name, and 10-digit USC ID: ______ . One section per task, each containing the code chunk for that task, followed by three placeholders: "**My prediction:**", "**My answer:**", and "**Explain it back:**". Every chunk must display its chart in the document (print the ggplot object; do not only save it with ggsave, and do not insert the PNG files from the figures folder), so that the figures are embedded in the knitted HTML. Use fread with the file name ratebeer.csv so it knits from this folder.
 
 Fill in the placeholders (the prediction is what you wrote *before* running; do not rewrite it after the fact, a wrong prediction is fine). Preview with the ![](images/open-preview.svg){width=16px style="vertical-align: text-bottom;"} button (`Cmd+Shift+V` / `Ctrl+Shift+V`), then knit with the play button:
 
@@ -216,6 +216,8 @@ No play button, or an error?
 
 ::: {.callout-tip}
 Knitting re-runs everything, including loading 290,000 rows and drawing the scatter plot with all of them. If it feels slow, that is normal (under a minute). If it fails on a chunk, paste the whole error into the chat.
+
+Open the knitted `ratebeer-report.html` and check that **every chart is visible inside it**. If a section shows code but no chart, the chunk only saved the figure to a file; tell the assistant to print the chart in the chunk. The HTML must be self-contained, because the grader only receives that one file, not your figures folder.
 :::
 
 Before you close the chat:

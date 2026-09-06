@@ -150,7 +150,7 @@ This is a dress rehearsal: **every homework in this course is submitted as an R 
 
 Ask your assistant:
 
-> Convert variation-case.R into variation-report.Rmd in this folder: an R Markdown report titled "The Variation Case", output format html_document. Right under the title, put my first name, last name, and 10-digit USC ID: ______ . Give it one section per task, each containing the code chunk that makes that chart, with a "**My answer:**" placeholder under each chunk for me to fill in.
+> Convert variation-case.R into variation-report.Rmd in this folder: an R Markdown report titled "The Variation Case", output format html_document. Right under the title, put my first name, last name, and 10-digit USC ID: ______ . Give it one section per task, each containing the code chunk that makes that chart, with a "**My answer:**" placeholder under each chunk for me to fill in. Every chunk must display its chart in the document (print the ggplot object; do not only save it with ggsave, and do not insert the PNG files from the figures folder), so that the figures are embedded in the knitted HTML.
 
 (Fill in the blank with your actual name and ID, so the assistant writes them in for you.)
 
@@ -166,7 +166,7 @@ No play button, or an error? The vibecoding way works too:
 
 (Either way needs the one-time pieces from Setup steps 4 and 5.)
 
-Open `variation-report.html` in your browser and check three things: your **name and USC ID** are at the top, every figure shows up, and every answer is there. What you see is what you will submit for the homeworks, so make it something you would be comfortable handing to a manager.
+Open `variation-report.html` in your browser and check three things: your **name and USC ID** are at the top, **every figure shows up inside the HTML** (the grader receives only that one file, not your figures folder), and every answer is there. What you see is what you will submit for the homeworks, so make it something you would be comfortable handing to a manager.
 
 Finally, before you close the chat, the bookkeeping from Tuesday's slides:
 
