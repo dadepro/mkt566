@@ -1,0 +1,1323 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="w3-1-eda-covariation_files/libs/clipboard/clipboard.min.js"></script>
+<script src="w3-1-eda-covariation_files/libs/quarto-html/tabby.min.js"></script>
+<script src="w3-1-eda-covariation_files/libs/quarto-html/popper.min.js"></script>
+<script src="w3-1-eda-covariation_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="w3-1-eda-covariation_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="w3-1-eda-covariation_files/libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="w3-1-eda-covariation_files/libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.10.18">
+
+  <meta name="author" content="Davide Proserpio">
+  <title>Exploratory Data Analysis: Covariation</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="w3-1-eda-covariation_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="w3-1-eda-covariation_files/libs/revealjs/dist/reveal.css">
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      { color: #003b4f; background-color: #f1f3f5; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #003b4f; } /* Normal */
+    code span.al { color: #ad0000; } /* Alert */
+    code span.an { color: #5e5e5e; } /* Annotation */
+    code span.at { color: #657422; } /* Attribute */
+    code span.bn { color: #ad0000; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #003b4f; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #20794d; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #5e5e5e; } /* Comment */
+    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+    code span.dt { color: #ad0000; } /* DataType */
+    code span.dv { color: #ad0000; } /* DecVal */
+    code span.er { color: #ad0000; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #ad0000; } /* Float */
+    code span.fu { color: #4758ab; } /* Function */
+    code span.im { color: #00769e; } /* Import */
+    code span.in { color: #5e5e5e; } /* Information */
+    code span.kw { color: #003b4f; font-weight: bold; } /* Keyword */
+    code span.op { color: #5e5e5e; } /* Operator */
+    code span.ot { color: #003b4f; } /* Other */
+    code span.pp { color: #ad0000; } /* Preprocessor */
+    code span.sc { color: #5e5e5e; } /* SpecialChar */
+    code span.ss { color: #20794d; } /* SpecialString */
+    code span.st { color: #20794d; } /* String */
+    code span.va { color: #111111; } /* Variable */
+    code span.vs { color: #20794d; } /* VerbatimString */
+    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="w3-1-eda-covariation_files/libs/revealjs/dist/theme/quarto-80bfa77cf879cdeec7850b9befca25f7.css">
+  <link href="w3-1-eda-covariation_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="w3-1-eda-covariation_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="w3-1-eda-covariation_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="w3-1-eda-covariation_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">Exploratory Data Analysis: Covariation</h1>
+  <p class="subtitle">MKT 566 · Fall 2026</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Davide Proserpio
+</div>
+        <p class="quarto-title-affiliation">
+            USC Marshall School of Business
+          </p>
+    </div>
+</div>
+
+</section>
+<section>
+<section id="before-we-start" class="title-slide slide level1 divider center">
+<h1>Before We Start</h1>
+
+</section>
+<section id="housekeeping" class="slide level2">
+<h2>Housekeeping</h2>
+<ul>
+<li><strong>Homework 1</strong> is due <strong>Monday, Sept.&nbsp;14</strong>, on Brightspace. Same format as the case: an R Markdown report knitted to HTML, plus <code>ai-log.md</code></li>
+<li><strong>Groups</strong>: be in a group by <strong>Tuesday, Sept.&nbsp;15</strong>. Add yours to the <a href="https://docs.google.com/spreadsheets/d/1Jna-Noy_q3fSUGYgK7wW49jKpS5l3lKt2Q14QZ004xw/edit?usp=sharing">sign-up sheet</a></li>
+<li>Today: the solution of the variation case, then <strong>covariation</strong></li>
+<li>Thursday: the <strong>RateBeer case</strong> (bring your laptop)</li>
+</ul>
+</section>
+<section id="am-i-actually-learning-anything" class="slide level2 smaller-90">
+<h2>“Am I actually learning anything?”</h2>
+<p>A common feeling in the first weeks of working this way: the AI writes code you have never seen, you run it, and a chart appears. It feels like magic, not learning. That feeling is <strong>normal</strong>, and it is not a sign that something is wrong.</p>
+<div class="columns">
+<div class="column" style="width:48%;">
+<p><strong>What this course does not teach</strong></p>
+<ul>
+<li>Writing R code from memory</li>
+<li>Knowing every R function</li>
+</ul>
+<p>The AI does that, better than any of us.</p>
+</div><div class="column" style="width:52%;">
+<p><strong>What it does teach (and grade)</strong></p>
+<ol type="1">
+<li><strong>Choosing</strong> the right chart or analysis for the question</li>
+<li><strong>Asking</strong> for it clearly</li>
+<li><strong>Reading</strong> the result: does it make sense? what does it say?</li>
+<li><strong>Concluding</strong>: what does it mean for the marketing decision?</li>
+</ol>
+</div></div>
+<div class="box">
+<p>Running code you could not write yourself is the point, not a problem. The skill is to <strong>read</strong> it and <strong>judge</strong> the result. It takes a few weeks, and the two habits on the next slide speed it up.</p>
+</div>
+</section>
+<section id="two-habits-starting-this-week" class="slide level2 smaller-90">
+<h2>Two habits, starting this week</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>1. Predict before you run</strong></p>
+<p>Before you make the chart, write one sentence: <em>“I expect Search to have the most customers.”</em></p>
+<p>Then look. Were you right? If not, is it the <strong>data</strong> or the <strong>code</strong>?</p>
+<p>Without a guess, every chart looks “fine” and you learn nothing.</p>
+</div><div class="column" style="width:50%;">
+<p><strong>2. Explain it back</strong></p>
+<p>After the chart works, pick the <strong>one line</strong> of code that does the work. Say in your own words what it does.</p>
+<p>Stuck? Ask the AI: <em>“Explain this line as if I have never coded.”</em> Then say it back in your words.</p>
+<p>If you can explain it, you understand it.</p>
+</div></div>
+<div class="box">
+<p>Our next in-class exercise (the RateBeer case, Thursday) has a short box for both under every task. This is the part of the report that shows <strong>you</strong> did the thinking.</p>
+</div>
+</section>
+<section id="reading-ggplot-five-pieces-every-time" class="slide level2 smaller-90">
+<h2>Reading ggplot: five pieces, every time</h2>
+<p>Every chart the AI writes has the same structure:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="" aria-label="1"></a><span class="fu">ggplot</span>(df, <span class="fu">aes</span>(<span class="at">x =</span> Channel, <span class="at">y =</span> Ad_Spend)) <span class="sc">+</span>   <span class="co"># 1. the data, 2. which column on which axis</span></span>
+<span id="cb1-2"><a href="" aria-label="2"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span>                             <span class="co"># 3. the chart type</span></span>
+<span id="cb1-3"><a href="" aria-label="3"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> Device) <span class="sc">+</span>                       <span class="co"># 4. one panel per group (optional)</span></span>
+<span id="cb1-4"><a href="" aria-label="4"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Ad spend by channel"</span>,          <span class="co"># 5. labels</span></span>
+<span id="cb1-5"><a href="" aria-label="5"></a>       <span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="st">"Ad spend ($)"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li><code>geom_point</code> = scatter, <code>geom_col</code>/<code>geom_bar</code> = bars, <code>geom_histogram</code>, <code>geom_boxplot</code>, <code>geom_line</code>, <code>geom_tile</code> = heatmap</li>
+<li>Everything after <code>labs()</code> is style (<code>theme_minimal()</code>, colors, scales)</li>
+</ul>
+<div class="box">
+<p>You do not need to <strong>write</strong> this. You need to <strong>recognize</strong> it. Then, when the AI uses a <code>geom_</code> you did not ask for, or puts the wrong column on <code>x</code>, you will notice.</p>
+</div>
+</section></section>
+<section>
+<section id="the-variation-case-debrief" class="title-slide slide level1 divider center">
+<h1>The Variation Case: Debrief</h1>
+
+</section>
+<section id="tasks-12-what-is-a-row-and-what-do-the-summaries-say" class="slide level2">
+<h2>Tasks 1–2: what is a row, and what do the summaries say?</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="" aria-label="1"></a>df <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/marketing_eda.csv"</span>)</span>
+<span id="cb2-2"><a href="" aria-label="2"></a><span class="fu">summary</span>(df[, <span class="fu">c</span>(<span class="st">"Age"</span>, <span class="st">"Ad_Spend"</span>, <span class="st">"Clicks"</span>, <span class="st">"Purchases"</span>, <span class="st">"Revenue"</span>)])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      Age           Ad_Spend           Clicks         Purchases         Revenue      
+ Min.   :18.00   Min.   :   1.83   Min.   :  0.00   Min.   : 0.000   Min.   :  0.00  
+ 1st Qu.:31.00   1st Qu.:  96.86   1st Qu.: 10.00   1st Qu.: 0.000   1st Qu.:  0.00  
+ Median :43.00   Median : 172.25   Median : 19.00   Median : 1.000   Median : 26.86  
+ Mean   :42.51   Mean   : 216.78   Mean   : 24.17   Mean   : 1.047   Mean   : 41.21  
+ 3rd Qu.:54.00   3rd Qu.: 278.74   3rd Qu.: 32.00   3rd Qu.: 2.000   3rd Qu.: 61.28  
+ Max.   :65.00   Max.   :3875.35   Max.   :322.00   Max.   :17.000   Max.   :702.61  </code></pre>
+</div>
+</div>
+<div class="smaller-80 muted">
+<p>One row = one customer. What did you conclude from this table?</p>
+</div>
+</section>
+<section id="tasks-12-reading-it" class="slide level2">
+<h2>Tasks 1–2: reading it</h2>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>      Age           Ad_Spend           Clicks         Purchases         Revenue      
+ Min.   :18.00   Min.   :   1.83   Min.   :  0.00   Min.   : 0.000   Min.   :  0.00  
+ 1st Qu.:31.00   1st Qu.:  96.86   1st Qu.: 10.00   1st Qu.: 0.000   1st Qu.:  0.00  
+ Median :43.00   Median : 172.25   Median : 19.00   Median : 1.000   Median : 26.86  
+ Mean   :42.51   Mean   : 216.78   Mean   : 24.17   Mean   : 1.047   Mean   : 41.21  
+ 3rd Qu.:54.00   3rd Qu.: 278.74   3rd Qu.: 32.00   3rd Qu.: 2.000   3rd Qu.: 61.28  
+ Max.   :65.00   Max.   :3875.35   Max.   :322.00   Max.   :17.000   Max.   :702.61  </code></pre>
+</div>
+</div>
+<div class="smaller-90">
+<ul>
+<li><strong>No missing values</strong> (there would be an <code>NA's</code> row)</li>
+<li><code>Ad_Spend</code>: mean <strong>217</strong>, median <strong>172</strong>. When the mean is above the median, there is a <strong>right tail</strong>: a few customers get much more spend</li>
+<li><code>Purchases</code>: median <strong>1</strong>, max <strong>7</strong>. Most customers buy once or never</li>
+</ul>
+</div>
+</section>
+<section id="task-3-the-distribution-of-ad-spend" class="slide level2">
+<h2>Task 3: the distribution of ad spend</h2>
+
+<img data-src="w3-1-eda-covariation_files/figure-revealjs/debrief-hist-1.png" width="672" class="r-stretch"><div class="smaller-80 muted">
+<p>What shape is this, and what marketing strategy could produce it?</p>
+</div>
+</section>
+<section id="task-3-reading-it" class="slide level2">
+<h2>Task 3: reading it</h2>
+
+<img data-src="w3-1-eda-covariation_files/figure-revealjs/debrief-hist-2-1.png" width="672" class="r-stretch"><div class="smaller-90">
+<ul>
+<li><strong>Right-skewed</strong>: the mean is to the right of the median, as the summary table suggested</li>
+<li>A likely strategy: a <strong>basic</strong> spend on everyone, plus extra budget on a few customers the firm thinks are high-value (retargeting, lookalike audiences)</li>
+</ul>
+</div>
+</section>
+<section id="task-4-the-same-chart-on-a-log-scale" class="slide level2">
+<h2>Task 4: the same chart on a log scale</h2>
+
+<img data-src="w3-1-eda-covariation_files/figure-revealjs/debrief-hist-log-1.png" width="672" class="r-stretch"><div class="smaller-80 muted">
+<p>What can you see now that was invisible before?</p>
+</div>
+</section>
+<section id="task-4-reading-it" class="slide level2">
+<h2>Task 4: reading it</h2>
+
+<img data-src="w3-1-eda-covariation_files/figure-revealjs/debrief-hist-log-2-1.png" width="672" class="r-stretch"><div class="smaller-90">
+<ul>
+<li>On the log scale the distribution is roughly <strong>symmetric</strong>. The “typical” customer is easy to see: <strong>$150–200</strong></li>
+<li>The low-spend customers were all piled up on the left before. Now they are spread out. Logs stretch small values and squeeze large ones</li>
+</ul>
+</div>
+</section>
+<section id="task-5-the-channel-mix" class="slide level2">
+<h2>Task 5: the channel mix</h2>
+
+<img data-src="w3-1-eda-covariation_files/figure-revealjs/debrief-channel-1.png" width="672" class="r-stretch"><div class="smaller-80 muted">
+<p>Balanced? Does the mix make sense for an online retailer?</p>
+</div>
+</section>
+<section id="task-5-reading-it" class="slide level2">
+<h2>Task 5: reading it</h2>
+
+<img data-src="w3-1-eda-covariation_files/figure-revealjs/debrief-channel-2-1.png" width="672" class="r-stretch"><div class="smaller-90">
+<ul>
+<li><strong>Not balanced</strong>: Search is a third of customers, Email one in twenty</li>
+<li>It makes sense: search reaches customers who already <strong>want to buy</strong>, social and display <strong>find new customers</strong>, and email only reaches customers the firm already knows</li>
+</ul>
+</div>
+</section>
+<section id="task-6-hunting-outliers" class="slide level2">
+<h2>Task 6: hunting outliers</h2>
+
+<img data-src="w3-1-eda-covariation_files/figure-revealjs/debrief-box-1.png" width="960" class="r-stretch"><div class="smaller-80 muted">
+<p>How many outliers, on which side, and should we drop them?</p>
+</div>
+</section>
+<section id="task-6-reading-it" class="slide level2">
+<h2>Task 6: reading it</h2>
+
+<img data-src="w3-1-eda-covariation_files/figure-revealjs/debrief-box-2-1.png" width="960" class="r-stretch"><div class="smaller-90">
+<ul>
+<li>The 1.5 × IQR rule flags <strong>39</strong> customers, all on the <strong>high</strong> side. On the log scale only a few remain. Most “outliers” are just the tail of a skewed distribution, not errors</li>
+<li><strong>Do not drop them</strong> without a reason. Run later analyses <strong>with and without</strong> them, say what you did, and prefer medians to means</li>
+</ul>
+</div>
+</section>
+<section id="task-7-your-own-question-two-examples" class="slide level2">
+<h2>Task 7: your own question (two examples)</h2>
+
+<img data-src="w3-1-eda-covariation_files/figure-revealjs/debrief-task7-1.png" width="960" class="r-stretch"><div class="smaller-80 muted">
+<p>Same two groups, two different variables, both on a log scale. What is different between the two panels?</p>
+</div>
+</section>
+<section id="task-7-reading-it" class="slide level2 nostretch">
+<h2>Task 7: reading it</h2>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="w3-1-eda-covariation_files/figure-revealjs/debrief-task7-2-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="smaller-90">
+<ul>
+<li><strong>Spend</strong> is the same on both devices; <strong>clicks</strong> are higher on mobile. The firm spends the same but gets more clicks on mobile</li>
+<li>Why “clicks + 1”? Six customers have <strong>zero</strong> clicks, and the log of zero does not exist. Adding 1 keeps them on the chart</li>
+</ul>
+</div>
+</section>
+<section id="what-a-strong-answer-looks-like" class="slide level2 smaller-90">
+<h2>What a strong answer looks like</h2>
+<p><strong>The question (Task 3):</strong> <em>Is the distribution of ad spend symmetric or skewed? What does the mean vs.&nbsp;the median tell you? What marketing strategy might create this shape?</em></p>
+<div class="columns">
+<div class="column" style="width:48%;">
+<p><strong>Weak</strong></p>
+<blockquote>
+<p>“The distribution of ad spend is right-skewed. There are some outliers.”</p>
+</blockquote>
+<p>True, but it is just a caption. No numbers, no <em>why</em>, no <em>so what</em>.</p>
+</div><div class="column" style="width:52%;">
+<p><strong>Strong</strong></p>
+<blockquote>
+<p>“Right-skewed: the median customer gets <strong>$172</strong> but the mean is <strong>$217</strong>, so a few customers get several times the typical spend. The <strong>39</strong> outliers are all high-spend. That looks like a retargeting budget focused on a few customers, not a data error, so I would keep them and report medians.”</p>
+</blockquote>
+</div></div>
+<div class="box">
+<p>The recipe: <strong>the pattern → the number that shows it → the marketing reason → what you would do.</strong> Four steps, three sentences.</p>
+</div>
+<div class="smaller-80 muted">
+<p>Full instructor solution: <a href="https://raw.githack.com/dadepro/mkt566/main/w2/w2-1-variation-case-solution.html"><strong><code>w2-1-variation-case-solution.html</code></strong></a></p>
+</div>
+</section></section>
+<section>
+<section id="covariation" class="title-slide slide level1 divider center">
+<h1>Covariation</h1>
+
+</section>
+<section id="the-two-questions-of-eda" class="slide level2">
+<h2>The two questions of EDA</h2>
+<p>Last week’s framing, one more time:</p>
+<div class="box">
+<ol type="1">
+<li>What type of <strong>variation</strong> occurs <em>within</em> my variables? <em>(last week)</em></li>
+<li>What type of <strong>covariation</strong> occurs <em>between</em> my variables? <em>(today)</em></li>
+</ol>
+</div>
+<ul>
+<li>Variation: one variable at a time (its distribution, its trend)</li>
+<li>Covariation: <strong>two or more</strong> variables, and how they change <strong>together</strong></li>
+</ul>
+</section>
+<section id="what-is-covariation" class="slide level2">
+<h2>What is covariation?</h2>
+<p><strong>Covariation</strong> is when two or more variables change together in a related way.</p>
+<ul>
+<li>The best way to see it is to <strong>plot the relationship</strong> between the variables</li>
+<li>Which plot to use depends, again, on the <strong>type</strong> of variables</li>
+<li>Most marketing questions are covariation questions: <em>does spend increase sales? do mobile users buy more? which channel converts best?</em></li>
+</ul>
+</section>
+<section id="which-chart-for-which-pair" class="slide level2">
+<h2>Which chart for which pair</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Pair of variables</th>
+<th>Chart</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Continuous × continuous</strong> (spend, sales)</td>
+<td>Scatter plot (+ fitted line), correlation</td>
+</tr>
+<tr class="even">
+<td><strong>Categorical × continuous</strong> (channel, purchases)</td>
+<td>Bars of averages with error bars; boxplots by group</td>
+</tr>
+<tr class="odd">
+<td><strong>Categorical × categorical</strong> (channel, device)</td>
+<td>Count table, heatmap</td>
+</tr>
+<tr class="even">
+<td><strong>Anything × time</strong></td>
+<td>Line chart, one line per group</td>
+</tr>
+</tbody>
+</table>
+<div class="smaller-80 muted">
+<p>Use this table when you write prompts: name the pair of variables, and you know what chart to ask for.</p>
+</div>
+</section></section>
+<section>
+<section id="two-continuous-variables" class="title-slide slide level1 divider center">
+<h1>Two Continuous Variables</h1>
+
+</section>
+<section id="the-marketing-dataset-again" class="slide level2">
+<h2>The <code>marketing</code> dataset again</h2>
+<p>Two hundred campaigns, ad spend on three channels, and sales:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="" aria-label="1"></a><span class="fu">head</span>(marketing)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   youtube facebook newspaper sales total_ad_spend
+     &lt;num&gt;    &lt;num&gt;     &lt;num&gt; &lt;num&gt;          &lt;num&gt;
+1:  276.12    45.36     83.04 26.52         404.52
+2:   53.40    47.16     54.12 12.48         154.68
+3:   20.64    55.08     83.16 11.16         158.88
+4:  181.80    49.56     70.20 22.20         301.56
+5:  216.96    12.96     70.08 15.48         300.00
+6:   10.44    58.68     90.00  8.64         159.12</code></pre>
+</div>
+</div>
+<div class="smaller-80 muted">
+<p>How would you visualize sales against ad spend?</p>
+</div>
+</section>
+<section id="sales-vs.-total-ad-spend" class="slide level2">
+<h2>Sales vs.&nbsp;total ad spend</h2>
+<div class="cell columns column-output-location">
+<div class="column">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7" data-code-line-numbers="1-2|4-5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="" aria-label="1"></a>marketing<span class="sc">$</span>total_ad_spend <span class="ot">&lt;-</span></span>
+<span id="cb7-2"><a href="" aria-label="2"></a>  marketing<span class="sc">$</span>youtube <span class="sc">+</span> marketing<span class="sc">$</span>facebook <span class="sc">+</span> marketing<span class="sc">$</span>newspaper</span>
+<span id="cb7-3"><a href="" aria-label="3"></a><span class="fu">ggplot</span>(marketing, <span class="fu">aes</span>(<span class="at">x =</span> total_ad_spend, <span class="at">y =</span> sales)) <span class="sc">+</span></span>
+<span id="cb7-4"><a href="" aria-label="4"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.6</span>, <span class="at">color =</span> <span class="st">"darkgreen"</span>) <span class="sc">+</span></span>
+<span id="cb7-5"><a href="" aria-label="5"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb7-6"><a href="" aria-label="6"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Sales vs. Total Ad Spend"</span>,</span>
+<span id="cb7-7"><a href="" aria-label="7"></a>       <span class="at">x =</span> <span class="st">"Total ad spend (thousands $)"</span>,</span>
+<span id="cb7-8"><a href="" aria-label="8"></a>       <span class="at">y =</span> <span class="st">"Sales (thousands of units)"</span>) <span class="sc">+</span></span>
+<span id="cb7-9"><a href="" aria-label="9"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="w3-1-eda-covariation_files/figure-revealjs/scatter-1.png" width="528"></p>
+</figure>
+</div>
+</div>
+</div></div>
+<div class="smaller-80 muted">
+<p>Each point is one campaign. What do you see?</p>
+</div>
+</section>
+<section id="sales-vs.-total-ad-spend-reading-it" class="slide level2">
+<h2>Sales vs.&nbsp;total ad spend: reading it</h2>
+
+<img data-src="w3-1-eda-covariation_files/figure-revealjs/scatter-2-1.png" width="672" class="r-stretch"><div class="smaller-90">
+<ul>
+<li>A clear <strong>positive</strong> relationship: campaigns that spend more sell more</li>
+<li>Roughly a <strong>straight line</strong>, with a few high-spend campaigns that sold little</li>
+<li>The fitted line (<code>geom_smooth(method = "lm")</code>) is a preview of next week: <strong>regression</strong></li>
+</ul>
+</div>
+</section>
+<section id="can-we-do-a-more-informative-viz" class="slide level2">
+<h2>Can we do a more informative viz?</h2>
+<div class="cell columns column-output-location">
+<div class="column">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8" data-code-line-numbers="1-4|9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="" aria-label="1"></a>marketing_long <span class="ot">&lt;-</span> <span class="fu">pivot_longer</span>(marketing,</span>
+<span id="cb8-2"><a href="" aria-label="2"></a>  <span class="at">cols =</span> <span class="fu">c</span>(youtube, facebook, newspaper),</span>
+<span id="cb8-3"><a href="" aria-label="3"></a>  <span class="at">names_to =</span> <span class="st">"channel"</span>,</span>
+<span id="cb8-4"><a href="" aria-label="4"></a>  <span class="at">values_to =</span> <span class="st">"ad_spend"</span>)</span>
+<span id="cb8-5"><a href="" aria-label="5"></a><span class="fu">ggplot</span>(marketing_long,</span>
+<span id="cb8-6"><a href="" aria-label="6"></a>       <span class="fu">aes</span>(ad_spend, sales, <span class="at">color =</span> channel)) <span class="sc">+</span></span>
+<span id="cb8-7"><a href="" aria-label="7"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
+<span id="cb8-8"><a href="" aria-label="8"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb8-9"><a href="" aria-label="9"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>channel, <span class="at">scales =</span> <span class="st">"free_x"</span>) <span class="sc">+</span></span>
+<span id="cb8-10"><a href="" aria-label="10"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Sales vs. Spend by Channel"</span>,</span>
+<span id="cb8-11"><a href="" aria-label="11"></a>       <span class="at">x =</span> <span class="st">"Ad spend (thousands $)"</span>,</span>
+<span id="cb8-12"><a href="" aria-label="12"></a>       <span class="at">y =</span> <span class="st">"Sales"</span>) <span class="sc">+</span></span>
+<span id="cb8-13"><a href="" aria-label="13"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb8-14"><a href="" aria-label="14"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="w3-1-eda-covariation_files/figure-revealjs/scatter-facet-1.png" width="576"></p>
+</figure>
+</div>
+</div>
+</div></div>
+<div class="smaller-80 muted">
+<p>Same 200 campaigns, one panel per channel. What changed?</p>
+</div>
+</section>
+<section id="one-panel-per-channel-reading-it" class="slide level2">
+<h2>One panel per channel: reading it</h2>
+
+<img data-src="w3-1-eda-covariation_files/figure-revealjs/scatter-facet-2-1.png" width="960" class="r-stretch"><div class="smaller-90">
+<ul>
+<li><strong>YouTube</strong>: strong, tight relationship. <strong>Facebook</strong>: positive but noisier. <strong>Newspaper</strong>: almost flat</li>
+<li>The total-spend chart <strong>hid</strong> this difference. Splitting a chart by a categorical variable (<code>facet_wrap</code>) is the most useful move in EDA</li>
+</ul>
+</div>
+</section>
+<section id="correlation-the-relationship-as-one-number" class="slide level2 smaller-90">
+<h2>Correlation: the relationship as one number</h2>
+<p>The <strong>correlation coefficient</strong> <span class="math inline">\(r\)</span> measures how close two variables are to a straight-line relationship, from −1 (perfect negative) through 0 (none) to +1 (perfect positive):</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="" aria-label="1"></a><span class="fu">cor</span>(marketing<span class="sc">$</span>total_ad_spend, marketing<span class="sc">$</span>sales)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.8677123</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="" aria-label="1"></a><span class="fu">cor</span>(marketing<span class="sc">$</span>youtube, marketing<span class="sc">$</span>sales)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.7822244</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="" aria-label="1"></a><span class="fu">cor</span>(marketing<span class="sc">$</span>facebook, marketing<span class="sc">$</span>sales)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.5762226</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="" aria-label="1"></a><span class="fu">cor</span>(marketing<span class="sc">$</span>newspaper, marketing<span class="sc">$</span>sales)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.228299</code></pre>
+</div>
+</div>
+<ul>
+<li>Same ranking as the panels: YouTube (0.78), Facebook (0.58), Newspaper (0.23)</li>
+</ul>
+<div class="box-warn">
+<p>One number hides a lot. Anscombe’s quartet is the classic example: four datasets with the same means, the same <span class="math inline">\(r = 0.82\)</span>, and the same fitted line, and four completely different pictures. <strong>Plot first, then summarize.</strong></p>
+</div>
+</section>
+<section id="overplotting-when-you-have-too-many-points" class="slide level2">
+<h2>Overplotting: when you have too many points</h2>
+
+<img data-src="w3-1-eda-covariation_files/figure-revealjs/blob-1.png" width="624" class="r-stretch"><div class="smaller-80 muted">
+<p>ggplot2’s <code>diamonds</code> dataset, 53,940 rows. What is the problem with this chart?</p>
+</div>
+</section>
+<section id="overplotting-two-fixes" class="slide level2">
+<h2>Overplotting: two fixes</h2>
+
+<img data-src="w3-1-eda-covariation_files/figure-revealjs/blob-fixed-1.png" width="1056" class="r-stretch"><div class="smaller-90">
+<ul>
+<li><strong>Transparency</strong> (<code>alpha</code>) + a smooth curve shows where most points are and the curved shape of the relationship</li>
+<li><strong>2D bins</strong> (<code>geom_bin2d</code>) count the points in each cell: a heatmap. Use either one when a scatter plot turns into a blob (RateBeer: 290,000 reviews)</li>
+</ul>
+</div>
+</section></section>
+<section>
+<section id="one-categorical-and-one-continuous-variable" class="title-slide slide level1 divider center">
+<h1>One Categorical and One Continuous Variable</h1>
+
+</section>
+<section id="back-to-the-case-data" class="slide level2">
+<h2>Back to the case data</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="" aria-label="1"></a>df <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/marketing_eda.csv"</span>)</span>
+<span id="cb17-2"><a href="" aria-label="2"></a><span class="fu">head</span>(df)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  CustomerID Age Gender  Device Channel Ad_Spend Clicks Purchases Revenue
+1          1  54      M  Mobile  Social   718.60     95         6  149.16
+2          2  18      F  Mobile  Search   233.00     34         1   22.22
+3          3  42      F  Mobile  Search   122.51     18         0    0.00
+4          4  27      F Desktop  Social   198.78     19         1   13.22
+5          5  53      F  Mobile  Social   145.19     19         4  150.48
+6          6  35      M Desktop   Video   125.74      9         0    0.00</code></pre>
+</div>
+</div>
+<div class="smaller-80 muted">
+<p>Which chart would you use to explore purchases by gender?</p>
+</div>
+</section>
+<section id="purchases-by-gender" class="slide level2">
+<h2>Purchases by gender</h2>
+<div class="cell columns column-output-location">
+<div class="column">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19" data-code-line-numbers="1-4|5-6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="" aria-label="1"></a>avg_gender <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span></span>
+<span id="cb19-2"><a href="" aria-label="2"></a>  <span class="fu">group_by</span>(Gender) <span class="sc">%&gt;%</span></span>
+<span id="cb19-3"><a href="" aria-label="3"></a>  <span class="fu">summarise</span>(<span class="at">avg_purchases =</span> <span class="fu">mean</span>(Purchases),</span>
+<span id="cb19-4"><a href="" aria-label="4"></a>            <span class="at">se_purchases =</span> <span class="fu">sd</span>(Purchases) <span class="sc">/</span> <span class="fu">sqrt</span>(<span class="fu">n</span>()))</span>
+<span id="cb19-5"><a href="" aria-label="5"></a><span class="fu">ggplot</span>(avg_gender, <span class="fu">aes</span>(<span class="at">x =</span> Gender, <span class="at">y =</span> avg_purchases, <span class="at">fill =</span> Gender)) <span class="sc">+</span></span>
+<span id="cb19-6"><a href="" aria-label="6"></a>  <span class="fu">geom_col</span>(<span class="at">width =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
+<span id="cb19-7"><a href="" aria-label="7"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="at">F =</span> <span class="st">"#E07A5F"</span>, <span class="at">M =</span> <span class="st">"#3D5A80"</span>)) <span class="sc">+</span></span>
+<span id="cb19-8"><a href="" aria-label="8"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Average Purchases by Gender"</span>,</span>
+<span id="cb19-9"><a href="" aria-label="9"></a>       <span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="st">"Average purchases"</span>) <span class="sc">+</span></span>
+<span id="cb19-10"><a href="" aria-label="10"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="w3-1-eda-covariation_files/figure-revealjs/bar-gender-1.png" width="480"></p>
+</figure>
+</div>
+</div>
+</div></div>
+<div class="smaller-80 muted">
+<p>First summarize (one row per group), then chart the summary. What do you conclude?</p>
+</div>
+</section>
+<section id="purchases-by-gender-reading-it" class="slide level2">
+<h2>Purchases by gender: reading it</h2>
+
+<img data-src="w3-1-eda-covariation_files/figure-revealjs/bar-gender-2-1.png" width="480" class="r-stretch"><div class="smaller-90">
+<ul>
+<li>Men average <strong>1.09</strong> purchases, women <strong>1.01</strong>. Is the difference <strong>real</strong>, or would another 1,000 customers flip it?</li>
+<li>The bars cannot tell you. We need to know how <strong>precise</strong> each average is</li>
+</ul>
+</div>
+</section>
+<section id="add-error-bars" class="slide level2">
+<h2>Add error bars</h2>
+<div class="cell columns column-output-location">
+<div class="column">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20" data-code-line-numbers="2-5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="" aria-label="1"></a>p_bar <span class="sc">+</span></span>
+<span id="cb20-2"><a href="" aria-label="2"></a>  <span class="fu">geom_errorbar</span>(</span>
+<span id="cb20-3"><a href="" aria-label="3"></a>    <span class="fu">aes</span>(<span class="at">ymin =</span> avg_purchases <span class="sc">-</span> <span class="fl">1.96</span> <span class="sc">*</span> se_purchases,</span>
+<span id="cb20-4"><a href="" aria-label="4"></a>        <span class="at">ymax =</span> avg_purchases <span class="sc">+</span> <span class="fl">1.96</span> <span class="sc">*</span> se_purchases),</span>
+<span id="cb20-5"><a href="" aria-label="5"></a>    <span class="at">width =</span> <span class="fl">0.15</span>, <span class="at">linewidth =</span> <span class="fl">0.7</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="w3-1-eda-covariation_files/figure-revealjs/bar-gender-se-1.png" width="480"></p>
+</figure>
+</div>
+</div>
+</div></div>
+<div class="smaller-80 muted">
+<p>The <strong>standard error</strong>, <span class="math inline">\(SE = sd / \sqrt{n}\)</span>, tells us how precise the average is. Mean ± 1.96 × SE is a <strong>95% confidence interval</strong>: the range where the true average most likely is. Now what do you conclude?</p>
+</div>
+</section>
+<section id="error-bars-reading-it" class="slide level2">
+<h2>Error bars: reading it</h2>
+
+<img data-src="w3-1-eda-covariation_files/figure-revealjs/bar-gender-se-2-1.png" width="480" class="r-stretch"><div class="smaller-90">
+<ul>
+<li>The two intervals <strong>overlap</strong> a lot: the data cannot tell men and women apart on purchases</li>
+<li>Rule of thumb: bars of averages <strong>without</strong> error bars make small differences look real. Always ask for error bars</li>
+</ul>
+</div>
+</section>
+<section id="add-a-third-variable-the-ad-channel" class="slide level2">
+<h2>Add a third variable: the ad channel</h2>
+
+<img data-src="w3-1-eda-covariation_files/figure-revealjs/bar-gender-channel-1.png" width="960" class="r-stretch"><div class="smaller-80 muted">
+<p><code>facet_wrap(~Channel)</code> again. What do you see now?</p>
+</div>
+</section>
+<section id="gender-channel-reading-it" class="slide level2">
+<h2>Gender × channel: reading it</h2>
+
+<img data-src="w3-1-eda-covariation_files/figure-revealjs/bar-gender-channel-2-1.png" width="960" class="r-stretch"><div class="smaller-90">
+<ul>
+<li>The gap changes by channel: men buy more via <strong>Search</strong> (1.31 vs.&nbsp;1.09), women via <strong>Video</strong> (1.20 vs.&nbsp;0.94)</li>
+<li><strong>Email</strong> has the widest error bars: only 54 customers. Small group, wide interval. Always check how many people are behind a bar</li>
+</ul>
+</div>
+</section>
+<section id="averages-hide-distributions" class="slide level2">
+<h2>Averages hide distributions</h2>
+
+<img data-src="w3-1-eda-covariation_files/figure-revealjs/box-channel-1.png" width="672" class="r-stretch"><div class="smaller-80 muted">
+<p>One boxplot per group, sorted by median. Do the channels differ, and how?</p>
+</div>
+</section>
+<section id="boxplots-by-group-reading-it" class="slide level2">
+<h2>Boxplots by group: reading it</h2>
+
+<img data-src="w3-1-eda-covariation_files/figure-revealjs/box-channel-2-1.png" width="672" class="r-stretch"><div class="smaller-90">
+<ul>
+<li>The <strong>medians</strong> are almost the same: the typical customer gets the same spend in every channel</li>
+<li>The differences are in the <strong>tails</strong>: Video and Social have more high-spend outliers. An average would say “Video spends more”. The boxplot says “Video spends more <strong>on a few customers</strong>”. A different conclusion</li>
+</ul>
+</div>
+</section></section>
+<section>
+<section id="two-categorical-variables" class="title-slide slide level1 divider center">
+<h1>Two Categorical Variables</h1>
+
+</section>
+<section id="channel-and-device-how-many-customers-in-each-cell" class="slide level2">
+<h2>Channel and device: how many customers in each cell?</h2>
+
+<img data-src="w3-1-eda-covariation_files/figure-revealjs/heat-counts-1.png" width="768" class="r-stretch"><div class="smaller-80 muted">
+<p>A <strong>heatmap</strong>: color = count, number on top. What do you see?</p>
+</div>
+</section>
+<section id="counts-heatmap-reading-it" class="slide level2">
+<h2>Counts heatmap: reading it</h2>
+
+<img data-src="w3-1-eda-covariation_files/figure-revealjs/heat-counts-2-1.png" width="768" class="r-stretch"><div class="smaller-90">
+<ul>
+<li><strong>Mobile</strong> is the majority in every channel (65% overall)</li>
+<li><strong>Video</strong> is the most mobile-heavy (125 vs.&nbsp;53): video ads show up where people watch video</li>
+<li>A heatmap is just a <strong>table with color</strong>. For two categorical variables, that is usually all you need</li>
+</ul>
+</div>
+</section>
+<section id="add-a-third-variable-average-ad-spend-per-cell" class="slide level2">
+<h2>Add a third variable: average ad spend per cell</h2>
+
+<img data-src="w3-1-eda-covariation_files/figure-revealjs/heat-spend-1.png" width="768" class="r-stretch"><div class="smaller-80 muted">
+<p>Same grid, the color is now the average spend in the cell. Anything stand out?</p>
+</div>
+</section>
+<section id="spend-heatmap-reading-it-and-the-eda-loop" class="slide level2">
+<h2>Spend heatmap: reading it, and the EDA loop</h2>
+
+<img data-src="w3-1-eda-covariation_files/figure-revealjs/heat-spend-2-1.png" width="768" class="r-stretch"><div class="smaller-90">
+<ul>
+<li><strong>Video / Desktop</strong> at $315 is far above every other cell. Is it a real pattern, or a few outliers in a cell with only <strong>53</strong> customers?</li>
+<li>To find out, go back and make a boxplot of that cell (it is in the class script). This is the EDA loop: <strong>notice → ask → check → refine</strong></li>
+</ul>
+</div>
+</section></section>
+<section>
+<section id="correlation-is-not-causation" class="title-slide slide level1 divider center">
+<h1>Correlation Is Not Causation</h1>
+
+</section>
+<section id="does-ad-spend-cause-sales" class="slide level2 smaller-90">
+<h2>Does ad spend <em>cause</em> sales?</h2>
+<p>Sales and ad spend move together strongly (<span class="math inline">\(r = 0.87\)</span>). Three stories fit that fact:</p>
+<ol type="1">
+<li><strong>Spend causes sales</strong>: the ads work</li>
+<li><strong>Sales cause spend</strong>: managers set budgets as a share of expected sales, so big markets get big budgets <em>and</em> big sales</li>
+<li><strong>Something else causes both</strong>: the holiday season raises spend and sales at the same time</li>
+</ol>
+<div class="box-warn">
+<p>EDA can show you that two variables <strong>move together</strong>. It cannot tell you <strong>why</strong>. Weeks 11–12 are about telling these stories apart.</p>
+</div>
+<p>Until then, choose your words carefully: “spend <strong>is associated with</strong> sales”, not “spend <strong>drives</strong> sales”.</p>
+</section></section>
+<section>
+<section id="the-ratebeer-case" class="title-slide slide level1 divider center">
+<h1>The RateBeer Case</h1>
+
+</section>
+<section id="the-case" class="slide level2 smaller-90">
+<h2>The case</h2>
+<p>Thursday you get <strong>292,680 beer reviews</strong> from <a href="https://www.ratebeer.com/">RateBeer</a>, 2000–2012: beer, brewery, style, alcohol content, five ratings, and a date.</p>
+<p>The client: a <strong>new craft brewery</strong> deciding <strong>which styles to brew and how many</strong>.</p>
+<p>Two things make this harder than last week:</p>
+<ul>
+<li>The data is <strong>dirty</strong>: ratings stored as text like <code>"14/20"</code>, alcohol content with <code>"-"</code> for missing, dates stored as numbers, ciders and sake mixed in with the beers. Finding the problems is your job; fixing them is the AI’s</li>
+<li>The questions are about <strong>covariation</strong>: rating by style, rating vs. alcohol, number of styles vs.&nbsp;rating, and how all of this changes over time</li>
+</ul>
+</section>
+<section id="how-the-case-works" class="slide level2 smaller-90">
+<h2>How the case works</h2>
+<p>The handout (<a href="https://raw.githack.com/dadepro/mkt566/main/w3/w3-ratebeer-case.html"><strong><code>w3-ratebeer-case.html</code></strong></a>) works like the variation case, with less help:</p>
+<ol type="1">
+<li><strong>Tasks 1–3</strong> (look, find the problems, clean): an exact prompt, then prompts with blanks</li>
+<li><strong>Tasks 4–8</strong> (variation warm-up, four covariation questions, time): only the goal, you write the prompt</li>
+<li><strong>Task 9</strong>: three recommendations to the brewery, each backed by a number</li>
+</ol>
+<p>Under every task: <strong>predict</strong> before you run, <strong>explain back</strong> one line after.</p>
+<p>Deliverable, same as last week: an <strong>R Markdown report knitted to HTML</strong> plus <code>ai-log.md</code>. In class we aim for Tasks 1–6; finish the rest at home.</p>
+<div class="box">
+<p>Bring your laptop with the week 1 setup working. Download the data (<a href="https://github.com/dadepro/mkt566/raw/main/w3/ratebeer-case-data.zip"><strong><code>ratebeer-case-data.zip</code></strong></a>, 5 MB) before class.</p>
+</div>
+</section>
+<section id="wrap-up" class="slide level2">
+<h2>Wrap-up</h2>
+<div class="box">
+<p>Code and data to reproduce today’s charts, on the course website:</p>
+<ul>
+<li><a href="https://github.com/dadepro/mkt566/raw/main/w3/w3-code.zip"><strong><code>w3-code.zip</code></strong></a>: one-click download of everything below</li>
+<li><a href="https://github.com/dadepro/mkt566/blob/main/w3/code/w3-1-eda-covariation-class.R"><strong><code>w3-1-eda-covariation-class.R</code></strong></a>: every chart shown today</li>
+<li><a href="https://github.com/dadepro/mkt566/blob/main/w3/code/data/marketing_eda.csv"><strong><code>data/marketing_eda.csv</code></strong></a>: the case dataset from week 2</li>
+<li><a href="https://raw.githack.com/dadepro/mkt566/main/w3/w3-ratebeer-case.html"><strong>The RateBeer case handout</strong></a> and its <a href="https://github.com/dadepro/mkt566/raw/main/w3/ratebeer-case-data.zip"><strong>data</strong></a></li>
+</ul>
+</div>
+<div class="smaller-80 muted">
+<p>Required reading: <a href="https://r4ds.had.co.nz/exploratory-data-analysis.html">Chapter 7 of R for Data Science</a> (the covariation section). Optional: Chapters 3–5 of <em>R for Marketing Research and Analytics</em>.</p>
+</div>
+</section></section>
+<section id="questions" class="title-slide slide level1 divider center">
+<h1>Questions?</h1>
+
+</section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<div class="footer footer-default">
+<p>MKT 566 · Marketing Analytics</p>
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="w3-1-eda-covariation_files/libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="w3-1-eda-covariation_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="w3-1-eda-covariation_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="w3-1-eda-covariation_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="w3-1-eda-covariation_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="w3-1-eda-covariation_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="w3-1-eda-covariation_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="w3-1-eda-covariation_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="w3-1-eda-covariation_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="w3-1-eda-covariation_files/libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': false,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: true,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'fade',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'fast',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1280,
+
+        height: 720,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    
+    <script>
+      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+      // slide changes (different for each slide format).
+      (function () {
+        // dispatch for htmlwidgets
+        function fireSlideEnter() {
+          const event = window.document.createEvent("Event");
+          event.initEvent("slideenter", true, true);
+          window.document.dispatchEvent(event);
+        }
+
+        function fireSlideChanged(previousSlide, currentSlide) {
+          fireSlideEnter();
+
+          // dispatch for shiny
+          if (window.jQuery) {
+            if (previousSlide) {
+              window.jQuery(previousSlide).trigger("hidden");
+            }
+            if (currentSlide) {
+              window.jQuery(currentSlide).trigger("shown");
+            }
+          }
+        }
+
+        // hookup for slidy
+        if (window.w3c_slidy) {
+          window.w3c_slidy.add_observer(function (slide_num) {
+            // slide_num starts at position 1
+            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+          });
+        }
+
+      })();
+    </script>
+
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+                // target, if specified
+                link.setAttribute("target", "_blank");
+                if (link.getAttribute("rel") === null) {
+                  link.setAttribute("rel", "noopener");
+                }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>

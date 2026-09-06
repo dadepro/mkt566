@@ -54,4 +54,19 @@ Course materials (slides, cases, code, and the syllabus) will be posted here as 
     - [Simulate the case dataset](https://github.com/dadepro/mkt566/blob/main/w2/code/w2-1-simulate-marketing-dataset.R) (no need to run it: the dataset is already saved in [w2/code/data](https://github.com/dadepro/mkt566/tree/main/w2/code/data))
 - Thursday, Sept. 3:
   - In-class exercise, the variation case: **[handout](https://raw.githack.com/dadepro/mkt566/main/w2/w2-1-variation-case.html)** and [data](https://github.com/dadepro/mkt566/raw/main/w2/variation-case-data.zip). A vibecoding exercise with no starter code: bring your laptop with the [week 1 setup](https://raw.githack.com/dadepro/mkt566/main/w1/vscode-setup.html) working
+  - Instructor solution (posted after the deadline): [html](https://raw.githack.com/dadepro/mkt566/main/w2/w2-1-variation-case-solution.html), [R Markdown](https://github.com/dadepro/mkt566/blob/main/w2/w2-1-variation-case-solution.Rmd)
   
+
+### Week 3: Exploratory data analysis: Covariation
+
+- Tuesday, Sept. 8:
+  - Slides ([html](https://raw.githack.com/dadepro/mkt566/main/w3/w3-1-eda-covariation.html), [pdf](https://raw.githack.com/dadepro/mkt566/main/w3/w3-1-eda-covariation.pdf)): debrief of the variation case, then covariation
+  - Required readings:
+    - [Chapter 7 of R for Data Science](https://r4ds.had.co.nz/exploratory-data-analysis.html) (the covariation section)
+  - Optional readings:
+    - Chapters 3, 4, 5 of R for Marketing Research and Analytics
+  - Code and data (download everything: [w3-code.zip](https://github.com/dadepro/mkt566/raw/main/w3/w3-code.zip), or browse the [w3/code](https://github.com/dadepro/mkt566/tree/main/w3/code) folder):
+    - [Every chart from the slides](https://github.com/dadepro/mkt566/blob/main/w3/code/w3-1-eda-covariation-class.R)
+    - [Dataset](https://github.com/dadepro/mkt566/tree/main/w3/code/data) (the week 2 case dataset)
+- Thursday, Sept. 10:
+  - In-class exercise, the RateBeer case: **[handout](https://raw.githack.com/dadepro/mkt566/main/w3/w3-ratebeer-case.html)** and [data](https://github.com/dadepro/mkt566/raw/main/w3/ratebeer-case-data.zip) (5 MB, download before class). A vibecoding exercise on real, dirty data: bring your laptop

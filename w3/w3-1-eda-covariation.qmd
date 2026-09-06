@@ -1,0 +1,916 @@
+---
+title: "Exploratory Data Analysis: Covariation"
+subtitle: "MKT 566 · Fall 2026"
+author: "Davide Proserpio"
+institute: "USC Marshall School of Business"
+format:
+  revealjs:
+    theme: theme.scss
+    slide-number: c/t
+    width: 1280
+    height: 720
+    incremental: false
+    transition: fade
+    transition-speed: fast
+    controls: true
+    progress: true
+    hash: true
+    embed-resources: false
+    link-external-newwindow: true
+    footer: "MKT 566 · Marketing Analytics"
+execute:
+  echo: false
+  warning: false
+  message: false
+fig-width: 7
+fig-height: 4.2
+fig-align: center
+---
+
+```{r setup}
+#| include: false
+library(datarium)
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+library(data.table)
+library(patchwork)
+library(scales)
+
+options(width = 110)
+set.seed(566)
+knitr::opts_knit$set(root.dir = "code")
+
+data("marketing", package = "datarium")
+marketing <- as.data.table(marketing)
+marketing[, total_ad_spend := youtube + facebook + newspaper]
+df <- fread("code/data/marketing_eda.csv")
+```
+
+# Before We Start {.divider}
+
+## Housekeeping
+
+- **Homework 1** is due **Monday, Sept. 14**, on Brightspace. Same format
+  as the case: an R Markdown report knitted to HTML, plus `ai-log.md`
+- **Groups**: be in a group by **Tuesday, Sept. 15**. Add yours to the
+  [sign-up sheet](https://docs.google.com/spreadsheets/d/1Jna-Noy_q3fSUGYgK7wW49jKpS5l3lKt2Q14QZ004xw/edit?usp=sharing)
+- Today: the solution of the variation case, then **covariation**
+- Thursday: the **RateBeer case** (bring your laptop)
+
+## "Am I actually learning anything?" {.smaller-90}
+
+A common feeling in the first weeks of working this way: the AI writes code
+you have never seen, you run it, and a chart appears. It feels like magic, not
+learning. That feeling is **normal**, and it is not a sign that something is
+wrong.
+
+::::: {.columns}
+::: {.column width="48%"}
+**What this course does not teach**
+
+- Writing R code from memory
+- Knowing every R function
+
+The AI does that, better than any of us.
+:::
+::: {.column width="52%"}
+**What it does teach (and grade)**
+
+1. **Choosing** the right chart or analysis for the question
+2. **Asking** for it clearly
+3. **Reading** the result: does it make sense? what does it say?
+4. **Concluding**: what does it mean for the marketing decision?
+:::
+:::::
+
+::: {.box}
+Running code you could not write yourself is the point, not a problem. The
+skill is to **read** it and **judge** the result. It takes a few weeks, and
+the two habits on the next slide speed it up.
+:::
+
+## Two habits, starting this week {.smaller-90}
+
+::::: {.columns}
+::: {.column width="50%"}
+**1. Predict before you run**
+
+Before you make the chart, write one sentence:
+*"I expect Search to have the most customers."*
+
+Then look. Were you right? If not, is it the **data** or the **code**?
+
+Without a guess, every chart looks "fine" and you learn nothing.
+:::
+::: {.column width="50%"}
+**2. Explain it back**
+
+After the chart works, pick the **one line** of code that does the work.
+Say in your own words what it does.
+
+Stuck? Ask the AI: *"Explain this line as if I have never coded."* Then say
+it back in your words.
+
+If you can explain it, you understand it.
+:::
+:::::
+
+::: {.box}
+Our next in-class exercise (the RateBeer case, Thursday) has a short box for
+both under every task. This is the part of the report that shows **you** did
+the thinking.
+:::
+
+## Reading ggplot: five pieces, every time {.smaller-90}
+
+Every chart the AI writes has the same structure:
+
+```r
+ggplot(df, aes(x = Channel, y = Ad_Spend)) +   # 1. the data, 2. which column on which axis
+  geom_boxplot() +                             # 3. the chart type
+  facet_wrap(~ Device) +                       # 4. one panel per group (optional)
+  labs(title = "Ad spend by channel",          # 5. labels
+       x = NULL, y = "Ad spend ($)")
+```
+
+- `geom_point` = scatter, `geom_col`/`geom_bar` = bars, `geom_histogram`,
+  `geom_boxplot`, `geom_line`, `geom_tile` = heatmap
+- Everything after `labs()` is style (`theme_minimal()`, colors, scales)
+
+::: {.box}
+You do not need to **write** this. You need to **recognize** it. Then, when
+the AI uses a `geom_` you did not ask for, or puts the wrong column on `x`,
+you will notice.
+:::
+
+# The Variation Case: Debrief {.divider}
+
+## Tasks 1–2: what is a row, and what do the summaries say?
+
+```{r debrief-summary}
+#| echo: true
+df <- read.csv("data/marketing_eda.csv")
+summary(df[, c("Age", "Ad_Spend", "Clicks", "Purchases", "Revenue")])
+```
+
+::: {.smaller-80 .muted}
+One row = one customer. What did you conclude from this table?
+:::
+
+## Tasks 1–2: reading it
+
+```{r debrief-summary-2}
+summary(df[, c("Age", "Ad_Spend", "Clicks", "Purchases", "Revenue")])
+```
+
+::: {.smaller-90}
+- **No missing values** (there would be an `NA's` row)
+- `Ad_Spend`: mean **217**, median **172**. When the mean is above the
+  median, there is a **right tail**: a few customers get much more spend
+- `Purchases`: median **1**, max **7**. Most customers buy once or never
+:::
+
+## Task 3: the distribution of ad spend
+
+```{r debrief-hist}
+p_hist <- ggplot(df, aes(Ad_Spend)) +
+  geom_histogram(bins = 30, fill = "steelblue", color = "white") +
+  geom_vline(aes(xintercept = mean(Ad_Spend)), linetype = "dashed") +
+  geom_vline(aes(xintercept = median(Ad_Spend))) +
+  labs(title = "Distribution of Ad Spend", subtitle = "Dashed = mean, solid = median",
+       x = "Ad spend ($)", y = "Customers") +
+  theme_minimal()
+p_hist
+```
+
+::: {.smaller-80 .muted}
+What shape is this, and what marketing strategy could produce it?
+:::
+
+## Task 3: reading it
+
+```{r debrief-hist-2}
+p_hist
+```
+
+::: {.smaller-90}
+- **Right-skewed**: the mean is to the right of the median, as the summary
+  table suggested
+- A likely strategy: a **basic** spend on everyone, plus extra budget on a
+  few customers the firm thinks are high-value (retargeting, lookalike
+  audiences)
+:::
+
+## Task 4: the same chart on a log scale
+
+```{r debrief-hist-log}
+p_hist_log <- ggplot(df, aes(Ad_Spend)) +
+  geom_histogram(bins = 30, fill = "steelblue", color = "white") +
+  scale_x_continuous(trans = "log10", labels = dollar) +
+  labs(title = "Distribution of Ad Spend (log scale)", x = "Ad spend ($, log scale)",
+       y = "Customers") +
+  theme_minimal()
+p_hist_log
+```
+
+::: {.smaller-80 .muted}
+What can you see now that was invisible before?
+:::
+
+## Task 4: reading it
+
+```{r debrief-hist-log-2}
+p_hist_log
+```
+
+::: {.smaller-90}
+- On the log scale the distribution is roughly **symmetric**. The "typical"
+  customer is easy to see: **$150–200**
+- The low-spend customers were all piled up on the left before. Now they are
+  spread out. Logs stretch small values and squeeze large ones
+:::
+
+## Task 5: the channel mix
+
+```{r debrief-channel}
+p_channel <- df %>%
+  count(Channel) %>%
+  mutate(p = n / sum(n)) %>%
+  ggplot(aes(reorder(Channel, -n), n)) +
+  geom_col(fill = "steelblue") +
+  geom_text(aes(label = percent(p, accuracy = 0.1)), vjust = -0.3, size = 4) +
+  labs(title = "Channel Mix", x = NULL, y = "Customers") +
+  theme_minimal()
+p_channel
+```
+
+::: {.smaller-80 .muted}
+Balanced? Does the mix make sense for an online retailer?
+:::
+
+## Task 5: reading it
+
+```{r debrief-channel-2}
+p_channel
+```
+
+::: {.smaller-90}
+- **Not balanced**: Search is a third of customers, Email one in twenty
+- It makes sense: search reaches customers who already **want to buy**,
+  social and display **find new customers**, and email only reaches
+  customers the firm already knows
+:::
+
+## Task 6: hunting outliers
+
+```{r debrief-box}
+#| fig-width: 10
+#| fig-height: 4.2
+p_box_raw <- ggplot(df, aes(x = "", y = Ad_Spend)) +
+  geom_boxplot(fill = "lightblue") +
+  scale_y_continuous(labels = dollar) +
+  labs(title = "Ad Spend", x = NULL, y = "Ad spend ($)") +
+  theme_minimal()
+p_box_log <- ggplot(df, aes(x = "", y = Ad_Spend)) +
+  geom_boxplot(fill = "lightblue") +
+  scale_y_continuous(trans = "log10", labels = dollar) +
+  labs(title = "Ad Spend (log scale)", x = NULL, y = "Ad spend ($, log scale)") +
+  theme_minimal()
+p_box_pair <- p_box_raw + p_box_log
+p_box_pair
+```
+
+::: {.smaller-80 .muted}
+How many outliers, on which side, and should we drop them?
+:::
+
+## Task 6: reading it
+
+```{r debrief-box-2}
+#| fig-width: 10
+#| fig-height: 4.2
+p_box_pair
+```
+
+::: {.smaller-90}
+- The 1.5 × IQR rule flags **39** customers, all on the **high** side. On the
+  log scale only a few remain. Most "outliers" are just the tail of a skewed
+  distribution, not errors
+- **Do not drop them** without a reason. Run later analyses **with and
+  without** them, say what you did, and prefer medians to means
+:::
+
+## Task 7: your own question (two examples)
+
+```{r debrief-task7}
+#| fig-width: 10
+#| fig-height: 4.2
+p_t7a <- ggplot(df, aes(Device, Ad_Spend, fill = Device)) +
+  geom_boxplot(alpha = 0.7) +
+  scale_y_continuous(trans = "log10", labels = dollar) +
+  labs(title = "Ad Spend by Device (log scale)", x = NULL, y = "Ad spend ($)") +
+  theme_minimal() + theme(legend.position = "none")
+p_t7b <- ggplot(df, aes(Device, Clicks + 1, fill = Device)) +
+  geom_boxplot(alpha = 0.7) +
+  scale_y_continuous(trans = "log10") +
+  labs(title = "Clicks by Device (log scale)", x = NULL, y = "Clicks + 1") +
+  theme_minimal() + theme(legend.position = "none")
+p_t7 <- p_t7a + p_t7b
+p_t7
+```
+
+::: {.smaller-80 .muted}
+Same two groups, two different variables, both on a log scale. What is
+different between the two panels?
+:::
+
+## Task 7: reading it {.nostretch}
+
+```{r debrief-task7-2}
+#| fig-width: 10
+#| fig-height: 3.8
+p_t7
+```
+
+::: {.smaller-90}
+- **Spend** is the same on both devices; **clicks** are higher on mobile.
+  The firm spends the same but gets more clicks on mobile
+- Why "clicks + 1"? Six customers have **zero** clicks, and the log of zero
+  does not exist. Adding 1 keeps them on the chart
+:::
+
+## What a strong answer looks like {.smaller-90}
+
+**The question (Task 3):** *Is the distribution of ad spend symmetric or
+skewed? What does the mean vs. the median tell you? What marketing strategy
+might create this shape?*
+
+::::: {.columns}
+::: {.column width="48%"}
+**Weak**
+
+> "The distribution of ad spend is right-skewed. There are some outliers."
+
+True, but it is just a caption. No numbers, no *why*, no *so what*.
+:::
+::: {.column width="52%"}
+**Strong**
+
+> "Right-skewed: the median customer gets **$172** but the mean is **$217**,
+> so a few customers get several times the typical spend. The **39**
+> outliers are all high-spend. That looks like a retargeting budget focused
+> on a few customers, not a data error, so I would keep them and report
+> medians."
+:::
+:::::
+
+::: {.box}
+The recipe: **the pattern → the number that shows it → the marketing
+reason → what you would do.** Four steps, three sentences.
+:::
+
+::: {.smaller-80 .muted}
+Full instructor solution:
+[**`w2-1-variation-case-solution.html`**](https://raw.githack.com/dadepro/mkt566/main/w2/w2-1-variation-case-solution.html)
+:::
+
+# Covariation {.divider}
+
+## The two questions of EDA
+
+Last week's framing, one more time:
+
+::: {.box}
+1. What type of **variation** occurs *within* my variables? *(last week)*
+2. What type of **covariation** occurs *between* my variables? *(today)*
+:::
+
+- Variation: one variable at a time (its distribution, its trend)
+- Covariation: **two or more** variables, and how they change **together**
+
+## What is covariation?
+
+**Covariation** is when two or more variables change together in a related
+way.
+
+- The best way to see it is to **plot the relationship** between the
+  variables
+- Which plot to use depends, again, on the **type** of variables
+- Most marketing questions are covariation questions: *does spend increase
+  sales? do mobile users buy more? which channel converts best?*
+
+## Which chart for which pair
+
+| Pair of variables | Chart |
+|---|---|
+| **Continuous × continuous** (spend, sales) | Scatter plot (+ fitted line), correlation |
+| **Categorical × continuous** (channel, purchases) | Bars of averages with error bars; boxplots by group |
+| **Categorical × categorical** (channel, device) | Count table, heatmap |
+| **Anything × time** | Line chart, one line per group |
+
+: {tbl-colwidths="[50,50]"}
+
+::: {.smaller-80 .muted}
+Use this table when you write prompts: name the pair of variables, and you know what chart to ask for.
+:::
+
+# Two Continuous Variables {.divider}
+
+## The `marketing` dataset again
+
+Two hundred campaigns, ad spend on three channels, and sales:
+
+```{r marketing-head}
+#| echo: true
+head(marketing)
+```
+
+::: {.smaller-80 .muted}
+How would you visualize sales against ad spend?
+:::
+
+## Sales vs. total ad spend
+
+```{r scatter}
+#| echo: true
+#| output-location: column
+#| code-line-numbers: "1-2|4-5"
+#| fig-width: 5.5
+#| fig-height: 4.2
+marketing$total_ad_spend <-
+  marketing$youtube + marketing$facebook + marketing$newspaper
+ggplot(marketing, aes(x = total_ad_spend, y = sales)) +
+  geom_point(alpha = 0.6, color = "darkgreen") +
+  geom_smooth(method = "lm", se = FALSE) +
+  labs(title = "Sales vs. Total Ad Spend",
+       x = "Total ad spend (thousands $)",
+       y = "Sales (thousands of units)") +
+  theme_minimal()
+```
+
+::: {.smaller-80 .muted}
+Each point is one campaign. What do you see?
+:::
+
+## Sales vs. total ad spend: reading it
+
+```{r scatter-2}
+p_scatter <- ggplot(marketing, aes(x = total_ad_spend, y = sales)) +
+  geom_point(alpha = 0.6, color = "darkgreen") +
+  geom_smooth(method = "lm", se = FALSE, color = "grey40") +
+  labs(title = "Sales vs. Total Ad Spend", x = "Total ad spend (thousands $)",
+       y = "Sales (thousands of units)") +
+  theme_minimal()
+p_scatter
+```
+
+::: {.smaller-90}
+- A clear **positive** relationship: campaigns that spend more sell more
+- Roughly a **straight line**, with a few high-spend campaigns that sold little
+- The fitted line (`geom_smooth(method = "lm")`) is a preview of next week:
+  **regression**
+:::
+
+## Can we do a more informative viz?
+
+```{r scatter-facet}
+#| echo: true
+#| output-location: column
+#| code-line-numbers: "1-4|9"
+#| fig-width: 6
+#| fig-height: 4.2
+marketing_long <- pivot_longer(marketing,
+  cols = c(youtube, facebook, newspaper),
+  names_to = "channel",
+  values_to = "ad_spend")
+ggplot(marketing_long,
+       aes(ad_spend, sales, color = channel)) +
+  geom_point(alpha = 0.6) +
+  geom_smooth(method = "lm", se = FALSE) +
+  facet_wrap(~channel, scales = "free_x") +
+  labs(title = "Sales vs. Spend by Channel",
+       x = "Ad spend (thousands $)",
+       y = "Sales") +
+  theme_minimal() +
+  theme(legend.position = "none")
+```
+
+::: {.smaller-80 .muted}
+Same 200 campaigns, one panel per channel. What changed?
+:::
+
+## One panel per channel: reading it
+
+```{r scatter-facet-2}
+#| fig-width: 10
+#| fig-height: 4.2
+p_facet <- ggplot(marketing_long, aes(x = ad_spend, y = sales, color = channel)) +
+  geom_point(alpha = 0.6) +
+  geom_smooth(method = "lm", se = FALSE, color = "grey40") +
+  facet_wrap(~channel, scales = "free_x") +
+  scale_color_manual(values = c(youtube = "#FF0000", facebook = "#1877F2",
+                                newspaper = "grey20")) +
+  labs(title = "Sales vs. Ad Spend by Channel", x = "Ad spend (thousands $)",
+       y = "Sales (thousands of units)") +
+  theme_minimal() + theme(legend.position = "none")
+p_facet
+```
+
+::: {.smaller-90}
+- **YouTube**: strong, tight relationship. **Facebook**: positive but noisier.
+  **Newspaper**: almost flat
+- The total-spend chart **hid** this difference. Splitting a chart by a
+  categorical variable (`facet_wrap`) is the most useful move in EDA
+:::
+
+## Correlation: the relationship as one number {.smaller-90}
+
+The **correlation coefficient** $r$ measures how close two variables are to
+a straight-line relationship, from −1 (perfect negative) through 0 (none) to
++1 (perfect positive):
+
+```{r cor}
+#| echo: true
+cor(marketing$total_ad_spend, marketing$sales)
+cor(marketing$youtube, marketing$sales)
+cor(marketing$facebook, marketing$sales)
+cor(marketing$newspaper, marketing$sales)
+```
+
+- Same ranking as the panels: YouTube (0.78), Facebook (0.58), Newspaper (0.23)
+
+::: {.box-warn}
+One number hides a lot. Anscombe's quartet is the classic example: four
+datasets with the same means, the same $r = 0.82$, and the same fitted line,
+and four completely different pictures. **Plot first, then summarize.**
+:::
+
+## Overplotting: when you have too many points
+
+```{r blob}
+#| fig-width: 6.5
+#| fig-height: 4.2
+ggplot(diamonds, aes(x = carat, y = price)) +
+  geom_point() +
+  labs(title = "Price vs. Carat (53,940 diamonds)", x = "Carat", y = "Price ($)") +
+  theme_minimal()
+```
+
+::: {.smaller-80 .muted}
+ggplot2's `diamonds` dataset, 53,940 rows. What is the problem with this chart?
+:::
+
+## Overplotting: two fixes
+
+```{r blob-fixed}
+#| fig-width: 11
+#| fig-height: 4.2
+p_alpha <- ggplot(diamonds, aes(x = carat, y = price)) +
+  geom_point(alpha = 0.05, size = 0.5) +
+  geom_smooth(color = "firebrick", se = FALSE) +
+  labs(title = "alpha = 0.05 + smooth curve", x = "Carat", y = "Price ($)") +
+  theme_minimal()
+p_bins <- ggplot(diamonds, aes(x = carat, y = price)) +
+  geom_bin2d(bins = 60) +
+  scale_fill_viridis_c(labels = comma) +
+  labs(title = "geom_bin2d(): count per cell", x = "Carat", y = "Price ($)",
+       fill = "Diamonds") +
+  theme_minimal()
+p_alpha + p_bins
+```
+
+::: {.smaller-90}
+- **Transparency** (`alpha`) + a smooth curve shows where most points are and
+  the curved shape of the relationship
+- **2D bins** (`geom_bin2d`) count the points in each cell: a heatmap. Use
+  either one when a scatter plot turns into a blob (RateBeer: 290,000 reviews)
+:::
+
+# One Categorical and One Continuous Variable {.divider}
+
+## Back to the case data
+
+```{r df-head}
+#| echo: true
+df <- read.csv("data/marketing_eda.csv")
+head(df)
+```
+
+::: {.smaller-80 .muted}
+Which chart would you use to explore purchases by gender?
+:::
+
+## Purchases by gender
+
+```{r bar-gender}
+#| echo: true
+#| output-location: column
+#| code-line-numbers: "1-4|5-6"
+#| fig-width: 5
+#| fig-height: 4.2
+avg_gender <- df %>%
+  group_by(Gender) %>%
+  summarise(avg_purchases = mean(Purchases),
+            se_purchases = sd(Purchases) / sqrt(n()))
+ggplot(avg_gender, aes(x = Gender, y = avg_purchases, fill = Gender)) +
+  geom_col(width = 0.6) +
+  scale_fill_manual(values = c(F = "#E07A5F", M = "#3D5A80")) +
+  labs(title = "Average Purchases by Gender",
+       x = NULL, y = "Average purchases") +
+  theme_minimal() + theme(legend.position = "none")
+```
+
+::: {.smaller-80 .muted}
+First summarize (one row per group), then chart the summary. What do you conclude?
+:::
+
+## Purchases by gender: reading it
+
+```{r bar-gender-2}
+#| fig-width: 5
+#| fig-height: 3
+p_bar <- ggplot(avg_gender, aes(x = Gender, y = avg_purchases, fill = Gender)) +
+  geom_col(width = 0.6) +
+  scale_fill_manual(values = c(F = "#E07A5F", M = "#3D5A80")) +
+  labs(title = "Average Purchases by Gender", x = NULL, y = "Average purchases") +
+  theme_minimal() + theme(legend.position = "none")
+p_bar
+```
+
+::: {.smaller-90}
+- Men average **1.09** purchases, women **1.01**. Is the difference
+  **real**, or would another 1,000 customers flip it?
+- The bars cannot tell you. We need to know how **precise** each average is
+:::
+
+## Add error bars
+
+```{r bar-gender-se}
+#| echo: true
+#| output-location: column
+#| code-line-numbers: "2-5"
+#| fig-width: 5
+#| fig-height: 4.2
+p_bar +
+  geom_errorbar(
+    aes(ymin = avg_purchases - 1.96 * se_purchases,
+        ymax = avg_purchases + 1.96 * se_purchases),
+    width = 0.15, linewidth = 0.7)
+```
+
+::: {.smaller-80 .muted}
+The **standard error**, $SE = sd / \sqrt{n}$, tells us how precise the
+average is. Mean ± 1.96 × SE is a **95% confidence interval**: the range where
+the true average most likely is. Now what do you conclude?
+:::
+
+## Error bars: reading it
+
+```{r bar-gender-se-2}
+#| fig-width: 5
+#| fig-height: 4.2
+p_bar_se <- p_bar +
+  geom_errorbar(aes(ymin = avg_purchases - 1.96 * se_purchases,
+                    ymax = avg_purchases + 1.96 * se_purchases),
+                width = 0.15, linewidth = 0.7)
+p_bar_se
+```
+
+::: {.smaller-90}
+- The two intervals **overlap** a lot: the data cannot tell men and women
+  apart on purchases
+- Rule of thumb: bars of averages **without** error bars make small
+  differences look real. Always ask for error bars
+:::
+
+## Add a third variable: the ad channel
+
+```{r bar-gender-channel}
+#| fig-width: 10
+#| fig-height: 4
+avg_gender_channel <- df %>%
+  group_by(Gender, Channel) %>%
+  summarise(avg_purchases = mean(Purchases),
+            se_purchases = sd(Purchases) / sqrt(n()), n = n(), .groups = "drop")
+p_bar_channel <- ggplot(avg_gender_channel, aes(x = Gender, y = avg_purchases, fill = Gender)) +
+  geom_col(width = 0.6) +
+  geom_errorbar(aes(ymin = avg_purchases - 1.96 * se_purchases,
+                    ymax = avg_purchases + 1.96 * se_purchases),
+                width = 0.15, linewidth = 0.7) +
+  scale_fill_manual(values = c(F = "#E07A5F", M = "#3D5A80")) +
+  facet_wrap(~Channel, nrow = 1) +
+  labs(title = "Average Purchases by Gender and Ad Channel", x = NULL, y = "Average purchases") +
+  theme_minimal() + theme(legend.position = "none")
+p_bar_channel
+```
+
+::: {.smaller-80 .muted}
+`facet_wrap(~Channel)` again. What do you see now?
+:::
+
+## Gender × channel: reading it
+
+```{r bar-gender-channel-2}
+#| fig-width: 10
+#| fig-height: 4
+p_bar_channel
+```
+
+::: {.smaller-90}
+- The gap changes by channel: men buy more via **Search** (1.31 vs. 1.09),
+  women via **Video** (1.20 vs. 0.94)
+- **Email** has the widest error bars: only 54 customers. Small group, wide
+  interval. Always check how many people are behind a bar
+:::
+
+## Averages hide distributions
+
+```{r box-channel}
+p_box_channel <- ggplot(df, aes(x = reorder(Channel, Ad_Spend, median),
+                                y = Ad_Spend, fill = Channel)) +
+  geom_boxplot(alpha = 0.8) +
+  scale_y_continuous(trans = "log10", labels = dollar) +
+  labs(title = "Ad Spend by Channel (log scale)", x = NULL, y = "Ad spend ($)") +
+  theme_minimal() + theme(legend.position = "none")
+p_box_channel
+```
+
+::: {.smaller-80 .muted}
+One boxplot per group, sorted by median. Do the channels differ, and how?
+:::
+
+## Boxplots by group: reading it
+
+```{r box-channel-2}
+p_box_channel
+```
+
+::: {.smaller-90}
+- The **medians** are almost the same: the typical customer gets the same
+  spend in every channel
+- The differences are in the **tails**: Video and Social have more
+  high-spend outliers. An average would say "Video spends more". The boxplot
+  says "Video spends more **on a few customers**". A different conclusion
+:::
+
+# Two Categorical Variables {.divider}
+
+## Channel and device: how many customers in each cell?
+
+```{r heat-counts}
+#| fig-width: 8
+#| fig-height: 3.8
+counts_cd <- df %>% count(Channel, Device)
+p_heat_n <- ggplot(counts_cd, aes(x = Channel, y = Device, fill = n)) +
+  geom_tile(color = "white") +
+  geom_text(aes(label = n), color = "white", size = 6) +
+  scale_fill_gradient(low = "#9ecae1", high = "#08306b") +
+  labs(title = "Customers by Channel and Device", x = NULL, y = NULL, fill = "Customers") +
+  theme_minimal()
+p_heat_n
+```
+
+::: {.smaller-80 .muted}
+A **heatmap**: color = count, number on top. What do you see?
+:::
+
+## Counts heatmap: reading it
+
+```{r heat-counts-2}
+#| fig-width: 8
+#| fig-height: 3.8
+p_heat_n
+```
+
+::: {.smaller-90}
+- **Mobile** is the majority in every channel (65% overall)
+- **Video** is the most mobile-heavy (125 vs. 53): video ads show up where
+  people watch video
+- A heatmap is just a **table with color**. For two categorical variables,
+  that is usually all you need
+:::
+
+## Add a third variable: average ad spend per cell
+
+```{r heat-spend}
+#| fig-width: 8
+#| fig-height: 3.8
+avg_cd <- df %>% group_by(Channel, Device) %>%
+  summarise(avg_adspend = mean(Ad_Spend), n = n(), .groups = "drop")
+p_heat_spend <- ggplot(avg_cd, aes(x = Channel, y = Device, fill = avg_adspend)) +
+  geom_tile(color = "white") +
+  geom_text(aes(label = dollar(round(avg_adspend))), color = "white", size = 6) +
+  scale_fill_gradient(low = "#9ecae1", high = "#08306b", labels = dollar) +
+  labs(title = "Average Ad Spend by Channel and Device", x = NULL, y = NULL,
+       fill = "Avg. spend") +
+  theme_minimal()
+p_heat_spend
+```
+
+::: {.smaller-80 .muted}
+Same grid, the color is now the average spend in the cell. Anything stand out?
+:::
+
+## Spend heatmap: reading it, and the EDA loop
+
+```{r heat-spend-2}
+#| fig-width: 8
+#| fig-height: 3.8
+p_heat_spend
+```
+
+::: {.smaller-90}
+- **Video / Desktop** at $315 is far above every other cell. Is it a real
+  pattern, or a few outliers in a cell with only **53** customers?
+- To find out, go back and make a boxplot of that cell (it is in the class
+  script). This is the EDA loop: **notice → ask → check → refine**
+:::
+
+# Correlation Is Not Causation {.divider}
+
+## Does ad spend *cause* sales? {.smaller-90}
+
+Sales and ad spend move together strongly ($r = 0.87$). Three stories fit
+that fact:
+
+1. **Spend causes sales**: the ads work
+2. **Sales cause spend**: managers set budgets as a share of expected sales,
+   so big markets get big budgets *and* big sales
+3. **Something else causes both**: the holiday season raises spend and sales
+   at the same time
+
+::: {.box-warn}
+EDA can show you that two variables **move together**. It cannot tell you
+**why**. Weeks 11–12 are about telling these stories apart.
+:::
+
+Until then, choose your words carefully: "spend **is associated with**
+sales", not "spend **drives** sales".
+
+# The RateBeer Case {.divider}
+
+## The case {.smaller-90}
+
+Thursday you get **292,680 beer reviews** from [RateBeer](https://www.ratebeer.com/),
+2000–2012: beer, brewery, style, alcohol content, five ratings, and a date.
+
+The client: a **new craft brewery** deciding **which styles to brew and how
+many**.
+
+Two things make this harder than last week:
+
+- The data is **dirty**: ratings stored as text like `"14/20"`, alcohol
+  content with `"-"` for missing, dates stored as numbers, ciders and sake
+  mixed in with the beers. Finding the problems is your job; fixing them is
+  the AI's
+- The questions are about **covariation**: rating by style, rating vs.
+  alcohol, number of styles vs. rating, and how all of this changes over
+  time
+
+## How the case works {.smaller-90}
+
+The handout
+([**`w3-ratebeer-case.html`**](https://raw.githack.com/dadepro/mkt566/main/w3/w3-ratebeer-case.html))
+works like the variation case, with less help:
+
+1. **Tasks 1–3** (look, find the problems, clean): an exact prompt, then
+   prompts with blanks
+2. **Tasks 4–8** (variation warm-up, four covariation questions, time): only
+   the goal, you write the prompt
+3. **Task 9**: three recommendations to the brewery, each backed by a number
+
+Under every task: **predict** before you run, **explain back** one line after.
+
+Deliverable, same as last week: an **R Markdown report knitted to HTML** plus
+`ai-log.md`. In class we aim for Tasks 1–6; finish the rest at home.
+
+::: {.box}
+Bring your laptop with the week 1 setup working. Download the data
+([**`ratebeer-case-data.zip`**](https://github.com/dadepro/mkt566/raw/main/w3/ratebeer-case-data.zip),
+5 MB) before class.
+:::
+
+## Wrap-up
+
+::: {.box}
+Code and data to reproduce today's charts, on the course website:
+
+- [**`w3-code.zip`**](https://github.com/dadepro/mkt566/raw/main/w3/w3-code.zip):
+  one-click download of everything below
+- [**`w3-1-eda-covariation-class.R`**](https://github.com/dadepro/mkt566/blob/main/w3/code/w3-1-eda-covariation-class.R):
+  every chart shown today
+- [**`data/marketing_eda.csv`**](https://github.com/dadepro/mkt566/blob/main/w3/code/data/marketing_eda.csv):
+  the case dataset from week 2
+- [**The RateBeer case handout**](https://raw.githack.com/dadepro/mkt566/main/w3/w3-ratebeer-case.html)
+  and its [**data**](https://github.com/dadepro/mkt566/raw/main/w3/ratebeer-case-data.zip)
+:::
+
+::: {.smaller-80 .muted}
+Required reading: [Chapter 7 of R for Data
+Science](https://r4ds.had.co.nz/exploratory-data-analysis.html) (the
+covariation section). Optional: Chapters 3–5 of *R for Marketing Research and
+Analytics*.
+:::
+
+# Questions? {.divider}

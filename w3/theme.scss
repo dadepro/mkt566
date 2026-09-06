@@ -1,0 +1,97 @@
+/*-- scss:defaults --*/
+// USC Marshall palette, muted for legibility on a projector
+$usc-cardinal:  #990000;
+$usc-gold:      #FFCC00;
+$ink:           #1a1a1a;
+$muted:         #5c5c5c;
+$rule:          #e2e2e2;
+$bg:            #ffffff;
+
+$font-family-sans-serif: "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
+$presentation-font-size-root: 30px;
+$presentation-heading-font: $font-family-sans-serif;
+$presentation-heading-color: $usc-cardinal;
+$body-color: $ink;
+$body-bg: $bg;
+$link-color: $usc-cardinal;
+$presentation-heading-font-weight: 600;
+$code-block-font-size: 0.7em;
+
+/*-- scss:rules --*/
+.reveal h1, .reveal h2 { letter-spacing: -0.01em; }
+
+.reveal h2 {
+  font-size: 1.5em;
+  border-bottom: 3px solid $usc-gold;
+  padding-bottom: .25rem;
+  margin-bottom: 1rem;
+}
+
+// Title slide
+#title-slide {
+  text-align: left;
+  .title {
+    font-size: 2.1em; font-weight: 700; color: $usc-cardinal;
+    line-height: 1.1; margin-bottom: .2em;
+  }
+  .subtitle { font-size: 1.2em; color: $muted; margin-bottom: 1.2em; }
+  .quarto-title-authors { justify-content: flex-start; padding-left: 0; }
+  .author, .quarto-title-author-name { font-size: .95em; color: $ink; text-align: left; }
+  .date { color: $muted; font-size: .8em; }
+}
+
+.reveal .slides section { text-align: left; }
+
+// Lists: tighter, with cardinal markers
+.reveal ul { margin-left: .4em; }
+.reveal ul li { margin-bottom: .45rem; line-height: 1.35; }
+.reveal ul li::marker { color: $usc-cardinal; }
+.reveal ul ul li::marker { color: $muted; }
+.reveal ul ul { font-size: .88em; margin-top: .3rem; }
+
+// Emphasis
+.reveal strong { color: $usc-cardinal; font-weight: 600; }
+
+// Callout box for the things that matter
+.box {
+  border-left: 4px solid $usc-gold;
+  background: #fdfaf0;
+  padding: .7rem 1rem;
+  margin: .8rem 0;
+  font-size: .92em;
+}
+.box-warn {
+  border-left: 4px solid $usc-cardinal;
+  background: #fdf3f3;
+  padding: .7rem 1rem;
+  margin: .8rem 0;
+}
+
+// Big number / stat
+.stat {
+  font-size: 2.6em; font-weight: 700; color: $usc-cardinal;
+  line-height: 1; display: block;
+}
+.stat-label { color: $muted; font-size: .8em; text-transform: uppercase; letter-spacing: .06em; }
+
+// Section divider slides
+.divider {
+  h1, h2 { color: $usc-cardinal; border: none; font-size: 2.4em; }
+}
+
+// Grading / deadline tables
+.reveal table { font-size: .85em; border-collapse: collapse; }
+.reveal table th {
+  background: $usc-cardinal; color: #fff; font-weight: 600;
+  text-align: left; padding: .45rem .7rem; border: none;
+}
+.reveal table td { padding: .4rem .7rem; border-bottom: 1px solid $rule; }
+.reveal table tr:last-child td { border-bottom: none; }
+
+.reveal .slide-number { color: $muted; }
+.reveal a { text-decoration: none; border-bottom: 1px solid rgba(153,0,0,.3); }
+.reveal a:hover { border-bottom-color: $usc-cardinal; }
+
+.smaller-90 { font-size: .9em; }
+.smaller-80 { font-size: .8em; }
+.muted { color: $muted; }

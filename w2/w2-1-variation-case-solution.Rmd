@@ -1,0 +1,158 @@
+---
+title: 'The Variation Case: Instructor Solution'
+author: "MKT 566 · Fall 2026"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+---
+
+<!-- INSTRUCTOR ONLY: keep out of w2/code/ and w2-code.zip. This file mirrors
+     what a good student variation-report.Rmd should look like (one section per
+     task, the chunk that makes the chart, a written answer), with model
+     answers. It lives at w2/ root, so data is read from code/data/. A student
+     file sits inside code/ and reads data/marketing_eda.csv instead. -->
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(message = FALSE, warning = FALSE,
+                      fig.width = 7, fig.height = 4.5)
+library(ggplot2)
+library(dplyr)
+library(scales)
+df <- read.csv("code/data/marketing_eda.csv")
+```
+
+## Task 1: look at the data
+
+```{r head}
+head(df)
+nrow(df)
+```
+
+**Answer:** There are 1,000 rows, one per customer: each row records who the
+customer is (`Age`, `Gender`, `Device`), which ad channel reached them
+(`Channel`), what was spent on them (`Ad_Spend`), and how they responded
+(`Clicks`, `Purchases`, `Revenue`). `Gender`, `Device`, and `Channel` are
+categorical; the rest are numeric (`CustomerID` is just an identifier).
+
+## Task 2: summary statistics
+
+```{r summary}
+summary(df)
+```
+
+**Answer:** No missing values in any column. For `Ad_Spend`, the mean (216.8)
+is well above the median (172.2). From the lecture: when the mean is pulled
+above the median, the distribution is **right-skewed**; a minority of large
+values drags the mean up while the median stays with the typical customer.
+
+## Task 3: the distribution of ad spend
+
+```{r adspend-hist}
+ggplot(df, aes(Ad_Spend)) +
+  geom_histogram(bins = 30, fill = "steelblue", color = "white") +
+  geom_vline(aes(xintercept = mean(Ad_Spend)), linetype = "dashed") +
+  geom_vline(aes(xintercept = median(Ad_Spend))) +
+  labs(title = "Distribution of Ad Spend",
+       subtitle = "Dashed = mean, solid = median",
+       x = "Ad Spend ($)", y = "Count") +
+  theme_minimal()
+```
+
+**Answer:** Clearly right-skewed: most customers receive modest spend, with a
+long tail of customers receiving several times more. The dashed mean line sits
+visibly to the right of the solid median line, which is exactly the skew the
+summary statistics hinted at. A plausible marketing strategy behind this
+shape: the firm spends a baseline amount on most customers and concentrates
+extra budget on a small group it believes is high-value (retargeting,
+lookalike audiences, big-ticket prospects).
+
+## Task 4: the same chart, on a log scale
+
+```{r adspend-hist-log}
+ggplot(df, aes(Ad_Spend)) +
+  geom_histogram(bins = 30, fill = "steelblue", color = "white") +
+  scale_x_continuous(trans = "log10") +
+  labs(title = "Distribution of Ad Spend (log scale)",
+       x = "Ad Spend ($, log10)", y = "Count") +
+  theme_minimal()
+```
+
+**Answer:** On the log scale the distribution becomes roughly symmetric and
+bell-shaped, so the "typical" customer is easy to read off: about $150–200.
+The low-spend customers, invisible in the left pile of the linear chart, are
+now spread out and visible. This is the lecture's point about logs: they
+expand small values, compress large ones, and turn a skewed distribution into
+one you can actually read.
+
+## Task 5: the channel mix
+
+```{r channel-mix}
+df %>%
+  count(Channel) %>%
+  mutate(p = n / sum(n)) %>%
+  ggplot(aes(reorder(Channel, -n), n)) +
+  geom_col(fill = "steelblue") +
+  geom_text(aes(label = percent(p, accuracy = 0.1)), vjust = -0.3, size = 3.5) +
+  labs(title = "Channel Mix", x = "Channel", y = "Customers") +
+  theme_minimal()
+```
+
+**Answer:** Not balanced. Search dominates (34.7%), followed by Social
+(22.7%), Display (19.4%), and Video (17.8%); Email is a distant last at 5.4%.
+The mix is plausible for an online retailer: search captures customers with
+existing intent, social and display do the prospecting, and email is cheap
+but only reaches customers the firm already knows.
+
+## Task 6: hunting outliers
+
+```{r adspend-box}
+ggplot(df, aes(y = Ad_Spend)) +
+  geom_boxplot(fill = "lightblue") +
+  scale_y_continuous(labels = dollar_format()) +
+  labs(title = "Boxplot of Ad Spend", y = "Ad Spend ($)") +
+  theme_minimal()
+```
+
+```{r adspend-box-log}
+ggplot(df, aes(y = log(Ad_Spend + 1))) +
+  geom_boxplot(fill = "lightblue") +
+  labs(title = "Boxplot of Ad Spend (log scale)", y = "log Ad Spend") +
+  theme_minimal()
+```
+
+**Answer:** The 1.5 × IQR rule flags 39 customers, all on the high side; there
+are no low outliers on the raw scale. On the log scale the box is nearly
+symmetric and only a handful of extreme points remain flagged, telling us most
+of the "outliers" are just the natural tail of a skewed distribution rather
+than data errors. Should we drop them? Not without investigation: with 39
+observations in 1,000, they can move averages. Best practice from the lecture:
+run any later analysis with and without them, disclose whatever we do, and
+prefer robust statistics (medians, quantiles) when describing spend.
+
+## Task 7: my own question
+
+*Example: is ad spend targeted by device?*
+
+```{r spend-by-device}
+ggplot(df, aes(Device, Ad_Spend, fill = Device)) +
+  geom_boxplot(alpha = 0.7) +
+  scale_y_continuous(trans = "log10", labels = dollar_format()) +
+  labs(title = "Ad Spend by Device (log scale)",
+       x = NULL, y = "Ad Spend ($, log10)") +
+  theme_minimal() +
+  theme(legend.position = "none")
+```
+
+**Answer:** I asked whether Mobile and Desktop customers receive different ad
+spend. They essentially do not: the two distributions sit on top of each other
+(means 214 vs. 221, medians 175 vs. 170). Spend does not appear to be targeted
+by device in this data, even though mobile users are 65% of customers.
+
+<!-- Common student variants for Task 7 and what they should find:
+     - Age distribution: roughly uniform 18-65 (it was drawn that way), which
+       is itself worth remarking on -- real customer bases are rarely uniform.
+     - Distribution of Purchases: counts concentrated at 0-2 with a right
+       tail; discrete, so a bar chart beats a histogram.
+     - Clicks by Device: here there IS a difference (mobile clicks more),
+       a nice contrast with spend being flat across devices. -->
