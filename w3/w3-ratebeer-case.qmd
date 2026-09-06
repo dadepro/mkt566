@@ -224,7 +224,7 @@ Before you close the chat:
 
 > Append a short log of this session to a file called ai-log.md in this folder: each request I made, one line each, in order, plus anything you got wrong that we fixed.
 
-**Submit:** `ratebeer-report.html` and `ai-log.md`, on **Brightspace**, by **Sunday, Sept. 13, 11:59 pm**. In class we aim to finish Tasks 1–6; do the rest at home. Every student submits their own report.
+**Submit:** `ratebeer-report.html` and `ai-log.md`, on **Brightspace**, by **Sunday, Sept. 20, 11:59 pm**. We work on this case over two sessions: Tasks 1–6 on Thursday, Sept. 10, and Tasks 7–9 plus a debrief on Tuesday, Sept. 15. Every student submits their own report.
 
 ## If something goes wrong
 

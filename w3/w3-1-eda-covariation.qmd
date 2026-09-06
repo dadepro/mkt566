@@ -56,7 +56,7 @@ df <- fread("code/data/marketing_eda.csv")
 - **Groups**: be in a group by **Tuesday, Sept. 15**. Add yours to the
   [sign-up sheet](https://docs.google.com/spreadsheets/d/1Jna-Noy_q3fSUGYgK7wW49jKpS5l3lKt2Q14QZ004xw/edit?usp=sharing)
 - Today: the solution of the variation case, then **covariation**
-- Thursday: the **RateBeer case** (bring your laptop)
+- Thursday and next Tuesday: the **RateBeer case** (bring your laptop)
 
 ## "Am I actually learning anything?" {.smaller-90}
 
@@ -882,8 +882,9 @@ works like the variation case, with less help:
 
 Under every task: **predict** before you run, **explain back** one line after.
 
-Deliverable, same as last week: an **R Markdown report knitted to HTML** plus
-`ai-log.md`. In class we aim for Tasks 1–6; finish the rest at home.
+Two sessions: **Thursday** Tasks 1–6, **Tuesday, Sept. 15** Tasks 7–9 and
+the debrief. Deliverable, same as last week: an **R Markdown report knitted
+to HTML** plus `ai-log.md`, due **Sunday, Sept. 20**.
 
 ::: {.box}
 Bring your laptop with the week 1 setup working. Download the data

@@ -69,4 +69,4 @@ Course materials (slides, cases, code, and the syllabus) will be posted here as 
     - [Every chart from the slides](https://github.com/dadepro/mkt566/blob/main/w3/code/w3-1-eda-covariation-class.R)
     - [Dataset](https://github.com/dadepro/mkt566/tree/main/w3/code/data) (the week 2 case dataset)
 - Thursday, Sept. 10:
-  - In-class exercise, the RateBeer case: **[handout](https://raw.githack.com/dadepro/mkt566/main/w3/w3-ratebeer-case.html)** and [data](https://github.com/dadepro/mkt566/raw/main/w3/ratebeer-case-data.zip) (5 MB, download before class). A vibecoding exercise on real, dirty data: bring your laptop
+  - In-class exercise, the RateBeer case: **[handout](https://raw.githack.com/dadepro/mkt566/main/w3/w3-ratebeer-case.html)** and [data](https://github.com/dadepro/mkt566/raw/main/w3/ratebeer-case-data.zip) (5 MB, download before class). A vibecoding exercise on real, dirty data, over two sessions (Sept. 10 and Sept. 15): bring your laptop
