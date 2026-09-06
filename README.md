@@ -60,7 +60,7 @@ Course materials (slides, cases, code, and the syllabus) will be posted here as 
 ### Week 3: Exploratory data analysis: Covariation
 
 - Tuesday, Sept. 8:
-  - Slides ([html](https://raw.githack.com/dadepro/mkt566/main/w3/w3-1-eda-covariation.html), [pdf](https://raw.githack.com/dadepro/mkt566/main/w3/w3-1-eda-covariation.pdf)): debrief of the variation case, then covariation
+  - Slides ([html](https://raw.githack.com/dadepro/mkt566/main/w3/w3-1-eda-covariation.html), [pdf](https://raw.githack.com/dadepro/mkt566/main/w3/w3-1-eda-covariation.pdf)): debrief of the variation case (**[solution](https://raw.githack.com/dadepro/mkt566/main/w2/w2-1-variation-case-solution.html)**), then covariation
   - Required readings:
     - [Chapter 7 of R for Data Science](https://r4ds.had.co.nz/exploratory-data-analysis.html) (the covariation section)
   - Optional readings:
