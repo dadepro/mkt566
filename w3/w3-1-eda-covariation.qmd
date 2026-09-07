@@ -375,6 +375,26 @@ Full instructor solution:
 [**`w2-1-variation-case-solution.html`**](https://raw.githack.com/dadepro/mkt566/main/w2/w2-1-variation-case-solution.html)
 :::
 
+## R script for today
+
+In the `code/` folder on the course website:
+
+1. **`w3-1-eda-covariation-class.R`**: reproduces every chart in the rest of
+   today's deck, with a comment above each one
+2. **`data/marketing_eda.csv`**: the week 2 case dataset, which we use again
+   today
+
+::: {.box}
+Download everything as one zip:
+[**`w3-code.zip`**](https://github.com/dadepro/mkt566/raw/main/w3/w3-code.zip),
+open the folder in VS Code, and run along.
+:::
+
+::: {.smaller-80 .muted}
+The debrief charts you just saw are in the variation case
+[solution](https://raw.githack.com/dadepro/mkt566/main/w2/w2-1-variation-case-solution.html).
+:::
+
 # Covariation {.divider}
 
 ## The two questions of EDA
