@@ -40,7 +40,7 @@ Each task below has a spot for both. Keep them short: one or two sentences.
 3. Open your AI assistant panel (Claude Code, Codex, Copilot, or Cursor).
 4. **Give your assistant a memory** (2 minutes, recommended). Every tool reads one file at the start of each chat: `CLAUDE.md` for Claude Code, `AGENTS.md` for Codex, `.github/copilot-instructions.md` for Copilot, `.cursor/rules` for Cursor. Put your standing instructions there once, and you never retype them. Paste this into your assistant:
 
-   > Create the instructions file your tool reads at the start of every chat in this folder (CLAUDE.md for Claude Code, AGENTS.md for Codex, .github/copilot-instructions.md for Copilot, .cursor/rules for Cursor) with these rules: I am a beginner who has never coded. Use R with data.table and ggplot2. Add a short comment above each step. Do not run code; I run it myself and paste the output. Every chart must be printed in the R Markdown chunk, not only saved with ggsave. After every request I make, append one line describing it to ai-log.md in this folder, and note anything you got wrong that we fixed.
+   > Create the instructions file your tool reads at the start of every chat in this folder (CLAUDE.md for Claude Code, AGENTS.md for Codex, .github/copilot-instructions.md for Copilot, .cursor/rules for Cursor) with these rules: I am a beginner. Use R with data.table and ggplot2. Add a short comment above each step. Do not run code; I run it myself and paste the output. Every chart must be printed in the R Markdown chunk, not only saved with ggsave. After every request I make, append one line describing it to ai-log.md in this folder, and note anything you got wrong that we fixed.
 
    Open the file it created and read it: it is plain text, and you can edit it any time. From now on the AI log writes itself as you work. (Copilot only follows this file in agent mode; if you use Copilot chat, keep using the log prompt at the end.)
 5. Everything else (the R extension, rmarkdown, pandoc) is what you set up for the variation case. If knitting failed for you last week, fix it now, before class, with the [variation case setup steps](https://raw.githack.com/dadepro/mkt566/main/w2/w2-1-variation-case.html#setup-5-minutes) or in office hours.
@@ -93,7 +93,7 @@ Paste this into your assistant, exactly as written:
 - How many rows and columns? What does one row represent, and why does that matter for counting "how popular is a style" (hint: does a beer with 300 reviews count once or 300 times)?
 - Ask the assistant for one more line: the number of **distinct** beers, breweries, and reviewers. How many of each?
 
-**Explain it back:** what does `fread()` do, and why did we use it instead of `read.csv()`?
+**Explain it back:** what does `str()` do?
 
 ## Task 2: find the dirt (prompt skeleton)
 
