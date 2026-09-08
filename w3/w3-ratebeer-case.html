@@ -2252,10 +2252,15 @@ vertical-align: -.125em;
 <section id="setup-5-minutes" class="level2">
 <h2 class="anchored" data-anchor-id="setup-5-minutes">Setup (5 minutes)</h2>
 <ol type="1">
-<li>Download the dataset: <a href="https://github.com/dadepro/mkt566/raw/main/w3/ratebeer-case-data.zip"><strong><code>ratebeer-case-data.zip</code></strong></a> (5 MB). Unzip it to get <code>ratebeer.csv</code> (about 30 MB, 292,680 rows: normal for real data, and R handles it in a second).</li>
-<li>Make a new folder for today (for example <code>ratebeer-case</code>), put <code>ratebeer.csv</code> in it, and in VS Code choose <strong>File → Open Folder…</strong> to open that folder.</li>
-<li>Open your AI assistant panel (Claude Code, Codex, Copilot, or Cursor).</li>
-<li>Everything else (the R extension, rmarkdown, pandoc) is what you set up for the variation case. If knitting failed for you last week, fix it now, before class, with the <a href="https://raw.githack.com/dadepro/mkt566/main/w2/w2-1-variation-case.html#setup-5-minutes">variation case setup steps</a> or in office hours.</li>
+<li><p>Download the dataset: <a href="https://github.com/dadepro/mkt566/raw/main/w3/ratebeer-case-data.zip"><strong><code>ratebeer-case-data.zip</code></strong></a> (5 MB). Unzip it to get <code>ratebeer.csv</code> (about 30 MB, 292,680 rows: normal for real data, and R handles it in a second).</p></li>
+<li><p>Make a new folder for today (for example <code>ratebeer-case</code>), put <code>ratebeer.csv</code> in it, and in VS Code choose <strong>File → Open Folder…</strong> to open that folder.</p></li>
+<li><p>Open your AI assistant panel (Claude Code, Codex, Copilot, or Cursor).</p></li>
+<li><p><strong>Give your assistant a memory</strong> (2 minutes, recommended). Every tool reads one file at the start of each chat: <code>CLAUDE.md</code> for Claude Code, <code>AGENTS.md</code> for Codex, <code>.github/copilot-instructions.md</code> for Copilot, <code>.cursor/rules</code> for Cursor. Put your standing instructions there once, and you never retype them. Paste this into your assistant:</p>
+<blockquote class="blockquote">
+<p>Create the instructions file your tool reads at the start of every chat in this folder (CLAUDE.md for Claude Code, AGENTS.md for Codex, .github/copilot-instructions.md for Copilot, .cursor/rules for Cursor) with these rules: I am a beginner who has never coded. Use R with data.table and ggplot2. Add a short comment above each step. Do not run code; I run it myself and paste the output. Every chart must be printed in the R Markdown chunk, not only saved with ggsave. After every request I make, append one line describing it to ai-log.md in this folder, and note anything you got wrong that we fixed.</p>
+</blockquote>
+<p>Open the file it created and read it: it is plain text, and you can edit it any time. From now on the AI log writes itself as you work. (Copilot only follows this file in agent mode; if you use Copilot chat, keep using the log prompt at the end.)</p></li>
+<li><p>Everything else (the R extension, rmarkdown, pandoc) is what you set up for the variation case. If knitting failed for you last week, fix it now, before class, with the <a href="https://raw.githack.com/dadepro/mkt566/main/w2/w2-1-variation-case.html#setup-5-minutes">variation case setup steps</a> or in office hours.</p></li>
 </ol>
 </section>
 <section id="the-data" class="level2">
@@ -2328,7 +2333,7 @@ vertical-align: -.125em;
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p><code>ai-log.md</code> accumulates across chats, but each chat only knows its own conversation. So <strong>before you close each chat, make sure the assistant has saved that session’s log to <code>ai-log.md</code></strong>, or that session’s requests are lost. The prompt, same as last week:</p>
+<p><code>ai-log.md</code> accumulates across chats, but each chat only knows its own conversation. If you set up the memory file in Setup step 4, the assistant logs each request as you go: check <code>ai-log.md</code> once in a while to confirm. Otherwise, <strong>before you close each chat, make sure the assistant has saved that session’s log to <code>ai-log.md</code></strong>, or that session’s requests are lost. The prompt, same as last week:</p>
 <blockquote class="blockquote">
 <p>Append a short log of this session to a file called ai-log.md in this folder: each request I made, one line each, in order, plus anything you got wrong that we fixed.</p>
 </blockquote>
