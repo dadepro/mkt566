@@ -58,7 +58,7 @@ df <- fread("code/data/marketing_eda.csv")
 - Today: the solution of the variation case, then **covariation**
 - Thursday and next Tuesday: the **RateBeer case** (bring your laptop)
 
-## "Am I actually learning anything?" {.smaller-90}
+## The learning process {.smaller-90}
 
 A common feeling in the first weeks of working this way: the AI writes code
 you have never seen, you run it, and a chart appears. It feels like magic, not
