@@ -38,12 +38,7 @@ Each task below has a spot for both. Keep them short: one or two sentences.
 1. Download the dataset: [**`ratebeer-case-data.zip`**](https://github.com/dadepro/mkt566/raw/main/w3/ratebeer-case-data.zip) (5 MB). Unzip it to get `ratebeer.csv` (about 30 MB, 292,680 rows: normal for real data, and R handles it in a second).
 2. Make a new folder for today (for example `ratebeer-case`), put `ratebeer.csv` in it, and in VS Code choose **File → Open Folder...** to open that folder.
 3. Open your AI assistant panel (Claude Code, Codex, Copilot, or Cursor).
-4. **Give your assistant a memory** (2 minutes, recommended). Every tool reads one file at the start of each chat: `CLAUDE.md` for Claude Code, `AGENTS.md` for Codex, `.github/copilot-instructions.md` for Copilot, `.cursor/rules` for Cursor. Put your standing instructions there once, and you never retype them. Paste this into your assistant:
-
-   > Create the instructions file your tool reads at the start of every chat in this folder (CLAUDE.md for Claude Code, AGENTS.md for Codex, .github/copilot-instructions.md for Copilot, .cursor/rules for Cursor) with these rules: I am a beginner. Use R with data.table and ggplot2. Add a short comment above each step. Do not run code; I run it myself and paste the output. Every chart must be printed in the R Markdown chunk, not only saved with ggsave. After every request I make, append one line describing it to ai-log.md in this folder, and note anything you got wrong that we fixed.
-
-   Open the file it created and read it: it is plain text, and you can edit it any time. From now on the AI log writes itself as you work. (Copilot only follows this file in agent mode; if you use Copilot chat, keep using the log prompt at the end.)
-5. Everything else (the R extension, rmarkdown, pandoc) is what you set up for the variation case. If knitting failed for you last week, fix it now, before class, with the [variation case setup steps](https://raw.githack.com/dadepro/mkt566/main/w2/w2-1-variation-case.html#setup-5-minutes) or in office hours.
+4. Everything else (the R extension, rmarkdown, pandoc) is what you set up for the variation case. If knitting failed for you last week, fix it now, before class, with the [variation case setup steps](https://raw.githack.com/dadepro/mkt566/main/w2/w2-1-variation-case.html#setup-5-minutes) or in office hours.
 
 ## The data
 
@@ -73,7 +68,7 @@ That is what the columns are *supposed* to contain. Part of your job is finding 
 ::: {.callout-important}
 ## The AI log
 
-`ai-log.md` accumulates across chats, but each chat only knows its own conversation. If you set up the memory file in Setup step 4, the assistant logs each request as you go: check `ai-log.md` once in a while to confirm. Otherwise, **before you close each chat, make sure the assistant has saved that session's log to `ai-log.md`**, or that session's requests are lost. The prompt, same as last week:
+`ai-log.md` accumulates across chats, but each chat only knows its own conversation. So **before you close each chat, make sure the assistant has saved that session's log to `ai-log.md`**, or that session's requests are lost. The prompt, same as last week:
 
 > Append a short log of this session to a file called ai-log.md in this folder: each request I made, one line each, in order, plus anything you got wrong that we fixed.
 
