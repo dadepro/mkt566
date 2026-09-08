@@ -68,7 +68,7 @@ That is what the columns are *supposed* to contain. Part of your job is finding 
 ::: {.callout-important}
 ## The AI log
 
-Before you close each chat, paste the log prompt (the last step of this handout). A new chat cannot see the old one.
+`ai-log.md` accumulates across chats, but each chat only knows its own conversation. So paste the log prompt (the last step of this handout) **before you close each chat**, or that session's requests are lost.
 :::
 
 ## Task 1: look at the data (exact prompt provided)
