@@ -68,7 +68,7 @@ That is what the columns are *supposed* to contain. Part of your job is finding 
 ::: {.callout-important}
 ## The AI log
 
-`ai-log.md` accumulates across chats, but each chat only knows its own conversation. So paste the log prompt (the last step of this handout) **before you close each chat**, or that session's requests are lost.
+`ai-log.md` accumulates across chats, but each chat only knows its own conversation. So **before you close each chat, make sure the assistant has saved that session's log to `ai-log.md`** (the log prompt is the last step of this handout), or that session's requests are lost.
 :::
 
 ## Task 1: look at the data (exact prompt provided)
