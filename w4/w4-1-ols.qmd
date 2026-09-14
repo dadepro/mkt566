@@ -1,0 +1,818 @@
+---
+title: "Regression: Modeling Relationships"
+subtitle: "MKT 566 · Fall 2026"
+author: "Davide Proserpio"
+institute: "USC Marshall School of Business"
+format:
+  revealjs:
+    theme: theme.scss
+    slide-number: c/t
+    width: 1280
+    height: 720
+    incremental: false
+    transition: fade
+    transition-speed: fast
+    controls: true
+    progress: true
+    hash: true
+    embed-resources: false
+    link-external-newwindow: true
+    footer: "MKT 566 · Marketing Analytics"
+execute:
+  echo: false
+  warning: false
+  message: false
+fig-width: 7
+fig-height: 4.2
+fig-align: center
+---
+
+```{r setup}
+#| include: false
+library(datarium)
+library(ggplot2)
+library(data.table)
+library(patchwork)
+library(scales)
+library(stargazer)
+
+options(width = 110)
+set.seed(566)
+knitr::opts_knit$set(root.dir = "code")
+
+data("marketing", package = "datarium")
+airbnb <- fread("code/data/airbnb.csv")
+
+m_yt   <- lm(sales ~ youtube, data = marketing)
+b_yt   <- coef(m_yt)
+ssr_yt <- sum(resid(m_yt)^2)
+sst    <- sum((marketing$sales - mean(marketing$sales))^2)
+```
+
+# Before We Start {.divider}
+
+## Housekeeping
+
+- The **RateBeer report** (`ratebeer-report.html` + `ai-log.md`) is due
+  **Sunday, Sept. 20, 11:59 pm** on Brightspace
+- **Homework 2** is released today and due **Thursday, Oct. 8**. It covers
+  today (OLS) and Tuesday (logit), on a box-office dataset
+- **Group project**: proposal presentations are on **Oct. 13 and 15**
+  (10–15 minutes per group: the problem you will study and how)
+- Tuesday: **logit**, then the **Airbnb exercise** on your laptop
+
+## From charts to models {.smaller-90}
+
+Last week you *looked* at how two variables move together. Today you put a
+**number** on it, and learn to tell when that number can be trusted.
+
+::::: {.columns}
+::: {.column width="50%"}
+**Today you learn to**
+
+1. Say what a regression **is** (a line, chosen a specific way)
+2. **Read** R's output: coefficient, standard error, p-value, R²
+3. **Interpret** a coefficient in business units, with and without logs
+4. Handle **categorical** predictors (city, room type)
+:::
+::: {.column width="50%"}
+**What stays the same**
+
+- The AI writes the code. You choose the model, and you read the result
+- Two habits: **predict** before you run, **explain back** one line after
+- Same data as before: the 200 ad campaigns from week 3, then 50,000
+  Airbnb listings
+:::
+:::::
+
+::: {.box}
+Regression is the workhorse of marketing analytics. Homework 2, the Airbnb
+exercise, and most group projects are built on what we cover today.
+:::
+
+## R script for today
+
+In the `code/` folder on the course website:
+
+1. **`w4-1-ols-class.R`**: every chart and every regression in today's deck,
+   with a comment above each one
+2. **`data/airbnb.csv`**: the Airbnb dataset used in the second half (and in
+   Tuesday's exercise)
+
+::: {.box}
+Download everything as one zip:
+[**`w4-code.zip`**](https://github.com/dadepro/mkt566/raw/main/w4/w4-code.zip),
+open the folder in VS Code, and run along.
+:::
+
+# From a Line to a Model {.divider}
+
+## The line we drew last week
+
+```{r line-recall}
+#| echo: true
+#| output-location: column
+#| code-line-numbers: "3"
+#| fig-width: 5.5
+#| fig-height: 4.2
+ggplot(marketing, aes(x = youtube, y = sales)) +
+  geom_point(alpha = 0.5, color = "darkgreen") +
+  geom_smooth(method = "lm", se = FALSE) +
+  labs(title = "Sales vs. YouTube Ad Spend",
+       x = "YouTube ad spend (thousands $)",
+       y = "Sales (thousands of units)") +
+  theme_minimal()
+```
+
+::: {.smaller-80 .muted}
+We asked R for a straight line through the points. What line is it? What
+could a manager do with it?
+:::
+
+## A regression is the formula for that line
+
+$$\text{sales} = \beta_0 + \beta_1 \times \text{youtube}$$
+
+- A regression **predicts** one variable, $Y$, from one or more others, $X$
+- $Y$ is the **outcome** (or dependent variable). $X$ is the **predictor**
+  (or independent variable)
+- Examples:
+  - Sales ($Y$) as a function of ad spend ($X$)
+  - Revenue ($Y$) as a function of review ratings ($X$)
+  - Airbnb price ($Y$) as a function of the number of bedrooms ($X$)
+  - Income ($Y$) as a function of years of education ($X$)
+
+::: {.box}
+In general $Y = F(X)$: $Y$ depends on $X$ *somehow*. A **linear** regression
+assumes the simplest $F$: a straight line. Machine learning (week 10) is
+mostly about learning fancier $F$'s.
+:::
+
+## The setup
+
+::::: {.columns}
+::: {.column width="60%"}
+For each row $i$ of the data (each campaign):
+
+$$y_i = \beta_0 + \beta_1 x_i + \epsilon_i$$
+
+- $x_i$: the predictor (YouTube spend of campaign $i$)
+- $y_i$: the outcome (sales of campaign $i$)
+- $\beta_0$: the **intercept**, predicted $Y$ when $X = 0$
+- $\beta_1$: the **slope**, how much $Y$ changes when $X$ goes up by one
+  unit
+- $\epsilon_i$: the **error**, the part of $y_i$ the line does not explain
+:::
+::: {.column width="40%"}
+```{r setup-table}
+#| echo: false
+knitr::kable(head(marketing[, c("youtube", "sales")], 5),
+             col.names = c("x = youtube", "y = sales"),
+             digits = 1)
+```
+::: {.smaller-80 .muted}
+Rows $i = 1, \dots, 200$
+:::
+:::
+:::::
+
+## The three pieces, on the chart
+
+```{r ols-anatomy}
+#| fig-width: 8
+#| fig-height: 4.6
+pt <- marketing[which.max(resid(m_yt)), ]
+pt_hat <- predict(m_yt, pt)
+x1 <- 270; x2 <- 340
+y1 <- b_yt[1] + b_yt[2] * x1; y2 <- b_yt[1] + b_yt[2] * x2
+ggplot(marketing, aes(x = youtube, y = sales)) +
+  geom_point(alpha = 0.3, color = "darkgreen") +
+  geom_abline(intercept = b_yt[1], slope = b_yt[2], color = "firebrick", linewidth = 1.1) +
+  annotate("point", x = 0, y = b_yt[1], size = 3.5, color = "firebrick") +
+  annotate("label", x = 12, y = b_yt[1] - 3.2, hjust = 0, parse = TRUE,
+           label = sprintf("beta[0] == %.1f ~~ (intercept)", b_yt[1]), color = "firebrick") +
+  annotate("segment", x = x1, xend = x2, y = y1, yend = y1, color = "firebrick", linetype = 2) +
+  annotate("segment", x = x2, xend = x2, y = y1, yend = y2, color = "firebrick", linetype = 2) +
+  annotate("label", x = x2, y = y1 - 2.2, hjust = 1, parse = TRUE,
+           label = sprintf("beta[1] == %.3f ~~ (slope)", b_yt[2]), color = "firebrick") +
+  annotate("segment", x = pt$youtube, xend = pt$youtube, y = pt_hat, yend = pt$sales,
+           color = "steelblue", linewidth = 1.1) +
+  annotate("point", x = pt$youtube, y = pt$sales, size = 3, color = "steelblue") +
+  annotate("label", x = pt$youtube - 8, y = (pt$sales + pt_hat) / 2, hjust = 1, parse = TRUE,
+           label = "epsilon == actual - predicted ~~ (error)", color = "steelblue") +
+  scale_x_continuous(limits = c(0, 360)) +
+  labs(x = "YouTube ad spend (thousands $)", y = "Sales (thousands of units)") +
+  theme_minimal(base_size = 14)
+```
+
+::: {.smaller-80 .muted}
+Every point has its own error: the vertical distance to the line. The
+intercept and the slope are the same for everyone.
+:::
+
+## Which line?
+
+```{r which-line}
+#| fig-width: 10
+#| fig-height: 4.2
+draw_line <- function(a, b, title) {
+  d <- copy(as.data.table(marketing))[, yhat := a + b * youtube]
+  ggplot(d, aes(x = youtube, y = sales)) +
+    geom_segment(aes(xend = youtube, yend = yhat), color = "steelblue", alpha = 0.5) +
+    geom_point(alpha = 0.4, color = "darkgreen") +
+    geom_abline(intercept = a, slope = b, color = "firebrick", linewidth = 1.1) +
+    labs(title = title, x = "YouTube ad spend (thousands $)", y = "Sales") +
+    theme_minimal(base_size = 13)
+}
+draw_line(5, 0.08, "Line A") + draw_line(b_yt[1], b_yt[2], "Line B")
+```
+
+::: {.smaller-80 .muted}
+Both lines run through the points. The blue segments are the errors. Which
+line is better, and how would you *decide*?
+:::
+
+## Which line: reading it
+
+```{r which-line-2}
+#| fig-width: 10
+#| fig-height: 3.6
+ssr_a <- sum((marketing$sales - (5 + 0.08 * marketing$youtube))^2)
+draw_line(5, 0.08, sprintf("Line A: sum of squared errors = %s", comma(round(ssr_a)))) +
+  draw_line(b_yt[1], b_yt[2], sprintf("Line B: sum of squared errors = %s", comma(round(ssr_yt))))
+```
+
+::: {.smaller-90}
+- Square each error (so misses above and below the line both count), add
+  them up. Smaller is better
+- **Ordinary least squares (OLS)** picks the intercept and slope with the
+  **smallest** sum of squared errors. Line B is that line, and it is what
+  `geom_smooth(method = "lm")` drew last week
+- "Least squares" is the whole idea. Everything else today is about reading
+  what comes out
+:::
+
+# Estimating a Regression in R {.divider}
+
+## One function: `lm()` {.smaller}
+
+```{r lm-first}
+#| echo: true
+model <- lm(sales ~ youtube, data = marketing)   # "sales as a function of youtube"
+summary(model)
+```
+
+::: {.smaller-80 .muted}
+Find the intercept and the slope in this output. What else is in there?
+:::
+
+## Reading the output: the estimates {.smaller-90}
+
+```{r lm-coef}
+#| echo: true
+coef(model)
+```
+
+- **Intercept** $\beta_0 = 8.44$: a campaign with **no** YouTube spend is
+  predicted to sell about **8,400 units** (sales are in thousands)
+- **Slope** $\beta_1 = 0.0475$: each additional **\$1,000** on YouTube is
+  associated with **47.5 more units** sold (spend is in thousands of
+  dollars)
+- Prediction: with \$100k on YouTube, $8.44 + 0.0475 \times 100 = 13.2$
+  thousand units
+
+::: {.box}
+Always translate the slope into **business units**: "one more unit of $X$
+goes with $\beta_1$ more units of $Y$". If you cannot say it in a sentence a
+manager understands, you have not read the coefficient yet.
+:::
+
+## The estimate comes with uncertainty {.smaller-90}
+
+Our slope comes from **these** 200 campaigns. Another 200 would give a
+slightly different slope. The **standard error (SE)** measures how much it
+would move around.
+
+```{r lm-se}
+#| echo: true
+round(coef(summary(model)), 4)
+```
+
+- `Std. Error` of the slope: **0.0027**. The slope is pinned down to roughly
+  $0.0475 \pm 0.005$
+- `t value` = estimate / SE = $0.0475 / 0.0027 \approx$ **17.7**: the slope is
+  about 18 standard errors away from zero
+- `Pr(>|t|)` is the **p-value**: here so small R prints it as `<2e-16`
+
+## The question the p-value answers {.smaller-90}
+
+::::: {.columns}
+::: {.column width="52%"}
+**Hypothesis testing** is a way to decide between two claims with data:
+
+- $H_0$ (the null): **no relationship**, $\beta_1 = 0$. YouTube spend has
+  nothing to do with sales
+- $H_1$ (the alternative): **there is one**, $\beta_1 \neq 0$
+
+The **p-value** answers: *if $H_0$ were true, how likely is a slope at least
+this far from zero, just by luck?*
+:::
+::: {.column width="48%"}
+**Decision rule**
+
+- p-value **< 0.05**: reject $H_0$. The coefficient is **statistically
+  significant** (different from zero)
+- p-value **≥ 0.05**: fail to reject $H_0$. Not enough evidence
+
+R's stars: `***` p < 0.001, `**` p < 0.01, `*` p < 0.05, `.` p < 0.1
+
+**Smaller SE → larger t → smaller p → stronger evidence** against "no
+relationship"
+:::
+:::::
+
+::: {.box}
+For YouTube, p is essentially 0: if spend and sales were unrelated, a slope
+of 0.0475 would almost never show up. So we are confident the relationship
+is real.
+:::
+
+## "Significant" is not the same as "big" {.smaller-90}
+
+Two separate questions about every coefficient:
+
+1. **Is it different from zero?** That is what the p-value answers. It
+   depends on the size of the estimate *and* on how much data you have
+2. **Does it matter?** That is about the **size** of the estimate, in
+   business units. The p-value says nothing about it
+
+::: {.box-warn}
+With 50,000 rows (Airbnb, later today) almost everything is "significant",
+including effects too small to care about. With 18 rows almost nothing is,
+including effects that are real. Read the **size** first, then the stars.
+:::
+
+## How good is the line? R-squared
+
+```{r r2-figure}
+#| fig-width: 10
+#| fig-height: 3.9
+sub <- as.data.table(marketing)[sample(.N, 40)]
+sub[, `:=`(ybar = mean(marketing$sales), yhat = predict(m_yt, sub))]
+p_mean <- ggplot(sub, aes(youtube, sales)) +
+  geom_segment(aes(xend = youtube, yend = ybar), color = "steelblue", alpha = 0.6) +
+  geom_hline(yintercept = mean(marketing$sales), color = "grey30", linewidth = 1) +
+  geom_point(color = "darkgreen") +
+  labs(title = "Errors if we only knew the mean", x = "YouTube spend", y = "Sales") +
+  theme_minimal(base_size = 13)
+p_line <- ggplot(sub, aes(youtube, sales)) +
+  geom_segment(aes(xend = youtube, yend = yhat), color = "steelblue", alpha = 0.6) +
+  geom_abline(intercept = b_yt[1], slope = b_yt[2], color = "firebrick", linewidth = 1) +
+  geom_point(color = "darkgreen") +
+  labs(title = "Errors with the regression line", x = "YouTube spend", y = NULL) +
+  theme_minimal(base_size = 13)
+p_mean + p_line
+```
+
+::: {.smaller-80 .muted}
+Forty of the 200 campaigns. Without $X$, the best guess for every campaign
+is the average. How much do the errors shrink once we use the line?
+:::
+
+## R-squared: reading it {.smaller-90}
+
+$$R^2 = 1 - \frac{\text{sum of squared errors with the line}}{\text{sum of squared errors with the mean}}
+= 1 - \frac{`r comma(round(ssr_yt))`}{`r comma(round(sst))`} = `r round(1 - ssr_yt / sst, 2)`$$
+
+- **Multiple R-squared: 0.61**. YouTube spend explains **61%** of the
+  variation in sales across campaigns. The other 39% is other channels,
+  seasonality, luck
+- $R^2$ runs from 0 (the line is no better than the mean) to 1 (every point
+  on the line)
+- **Residual standard error: 3.9**. The typical prediction misses by about
+  **3,900 units**. Same idea, in the units of $Y$
+- **Adjusted R-squared** is $R^2$ with a small penalty for every predictor
+  you add. Use it to compare models with different numbers of predictors
+
+::: {.box}
+A low $R^2$ does not make a coefficient wrong. It says that $X$ alone leaves
+most of $Y$ unexplained. Whether that matters depends on your goal:
+**prediction** needs a high $R^2$, **understanding one relationship** does
+not.
+:::
+
+## The output, decoded {.smaller-90}
+
+| In the output | What it is | How to read it |
+|---|---|---|
+| `Estimate` | $\hat\beta$, the coefficient | "One more unit of $X$ goes with $\hat\beta$ more units of $Y$" |
+| `Std. Error` | Precision of the estimate | Smaller is better. Would the estimate move much with new data? |
+| `t value` | Estimate / SE | How many SEs from zero. Beyond ±2 is "significant" |
+| `Pr(>|t|)` | p-value | Chance of a t this large if the true coefficient is 0 |
+| `Residual standard error` | Typical size of the error | In units of $Y$ |
+| `R-squared` | Share of the variation in $Y$ explained | 0 to 1 |
+| `F-statistic` | Do the predictors explain *anything* together? | Tiny p-value: yes |
+
+# Interpreting the Coefficient {.divider}
+
+## What does $\beta_1$ tell us? {.smaller-90}
+
+**All else equal** (*ceteris paribus*), how much $Y$ changes when $X$ moves
+by one unit. What "one unit" means depends on how you wrote the model:
+
+| Model | Equation | Reading of $\beta_1$ |
+|---|---|---|
+| Level-level | $Y = \beta_0 + \beta_1 X$ | One more unit of $X$ → $\beta_1$ more **units** of $Y$ |
+| Log-level | $\ln Y = \beta_0 + \beta_1 X$ | One more unit of $X$ → about $100 \times \beta_1$ **percent** more $Y$ |
+| Level-log | $Y = \beta_0 + \beta_1 \ln X$ | 1% more $X$ → about $\beta_1 / 100$ more **units** of $Y$ |
+| Log-log | $\ln Y = \beta_0 + \beta_1 \ln X$ | 1% more $X$ → about $\beta_1$ **percent** more $Y$ (an **elasticity**) |
+
+::: {.smaller-80 .muted}
+The percentage readings are approximations that work when $\beta_1$ is
+small (say below 0.2). The exact formula for log-level is
+$(e^{\beta_1} - 1) \times 100\%$.
+:::
+
+## Why take logs? {.smaller-90}
+
+::::: {.columns}
+::: {.column width="50%"}
+**1. Skewed variables.** Price, income, sales, number of reviews: many small
+values, a few huge ones. You saw in week 2 that a log scale makes such
+distributions readable. The same is true for a regression: without the log,
+the few huge values pull the line around.
+
+**2. Multiplicative relationships.** A \$1 price increase means something
+very different at \$5 and at \$100. In logs, the model works in
+**percentages**, which is how the relationship usually behaves.
+:::
+::: {.column width="50%"}
+**3. Interpretation.** Managers think in percentages: "a 10% price increase
+lowers demand by 8%". A log-log coefficient **is** that number, the
+**elasticity**.
+
+**Rule of thumb**: log a variable that is positive and right-skewed (money,
+counts). Leave ratings, shares, and dummies as they are.
+:::
+:::::
+
+::: {.box}
+Logs change the **question** you are asking, not just the fit. Level: "how
+many more units?". Log: "what percent more?". Choose the one your manager
+needs.
+:::
+
+## The same relationship, three ways {.smaller}
+
+```{r three-forms}
+#| echo: true
+m_level  <- lm(sales ~ youtube, data = marketing)
+m_loglev <- lm(log(sales) ~ youtube, data = marketing)
+m_loglog <- lm(log(sales) ~ log(youtube), data = marketing)
+stargazer(m_level, m_loglev, m_loglog, type = "text",
+          column.labels = c("level-level", "log-level", "log-log"),
+          omit.stat = c("f", "ser", "adj.rsq"), digits = 4, no.space = TRUE)
+```
+
+## Three ways: reading it {.smaller-90}
+
+- **Level-level** (column 1): \$1,000 more on YouTube → **47.5 more units**
+- **Log-level** (column 2): \$1,000 more on YouTube → about **0.32% more
+  sales** ($100 \times 0.0032$)
+- **Log-log** (column 3): 1% more YouTube spend → **0.36% more sales**. That
+  is the **elasticity** of sales with respect to YouTube spend
+
+::: {.box}
+`stargazer()` puts several models side by side, with standard errors in
+parentheses and stars for significance. This is the table format for
+Homework 2 and for your project. Column labels, a title, and readable
+variable names are the difference between a table and a wall of numbers.
+:::
+
+::: {.smaller-80 .muted}
+Elasticities below 1 mean $Y$ responds less than proportionally: doubling
+YouTube spend does not double sales.
+:::
+
+## More than one predictor {.smaller-90}
+
+$$y_i = \beta_0 + \beta_1 x_{1,i} + \beta_2 x_{2,i} + \dots + \beta_k x_{k,i} + \epsilon_i$$
+
+Everything we said still applies, with one change in the reading: each
+$\beta_j$ is the change in $Y$ for one more unit of $x_j$, **holding the
+other predictors fixed**.
+
+In R, add predictors to the formula with `+`:
+
+```{r multiple-code}
+#| echo: true
+#| eval: false
+m_all <- lm(sales ~ youtube + facebook + newspaper, data = marketing)
+```
+
+::: {.box}
+Before you look: last week's charts showed YouTube strong, Facebook noisier,
+newspaper flat. Which coefficient do you expect to be largest? Which one
+close to zero?
+:::
+
+## Three channels at once {.smaller}
+
+```{r multiple}
+#| echo: true
+m_all <- lm(sales ~ youtube + facebook + newspaper, data = marketing)
+stargazer(m_yt, m_all, type = "text", column.labels = c("YouTube only", "all three"),
+          omit.stat = c("f", "ser", "adj.rsq"), digits = 3, no.space = TRUE)
+```
+
+::: {.smaller-80 .muted}
+Which channel has the largest coefficient? What happened to newspaper?
+:::
+
+## More than one predictor: reading it {.smaller-90}
+
+- **Facebook** has the largest coefficient: \$1,000 more on Facebook,
+  holding YouTube and newspaper fixed, goes with about **189 more units**.
+  YouTube: 46 units per \$1,000
+- **Newspaper**: $-0.001$, p-value 0.86. Once YouTube and Facebook are in
+  the model, newspaper spend tells us **nothing** about sales. Remember
+  last week's flat newspaper panel
+- $R^2$ goes from 0.61 to **0.90**: three channels explain 90% of the
+  variation in sales
+
+::: {.box}
+"Holding the others fixed" is what makes multiple regression useful.
+Campaigns that spend more on newspaper also spend more on Facebook
+(correlation 0.35). The single-predictor regression of sales on newspaper
+would give newspaper credit for Facebook's work.
+:::
+
+# The Airbnb Data {.divider}
+
+## The dataset {.smaller}
+
+```{r airbnb-head}
+#| echo: true
+airbnb <- fread("data/airbnb.csv")
+names(airbnb)
+head(airbnb[, .(price, bedrooms, star_rating, reviews_count, city, room_type)], 4)  # a few columns
+table(airbnb$city)
+```
+
+::: {.smaller-90}
+`r comma(nrow(airbnb))` listings with a nightly price, size, star rating,
+number of reviews, city, and room type. Four real cities and, for reasons
+lost to history, **18 listings in New York**. Keep that in mind.
+:::
+
+## Predict before you run
+
+Let's predict **price** as a function of the **number of reviews** a listing
+has.
+
+::: {.box}
+Write down one sentence: **what sign** do you expect for the slope, and
+**why**?
+:::
+
+::: {.smaller-90}
+Two stories, opposite signs:
+
+- More reviews means a popular, established listing, which can charge more
+  (**positive**)
+- Cheap places get booked more often, so they collect more reviews
+  (**negative**)
+:::
+
+## Price vs. number of reviews
+
+```{r airbnb-scatter}
+#| echo: true
+#| output-location: column
+#| fig-width: 5.5
+#| fig-height: 4.2
+ggplot(airbnb, aes(x = reviews_count, y = price)) +
+  geom_point(alpha = 0.2) +
+  scale_y_continuous(labels = dollar) +
+  labs(title = "Price vs. Number of Reviews",
+       x = "Number of reviews",
+       y = "Nightly price") +
+  theme_minimal()
+```
+
+::: {.smaller-80 .muted}
+`r comma(nrow(airbnb))` points. What do you see? Does a straight line make
+sense here?
+:::
+
+## Price vs. reviews: reading it {.nostretch}
+
+```{r airbnb-scatter-2}
+#| fig-width: 6
+#| fig-height: 3.1
+ggplot(airbnb, aes(x = reviews_count, y = price)) +
+  geom_point(alpha = 0.2) +
+  geom_smooth(method = "lm", se = FALSE, color = "firebrick") +
+  scale_y_continuous(labels = dollar) +
+  labs(title = "Price vs. Number of Reviews", x = "Number of reviews", y = "Nightly price") +
+  theme_minimal()
+```
+
+::: {.smaller-90}
+- Both variables are **heavily skewed**: median price \$100, a few listings
+  at \$10,000; median 8 reviews, a few above 300
+- No clear line. If anything, the pricey listings sit at **low** review
+  counts, so the line tilts slightly **down**
+- A prime candidate for logs (Tuesday's exercise). For now, let's see what
+  the straight line says
+:::
+
+## The regression {.smaller}
+
+```{r airbnb-lm}
+#| echo: true
+m1 <- lm(price ~ reviews_count, data = airbnb)
+summary(m1)
+```
+
+::: {.smaller-80 .muted}
+Read the slope, the p-value, and the R-squared. Do they agree with the
+scatter plot?
+:::
+
+## The regression: reading it {.smaller-90}
+
+- **Intercept**: a listing with zero reviews is predicted to cost **\$148**
+- **Slope** $-0.35$: each additional review is associated with a price
+  **35 cents lower**. Ten more reviews: \$3.50 lower. That is tiny next to a
+  median price of \$100
+- **p-value < 2e-16**, three stars: statistically significant. With
+  50,000 listings, even a 35-cent slope is measured precisely
+- **R-squared 0.002**: reviews explain **0.2%** of the variation in price
+- **Residual standard error \$166**: the typical miss is larger than the
+  typical price
+
+::: {.box-warn}
+Significant, and useless for prediction. The stars say the slope is not
+zero. The size and the $R^2$ say it does not matter. Both readings are
+correct, and you need both.
+:::
+
+## A table you can put in a report {.smaller}
+
+```{r airbnb-stargazer}
+#| echo: true
+stargazer(m1, type = "text",
+          title = "Regression of Price on Number of Reviews",
+          dep.var.labels = "Nightly price (dollars)",
+          covariate.labels = "Number of reviews",
+          omit.stat = c("f", "ser", "adj.rsq"), digits = 2, no.space = TRUE)
+```
+
+::: {.smaller-80 .muted}
+Same numbers as `summary()`, laid out for a reader. Standard errors in
+parentheses, stars for significance, $N$ and $R^2$ at the bottom.
+:::
+
+# Categorical Predictors {.divider}
+
+## Text in a regression? {.smaller-90}
+
+City is a word, not a number. R handles this with a **factor**: a
+categorical variable stored as numbers with labels attached.
+
+```{r factor-demo}
+#| echo: true
+city <- factor(c("Miami", "Austin", "Miami", "Boston"))
+city
+as.integer(city)
+```
+
+- R stores 1, 2, 3 and shows you the labels. Levels are sorted
+  alphabetically unless you say otherwise
+- `lm()` converts a text column into a factor automatically. But **what does
+  a slope on "city" mean?** Let's look
+
+## Price by city {.smaller}
+
+```{r airbnb-city}
+#| echo: true
+m_city <- lm(price ~ city, data = airbnb)
+stargazer(m_city, type = "text", title = "Regression of Price on City",
+          dep.var.labels = "Nightly price (dollars)", omit.stat = c("f", "ser", "adj.rsq"),
+          digits = 2, no.space = TRUE)
+```
+
+::: {.smaller-80 .muted}
+Five cities, four coefficients. Where did Austin go? And what is the
+constant?
+:::
+
+## Price by city: reading it {.smaller-90}
+
+::::: {.columns}
+::: {.column width="42%"}
+Behind the scenes, R turns city into **dummy variables** (0/1), one per
+city, and **drops one**: the **base level**, Austin (first alphabetically).
+
+| Listing | City | Boston | LA | Miami | NYC |
+|---|---|---|---|---|---|
+| 1 | Austin | 0 | 0 | 0 | 0 |
+| 2 | Boston | 1 | 0 | 0 | 0 |
+| 3 | LA | 0 | 1 | 0 | 0 |
+| 4 | Miami | 0 | 0 | 1 | 0 |
+| 5 | NYC | 0 | 0 | 0 | 1 |
+:::
+::: {.column width="58%"}
+- The **constant** (\$169.95) is the average price in the base city,
+  **Austin**
+- Each coefficient is the **difference from Austin**: Boston \$17.60
+  cheaper, Los Angeles \$36.77 cheaper, Miami \$40.93 cheaper. All three
+  precisely estimated (three stars)
+- **New York**: \$28 cheaper, p-value 0.47, **not** significant. Not because
+  New York is like Austin, but because there are **18** listings: the
+  standard error is \$39, versus \$2–3 for the other cities
+
+::: {.box-warn}
+"Not significant" can mean "no difference" or "not enough data". Look at
+the standard error and the group size before you conclude anything.
+:::
+:::
+:::::
+
+## Choosing the base level {.smaller}
+
+```{r airbnb-relevel}
+#| echo: true
+airbnb$city <- relevel(factor(airbnb$city), ref = "Los Angeles")
+m_city2 <- lm(price ~ city, data = airbnb)
+stargazer(m_city, m_city2, type = "text", column.labels = c("base: Austin", "base: Los Angeles"),
+          dep.var.labels = "Nightly price (dollars)", omit.stat = c("f", "ser", "adj.rsq"),
+          digits = 2, no.space = TRUE)
+```
+
+::: {.smaller-80 .muted}
+Same data, same fit (same $R^2$), different comparison. Pick the base your
+reader cares about: the largest group, or the "status quo" option.
+:::
+
+# Regression Is Still Not Causation {.divider}
+
+## What the coefficient does and does not say {.smaller-90}
+
+Price is \$37 lower in Los Angeles than in Austin. Reviews go with slightly
+lower prices. Facebook spend goes with more sales. All of these are
+**associations**. None of them tells you what happens if you *change* $X$.
+
+- A regression holds fixed **only the predictors you put in**. Everything
+  you left out (listing quality, neighborhood, season) is still free to move
+  with $X$ and $Y$ at the same time
+- Adding predictors helps (newspaper's "effect" vanished once Facebook was
+  in). It does not settle the question. Weeks 11–12 are about designs that
+  do
+
+::: {.box}
+Words matter. Write "a one-unit increase in $X$ **is associated with** a
+$\beta_1$ change in $Y$", not "$X$ **causes** $Y$", unless you have a reason
+to believe it, and can say why.
+:::
+
+# Wrap-up {.divider}
+
+## What's next
+
+- **Tuesday, Sept. 22**: **logit**, regression for yes/no outcomes (will a
+  listing get booked? will a customer churn?). Then the **Airbnb exercise**
+  on your laptop: logs, more predictors, city and room type, and where you
+  would buy a property. Bring the week 1 setup working
+- **Homework 2** (due Thursday, Oct. 8): the same tools on a box-office
+  dataset, OLS and logit, with `stargazer` tables and an executive memo
+
+::: {.box}
+Before Tuesday, run today's script on the Airbnb data and try one thing on
+your own: replace `reviews_count` with `bedrooms` in `m1`. Predict the slope
+first, then explain back what the intercept means.
+:::
+
+## Wrap-up
+
+::: {.box}
+Code and data to reproduce today's regressions, on the course website:
+
+- [**`w4-code.zip`**](https://github.com/dadepro/mkt566/raw/main/w4/w4-code.zip):
+  one-click download of everything below
+- [**`w4-1-ols-class.R`**](https://github.com/dadepro/mkt566/blob/main/w4/code/w4-1-ols-class.R):
+  every chart and regression shown today
+- [**`data/airbnb.csv`**](https://github.com/dadepro/mkt566/blob/main/w4/code/data/airbnb.csv):
+  the Airbnb dataset (also used in Tuesday's exercise)
+:::
+
+::: {.smaller-80 .muted}
+Required reading: Chapter
+[3.4](https://bookdown.org/content/6ef13ea6-4e86-4566-b665-ebcd19d45029/secondarydata.html#linear-regression)
+of *R for Marketing Students*. Optional: [Lecture 6 of Data Storytelling for
+Marketers](https://raw.githack.com/dadepro/mkt-615/main/lectures/08-regression/08-regressions.html#1)
+and Chapter 7 of *R for Marketing Research and Analytics*.
+:::
+
+# Questions? {.divider}

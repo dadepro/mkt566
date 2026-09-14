@@ -1,0 +1,233 @@
+---
+title: "The Airbnb Case: Regression"
+subtitle: "MKT 566 · Decision Making Using Marketing Analytics · Fall 2026"
+format:
+  html:
+    toc: true
+    toc-depth: 2
+    embed-resources: true
+    link-external-newwindow: true
+---
+
+In the RateBeer case you described how variables move together. Today you **model** it: the same Airbnb data from Thursday's lecture, 50,836 listings in four cities (plus a handful in New York), and the tool is `lm()`.
+
+Same workflow: you say what you want, the AI writes the R, you run it, look, refine, and **you interpret**. The training wheels come off one step further: an exact prompt for Task 1, skeletons for Tasks 2 and 3, and from Task 4 on you write every prompt yourself.
+
+The client is an **investor** deciding where, and what kind of property, to buy and list on Airbnb. Every task builds toward the recommendation you write at the end.
+
+## The two habits, again
+
+::: {.callout-note}
+## Predict before you run
+
+Before each regression exists, write one sentence: *"I expect the coefficient on bedrooms to be positive, around $30 per bedroom."* Then compare. If the table disagrees with you, decide: is it the **data** telling you something, or the **code** doing something you did not ask for? A prediction that turns out wrong is worth more than no prediction.
+:::
+
+::: {.callout-note}
+## Explain it back
+
+After the code works, pick the **one line** that does the real work (the `lm()` formula, the `log()`, the `relevel()`) and write in your own words what it does. Stuck? Ask: *"Explain this line as if I have never coded, then quiz me on it."* Then write your own version, not the AI's.
+:::
+
+Each task has a spot for both. Keep them short: one or two sentences.
+
+## Reading a regression table: the checklist
+
+Thursday's lecture in four lines. Use it on every table today:
+
+1. **Size**: one more unit of $X$ goes with how many units (or what percent) of $Y$? Say it in dollars.
+2. **Stars**: is the coefficient distinguishable from zero? With 50,000 rows, almost everything is. That is not the interesting part.
+3. **R-squared**: how much of the variation in $Y$ does the model explain?
+4. **Base level**: for a categorical variable, every coefficient is a difference from the group that is missing from the table.
+
+## Setup (5 minutes)
+
+1. Download the dataset: [**`airbnb-case-data.zip`**](https://github.com/dadepro/mkt566/raw/main/w4/airbnb-case-data.zip) (600 KB). Unzip it to get `airbnb.csv` (3.5 MB, 50,836 rows).
+2. Make a new folder for today (for example `airbnb-case`), put `airbnb.csv` in it, and in VS Code choose **File → Open Folder...** to open that folder.
+3. Open your AI assistant panel (Claude Code, Codex, Copilot, or Cursor).
+4. New package today: **stargazer**, for regression tables. Task 3 installs it. Everything else (the R extension, rmarkdown, pandoc) is what you used for RateBeer.
+
+## The data
+
+One row per **listing**. Columns:
+
+| Column | What it is |
+|---|---|
+| `listing_id` | the listing |
+| `price` | nightly price in dollars |
+| `bedrooms`, `bathrooms` | size |
+| `guests_included` | guests included in the price |
+| `star_rating` | average rating, 1 to 5 |
+| `reviews_count` | number of reviews the listing has |
+| `city` | Austin, Boston, Los Angeles, Miami, New York City |
+| `room_type` | Entire home, Private room, Shared room |
+| `property_type`, `cancellation_policy`, `zipcode` | more details, not needed today |
+
+This data is clean: no text where numbers should be, no `"-"` for missing. The work today is in the modeling and the reading, not the cleaning.
+
+## The vibecoding loop, one more time
+
+1. **Ask precisely**: the outcome, the predictors, whether anything is logged, and what the table should look like.
+2. **Run it** line by line with `Cmd+Enter` / `Ctrl+Enter`. Regression tables print in the R terminal, not in a chart tab.
+3. **Look**: does the table have the columns you asked for? Are the signs plausible? Is the number of observations right?
+4. **Refine**: describe what to change, or paste the error message and ask why.
+5. **Interpret**: answer the questions in plain English, with the number that supports each claim.
+
+::: {.callout-important}
+## The AI log
+
+Before you close each chat, make sure the assistant has saved that session's log to `ai-log.md`:
+
+> Append a short log of this session to a file called ai-log.md in this folder: each request I made, one line each, in order, plus anything you got wrong that we fixed.
+:::
+
+## Task 1: look at the data (exact prompt provided)
+
+Paste this into your assistant, exactly as written:
+
+> Create a file called airbnb-case.R in this folder. It should: load airbnb.csv with data.table's fread(), show the first few rows, print the number of rows and columns, print summary() of price and reviews_count, and print a table of how many listings are in each city and in each room_type. Also create a folder called figures; we will save charts there. Add a short comment above each step explaining what it does. Do not run it; I will run it myself.
+
+**Predict first:** what do you expect the typical nightly price to be? Will the mean be above or below the median, and why?
+
+**Answer:**
+
+- How many rows and columns? What does one row represent?
+- Median and mean price: which is larger, and what does that tell you about the shape of the distribution? (Remember week 2.)
+- How many listings are in each city? One city is a problem for anything we conclude about it. Which one, and why?
+
+**Explain it back:** what is the difference between `summary()` and `table()`, and when would you use each?
+
+## Task 2: three pictures of the same relationship (prompt skeleton)
+
+On Thursday we plotted price against the number of reviews and got a cloud with no line in it. Let's try logs. Fill in the blanks:
+
+> Add to airbnb-case.R three scatter plots of price against reviews_count, each with a fitted regression line (geom_smooth with method = "lm") and alpha = 0.2 for the points: (1) price vs. reviews_count; (2) ______ vs. reviews_count; (3) ______ vs. ______. Save them as figures/price-reviews-1.png, -2.png, and -3.png.
+
+**Predict first:** which of the three will look most like a straight line?
+
+**Answer:**
+
+- Describe what changes from chart (1) to (2) to (3). Where did the $10,000 listings go in chart (2)?
+- In which chart does a straight line make the most sense? Why did logging help? (Thursday's "why take logs" slide has the three reasons; which ones apply here?)
+
+**Explain it back:** what does `log()` do to a price of $100 and a price of $1,000? By how much do the two differ before and after?
+
+## Task 3: the three models (prompt skeleton)
+
+Now the regressions that go with the three charts. Fill in the blanks:
+
+> Add to airbnb-case.R: install and load the stargazer package if needed. Estimate three models with lm(): m1 = price on reviews_count, m2 = ______ on reviews_count, m3 = ______ on ______. Print the three side by side with stargazer(type = "text"), with column labels "level-level", "log-level", "log-log", 4 digits, and omit the F statistic, residual standard error, and adjusted R-squared.
+
+::: {.callout-tip}
+## Check the AI's work
+
+In the level-level model the slope on `reviews_count` should be about **−0.35** and the R-squared about **0.002**, the numbers from Thursday. If yours differ, the assistant loaded or transformed something you did not ask for. Paste the table back and say so.
+:::
+
+**Predict first:** before you look, write the sign you expect for each slope.
+
+**Answer:**
+
+- Interpret the coefficient on `reviews_count` in each model, in one sentence each, with the right units: dollars per review, percent per review, or percent per percent. (Thursday's functional-forms table.)
+- What are the three R-squared values? Are they good, bad, or beside the point? What do they say about how much reviews tell you about price?
+- All three coefficients have three stars. Does that mean reviews matter a lot for price? Use the "significant is not big" slide.
+
+**Explain it back:** what does writing `log(price)` inside the `lm()` formula do, compared with creating a new column first?
+
+## Task 4: more predictors (you're on your own)
+
+Reviews alone explain almost nothing. Add what an investor would actually look at: estimate `price` as a function of `reviews_count`, `star_rating`, `bathrooms`, `bedrooms`, and `guests_included`, and print the table with `stargazer`.
+
+**Predict first:** write down the sign you expect for each of the five coefficients, and a rough dollar amount for `bedrooms`.
+
+**Answer:**
+
+- Walk through the coefficients: one sentence each, in dollars, "holding the others fixed". Do the signs make sense? Any surprise?
+- What happened to the R-squared compared with Task 3? What does that tell you about which variables matter for price?
+- The number of observations is a little smaller than in Task 3. Why? (Ask the assistant if you are not sure: what does `lm()` do with rows that have a missing value?)
+
+**Explain it back:** in one sentence, what does "holding the other predictors fixed" mean for the coefficient on `bedrooms`?
+
+## Task 5: where is it expensive? City as a categorical variable
+
+Add `city` to the Task 4 model. Then check how R did it: ask the assistant to create five dummy variables by hand (`austin` = 1 if the city is Austin and 0 otherwise, and the same for the other four), estimate the same model with four of the five dummies (leave out Austin), and print both tables side by side.
+
+**Predict first:** which city do you expect to be the most expensive, holding size and rating fixed?
+
+**Answer:**
+
+- How many city coefficients do you get, and why not five? What is the base level, and what does the constant now mean?
+- Interpret the city coefficients: which city is the most expensive and which the least, for a listing of the same size and rating? By how many dollars?
+- Compare the factor version with the hand-made dummies. Same numbers? What does that tell you about what `lm()` does with a text column?
+- The New York coefficient: is it significant? Is that because New York is like Austin, or for another reason? (Task 1.)
+
+**Explain it back:** the line that creates one of the dummies (`ifelse()`, or `as.integer(city == "Boston")`): what does it produce for a listing in Miami?
+
+## Task 6: from price to revenue
+
+An investor cares about revenue, not the nightly price. We do not observe bookings, but reviews are a rough trace of them, so define `revenue = price * reviews_count` (a crude proxy; you will come back to this in Task 8). Estimate revenue as a function of the Task 5 variables **except** `reviews_count` (why must it come out?), first with `city`, then adding `room_type`. Print both tables side by side.
+
+**Predict first:** which city do you expect to generate the most revenue per listing? Which room type?
+
+**Answer:**
+
+- Why must `reviews_count` be dropped from a model of `price * reviews_count`?
+- Which city has the highest revenue coefficient? Is it significant? Which is the highest **significant** one? Where would you buy, based on this table alone?
+- Interpret the `room_type` coefficients: what is the base level, and how much less revenue does a private room or a shared room generate, holding the rest fixed?
+- Did the city coefficients change when `room_type` came in? What would explain a change?
+
+**Explain it back:** the line that creates `revenue`: is it a column in the data or a number? How do you know?
+
+## Task 7: does quality pay? A dummy you build yourself
+
+Create `highQuality` = 1 if `star_rating` is 4.5 or higher, 0 otherwise. Re-estimate the last Task 6 model with `highQuality` in place of `star_rating`.
+
+**Predict first:** what share of listings do you expect to be "high quality" by this definition? (Task 1's summary of `star_rating` helps.)
+
+**Answer:**
+
+- What share of listings has `highQuality = 1`? Is 4.5 a demanding cutoff on this platform?
+- Interpret the `highQuality` coefficient in one sentence, in dollars of revenue.
+- Compare with the `star_rating` coefficient from Task 6: why are the two numbers not directly comparable? (What is "one unit" of each?)
+- Is quality a big deal for revenue on Airbnb, according to this model? Give one reason the coefficient might overstate it and one reason it might understate it.
+
+**Explain it back:** what does the condition `star_rating >= 4.5` return for each row, and how does that become 0 and 1?
+
+## Task 8: the recommendation
+
+You are advising the investor on **where to buy and what to list**. Write **three recommendations**, each one sentence plus the coefficient (with units) that supports it, naming the task and table it comes from. One of the three must state a **limitation** of this analysis for the decision. Two candidates: what `price * reviews_count` misses about revenue (does every guest leave a review? is the listed price the price paid? does a listing with 300 reviews earn that every year?), and what a regression on listings that *exist* cannot tell you about a property that does not yet exist.
+
+## Deliverable: the knitted report
+
+As in the RateBeer case, and as in every homework:
+
+> Convert airbnb-case.R into airbnb-report.Rmd in this folder: an R Markdown report titled "The Airbnb Case", output format html_document. Right under the title, put my first name, last name, and 10-digit USC ID: ______ . One section per task, each containing the code chunk for that task, followed by three placeholders: "**My prediction:**", "**My answer:**", and "**Explain it back:**". Every chunk must display its chart in the document (print the ggplot object; do not only save it with ggsave, and do not insert the PNG files from the figures folder), and every regression table must be printed by the chunk with stargazer(type = "text"), so that the figures and tables are embedded in the knitted HTML. Use fread with the file name airbnb.csv so it knits from this folder.
+
+Fill in the placeholders (the prediction is what you wrote *before* running; a wrong prediction is fine). Preview with the ![](images/open-preview.svg){width=16px style="vertical-align: text-bottom;"} button (`Cmd+Shift+V` / `Ctrl+Shift+V`), then knit with the play button:
+
+![](images/vscode-knit-button.png)
+
+No play button, or an error?
+
+> Knit airbnb-report.Rmd to airbnb-report.html and tell me if anything fails.
+
+::: {.callout-tip}
+Open the knitted `airbnb-report.html` and check that **every chart and every table is visible inside it**. If a section shows code but no table, the chunk did not print it; tell the assistant. The HTML must be self-contained, because the grader only receives that one file.
+:::
+
+Before you close the chat:
+
+> Append a short log of this session to a file called ai-log.md in this folder: each request I made, one line each, in order, plus anything you got wrong that we fixed.
+
+**Submit:** `airbnb-report.html` and `ai-log.md`, on **Brightspace**, by **Sunday, Sept. 27, 11:59 pm**. We start the case in class on Tuesday, Sept. 22 (aim to finish Task 5); Tasks 6–8 are yours to finish. Every student submits their own report.
+
+## If something goes wrong
+
+- **"Error: there is no package called 'stargazer'".** Paste the error into the chat; the fix is one `install.packages("stargazer")` line, run once.
+- **The assistant says it cannot open the file / the file is too big.** It does not need to read the data. Tell it: "You do not need to open the file. Just write the code; I will run it and paste the output."
+- **The regression table does not appear.** Tables print in the R terminal, not in a chart tab. Scroll up in the terminal. In the knitted report, the chunk must call `stargazer(..., type = "text")`.
+- **`log(price)` gives `-Inf` or an error about NaNs.** Some value is zero or negative. Ask the assistant to count them and decide with it what to do (there should be none in this data; if there are, something went wrong earlier).
+- **Task 3 numbers do not match the check.** Paste your table and Thursday's numbers (slope −0.35, R-squared 0.002) into the chat and ask what is different.
+- **The dummy model in Task 5 has an `NA` coefficient.** You included all five dummies plus the constant. Leave one out.
+- **Knitting fails** mentioning pandoc, or a chunk. Same fixes as the [variation case](https://raw.githack.com/dadepro/mkt566/main/w2/w2-1-variation-case.html#if-something-goes-wrong).
+- **The chart opens in a separate window instead of a VS Code tab.** See the troubleshooting section of the [Running R Code guide](https://raw.githack.com/dadepro/mkt566/main/w1/r-setup.html).

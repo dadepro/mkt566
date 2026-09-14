@@ -1,0 +1,503 @@
+---
+title: "Regression for Yes/No Outcomes: Logit"
+subtitle: "MKT 566 · Fall 2026"
+author: "Davide Proserpio"
+institute: "USC Marshall School of Business"
+format:
+  revealjs:
+    theme: theme.scss
+    slide-number: c/t
+    width: 1280
+    height: 720
+    incremental: false
+    transition: fade
+    transition-speed: fast
+    controls: true
+    progress: true
+    hash: true
+    embed-resources: false
+    link-external-newwindow: true
+    footer: "MKT 566 · Marketing Analytics"
+execute:
+  echo: false
+  warning: false
+  message: false
+fig-width: 7
+fig-height: 4.2
+fig-align: center
+---
+
+```{r setup}
+#| include: false
+library(ggplot2)
+library(data.table)
+library(scales)
+library(stargazer)
+
+options(width = 110)
+set.seed(566)
+knitr::opts_knit$set(root.dir = "code")
+
+airbnb <- fread("code/data/airbnb.csv")
+airbnb[, gem := as.integer(star_rating >= 4.5 & reviews_count > 20)]
+lpm     <- lm(gem ~ price, data = airbnb)
+lg1     <- glm(gem ~ price, data = airbnb, family = binomial)
+m_logit <- glm(gem ~ price + guests_included + city + room_type, data = airbnb, family = binomial)
+zero_at <- -coef(lpm)[1] / coef(lpm)[2]
+```
+
+# Before We Start {.divider}
+
+## Housekeeping
+
+- **Homework 2** (box office, OLS and logit) is out, due **Thursday, Oct. 8**.
+  Everything it needs is in Thursday's deck and today's
+- **Group project**: proposal presentations on **Oct. 13 and 15**
+- Today: **logit** for about 40 minutes, then the **Airbnb case** on your
+  laptop (aim to finish Task 5 in class; report due **Sunday, Sept. 27**)
+- Thursday: **clustering**
+
+## From "how much" to "whether" {.smaller-90}
+
+Thursday's regressions predicted a **number**: sales, price. Many marketing
+questions are **yes or no**:
+
+- Will this customer **buy**? **Churn**? **Click** the ad? **Open** the email?
+- Will this loan **default**? Will this listing be a **hit**?
+
+::::: {.columns}
+::: {.column width="50%"}
+**Today you learn to**
+
+1. See why a straight line is the wrong tool for a 0/1 outcome
+2. Read a **logit** model: sign, odds, and predicted probabilities
+3. Run it in R with `glm()` and put it in a `stargazer` table
+:::
+::: {.column width="50%"}
+**What stays the same**
+
+- Predictors, dummies, base levels, stars, "holding the others fixed": all
+  as in OLS
+- The AI writes the code. You choose the model and read the result
+:::
+:::::
+
+## R script for today
+
+In the `code/` folder on the course website, next to Thursday's:
+
+1. **`w4-2-logit-class.R`**: every chart and model in today's deck
+2. **`data/airbnb.csv`**: the same Airbnb listings
+
+::: {.box}
+[**`w4-code.zip`**](https://github.com/dadepro/mkt566/raw/main/w4/w4-code.zip)
+now contains both scripts and the data. If you downloaded it on Thursday,
+download it again.
+:::
+
+# A Yes/No Outcome {.divider}
+
+## Our outcome: is a listing a "gem"? {.smaller-90}
+
+An investor wants listings that are **both** well rated **and** actually
+booked. Define a **gem** as a listing with a rating of **4.5 or more** and
+**more than 20 reviews**:
+
+```{r gem-define}
+#| echo: true
+airbnb[, gem := as.integer(star_rating >= 4.5 & reviews_count > 20)]
+table(airbnb$gem)
+mean(airbnb$gem)
+```
+
+- `gem` is a **dummy**: 1 for a gem, 0 otherwise. About **20%** of listings
+  are gems
+- The question: **what makes a listing more likely to be a gem?** Start
+  with price
+
+::: {.smaller-80 .muted}
+The `&` means both conditions must hold; `as.integer()` turns TRUE/FALSE
+into 1/0, as in Task 7 of the case.
+:::
+
+## Share of gems by price
+
+```{r gem-by-price}
+#| fig-width: 8
+#| fig-height: 4.2
+airbnb[, pbin := cut(price, c(0, 50, 100, 150, 200, 300, 500, 1000, Inf),
+                     labels = c("0-50", "50-100", "100-150", "150-200", "200-300",
+                                "300-500", "500-1000", "1000+"))]
+bins <- airbnb[, .(n = .N, share = mean(gem)), by = pbin][order(pbin)]
+ggplot(bins, aes(x = pbin, y = share)) +
+  geom_col(fill = "#990000", alpha = 0.85) +
+  geom_text(aes(label = percent(share, accuracy = 1)), vjust = -0.4, size = 4) +
+  scale_y_continuous(labels = percent, limits = c(0, 0.27)) +
+  labs(title = "Share of Gems by Nightly Price", x = "Nightly price ($)", y = "Share of gems") +
+  theme_minimal(base_size = 14)
+```
+
+::: {.smaller-80 .muted}
+Same idea as the "average by group" charts of week 3, with a 0/1 variable:
+the average of a dummy is a **share**. What do you see?
+:::
+
+## Share of gems by price: reading it {.smaller-90}
+
+```{r gem-by-price-2}
+#| fig-width: 8
+#| fig-height: 3.3
+ggplot(bins, aes(x = pbin, y = share)) +
+  geom_col(fill = "#990000", alpha = 0.85) +
+  scale_y_continuous(labels = percent) +
+  labs(x = "Nightly price ($)", y = "Share of gems") +
+  theme_minimal(base_size = 13)
+```
+
+- Gems are **rarer as price rises**: 22–23% of listings under $150, 12%
+  between $500 and $1,000, 6% above $1,000. The very cheapest bin is also
+  lower
+- So the **probability** of being a gem depends on price. Can we model that
+  probability with a regression, the way we modeled price on Thursday?
+
+## Try the tool we have: a straight line {.smaller}
+
+```{r lpm}
+#| echo: true
+#| eval: false
+lpm <- lm(gem ~ price, data = airbnb)   # OLS, with a 0/1 outcome
+```
+
+::::: {.columns}
+::: {.column width="58%"}
+```{r lpm-plot}
+#| fig-width: 6.5
+#| fig-height: 4.6
+sub <- airbnb[price <= 3000]
+ggplot(sub, aes(x = price, y = gem)) +
+  geom_jitter(height = 0.04, width = 0, alpha = 0.08, color = "darkgreen") +
+  geom_abline(intercept = coef(lpm)[1], slope = coef(lpm)[2], color = "firebrick", linewidth = 1.1) +
+  geom_hline(yintercept = c(0, 1), linetype = 3, color = "grey40") +
+  scale_y_continuous(breaks = c(-0.1, 0, 0.5, 1), limits = c(-0.12, 1.06)) +
+  labs(title = "Gem (0/1) vs. Price, with the OLS line", x = "Nightly price ($)", y = "Gem") +
+  theme_minimal(base_size = 13)
+```
+:::
+::: {.column width="42%"}
+- The "linear probability model": the line is the **predicted
+  probability** of being a gem
+- Intercept **0.217**: a free listing has a 21.7% chance. Slope
+  **−0.00009**: each extra dollar lowers it by 0.009 percentage points;
+  \$100 more, by about **0.9 points**
+- Reasonable so far. Now look at the right end of the line
+:::
+:::::
+
+## Where the line breaks {.smaller-90}
+
+```{r lpm-preds}
+#| echo: true
+pred <- predict(lpm)
+sum(pred < 0)          # listings with a predicted probability below zero
+round(min(pred), 2)    # the lowest one
+```
+
+- The line crosses zero at a price of about
+  **$`r comma(round(zero_at))`** and keeps going: a $10,000 listing gets a
+  "probability" of **−70%**
+- A line cannot bend. But a probability must stay **between 0 and 1**, so
+  the true relationship must **flatten** as it approaches 0 (and 1)
+- A second problem: the line says $100 more changes the probability by the
+  same 0.9 points whether you start at 20% or at 2%
+
+::: {.box}
+For a yes/no outcome we need a curve that is **linear in the middle** and
+**flattens at both ends**. That curve is the logistic function, and the
+model built on it is the **logit** (logistic regression).
+:::
+
+# Logistic Regression {.divider}
+
+## The fix: squash the line into 0–1
+
+::::: {.columns}
+::: {.column width="45%"}
+Keep the linear part, $z = \beta_0 + \beta_1 X$, and pass it through the
+**logistic function**:
+
+$$p = P(Y = 1 \mid X) = \frac{1}{1 + e^{-z}}$$
+
+- Any $z$, from $-\infty$ to $+\infty$, comes out as a number between
+  **0 and 1**
+- $z = 0$ gives $p = 0.5$. Large positive $z$: close to 1. Large negative:
+  close to 0
+:::
+::: {.column width="55%"}
+```{r sigmoid}
+#| fig-width: 6
+#| fig-height: 4
+zz <- data.table(z = seq(-6, 6, by = 0.05))[, p := 1 / (1 + exp(-z))]
+ggplot(zz, aes(z, p)) +
+  geom_hline(yintercept = c(0, 1), linetype = 3, color = "grey40") +
+  geom_line(color = "#990000", linewidth = 1.3) +
+  annotate("point", x = 0, y = 0.5, size = 3) +
+  annotate("text", x = 0.4, y = 0.45, label = "z = 0, p = 0.5", hjust = 0, size = 4) +
+  labs(title = "The logistic (S) curve", x = expression(z == beta[0] + beta[1]*X), y = "p") +
+  theme_minimal(base_size = 14)
+```
+:::
+:::::
+
+## Odds and log-odds {.smaller-90}
+
+Rearranging the same equation gives the form the coefficients live in:
+
+$$\frac{p}{1 - p} = e^{z} \qquad\qquad \log\left(\frac{p}{1 - p}\right) = z = \beta_0 + \beta_1 X$$
+
+- $\dfrac{p}{1-p}$ is the **odds**: the chance it happens against the chance
+  it does not. $p = 0.2$ means odds of $0.25$, "one to four". $p = 0.5$ means
+  odds of 1, "even"
+- The **log of the odds** is a **straight line** in $X$. That is what "logit"
+  means, and why everything from OLS carries over: predictors, dummies, base
+  levels, standard errors, stars
+
+::: {.box}
+A logit coefficient $\beta_1$ is the change in the **log-odds** for one more
+unit of $X$. Nobody thinks in log-odds, so the next slide converts.
+:::
+
+## Reading a logit coefficient {.smaller-90}
+
+Because $\text{odds} = e^{z}$, one more unit of $X$ **multiplies** the odds
+by $e^{\beta_1}$. Three ways to say the same thing:
+
+| Reading | How | Example with $\beta_1 = -0.0008$ per dollar |
+|---|---|---|
+| **Sign and stars** | as in OLS | negative, significant: pricier listings are less likely to be gems |
+| **Odds ratio** | $e^{\beta_1}$ | $e^{-0.0008} = 0.9992$: each dollar multiplies the odds by 0.9992 |
+| **Percent change in odds** | $(e^{\beta_1} - 1) \times 100$ | $-0.08\%$ per dollar; for \$100, $e^{-0.08} - 1 = -7.8\%$ |
+
+- For small $\beta_1$ (below about 0.2), $\beta_1 \times 100$ is a fine
+  approximation of the percent change in odds
+- To change the unit, scale the coefficient **before** exponentiating:
+  $100 \times \beta_1$ for a \$100 change
+
+::: {.box-warn}
+The percent change is in the **odds**, not in the probability. A 50%
+increase in odds takes a probability of 20% to 27%, not to 30%.
+:::
+
+## Logit on price: the curve, on the data
+
+```{r logit-curve}
+#| fig-width: 9
+#| fig-height: 4.3
+grid <- data.table(price = seq(0, 3000, by = 10))
+grid[, `:=`(logit = predict(lg1, grid, type = "response"), line = predict(lpm, grid))]
+mids <- data.table(price = c(25, 75, 125, 175, 250, 400, 750, 1500), share = bins$share, n = bins$n)
+ggplot() +
+  geom_hline(yintercept = 0, linetype = 3, color = "grey40") +
+  geom_line(data = grid, aes(price, line, color = "OLS line"), linewidth = 1) +
+  geom_line(data = grid, aes(price, logit, color = "Logit curve"), linewidth = 1.3) +
+  geom_point(data = mids, aes(price, share, size = n), color = "darkgreen", alpha = 0.8) +
+  scale_color_manual(values = c("OLS line" = "firebrick", "Logit curve" = "#990000"), name = NULL) +
+  scale_size_area(max_size = 9, guide = "none") +
+  scale_y_continuous(labels = percent) +
+  labs(title = "Probability of Being a Gem vs. Price", x = "Nightly price ($)", y = "P(gem)") +
+  theme_minimal(base_size = 14) + theme(legend.position = "top")
+```
+
+::: {.smaller-80 .muted}
+Green dots: the observed share of gems in each price bin (sized by number
+of listings). Which model fits the dots, and what happens past $2,000?
+:::
+
+## The curve: reading it {.smaller-90}
+
+```{r logit-coef}
+#| echo: true
+lg1 <- glm(gem ~ price, data = airbnb, family = binomial)
+round(coef(lg1), 5)
+```
+
+- The logit curve never goes below zero: at $2,383, where the line hits
+  zero, the curve still says about **8%**; at $10,000, essentially zero
+- In the range where most listings are (\$50–\$300) the two agree almost
+  perfectly. The difference is in the tails, and in the guarantee
+- Coefficient on price: $-0.00081$. Each dollar multiplies the odds of
+  being a gem by $e^{-0.00081} = 0.9992$. For \$100: odds $\times$ 0.92,
+  an **8% drop in the odds**
+
+::: {.box}
+Predicted probabilities are the reading a manager understands. `predict(...,
+type = "response")` gives them: $50 → 21.5%, $200 → 19.6%, $500 → 16%,
+$1,000 → 11%, $5,000 → 0.5%.
+:::
+
+## How it is estimated, and how to judge the fit {.smaller-90}
+
+::::: {.columns}
+::: {.column width="50%"}
+**Estimation.** OLS picks the line with the smallest squared errors. Logit
+picks the coefficients that make the observed 0s and 1s **most likely**
+(**maximum likelihood**). R does it in a fraction of a second; you never
+need the formula.
+
+**Log-likelihood.** How likely the data is under the model. Always
+negative; **closer to zero is better**. Use it to compare models on the
+same data, the way you used R² on Thursday.
+:::
+::: {.column width="50%"}
+**There is no R².** Alternatives:
+
+- **Pseudo-R²** (McFadden): how much the log-likelihood improves over a
+  model with no predictors. 0 to 1, but values of 0.1–0.3 are already decent
+- **Accuracy**: predict "gem" when $p > 0.5$ and count the hits. Beware the
+  base rate: saying "not a gem" for **everyone** is right **80%** of the
+  time here. Week 9 (classifiers) covers this properly
+:::
+:::::
+
+::: {.smaller-80 .muted}
+For the price-only model: log-likelihood −25,667 vs. −25,706 without price;
+pseudo-R² 0.002. Price matters, and explains very little, the same lesson
+as Thursday.
+:::
+
+# Logit in R {.divider}
+
+## One function: `glm()` {.smaller}
+
+`glm()` works like `lm()`, with `family = binomial` to ask for a logit:
+
+```{r glm-full}
+#| echo: true
+m_logit <- glm(gem ~ price + guests_included + city + room_type, data = airbnb, family = binomial)
+stargazer(m_logit, type = "text", omit.stat = c("f", "ser", "aic", "bic"),
+          digits = 4, no.space = TRUE, single.row = TRUE)
+```
+
+::: {.smaller-80 .muted}
+Standard errors in parentheses next to each coefficient. Read the signs,
+then the sizes. Which predictor has the largest effect?
+:::
+
+## Reading the table {.smaller-90}
+
+| Coefficient | Odds multiply by | Reading (holding the others fixed) |
+|---|---|---|
+| price $-0.0017$ | $e^{-0.17} = 0.84$ per \$100 | \$100 more: odds of being a gem **16% lower** |
+| guests_included $0.11$ | $1.12$ per guest | one more guest included: odds **12% higher** |
+| Boston $0.17$, Los Angeles $0.16$ | $1.18$, $1.18$ | vs. Austin: odds about **18% higher** |
+| Miami $-0.20$ | $0.82$ | vs. Austin: odds **18% lower** |
+| New York $0.19$, not significant | | 18 listings again |
+| Private room $-0.01$, not significant | $0.99$ | same odds as an entire home |
+| Shared room $-0.71$ | $0.49$ | odds **halved** vs. an entire home |
+
+- The **largest** effect is the shared-room dummy, not price: a \$100 price
+  difference moves the odds less than the room type does
+- Log-likelihood $-25{,}430$, vs. $-25{,}706$ with no predictors
+
+## From odds to probabilities {.smaller-90}
+
+Odds ratios compare. Probabilities decide. `predict()` with
+`type = "response"` gives the probability for any listing you describe:
+
+```{r predict-examples}
+#| echo: true
+examples <- data.frame(price = c(100, 100, 300, 100), guests_included = 2,
+                       city = c("Austin", "Boston", "Austin", "Austin"),
+                       room_type = c("Entire home", "Entire home", "Entire home", "Shared room"))
+examples$p_gem <- round(predict(m_logit, examples, type = "response"), 3)
+examples
+```
+
+- An entire home in Austin at \$100 for 2 guests: **21%** chance of being a
+  gem. The same listing in Boston: **24%**. At \$300 instead of \$100:
+  **16%**. As a shared room: **11%**
+- This is the sentence for the investor: "moving the same property from
+  Austin to Boston raises the chance it becomes a gem from 21% to 24%"
+
+::: {.box}
+Odds ratios for a table, probabilities for a decision. Always compute a few
+predicted probabilities for realistic cases before you write a
+recommendation.
+:::
+
+## OLS and logit, side by side {.smaller-90}
+
+| | **OLS** (Thursday) | **Logit** (today) |
+|---|---|---|
+| Outcome | a number (price, sales) | yes/no (gem, buy, churn, click) |
+| Model | $Y = \beta_0 + \beta_1 X$ | $\log\frac{p}{1-p} = \beta_0 + \beta_1 X$ |
+| R | `lm(y ~ x)` | `glm(y ~ x, family = binomial)` |
+| $\beta_1$ means | one more unit of $X$ → $\beta_1$ more units of $Y$ | one more unit of $X$ → odds $\times\, e^{\beta_1}$ |
+| Predictions | `predict(m)` | `predict(m, type = "response")` gives probabilities |
+| Fit | R², residual standard error | log-likelihood, pseudo-R² |
+| Estimation | least squares | maximum likelihood |
+| Same in both | predictors, logs of $X$, dummies and base levels, SE, stars, "holding the others fixed", **not causation** |
+
+## Still not causation {.smaller-90}
+
+Cheaper listings are more likely to be gems. Three stories, as always:
+
+1. Lower prices bring more bookings, hence more reviews, hence gem status
+2. Hosts of listings that are already popular have no need to discount, and
+   hosts of struggling ones cut prices: the causality runs the other way
+3. Gems are **older** listings (20+ reviews take time), and older listings
+   were priced in an earlier, cheaper market
+
+::: {.box}
+"A \$100 higher price is **associated with** 16% lower odds of being a gem."
+The model holds fixed guests, city, and room type. It does not hold fixed
+listing age, photos, or host effort.
+:::
+
+# The Airbnb Case {.divider}
+
+## The case {.smaller-90}
+
+The handout
+([**`w4-airbnb-case.html`**](https://raw.githack.com/dadepro/mkt566/main/w4/w4-airbnb-case.html))
+works like RateBeer, with less help: an exact prompt for Task 1, skeletons
+for Tasks 2–3, and only the goal from Task 4 on.
+
+The client is an **investor** deciding where to buy and what to list:
+
+1. **Tasks 1–3**: look at the data, price vs. reviews with and without logs,
+   the three models side by side (Thursday, applied)
+2. **Tasks 4–5**: more predictors, then city as a factor and as hand-made
+   dummies
+3. **Tasks 6–7**: a revenue proxy, room type, a quality dummy
+4. **Task 8**: three recommendations, one of them a limitation
+
+Under every task: **predict** before you run, **explain back** one line after.
+
+::: {.box}
+Aim to finish **Task 5** in class. Deliverable, same as always: an **R
+Markdown report knitted to HTML** plus `ai-log.md`, due **Sunday, Sept. 27,
+11:59 pm**. Data:
+[**`airbnb-case-data.zip`**](https://github.com/dadepro/mkt566/raw/main/w4/airbnb-case-data.zip).
+:::
+
+## Wrap-up
+
+::: {.box}
+Code and data to reproduce today's models, on the course website:
+
+- [**`w4-code.zip`**](https://github.com/dadepro/mkt566/raw/main/w4/w4-code.zip):
+  both week 4 scripts and the data
+- [**`w4-2-logit-class.R`**](https://github.com/dadepro/mkt566/blob/main/w4/code/w4-2-logit-class.R):
+  every chart and model shown today
+- [**The Airbnb case handout**](https://raw.githack.com/dadepro/mkt566/main/w4/w4-airbnb-case.html)
+  and its [**data**](https://github.com/dadepro/mkt566/raw/main/w4/airbnb-case-data.zip)
+:::
+
+::: {.smaller-80 .muted}
+Required reading: Chapter
+[3.6](https://bookdown.org/content/6ef13ea6-4e86-4566-b665-ebcd19d45029/secondarydata.html#logistic)
+of *R for Marketing Students*. Optional: Chapter 9.2 of *R for Marketing
+Research and Analytics*.
+:::
+
+# Questions? {.divider}
