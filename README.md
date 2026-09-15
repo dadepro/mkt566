@@ -75,7 +75,7 @@ Course materials (slides, cases, code, and the syllabus) will be posted here as 
 - Tuesday, Sept. 15:
   - RateBeer case, part 2: debrief of Tasks 1–6, then Tasks 7–9 ([slides](https://raw.githack.com/dadepro/mkt566/main/w3/w3-2-ratebeer-debrief.html) ([pdf](https://raw.githack.com/dadepro/mkt566/main/w3/w3-2-ratebeer-debrief.pdf)), [handout](https://raw.githack.com/dadepro/mkt566/main/w3/w3-ratebeer-case.html)). Deadline for forming groups
 - Thursday, Sept. 17:
-  - Slides ([html](https://raw.githack.com/dadepro/mkt566/main/w4/w4-1-ols.html), [pdf](https://raw.githack.com/dadepro/mkt566/main/w4/w4-1-ols.pdf)): regression (OLS)
+  - Slides ([html](https://raw.githack.com/dadepro/mkt566/main/w4/w4-1-ols.html), [pdf](https://raw.githack.com/dadepro/mkt566/main/w4/w4-1-ols.pdf)): regressions (OLS)
   - Required readings:
     - Chapter [3.4](https://bookdown.org/content/6ef13ea6-4e86-4566-b665-ebcd19d45029/secondarydata.html#linear-regression) of R for Marketing Students
   - Optional readings:
