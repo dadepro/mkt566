@@ -1,0 +1,426 @@
+---
+title: "The RateBeer Case: Debrief and Part 2"
+subtitle: "MKT 566 · Fall 2026"
+author: "Davide Proserpio"
+institute: "USC Marshall School of Business"
+format:
+  revealjs:
+    theme: theme.scss
+    slide-number: c/t
+    width: 1280
+    height: 720
+    incremental: false
+    transition: fade
+    transition-speed: fast
+    controls: true
+    progress: true
+    hash: true
+    embed-resources: false
+    link-external-newwindow: true
+    footer: "MKT 566 · Marketing Analytics"
+execute:
+  echo: false
+  warning: false
+  message: false
+fig-width: 7
+fig-height: 4.2
+fig-align: center
+---
+
+```{r setup}
+#| include: false
+library(data.table)
+library(ggplot2)
+library(scales)
+options(width = 110)
+
+beer <- fread("data/ratebeer-sampled.csv.gz")
+raw <- copy(beer)
+rating_cols <- c("review_overall", "review_aroma", "review_appearance",
+                 "review_palate", "review_taste")
+for (col in rating_cols) beer[, (col) := as.numeric(sub("/.*", "", get(col)))]
+beer[, beer_ABV := as.numeric(ifelse(beer_ABV == "-", NA, beer_ABV))]
+beer[, review_date := as.Date(as.POSIXct(review_time, origin = "1970-01-01", tz = "UTC"))]
+n_raw <- nrow(beer)
+beer <- beer[!grepl("Sak|Cider|Perry|Mead", beer_style)]
+```
+
+# Before We Start {.divider}
+
+## Housekeeping
+
+- **Today** is the deadline for being in a group: add yours to the
+  [sign-up sheet](https://docs.google.com/spreadsheets/d/1Jna-Noy_q3fSUGYgK7wW49jKpS5l3lKt2Q14QZ004xw/edit?usp=sharing)
+- The **RateBeer report** (`ratebeer-report.html` + `ai-log.md`) is due
+  **Sunday, Sept. 20, 11:59 pm** on Brightspace
+- Thursday: **regression** (OLS), the tool behind every fitted line you drew
+  last week
+
+## Today's plan
+
+1. **Debrief of Tasks 1–6** (about 25 minutes): chart, "what do you see?",
+   then the reading. Compare with your own answers as we go
+2. **Tasks 7–9** on your laptop: the brewery table, time, and the
+   recommendation
+3. Last 10 minutes: the **report checklist**
+
+::: {.box}
+Keep your `ratebeer-case.R` open. If a chart of yours looks different from
+mine, that is worth a question, not a worry.
+:::
+
+# Tasks 1–3: Look, Find the Problems, Clean {.divider}
+
+## Task 1: what is a row?
+
+```{r t1}
+#| echo: true
+head(raw[, .(beer_brewerId, beer_style, beer_ABV, review_overall, review_time)], 4)
+nrow(raw)
+uniqueN(raw$beer_beerId); uniqueN(raw$beer_brewerId); uniqueN(raw$review_profileName)
+```
+
+::: {.smaller-80 .muted}
+292,680 rows. What does one row represent, and why does it matter?
+:::
+
+## Task 1: reading it
+
+- One row is one **review**: one person rating one beer once
+- Behind the 292,680 rows: **50,826** beers, **5,841** breweries,
+  **13,030** reviewers
+- So "reviews by style" counts a beer **once per review**. A style with a few
+  famous beers can look bigger than a style with many quiet ones
+
+::: {.box}
+The **unit of observation** is the first thing to settle in any dataset.
+Every count and every average depends on it. We change it on purpose in Task 7.
+:::
+
+## Task 2: find the problems
+
+```{r t2}
+#| echo: true
+for (col in c("beer_ABV", "review_overall", "review_time")) {
+  cat("\n==", col, "(", class(raw[[col]]), ")\n")
+  print(head(sort(table(raw[[col]]), decreasing = TRUE), 5))
+}
+```
+
+::: {.smaller-80 .muted}
+Three columns, three problems. What are they?
+:::
+
+## Task 2: reading it {.smaller-90}
+
+- **Ratings are text**: `"14/20"` is five characters, not a number. R cannot
+  average text
+- **`beer_ABV` has `"-"`** in 14,140 rows. It means **missing**, not zero.
+  Real alcohol-free beers are in the data at 0.0–0.5, so 14,140 zeros would
+  be wrong and would pull the average down
+- **`review_time` is a Unix timestamp**: seconds since January 1, 1970.
+  1157587200 is September 7, 2006
+- And in `beer_style`: sake (12 kinds), cider, perry, and mead are not beer;
+  `Klsch` and `&#40;IPA&#41;` are encoding damage from the scraper
+
+::: {.box}
+None of this is visible in a chart. You find it by **looking at the values**
+before you plot anything. That is what Tasks 1–2 are for.
+:::
+
+## Task 3: after cleaning
+
+```{r t3}
+#| echo: true
+n_raw - nrow(beer); nrow(beer)
+summary(beer[, .(review_overall, review_taste, review_appearance, beer_ABV)])
+range(beer$review_date)
+```
+
+::: {.smaller-80 .muted}
+What is the scale of each rating? How many ABV values are missing?
+:::
+
+## Task 3: reading it {.smaller-90}
+
+- Non-beers removed: **3,693** rows, leaving **288,987**
+- Scales differ: overall **1–20**, taste and aroma **1–10**, appearance and
+  palate **1–5**. A taste of 7 and an overall of 14 are both 70% of their
+  scale; you cannot compare the raw numbers
+- **14,019** reviews have no ABV: keep them for everything about ratings,
+  drop them only in ABV charts (`na.rm = TRUE`)
+- Reviews run from April 2000 to **January 13, 2012**. Remember that date
+  for Task 8
+
+::: {.box-warn}
+Did you check the AI's work? Mean overall should be **13.2**. If yours was
+0.7, the assistant kept the `/20` part. The assistant cannot see your output.
+:::
+
+# Task 4: Variation Warm-up {.divider}
+
+## Reviews by style
+
+```{r t4-styles}
+#| fig-height: 4.6
+style_n <- beer[, .N, by = beer_style][order(-N)][1:20]
+style_n[, beer_style := gsub("&#40;", "(", gsub("&#41;", ")", beer_style))]
+p_styles <- ggplot(style_n, aes(x = reorder(beer_style, N), y = N)) +
+  geom_col(fill = "steelblue") +
+  coord_flip() +
+  scale_y_continuous(labels = comma) +
+  labs(title = "Reviews by Style (top 20 of 85)", x = NULL, y = "Reviews") +
+  theme_minimal()
+p_styles
+```
+
+::: {.smaller-80 .muted}
+Which styles dominate? And what does "most reviewed" actually measure?
+:::
+
+## Reviews by style: reading it
+
+```{r t4-styles-2}
+#| fig-height: 4.2
+p_styles
+```
+
+::: {.smaller-90}
+- **IPA** leads (18,635), then Pale Lager, Belgian Strong Ale, Imperial Stout
+- Pale Lager is the most **consumed** beer in the world, and it is second
+  here only because everyone has tried one. This is what **enthusiasts**
+  write about, not what the market buys. Keep that in mind for Task 9
+:::
+
+## The distribution of ABV
+
+```{r t4-abv}
+p_abv <- ggplot(beer[!is.na(beer_ABV)], aes(beer_ABV)) +
+  geom_histogram(binwidth = 0.5, fill = "steelblue", color = "grey20") +
+  labs(title = "Distribution of ABV", x = "ABV (%)", y = "Reviews") +
+  theme_minimal()
+p_abv
+```
+
+::: {.smaller-80 .muted}
+What shape? And what is hiding at the far right?
+:::
+
+## The distribution of ABV: reading it
+
+```{r t4-abv-2}
+p_abv
+```
+
+::: {.smaller-90}
+- **Right-skewed**: most reviews are of beers between 4% and 8%, with a long
+  tail past 10%
+- The maximum is **57.7%**: Schorschbräu Schorschbock, a real freeze-distilled
+  Eisbock, not a typo. An outlier is not automatically an error. **Check
+  before you drop**
+:::
+
+# Task 5: Rating by Style {.divider}
+
+## Average rating by style
+
+```{r t5}
+#| fig-height: 5.2
+style_stats <- beer[, .(avg = mean(review_overall), se = sd(review_overall) / sqrt(.N),
+                        n = .N, abv = mean(beer_ABV, na.rm = TRUE)), by = beer_style][n >= 500]
+style_stats[, beer_style := gsub("&#40;", "(", gsub("&#41;", ")", beer_style))]
+style_ends <- style_stats[order(-avg)][c(1:10, (.N - 9):.N)]
+style_ends[, group := rep(c("Top 10", "Bottom 10"), each = 10)]
+p_t5 <- ggplot(style_ends, aes(x = reorder(beer_style, avg), y = avg, fill = group)) +
+  geom_col() +
+  geom_errorbar(aes(ymin = avg - 1.96 * se, ymax = avg + 1.96 * se), width = 0.3) +
+  coord_flip() +
+  scale_fill_manual(values = c("Top 10" = "steelblue", "Bottom 10" = "grey60")) +
+  labs(title = "Rating by Style: Top and Bottom 10 (styles with 500+ reviews)",
+       x = NULL, y = "Average overall rating (out of 20)", fill = NULL) +
+  theme_minimal() +
+  theme(legend.position = "bottom")
+p_t5
+```
+
+::: {.smaller-80 .muted}
+Top three, bottom three? Why are the error bars so small? (Your chart has all 50 styles; this shows the two ends.)
+:::
+
+## Average rating by style: reading it {.smaller-90}
+
+```{r t5-table}
+style_stats[order(-avg)][c(1:3, (.N - 2):.N), .(beer_style, avg = round(avg, 2), n, abv = round(abv, 1))]
+```
+
+- **Imperial Stout, Quadrupel, Double IPA** at the top (15.4–15.9); **Pale
+  Lager, Malt Liquor, Low Alcohol** at the bottom (6.4–7.4). Less than half
+- Thousands of reviews per style, so the error bars are tiny: these gaps are
+  not noise. The 500-review rule keeps a style with 12 lucky reviews off the
+  top
+- Look at the ABV column: the top styles are all **strong** (9–11%), the
+  bottom ones light. Style and alcohol are tangled together. Next task
+
+# Task 6: Rating vs. Alcohol {.divider}
+
+## First attempt: a scatter plot
+
+```{r t6-blob}
+ggplot(beer[!is.na(beer_ABV)], aes(beer_ABV, review_overall)) +
+  geom_point(alpha = 0.02, size = 0.5) +
+  labs(title = "Overall Rating vs. ABV (275,000 reviews)", x = "ABV (%)", y = "Overall rating") +
+  theme_minimal()
+```
+
+::: {.smaller-80 .muted}
+Even with transparency. What is the problem, and what did you ask for instead?
+:::
+
+## Second attempt: average by ABV
+
+```{r t6-binned}
+abv_bins <- beer[!is.na(beer_ABV) & beer_ABV <= 15,
+                 .(avg = mean(review_overall), n = .N), by = .(abv = round(beer_ABV))]
+p_t6 <- ggplot(abv_bins, aes(abv, avg)) +
+  geom_line(color = "grey50") +
+  geom_point(aes(size = n), color = "steelblue") +
+  scale_size_continuous(labels = comma) +
+  labs(title = "Average Overall Rating by ABV", x = "ABV (%, rounded)",
+       y = "Average overall rating", size = "Reviews") +
+  theme_minimal()
+p_t6
+```
+
+::: {.smaller-80 .muted}
+Correlation: 0.40. Describe the relationship. Does stronger **cause** better?
+:::
+
+## Rating vs. alcohol: reading it
+
+```{r t6-binned-2}
+p_t6
+```
+
+::: {.smaller-90}
+- Ratings **rise** from about 11/20 at 3–4% to 15/20 at 9–10%, then
+  **flatten**. Past 13% the points bounce: few beers live there (small dots)
+- Overplotting fix from Tuesday: 275,000 points became 16 averages
+- Causal? A 12% imperial stout is brewed with more care and reviewed by people
+  who **sought it out**. "Stronger beers are rated higher" is a fact.
+  "Alcohol makes beer better" is a story
+:::
+
+## What a strong answer looks like {.smaller-90}
+
+**The question (Task 6):** *Describe the relationship. Does it flatten?
+Does higher alcohol cause higher ratings?*
+
+::::: {.columns}
+::: {.column width="46%"}
+**Weak**
+
+> "There is a positive relationship between ABV and rating. Correlation is
+> not causation."
+
+Both sentences are true. Neither says anything about *this* data.
+:::
+::: {.column width="54%"}
+**Strong**
+
+> "Ratings climb from **11/20** at 4% to **15/20** at 10% ($r$ = **0.40**),
+> then flatten; above 13% there are too few beers to say. I would not call
+> this causal: strong beers are mostly imperial stouts and quadrupels, made
+> with more ingredients and bought on purpose by enthusiasts, so style and
+> reviewer both change with ABV."
+:::
+:::::
+
+::: {.box}
+The recipe again: **the pattern → the number → the reason → what it means for
+the decision.**
+:::
+
+# Part 2: Tasks 7–9 {.divider}
+
+## What you do now {.smaller-90}
+
+::::: {.columns}
+::: {.column width="50%"}
+**Task 7: the brewery table**
+
+One row per **brewery**: number of styles, number of reviews, average rating.
+Keep breweries with 10+ reviews. Styles vs. rating, with a fitted line.
+
+*Watch for:* the unit of observation just changed. Where did the 289,000
+reviews go?
+
+**Task 8: over time**
+
+Reviews per year and average rating per year.
+
+*Watch for:* the data ends on **January 13, 2012**.
+:::
+::: {.column width="50%"}
+**Task 9: the recommendation**
+
+Three bullets for a new craft brewery: which styles, how many. Each bullet
+rests on **one number** from a chart. One bullet must state a **limitation**
+of this data.
+
+*Hint:* who writes reviews on RateBeer, and what does the data **not**
+contain (prices, volumes, costs)?
+
+*Optional extra chart:* the share of reviews going to IPAs by year.
+:::
+:::::
+
+::: {.box}
+Predict first, then run, then explain one line back. Write the prediction
+**before** the chart; a wrong prediction is fine and gets full credit.
+:::
+
+## Give your assistant a memory {.smaller-90}
+
+Every tool reads one file at the start of each chat: `CLAUDE.md` (Claude
+Code), `AGENTS.md` (Codex), `.github/copilot-instructions.md` (Copilot),
+`.cursor/rules` (Cursor). Standing instructions go there **once**.
+
+The handout's Setup step 4 has the prompt. It tells the assistant, among
+other things:
+
+- I am a beginner: comment each step, do not run code, I run it
+- Print every chart in the chunk, never only `ggsave()`
+- **After every request, append one line to `ai-log.md`**
+
+::: {.box}
+That last rule makes the AI log write itself. No more "remember before you
+close the chat". Two minutes now, and it works for every assignment this
+semester (copy the file into each new project folder).
+:::
+
+::: {.smaller-80 .muted}
+Copilot follows the file only in agent mode. Copilot chat users keep the
+end-of-session log prompt.
+:::
+
+## Before you submit: the checklist {.smaller-90}
+
+Open your knitted `ratebeer-report.html` in a browser and check:
+
+1. **Name and 10-digit USC ID** under the title
+2. **Every chart is visible inside the HTML.** Code but no chart means the
+   chunk only saved a file. Ask the assistant to print the chart in the chunk.
+   The grader receives one file, not your figures folder
+3. Under every task: **prediction**, **answer** with a number, **explain it
+   back** in your own words
+4. `ai-log.md` written by the assistant **before** you closed the chat
+
+**Submit** both files on Brightspace by **Sunday, Sept. 20, 11:59 pm**.
+
+::: {.smaller-80 .muted}
+Handout:
+[**`w3-ratebeer-case.html`**](https://raw.githack.com/dadepro/mkt566/main/w3/w3-ratebeer-case.html).
+Thursday: regression.
+:::
+
+# Questions? {.divider}

@@ -70,3 +70,18 @@ Course materials (slides, cases, code, and the syllabus) will be posted here as 
     - [Dataset](https://github.com/dadepro/mkt566/tree/main/w3/code/data) (the week 2 case dataset)
 - Thursday, Sept. 10:
   - In-class exercise, the RateBeer case: **[handout](https://raw.githack.com/dadepro/mkt566/main/w3/w3-ratebeer-case.html)** and [data](https://github.com/dadepro/mkt566/raw/main/w3/ratebeer-case-data.zip) (5 MB, download before class). A vibecoding exercise on real, dirty data, over two sessions (Sept. 10 and Sept. 15): bring your laptop
+
+### Week 4: RateBeer case (cont.) and OLS
+- Tuesday, Sept. 15:
+  - RateBeer case, part 2: debrief of Tasks 1–6, then Tasks 7–9 ([slides](https://raw.githack.com/dadepro/mkt566/main/w3/w3-2-ratebeer-debrief.html) ([pdf](https://raw.githack.com/dadepro/mkt566/main/w3/w3-2-ratebeer-debrief.pdf)), [handout](https://raw.githack.com/dadepro/mkt566/main/w3/w3-ratebeer-case.html)). Deadline for forming groups
+- Thursday, Sept. 17:
+  - Slides ([html](https://raw.githack.com/dadepro/mkt566/main/w4/w4-1-ols.html), [pdf](https://raw.githack.com/dadepro/mkt566/main/w4/w4-1-ols.pdf)): regression (OLS)
+  - Required readings:
+    - Chapter [3.4](https://bookdown.org/content/6ef13ea6-4e86-4566-b665-ebcd19d45029/secondarydata.html#linear-regression) of R for Marketing Students
+  - Optional readings:
+    - [Lecture 6 of Data Storytelling for Marketers](https://raw.githack.com/dadepro/mkt-615/main/lectures/08-regression/08-regressions.html#1)
+    - Chapter 7 of R for Marketing Research and Analytics
+  - Code and data (download everything: [w4-code.zip](https://github.com/dadepro/mkt566/raw/main/w4/w4-code.zip), or browse the [w4/code](https://github.com/dadepro/mkt566/tree/main/w4/code) folder):
+    - [Every chart and regression from the slides](https://github.com/dadepro/mkt566/blob/main/w4/code/w4-1-ols-class.R)
+    - [Airbnb dataset](https://github.com/dadepro/mkt566/blob/main/w4/code/data/airbnb.csv) (also used in Tuesday's exercise)
+  - Homework 2 released (due Thursday, Oct. 8)
