@@ -83,5 +83,5 @@ Course materials (slides, cases, code, and the syllabus) will be posted here as 
     - Chapter 7 of R for Marketing Research and Analytics
   - Code and data (download everything: [w4-code.zip](https://github.com/dadepro/mkt566/raw/main/w4/w4-code.zip), or browse the [w4/code](https://github.com/dadepro/mkt566/tree/main/w4/code) folder):
     - [Every chart and regression from the slides](https://github.com/dadepro/mkt566/blob/main/w4/code/w4-1-ols-class.R)
-    - [Airbnb dataset](https://github.com/dadepro/mkt566/blob/main/w4/code/data/airbnb.csv) (also used in Tuesday's exercise)
+    - [Airbnb dataset](https://github.com/dadepro/mkt566/blob/main/w4/code/data/airbnb.csv) (also used in the Airbnb exercise on Tuesday, Sept. 22)
   - Homework 2 released (due Thursday, Oct. 8)

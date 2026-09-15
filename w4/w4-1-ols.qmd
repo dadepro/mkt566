@@ -96,8 +96,8 @@ In the `code/` folder on the course website:
 
 1. **`w4-1-ols-class.R`**: every chart and every regression in today's deck,
    with a comment above each one
-2. **`data/airbnb.csv`**: the Airbnb dataset used in the second half (and in
-   Tuesday's exercise)
+2. **`data/airbnb.csv`**: the Airbnb dataset used in the second half (and in the
+   Airbnb exercise on Tuesday, Sept. 22)
 
 ::: {.box}
 Download everything as one zip:
@@ -623,7 +623,8 @@ ggplot(airbnb, aes(x = reviews_count, y = price)) +
   at \$10,000; median 8 reviews, a few above 300
 - No clear line. If anything, the pricey listings sit at **low** review
   counts, so the line tilts slightly **down**
-- A prime candidate for logs (Tuesday's exercise). For now, let's see what
+- A prime candidate for logs (the exercise on Tuesday, Sept. 22). For now,
+  let's see what
   the straight line says
 :::
 
@@ -804,7 +805,7 @@ Code and data to reproduce today's regressions, on the course website:
 - [**`w4-1-ols-class.R`**](https://github.com/dadepro/mkt566/blob/main/w4/code/w4-1-ols-class.R):
   every chart and regression shown today
 - [**`data/airbnb.csv`**](https://github.com/dadepro/mkt566/blob/main/w4/code/data/airbnb.csv):
-  the Airbnb dataset (also used in Tuesday's exercise)
+  the Airbnb dataset (also used in the Airbnb exercise on Tuesday, Sept. 22)
 :::
 
 ::: {.smaller-80 .muted}
