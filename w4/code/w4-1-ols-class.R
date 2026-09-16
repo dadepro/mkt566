@@ -1,11 +1,12 @@
 # ============================================================================
 # MKT 566, Week 4: Regression (OLS)
 # ============================================================================
-# This script reproduces every chart and every regression from the OLS
-# slides: the fitted line on the marketing data, how least squares chooses
-# the line, reading lm() output (coefficients, standard errors, p-values,
-# R-squared), logs and elasticities, several predictors at once, and then
-# the Airbnb data: price vs. reviews, and a categorical predictor (city).
+# This script reproduces the first half of the OLS slides, on the marketing
+# data: the fitted line, how least squares chooses the line, reading lm()
+# output (coefficients, standard errors, p-values, R-squared), logs and
+# elasticities, and several predictors at once. The Airbnb half of the
+# lecture (price vs. reviews, city as a categorical predictor) is in
+# w4-1-airbnb-class.R.
 #
 # HOW TO RUN THIS SCRIPT (same workflow as weeks 1 to 3):
 #   - Run it from the top, one step at a time: click on a line and press
@@ -169,80 +170,3 @@ stargazer(m_level, m_all, type = "text",
 # and Facebook are in the model, newspaper spend adds nothing. Campaigns
 # that spend on newspaper also spend on Facebook:
 cor(marketing$newspaper, marketing$facebook)
-
-# ============================================================================
-# PART 3: The Airbnb data
-# ============================================================================
-# About 50,000 listings: nightly price, size, star rating, number of
-# reviews, city, room type.
-airbnb <- fread("data/airbnb.csv")
-names(airbnb)
-head(airbnb[, .(price, bedrooms, star_rating, reviews_count, city, room_type)])  # a few columns
-nrow(airbnb)
-table(airbnb$city)      # note: only 18 listings in New York City
-
-# ---- Price vs. number of reviews -------------------------------------------
-# Predict first: what sign do you expect for the slope?
-ggplot(airbnb, aes(x = reviews_count, y = price)) +
-  geom_point(alpha = 0.2) +
-  geom_smooth(method = "lm", se = FALSE, color = "firebrick") +
-  scale_y_continuous(labels = dollar) +
-  labs(title = "Price vs. Number of Reviews",
-       x = "Number of reviews", y = "Nightly price") +
-  theme_minimal()
-ggsave("figures/04-airbnb-price-reviews.pdf", width = 6, height = 4)
-
-# Both variables are heavily skewed. Compare median and max:
-summary(airbnb$price)
-summary(airbnb$reviews_count)
-
-# ---- The regression ----------------------------------------------------------
-m1 <- lm(price ~ reviews_count, data = airbnb)
-summary(m1)
-# Reading: each extra review is associated with a price 35 cents lower.
-# Three stars (significant, because N is 50,000) but R-squared = 0.002:
-# reviews explain 0.2% of the variation in price. Significant, not useful.
-
-# A table for a report.
-stargazer(m1, type = "text",
-          title = "Regression of Price on Number of Reviews",
-          dep.var.labels = "Nightly price (dollars)",
-          covariate.labels = "Number of reviews",
-          omit.stat = c("f", "ser", "adj.rsq"), digits = 2, no.space = TRUE)
-
-# ============================================================================
-# PART 4: Categorical predictors
-# ============================================================================
-
-# ---- How R stores text: factors --------------------------------------------
-# A factor is a categorical variable stored as numbers with labels.
-city <- factor(c("Miami", "Austin", "Miami", "Boston"))
-city
-as.integer(city)        # Austin = 1, Boston = 2, Miami = 3 (alphabetical)
-
-# ---- Price by city -----------------------------------------------------------
-# lm() turns "city" into dummy variables (0/1) and drops one: the base
-# level (Austin, first alphabetically). Each coefficient is the difference
-# from Austin; the constant is Austin's average price.
-m_city <- lm(price ~ city, data = airbnb)
-stargazer(m_city, type = "text", title = "Regression of Price on City",
-          dep.var.labels = "Nightly price (dollars)",
-          omit.stat = c("f", "ser", "adj.rsq"), digits = 2, no.space = TRUE)
-# New York is "not significant" only because there are 18 listings: its
-# standard error is about $39, versus $2-3 for the other cities.
-
-# ---- Choosing the base level -----------------------------------------------
-# relevel() picks which city the others are compared to. Same fit, same
-# R-squared, different comparison.
-airbnb$city <- relevel(factor(airbnb$city), ref = "Los Angeles")
-m_city2 <- lm(price ~ city, data = airbnb)
-stargazer(m_city, m_city2, type = "text",
-          column.labels = c("base: Austin", "base: Los Angeles"),
-          dep.var.labels = "Nightly price (dollars)",
-          omit.stat = c("f", "ser", "adj.rsq"), digits = 2, no.space = TRUE)
-
-# ---- Try it yourself before Tuesday ----------------------------------------
-# Replace reviews_count with bedrooms. Predict the slope first. Then explain
-# back what the intercept means.
-# m2 <- lm(price ~ bedrooms, data = airbnb)
-# summary(m2)

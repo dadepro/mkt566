@@ -2151,7 +2151,6 @@ listing_id,price,bathrooms,bedrooms,cancellation_policy,guests_included,property
 652348,850,2,2,strict,6,Loft,78701,5,18,Austin,Entire home
 652491,150,1,1,strict,3,Apartment,90291,4.5,45,Los Angeles,Entire home
 652726,87,1,1,strict,2,Apartment,90038,5,38,Los Angeles,Private room
-652812,250,2,2,moderate,4,Apartment,10025,5,3,New York City,Entire home
 653114,115,2,1,strict,1,Villa,90291,4.5,28,Los Angeles,Private room
 654641,56,,1,strict,1,House,90007,4.5,20,Los Angeles,Private room
 654663,130,1,1,strict,2,Cabin,90046,4.5,124,Los Angeles,Entire home
@@ -2509,7 +2508,6 @@ listing_id,price,bathrooms,bedrooms,cancellation_policy,guests_included,property
 738553,115,1,1,moderate,3,House,78702,4.5,6,Austin,Private room
 738686,45,1.5,1,strict,1,House,90026,5,16,Los Angeles,Private room
 739143,100,1,0,strict,2,House,90036,5,13,Los Angeles,Entire home
-739181,175,1,1,moderate,1,Apartment,10002,5,39,New York City,Entire home
 739669,55,1,1,moderate,2,Apartment,90066,5,69,Los Angeles,Private room
 741486,230,2.5,2,strict,4,House,90026,5,3,Los Angeles,Entire home
 741600,130,1,1,strict,1,Castle,91601,5,6,Los Angeles,Entire home
@@ -2550,7 +2548,6 @@ listing_id,price,bathrooms,bedrooms,cancellation_policy,guests_included,property
 750438,85,1,1,moderate,1,Apartment,02130,5,72,Boston,Private room
 750767,90,1,1,strict,1,Apartment,78703,5,13,Austin,Entire home
 750828,80,1,1,moderate,2,Apartment,90027,4.5,4,Los Angeles,Entire home
-750926,175,1,1,strict,1,Apartment,10003,5,62,New York City,Entire home
 750935,300,2,3,moderate,1,House,78702,4.5,15,Austin,Entire home
 751086,100,1,1,strict,1,Apartment,90035,4.5,24,Los Angeles,Entire home
 751847,149,2,4,strict,1,House,78757,5,25,Austin,Entire home
@@ -3683,7 +3680,6 @@ listing_id,price,bathrooms,bedrooms,cancellation_policy,guests_included,property
 1072438,95,1,1,strict,1,Apartment,33137,5,3,Miami,Entire home
 1072765,70,1,1,strict,1,Apartment,90057,5,6,Los Angeles,Entire home
 1072931,139,1,1,strict,2,Loft,90015,5,97,Los Angeles,Entire home
-1073377,349,2,2,strict,4,Apartment,10019,5,95,New York City,Entire home
 1074064,50,1,1,moderate,1,House,78717,5,3,Austin,Private room
 1074252,75,1,0,moderate,1,Bed & Breakfast,78745,5,35,Austin,Entire home
 1074362,200,1.5,3,strict,2,House,90042,5,6,Los Angeles,Entire home
@@ -10815,7 +10811,6 @@ listing_id,price,bathrooms,bedrooms,cancellation_policy,guests_included,property
 4067659,65,1,1,moderate,1,House,78751,5,129,Austin,Private room
 4067663,299,2,2,strict,1,Apartment,02210,5,11,Boston,Entire home
 4067714,70,1,1,flexible,4,Apartment,90037,4,3,Los Angeles,Entire home
-4067820,60,2,1,flexible,1,Bed & Breakfast,10472,5,7,New York City,Private room
 4067897,160,1,3,moderate,1,House,78703,4.5,22,Austin,Entire home
 4067958,116,1,1,moderate,1,House,90026,4.5,25,Los Angeles,Entire home
 4068058,109,1,1,strict,1,Apartment,90036,4.5,3,Los Angeles,Entire home
@@ -11694,7 +11689,6 @@ listing_id,price,bathrooms,bedrooms,cancellation_policy,guests_included,property
 4317649,145,1,0,strict,1,Apartment,33130,4.5,17,Miami,Entire home
 4317760,75,1.5,1,strict,1,Apartment,33137,5,5,Miami,Private room
 4317959,77,1,1,flexible,1,Apartment,90066,4.5,25,Los Angeles,Private room
-4318251,125,1,1,strict,2,Apartment,11201,4.5,20,New York City,Entire home
 4318334,200,1.5,1,strict,2,Apartment,33132,5,7,Miami,Entire home
 4318812,150,1,1,flexible,1,House,90291,5,3,Los Angeles,Private room
 4320009,250,1,1,strict,1,Apartment,33131,4.5,7,Miami,Entire home
@@ -12600,7 +12594,6 @@ listing_id,price,bathrooms,bedrooms,cancellation_policy,guests_included,property
 4636989,68,1,1,flexible,1,House,90032,5,28,Los Angeles,Private room
 4637218,120,1,1,moderate,2,Apartment,78704,5,3,Austin,Entire home
 4637784,89,1,1,moderate,1,Apartment,90048,4.5,3,Los Angeles,Entire home
-4637858,74,1,1,strict,1,Apartment,11249,5,7,New York City,Private room
 4637876,159,1,2,moderate,4,House,90039,5,24,Los Angeles,Entire home
 4638082,55,1,1,moderate,0,Apartment,33145,5,4,Miami,Private room
 4638185,140,1,2,moderate,3,House,78704,4.5,42,Austin,Entire home
@@ -12724,7 +12717,6 @@ listing_id,price,bathrooms,bedrooms,cancellation_policy,guests_included,property
 4687326,90,2,2,moderate,1,Apartment,90056,4.5,16,Los Angeles,Entire home
 4687499,103,1.5,1,moderate,2,Apartment,02130,4.5,18,Boston,Private room
 4687690,129,2,1,moderate,2,House,91364,4.5,7,Los Angeles,Entire home
-4687696,200,1,1,moderate,0,Apartment,10038,5,4,New York City,Entire home
 4688155,130,1,0,flexible,0,Loft,33127,5,5,Miami,Entire home
 4688728,50,1,1,flexible,1,House,33196,5,5,Miami,Private room
 4689125,120,1,0,strict,2,Apartment,33132,5,16,Miami,Entire home
@@ -12762,7 +12754,6 @@ listing_id,price,bathrooms,bedrooms,cancellation_policy,guests_included,property
 4706190,35,3,1,flexible,1,House,NULL,4.5,6,Los Angeles,Shared room
 4706860,95,1,0,strict,0,Apartment,90010,4.5,23,Los Angeles,Entire home
 4706886,199,1,1,strict,1,Apartment,02118,4.5,5,Boston,Entire home
-4706965,333,2,2,strict,4,Apartment,11205,4.5,3,New York City,Entire home
 4707112,79,1,0,moderate,2,Camper/RV,90027,5,54,Los Angeles,Entire home
 4707332,300,2,2,strict,4,House,90027,5,11,Los Angeles,Entire home
 4708236,120,1,1,moderate,4,Apartment,78731,5,7,Austin,Entire home
@@ -20099,7 +20090,6 @@ listing_id,price,bathrooms,bedrooms,cancellation_policy,guests_included,property
 7804032,100,2,3,flexible,1,House,33193,5,4,Miami,Entire home
 7804216,90,1,1,flexible,2,Apartment,90024,4,4,Los Angeles,Private room
 7804358,200,1,1,moderate,2,Apartment,02116,5,6,Boston,Entire home
-7804434,49,1,1,strict,1,Apartment,11385,4,6,New York City,Private room
 7804785,200,2,2,flexible,2,Apartment,78704,4.5,5,Austin,Entire home
 7804947,149,1,0,moderate,6,Condominium,90017,4.5,58,Los Angeles,Entire home
 7804980,80,1,1,flexible,1,House,90024,4.5,3,Los Angeles,Entire home
@@ -22689,7 +22679,6 @@ listing_id,price,bathrooms,bedrooms,cancellation_policy,guests_included,property
 9157304,130,1,1,flexible,3,House,91601,5,3,Los Angeles,Entire home
 9157441,249,2,2,moderate,4,Apartment,90017,5,3,Los Angeles,Entire home
 9167045,129,1,2,strict,4,Apartment,78751,4.5,6,Austin,Entire home
-9167889,120,1,1,flexible,1,Apartment,10027,5,8,New York City,Entire home
 9169333,119,2,1,strict,2,Apartment,NULL,4.5,7,Miami,Private room
 9169646,217,1,1,moderate,1,Apartment,90017,5,5,Los Angeles,Entire home
 9170326,59,1,1,flexible,1,Apartment,33173,4.5,12,Miami,Entire home
@@ -23105,7 +23094,6 @@ listing_id,price,bathrooms,bedrooms,cancellation_policy,guests_included,property
 9464015,60,1,0,flexible,1,Apartment,90005,5,4,Los Angeles,Entire home
 9464425,50,1,1,moderate,1,Apartment,33125,5,15,Miami,Private room
 9466334,50,1,1,flexible,1,Apartment,90066,5,6,Los Angeles,Private room
-9466759,37,1,1,strict,1,Apartment,10025,4.5,3,New York City,Shared room
 9467047,150,1,1,strict,1,Apartment,90048,5,5,Los Angeles,Entire home
 9468793,79,1,1,strict,2,Apartment,33145,5,8,Miami,Entire home
 9469257,150,1.5,1,moderate,1,Apartment,02115,5,7,Boston,Entire home
@@ -23947,7 +23935,6 @@ listing_id,price,bathrooms,bedrooms,cancellation_policy,guests_included,property
 10133064,90,1,1,moderate,2,Apartment,33133,4.5,10,Miami,Entire home
 10134830,299,2.5,2,strict,1,Apartment,90025,4.5,4,Los Angeles,Entire home
 10135879,85,1,0,flexible,0,Loft,NULL,5,7,Austin,Entire home
-10136096,40,1,1,moderate,1,Apartment,11231,3.5,4,New York City,Private room
 10136569,95,1,1,moderate,2,Apartment,90291,5,9,Los Angeles,Entire home
 10137197,105,1,1,flexible,3,Apartment,33145,5,6,Miami,Entire home
 10137917,52,1,1,strict,1,Apartment,33172,4.5,7,Miami,Private room
@@ -40472,7 +40459,6 @@ listing_id,price,bathrooms,bedrooms,cancellation_policy,guests_included,property
 18245194,20,2,1,strict,1,House,90027,4,7,Los Angeles,Shared room
 18246166,169,1,1,strict,4,Apartment,90017,5,5,Los Angeles,Entire home
 18248364,43,1,1,moderate,1,Apartment,90008,4,3,Los Angeles,Private room
-18248371,65,1,1,moderate,1,Apartment,11221,5,3,New York City,Private room
 18251834,165,1,0,strict,4,Apartment,90015,4.5,10,Los Angeles,Entire home
 18252139,110,1,1,flexible,2,Apartment,90029,5,4,Los Angeles,Entire home
 18252181,1000,3.5,4,moderate,6,House,90069,5,3,Los Angeles,Entire home
@@ -42505,7 +42491,6 @@ listing_id,price,bathrooms,bedrooms,cancellation_policy,guests_included,property
 20088546,96,1,2,flexible,1,Apartment,90027,5,3,Los Angeles,Entire home
 20088794,90,1,1,flexible,1,Condominium,91602,4.5,7,Los Angeles,Private room
 20089264,150,1,1,strict,2,Apartment,90291,4.5,27,Los Angeles,Entire home
-20089645,40,1,1,moderate,1,Loft,11421,5,28,New York City,Private room
 20089735,48,1,1,strict,1,Apartment,90046,5,24,Los Angeles,Private room
 20090413,144,1,1,flexible,1,Condominium,90015,5,4,Los Angeles,Entire home
 20090436,75,1,1,flexible,1,Apartment,33136,4.5,17,Miami,Private room
@@ -44423,7 +44408,6 @@ listing_id,price,bathrooms,bedrooms,cancellation_policy,guests_included,property
 20877108,49,1,1,moderate,2,House,90019,5,4,Los Angeles,Private room
 20877898,110,1,1,strict,1,Apartment,02111,3.5,10,Boston,Private room
 20878222,149,1,1,flexible,1,Apartment,90036,4.5,4,Los Angeles,Entire home
-20880223,50,1,1,strict,1,Apartment,10466,5,6,New York City,Private room
 20880908,50,2.5,1,moderate,1,Apartment,90291,5,12,Los Angeles,Shared room
 20880942,99,1,1,moderate,1,Condominium,02127,5,11,Boston,Private room
 20882515,89,1,1,moderate,2,Apartment,90026,5,28,Los Angeles,Entire home
@@ -47395,7 +47379,6 @@ listing_id,price,bathrooms,bedrooms,cancellation_policy,guests_included,property
 22338897,100,1,0,flexible,1,Guest suite,90026,5,5,Los Angeles,Entire home
 22342995,50,1,1,moderate,1,Apartment,91356,4.5,3,Los Angeles,Private room
 22343122,133,1,0,moderate,2,Apartment,90028,5,3,Los Angeles,Entire home
-22343961,225,1,3,strict,6,House,11211,5,5,New York City,Entire home
 22344467,78,1,1,flexible,1,Apartment,91367,5,5,Los Angeles,Entire home
 22345000,90,1,1,flexible,1,Guest suite,33157,5,5,Miami,Entire home
 22345223,21,1,1,moderate,1,Apartment,78726,5,3,Austin,Private room
@@ -48200,7 +48183,6 @@ listing_id,price,bathrooms,bedrooms,cancellation_policy,guests_included,property
 22889806,55,1,0,moderate,1,Apartment,91403,3.5,7,Los Angeles,Entire home
 22889839,153,1,2,strict,3,Apartment,02116,5,7,Boston,Entire home
 22889920,40,1,1,strict_14_with_grace_period,1,Guesthouse,90006,3,9,Los Angeles,Private room
-22890016,185,2,3,moderate,5,Apartment,11225,4.5,8,New York City,Entire home
 22890619,59,1,1,flexible,1,House,90034,5,9,Los Angeles,Private room
 22890639,1000,1,1,super_strict_30,1,Serviced apartment,78702,5,5,Austin,Entire home
 22890928,1000,1,1,super_strict_30,1,Apartment,78702,5,8,Austin,Entire home

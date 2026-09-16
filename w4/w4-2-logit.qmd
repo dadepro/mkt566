@@ -320,7 +320,7 @@ lg1 <- glm(gem ~ price, data = airbnb, family = binomial)
 round(coef(lg1), 5)
 ```
 
-- The logit curve never goes below zero: at $2,383, where the line hits
+- The logit curve never goes below zero: at $2,372, where the line hits
   zero, the curve still says about **8%**; at $10,000, essentially zero
 - In the range where most listings are (\$50–\$300) the two agree almost
   perfectly. The difference is in the tails, and in the guarantee
@@ -359,7 +359,7 @@ same data, the way you used R² on Thursday.
 :::::
 
 ::: {.smaller-80 .muted}
-For the price-only model: log-likelihood −25,667 vs. −25,706 without price;
+For the price-only model: log-likelihood −25,650 vs. −25,697 without price;
 pseudo-R² 0.002. Price matters, and explains very little, the same lesson
 as Thursday.
 :::
@@ -390,13 +390,12 @@ then the sizes. Which predictor has the largest effect?
 | guests_included $0.11$ | $1.12$ per guest | one more guest included: odds **12% higher** |
 | Boston $0.17$, Los Angeles $0.16$ | $1.18$, $1.18$ | vs. Austin: odds about **18% higher** |
 | Miami $-0.20$ | $0.82$ | vs. Austin: odds **18% lower** |
-| New York $0.19$, not significant | | 18 listings again |
 | Private room $-0.01$, not significant | $0.99$ | same odds as an entire home |
 | Shared room $-0.71$ | $0.49$ | odds **halved** vs. an entire home |
 
 - The **largest** effect is the shared-room dummy, not price: a \$100 price
   difference moves the odds less than the room type does
-- Log-likelihood $-25{,}430$, vs. $-25{,}706$ with no predictors
+- Log-likelihood $-25{,}420$, vs. $-25{,}697$ with no predictors
 
 ## From odds to probabilities {.smaller-90}
 

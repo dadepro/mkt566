@@ -2354,7 +2354,7 @@ window.Quarto = {
 </header>
 
 
-<p>In the RateBeer case you described how variables move together. Today you <strong>model</strong> it: the same Airbnb data from Thursday’s lecture, 50,836 listings in four cities (plus a handful in New York), and the tool is <code>lm()</code>.</p>
+<p>In the RateBeer case you described how variables move together. Today you <strong>model</strong> it: the same Airbnb data from Thursday’s lecture, 50,818 listings in four cities, and the tool is <code>lm()</code>.</p>
 <p>Same workflow: you say what you want, the AI writes the R, you run it, look, refine, and <strong>you interpret</strong>. The training wheels come off one step further: an exact prompt for Task 1, skeletons for Tasks 2 and 3, and from Task 4 on you write every prompt yourself.</p>
 <p>The client is an <strong>investor</strong> deciding where, and what kind of property, to buy and list on Airbnb. Every task builds toward the recommendation you write at the end.</p>
 <section id="the-two-habits-again" class="level2">
@@ -2400,7 +2400,7 @@ window.Quarto = {
 <section id="setup-5-minutes" class="level2">
 <h2 class="anchored" data-anchor-id="setup-5-minutes">Setup (5 minutes)</h2>
 <ol type="1">
-<li>Download the dataset: <a href="https://github.com/dadepro/mkt566/raw/main/w4/airbnb-case-data.zip"><strong><code>airbnb-case-data.zip</code></strong></a> (600 KB). Unzip it to get <code>airbnb.csv</code> (3.5 MB, 50,836 rows).</li>
+<li>Download the dataset: <a href="https://github.com/dadepro/mkt566/raw/main/w4/airbnb-case-data.zip"><strong><code>airbnb-case-data.zip</code></strong></a> (600 KB). Unzip it to get <code>airbnb.csv</code> (3.5 MB, 50,818 rows).</li>
 <li>Make a new folder for today (for example <code>airbnb-case</code>), put <code>airbnb.csv</code> in it, and in VS Code choose <strong>File → Open Folder…</strong> to open that folder.</li>
 <li>Open your AI assistant panel (Claude Code, Codex, Copilot, or Cursor).</li>
 <li>New package today: <strong>stargazer</strong>, for regression tables. Task 3 installs it. Everything else (the R extension, rmarkdown, pandoc) is what you used for RateBeer.</li>
@@ -2447,7 +2447,7 @@ window.Quarto = {
 </tr>
 <tr class="odd">
 <td><code>city</code></td>
-<td>Austin, Boston, Los Angeles, Miami, New York City</td>
+<td>Austin, Boston, Los Angeles, Miami</td>
 </tr>
 <tr class="even">
 <td><code>room_type</code></td>
@@ -2558,14 +2558,13 @@ window.Quarto = {
 </section>
 <section id="task-5-where-is-it-expensive-city-as-a-categorical-variable" class="level2">
 <h2 class="anchored" data-anchor-id="task-5-where-is-it-expensive-city-as-a-categorical-variable">Task 5: where is it expensive? City as a categorical variable</h2>
-<p>Add <code>city</code> to the Task 4 model. Then check how R did it: ask the assistant to create five dummy variables by hand (<code>austin</code> = 1 if the city is Austin and 0 otherwise, and the same for the other four), estimate the same model with four of the five dummies (leave out Austin), and print both tables side by side.</p>
+<p>Add <code>city</code> to the Task 4 model. Then check how R did it: ask the assistant to create four dummy variables by hand (<code>austin</code> = 1 if the city is Austin and 0 otherwise, and the same for the other three), estimate the same model with three of the four dummies (leave out Austin), and print both tables side by side.</p>
 <p><strong>Predict first:</strong> which city do you expect to be the most expensive, holding size and rating fixed?</p>
 <p><strong>Answer:</strong></p>
 <ul>
-<li>How many city coefficients do you get, and why not five? What is the base level, and what does the constant now mean?</li>
+<li>How many city coefficients do you get, and why not four? What is the base level, and what does the constant now mean?</li>
 <li>Interpret the city coefficients: which city is the most expensive and which the least, for a listing of the same size and rating? By how many dollars?</li>
 <li>Compare the factor version with the hand-made dummies. Same numbers? What does that tell you about what <code>lm()</code> does with a text column?</li>
-<li>The New York coefficient: is it significant? Is that because New York is like Austin, or for another reason? (Task 1.)</li>
 </ul>
 <p><strong>Explain it back:</strong> the line that creates one of the dummies (<code>ifelse()</code>, or <code>as.integer(city == &quot;Boston&quot;)</code>): what does it produce for a listing in Miami?</p>
 </section>

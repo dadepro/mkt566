@@ -98,10 +98,11 @@ exercise, and most group projects are built on what we cover today.
 
 In the `code/` folder on the course website:
 
-1. **`w4-1-ols-class.R`**: every chart and every regression in today's deck,
-   with a comment above each one
-2. **`data/airbnb.csv`**: the Airbnb dataset used in the second half (and in the
-   Airbnb exercise on Tuesday, Sept. 22)
+1. **`w4-1-ols-class.R`**: every chart and regression from the first half
+   (the marketing data), with a comment above each one
+2. **`w4-1-airbnb-class.R`**: the second half, on the Airbnb data
+3. **`data/airbnb.csv`**: the Airbnb dataset (also used in the Airbnb
+   exercise on Tuesday, Sept. 22)
 
 ::: {.box}
 Download everything as one zip:
@@ -613,9 +614,8 @@ table(airbnb$city)
 ```
 
 ::: {.smaller-90}
-`r comma(nrow(airbnb))` listings with a nightly price, size, star rating,
-number of reviews, city, and room type. Four real cities and, for reasons
-lost to history, **18 listings in New York**. Keep that in mind.
+`r comma(nrow(airbnb))` listings in four cities, with a nightly price,
+size, star rating, number of reviews, city, and room type.
 :::
 
 ## Predict before you run
@@ -758,7 +758,7 @@ stargazer(m_city, type = "text", title = "Regression of Price on City",
 ```
 
 ::: {.smaller-80 .muted}
-Five cities, four coefficients. Where did Austin go? And what is the
+Four cities, three coefficients. Where did Austin go? And what is the
 constant?
 :::
 
@@ -769,27 +769,25 @@ constant?
 Behind the scenes, R turns city into **dummy variables** (0/1), one per
 city, and **drops one**: the **base level**, Austin (first alphabetically).
 
-| Listing | City | Boston | LA | Miami | NYC |
-|---|---|---|---|---|---|
-| 1 | Austin | 0 | 0 | 0 | 0 |
-| 2 | Boston | 1 | 0 | 0 | 0 |
-| 3 | LA | 0 | 1 | 0 | 0 |
-| 4 | Miami | 0 | 0 | 1 | 0 |
-| 5 | NYC | 0 | 0 | 0 | 1 |
+| Listing | City | Boston | LA | Miami |
+|---|---|---|---|---|
+| 1 | Austin | 0 | 0 | 0 |
+| 2 | Boston | 1 | 0 | 0 |
+| 3 | LA | 0 | 1 | 0 |
+| 4 | Miami | 0 | 0 | 1 |
 :::
 ::: {.column width="58%"}
 - The **constant** (\$169.95) is the average price in the base city,
   **Austin**
 - Each coefficient is the **difference from Austin**: Boston \$17.60
   cheaper, Los Angeles \$36.77 cheaper, Miami \$40.93 cheaper. All three
-  precisely estimated (three stars)
-- **New York**: \$28 cheaper, p-value 0.47, **not** significant. Not because
-  New York is like Austin, but because there are **18** listings: the
-  standard error is \$39, versus \$2–3 for the other cities
+  precisely estimated (three stars): standard errors of \$2–3, because each
+  city has thousands of listings
 
 ::: {.box-warn}
-"Not significant" can mean "no difference" or "not enough data". Look at
-the standard error and the group size before you conclude anything.
+With small groups the same differences would not be significant. "Not
+significant" can mean "no difference" or "not enough data": look at the
+standard error and the group size before you conclude anything.
 :::
 :::
 :::::

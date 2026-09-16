@@ -256,8 +256,9 @@ Davide Proserpio
 <h2>R script for today</h2>
 <p>In the <code>code/</code> folder on the course website:</p>
 <ol type="1">
-<li><strong><code>w4-1-ols-class.R</code></strong>: every chart and every regression in today’s deck, with a comment above each one</li>
-<li><strong><code>data/airbnb.csv</code></strong>: the Airbnb dataset used in the second half (and in the Airbnb exercise on Tuesday, Sept.&nbsp;22)</li>
+<li><strong><code>w4-1-ols-class.R</code></strong>: every chart and regression from the first half (the marketing data), with a comment above each one</li>
+<li><strong><code>w4-1-airbnb-class.R</code></strong>: the second half, on the Airbnb data</li>
+<li><strong><code>data/airbnb.csv</code></strong>: the Airbnb dataset (also used in the Airbnb exercise on Tuesday, Sept.&nbsp;22)</li>
 </ol>
 <div class="box">
 <p>Download everything as one zip: <a href="https://github.com/dadepro/mkt566/raw/main/w4/w4-code.zip"><strong><code>w4-code.zip</code></strong></a>, open the folder in VS Code, and run along.</p>
@@ -842,12 +843,12 @@ Note:         *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01</code></pre>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="" aria-label="1"></a><span class="fu">table</span>(airbnb<span class="sc">$</span>city)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
-       Austin        Boston   Los Angeles         Miami New York City 
-        10311          6147         27611          6749            18 </code></pre>
+     Austin      Boston Los Angeles       Miami 
+      10311        6147       27611        6749 </code></pre>
 </div>
 </div>
 <div class="smaller-90">
-<p>50,836 listings with a nightly price, size, star rating, number of reviews, city, and room type. Four real cities and, for reasons lost to history, <strong>18 listings in New York</strong>. Keep that in mind.</p>
+<p>50,818 listings in four cities, with a nightly price, size, star rating, number of reviews, city, and room type.</p>
 </div>
 </section>
 <section id="predict-before-you-run" class="slide level2">
@@ -885,7 +886,7 @@ Note:         *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01</code></pre>
 </div>
 </div></div>
 <div class="smaller-80 muted">
-<p>50,836 points. What do you see? Does a straight line make sense here?</p>
+<p>50,818 points. What do you see? Does a straight line make sense here?</p>
 </div>
 </section>
 <section id="price-vs.-reviews-reading-it" class="slide level2 nostretch">
@@ -923,14 +924,14 @@ Residuals:
 
 Coefficients:
                Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept)   148.04066    0.90102  164.30   &lt;2e-16 ***
-reviews_count  -0.34672    0.03195  -10.85   &lt;2e-16 ***
+(Intercept)   148.05411    0.90128  164.27   &lt;2e-16 ***
+reviews_count  -0.34754    0.03196  -10.87   &lt;2e-16 ***
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-Residual standard error: 165.9 on 50834 degrees of freedom
-Multiple R-squared:  0.002311,  Adjusted R-squared:  0.002291 
-F-statistic: 117.8 on 1 and 50834 DF,  p-value: &lt; 2.2e-16</code></pre>
+Residual standard error: 166 on 50816 degrees of freedom
+Multiple R-squared:  0.002321,  Adjusted R-squared:  0.002302 
+F-statistic: 118.2 on 1 and 50816 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 </div>
 <div class="smaller-80 muted">
@@ -968,10 +969,10 @@ Regression of Price on Number of Reviews
 ---------------------------------------------
 Number of reviews          -0.35***          
                             (0.03)           
-Constant                   148.04***         
+Constant                   148.05***         
                             (0.90)           
 ---------------------------------------------
-Observations                50,836           
+Observations                50,818           
 R2                           0.002           
 =============================================
 Note:             *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01</code></pre>
@@ -1016,30 +1017,28 @@ Levels: Austin Boston Miami</code></pre>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Regression of Price on City
-=============================================
-                      Dependent variable:    
-                  ---------------------------
-                    Nightly price (dollars)  
----------------------------------------------
-cityBoston                 -17.60***         
-                            (2.67)           
-cityLos Angeles            -36.77***         
-                            (1.91)           
-cityMiami                  -40.93***         
-                            (2.59)           
-cityNew York City           -28.17           
-                            (39.03)          
-Constant                   169.95***         
-                            (1.63)           
----------------------------------------------
-Observations                50,836           
-R2                           0.01            
-=============================================
-Note:             *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01</code></pre>
+===========================================
+                    Dependent variable:    
+                ---------------------------
+                  Nightly price (dollars)  
+-------------------------------------------
+cityBoston               -17.60***         
+                          (2.67)           
+cityLos Angeles          -36.77***         
+                          (1.91)           
+cityMiami                -40.93***         
+                          (2.59)           
+Constant                 169.95***         
+                          (1.63)           
+-------------------------------------------
+Observations              50,818           
+R2                         0.01            
+===========================================
+Note:           *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01</code></pre>
 </div>
 </div>
 <div class="smaller-80 muted">
-<p>Five cities, four coefficients. Where did Austin go? And what is the constant?</p>
+<p>Four cities, three coefficients. Where did Austin go? And what is the constant?</p>
 </div>
 </section>
 <section id="price-by-city-reading-it" class="slide level2 smaller-90">
@@ -1055,14 +1054,12 @@ Note:             *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01</code></pre>
 <th>Boston</th>
 <th>LA</th>
 <th>Miami</th>
-<th>NYC</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td>1</td>
 <td>Austin</td>
-<td>0</td>
 <td>0</td>
 <td>0</td>
 <td>0</td>
@@ -1073,7 +1070,6 @@ Note:             *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01</code></pre>
 <td>1</td>
 <td>0</td>
 <td>0</td>
-<td>0</td>
 </tr>
 <tr class="odd">
 <td>3</td>
@@ -1081,20 +1077,10 @@ Note:             *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01</code></pre>
 <td>0</td>
 <td>1</td>
 <td>0</td>
-<td>0</td>
 </tr>
 <tr class="even">
 <td>4</td>
 <td>Miami</td>
-<td>0</td>
-<td>0</td>
-<td>1</td>
-<td>0</td>
-</tr>
-<tr class="odd">
-<td>5</td>
-<td>NYC</td>
-<td>0</td>
 <td>0</td>
 <td>0</td>
 <td>1</td>
@@ -1104,11 +1090,10 @@ Note:             *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01</code></pre>
 </div><div class="column" style="width:58%;">
 <ul>
 <li>The <strong>constant</strong> ($169.95) is the average price in the base city, <strong>Austin</strong></li>
-<li>Each coefficient is the <strong>difference from Austin</strong>: Boston $17.60 cheaper, Los Angeles $36.77 cheaper, Miami $40.93 cheaper. All three precisely estimated (three stars)</li>
-<li><strong>New York</strong>: $28 cheaper, p-value 0.47, <strong>not</strong> significant. Not because New York is like Austin, but because there are <strong>18</strong> listings: the standard error is $39, versus $2–3 for the other cities</li>
+<li>Each coefficient is the <strong>difference from Austin</strong>: Boston $17.60 cheaper, Los Angeles $36.77 cheaper, Miami $40.93 cheaper. All three precisely estimated (three stars): standard errors of $2–3, because each city has thousands of listings</li>
 </ul>
 <div class="box-warn">
-<p>“Not significant” can mean “no difference” or “not enough data”. Look at the standard error and the group size before you conclude anything.</p>
+<p>With small groups the same differences would not be significant. “Not significant” can mean “no difference” or “not enough data”: look at the standard error and the group size before you conclude anything.</p>
 </div>
 </div></div>
 </section>
@@ -1122,30 +1107,28 @@ Note:             *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01</code></pre>
 <span id="cb30-5"><a href="" aria-label="5"></a>          <span class="at">digits =</span> <span class="dv">2</span>, <span class="at">no.space =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
-================================================
-                       Dependent variable:      
-                  ------------------------------
-                     Nightly price (dollars)    
-                  base: Austin base: Los Angeles
-                      (1)             (2)       
-------------------------------------------------
-cityAustin                         36.77***     
-                                    (1.91)      
-cityBoston         -17.60***       19.18***     
-                     (2.67)         (2.33)      
-cityLos Angeles    -36.77***                    
-                     (1.91)                     
-cityMiami          -40.93***        -4.16*      
-                     (2.59)         (2.25)      
-cityNew York City    -28.17          8.61       
-                    (39.03)         (39.01)     
-Constant           169.95***       133.17***    
-                     (1.63)         (1.00)      
-------------------------------------------------
-Observations         50,836         50,836      
-R2                    0.01           0.01       
-================================================
-Note:                *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01</code></pre>
+==============================================
+                     Dependent variable:      
+                ------------------------------
+                   Nightly price (dollars)    
+                base: Austin base: Los Angeles
+                    (1)             (2)       
+----------------------------------------------
+cityAustin                       36.77***     
+                                  (1.91)      
+cityBoston       -17.60***       19.18***     
+                   (2.67)         (2.33)      
+cityLos Angeles  -36.77***                    
+                   (1.91)                     
+cityMiami        -40.93***        -4.16*      
+                   (2.59)         (2.25)      
+Constant         169.95***       133.17***    
+                   (1.63)         (1.00)      
+----------------------------------------------
+Observations       50,818         50,818      
+R2                  0.01           0.01       
+==============================================
+Note:              *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01</code></pre>
 </div>
 </div>
 <div class="smaller-80 muted">
