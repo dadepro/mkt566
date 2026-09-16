@@ -46,14 +46,18 @@ if (requireNamespace("rstudioapi", quietly = TRUE) && rstudioapi::isAvailable())
 }
 dir.create("figures", showWarnings = FALSE)
 set.seed(566)
+options(scipen = 10)    # print 8439.11, not 8.439e+03 (p-values stay as 2e-16)
 # ---------------------------------------------------------------------------
 
 # ============================================================================
 # PART 1: From a line to a model (the marketing data from week 3)
 # ============================================================================
-# 200 ad campaigns: spend on youtube, facebook, newspaper (thousands of
-# dollars) and sales (thousands of units).
+# 200 ad campaigns: spend on youtube, facebook, newspaper and sales.
+# The package stores spend in thousands of dollars and sales in thousands
+# of units. We multiply everything by 1,000 so the data are in dollars and
+# units, and every coefficient reads "per $1".
 data("marketing", package = "datarium")
+marketing[] <- lapply(marketing, function(v) v * 1000)
 head(marketing)
 
 # ---- The line we drew last week --------------------------------------------
@@ -61,9 +65,11 @@ head(marketing)
 ggplot(marketing, aes(x = youtube, y = sales)) +
   geom_point(alpha = 0.5, color = "darkgreen") +
   geom_smooth(method = "lm", se = FALSE) +
+  scale_x_continuous(labels = comma) +   # 100,000 instead of 1e+05
+  scale_y_continuous(labels = comma) +
   labs(title = "Sales vs. YouTube Ad Spend",
-       x = "YouTube ad spend (thousands $)",
-       y = "Sales (thousands of units)") +
+       x = "YouTube ad spend ($)",
+       y = "Sales (units)") +
   theme_minimal()
 ggsave("figures/01-sales-youtube-line.pdf", width = 6, height = 4)
 
@@ -75,7 +81,7 @@ summary(model)
 # The two numbers that define the line: intercept and slope.
 coef(model)
 # Reading: with no YouTube spend, predicted sales are about 8,400 units.
-# Each extra $1,000 on YouTube is associated with 47.5 more units sold.
+# Each extra $1 on YouTube is associated with 0.0475 more units sold.
 
 # Coefficients with their standard errors, t-values, and p-values.
 round(coef(summary(model)), 4)
@@ -92,13 +98,15 @@ draw_line <- function(a, slope, title) {
     geom_segment(aes(xend = youtube, yend = yhat), color = "steelblue", alpha = 0.5) +
     geom_point(alpha = 0.4, color = "darkgreen") +
     geom_abline(intercept = a, slope = slope, color = "firebrick", linewidth = 1.1) +
-    labs(title = title, x = "YouTube ad spend (thousands $)", y = "Sales") +
+    scale_x_continuous(labels = comma) +
+    scale_y_continuous(labels = comma) +
+    labs(title = title, x = "YouTube ad spend ($)", y = "Sales (units)") +
     theme_minimal(base_size = 13)
 }
-sse_a <- sum((marketing$sales - (5 + 0.08 * marketing$youtube))^2)  # line A
-sse_b <- sum(resid(model)^2)                                          # OLS line
-draw_line(5, 0.08, paste("Line A: sum of squared errors =", round(sse_a))) +
-  draw_line(b[1], b[2], paste("Line B (OLS): sum of squared errors =", round(sse_b)))
+sse_a <- sum((marketing$sales - (5000 + 0.08 * marketing$youtube))^2)  # line A
+sse_b <- sum(resid(model)^2)                                             # OLS line
+draw_line(5000, 0.08, paste("Line A\nsum of squared errors =", comma(round(sse_a)))) +
+  draw_line(b[1], b[2], paste("Line B (OLS)\nsum of squared errors =", comma(round(sse_b))))
 ggsave("figures/02-which-line.pdf", width = 10, height = 4)
 
 # ---- R-squared ---------------------------------------------------------------
@@ -116,13 +124,15 @@ p_mean <- ggplot(sub, aes(youtube, sales)) +
   geom_segment(aes(xend = youtube, yend = ybar), color = "steelblue", alpha = 0.6) +
   geom_hline(yintercept = mean(marketing$sales), color = "grey30", linewidth = 1) +
   geom_point(color = "darkgreen") +
-  labs(title = "Errors if we only knew the mean", x = "YouTube spend", y = "Sales") +
+  scale_x_continuous(labels = comma) + scale_y_continuous(labels = comma) +
+  labs(title = "Errors if we only knew the mean", x = "YouTube spend ($)", y = "Sales (units)") +
   theme_minimal(base_size = 13)
 p_line <- ggplot(sub, aes(youtube, sales)) +
   geom_segment(aes(xend = youtube, yend = yhat), color = "steelblue", alpha = 0.6) +
   geom_abline(intercept = b[1], slope = b[2], color = "firebrick", linewidth = 1) +
   geom_point(color = "darkgreen") +
-  labs(title = "Errors with the regression line", x = "YouTube spend", y = NULL) +
+  scale_x_continuous(labels = comma) + scale_y_continuous(labels = comma) +
+  labs(title = "Errors with the regression line", x = "YouTube spend ($)", y = NULL) +
   theme_minimal(base_size = 13)
 p_mean + p_line
 ggsave("figures/03-r-squared.pdf", width = 10, height = 4)
@@ -139,14 +149,16 @@ m_loglog <- lm(log(sales) ~ log(youtube), data = marketing)
 
 # stargazer() prints several models side by side. type = "text" prints to
 # the console (type = "html" makes a table for an R Markdown report).
-# no.space = TRUE removes the blank lines between rows.
+# no.space = TRUE removes the blank lines between rows. digits.extra adds
+# decimals to a coefficient that would otherwise round to 0.0000.
 stargazer(m_level, m_loglev, m_loglog, type = "text",
           column.labels = c("level-level", "log-level", "log-log"),
-          omit.stat = c("f", "ser", "adj.rsq"), digits = 4, no.space = TRUE)
+          omit.stat = c("f", "ser", "adj.rsq"), digits = 4, digits.extra = 4,
+          no.space = TRUE)
 # Reading:
-#   level-level: $1,000 more on YouTube -> 47.5 more units
-#   log-level:   $1,000 more on YouTube -> about 0.32% more sales (100 * 0.0032)
-#   log-log:     1% more YouTube spend  -> 0.36% more sales (the elasticity)
+#   level-level: $1 more on YouTube    -> 0.0475 more units
+#   log-level:   $1 more on YouTube    -> about 0.0003% more sales (100 * 0.000003)
+#   log-log:     1% more YouTube spend -> 0.36% more sales (the elasticity)
 
 # ---- More than one predictor -----------------------------------------------
 # Each coefficient is now "holding the other predictors fixed".

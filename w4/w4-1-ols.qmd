@@ -36,11 +36,15 @@ library(patchwork)
 library(scales)
 library(stargazer)
 
-options(width = 110)
+options(width = 110, scipen = 10)
 set.seed(566)
 knitr::opts_knit$set(root.dir = "code")
 
 data("marketing", package = "datarium")
+# The package stores spend in thousands of dollars and sales in thousands of
+# units. Put both in natural units (dollars, units) so every coefficient
+# reads "per $1".
+marketing[] <- lapply(marketing, function(v) v * 1000)
 airbnb <- fread("code/data/airbnb.csv")
 
 m_yt   <- lm(sales ~ youtube, data = marketing)
@@ -118,9 +122,11 @@ open the folder in VS Code, and run along.
 ggplot(marketing, aes(x = youtube, y = sales)) +
   geom_point(alpha = 0.5, color = "darkgreen") +
   geom_smooth(method = "lm", se = FALSE) +
+  scale_x_continuous(labels = comma) +
+  scale_y_continuous(labels = comma) +
   labs(title = "Sales vs. YouTube Ad Spend",
-       x = "YouTube ad spend (thousands $)",
-       y = "Sales (thousands of units)") +
+       x = "YouTube ad spend ($)",
+       y = "Sales (units)") +
   theme_minimal()
 ```
 
@@ -167,8 +173,8 @@ $$y_i = \beta_0 + \beta_1 x_i + \epsilon_i$$
 ```{r setup-table}
 #| echo: false
 knitr::kable(head(marketing[, c("youtube", "sales")], 5),
-             col.names = c("x = youtube", "y = sales"),
-             digits = 1)
+             col.names = c("x = youtube ($)", "y = sales (units)"),
+             digits = 0, format.args = list(big.mark = ","))
 ```
 ::: {.smaller-80 .muted}
 Rows $i = 1, \dots, 200$
@@ -183,25 +189,26 @@ Rows $i = 1, \dots, 200$
 #| fig-height: 4.6
 pt <- marketing[which.max(resid(m_yt)), ]
 pt_hat <- predict(m_yt, pt)
-x1 <- 270; x2 <- 340
+x1 <- 270000; x2 <- 340000
 y1 <- b_yt[1] + b_yt[2] * x1; y2 <- b_yt[1] + b_yt[2] * x2
 ggplot(marketing, aes(x = youtube, y = sales)) +
   geom_point(alpha = 0.3, color = "darkgreen") +
   geom_abline(intercept = b_yt[1], slope = b_yt[2], color = "firebrick", linewidth = 1.1) +
   annotate("point", x = 0, y = b_yt[1], size = 3.5, color = "firebrick") +
-  annotate("label", x = 12, y = b_yt[1] - 3.2, hjust = 0, parse = TRUE,
-           label = sprintf("beta[0] == %.1f ~~ (intercept)", b_yt[1]), color = "firebrick") +
+  annotate("label", x = 12000, y = b_yt[1] - 3200, hjust = 0, parse = TRUE,
+           label = sprintf("beta[0] == %.0f ~~ (intercept)", b_yt[1]), color = "firebrick") +
   annotate("segment", x = x1, xend = x2, y = y1, yend = y1, color = "firebrick", linetype = 2) +
   annotate("segment", x = x2, xend = x2, y = y1, yend = y2, color = "firebrick", linetype = 2) +
-  annotate("label", x = x2, y = y1 - 2.2, hjust = 1, parse = TRUE,
+  annotate("label", x = x2, y = y1 - 2200, hjust = 1, parse = TRUE,
            label = sprintf("beta[1] == %.3f ~~ (slope)", b_yt[2]), color = "firebrick") +
   annotate("segment", x = pt$youtube, xend = pt$youtube, y = pt_hat, yend = pt$sales,
            color = "steelblue", linewidth = 1.1) +
   annotate("point", x = pt$youtube, y = pt$sales, size = 3, color = "steelblue") +
-  annotate("label", x = pt$youtube - 8, y = (pt$sales + pt_hat) / 2, hjust = 1, parse = TRUE,
+  annotate("label", x = pt$youtube - 8000, y = (pt$sales + pt_hat) / 2, hjust = 1, parse = TRUE,
            label = "epsilon == actual - predicted ~~ (error)", color = "steelblue") +
-  scale_x_continuous(limits = c(0, 360)) +
-  labs(x = "YouTube ad spend (thousands $)", y = "Sales (thousands of units)") +
+  scale_x_continuous(limits = c(0, 360000), labels = comma) +
+  scale_y_continuous(labels = comma) +
+  labs(x = "YouTube ad spend ($)", y = "Sales (units)") +
   theme_minimal(base_size = 14)
 ```
 
@@ -221,10 +228,12 @@ draw_line <- function(a, b, title) {
     geom_segment(aes(xend = youtube, yend = yhat), color = "steelblue", alpha = 0.5) +
     geom_point(alpha = 0.4, color = "darkgreen") +
     geom_abline(intercept = a, slope = b, color = "firebrick", linewidth = 1.1) +
-    labs(title = title, x = "YouTube ad spend (thousands $)", y = "Sales") +
+    scale_x_continuous(labels = comma) +
+    scale_y_continuous(labels = comma) +
+    labs(title = title, x = "YouTube ad spend ($)", y = "Sales (units)") +
     theme_minimal(base_size = 13)
 }
-draw_line(5, 0.08, "Line A") + draw_line(b_yt[1], b_yt[2], "Line B")
+draw_line(5000, 0.08, "Line A") + draw_line(b_yt[1], b_yt[2], "Line B")
 ```
 
 ::: {.smaller-80 .muted}
@@ -237,9 +246,9 @@ line is better, and how would you *decide*?
 ```{r which-line-2}
 #| fig-width: 10
 #| fig-height: 3.6
-ssr_a <- sum((marketing$sales - (5 + 0.08 * marketing$youtube))^2)
-draw_line(5, 0.08, sprintf("Line A: sum of squared errors = %s", comma(round(ssr_a)))) +
-  draw_line(b_yt[1], b_yt[2], sprintf("Line B: sum of squared errors = %s", comma(round(ssr_yt))))
+ssr_a <- sum((marketing$sales - (5000 + 0.08 * marketing$youtube))^2)
+draw_line(5000, 0.08, sprintf("Line A\nsum of squared errors = %s", comma(round(ssr_a)))) +
+  draw_line(b_yt[1], b_yt[2], sprintf("Line B\nsum of squared errors = %s", comma(round(ssr_yt))))
 ```
 
 ::: {.smaller-90}
@@ -250,6 +259,47 @@ draw_line(5, 0.08, sprintf("Line A: sum of squared errors = %s", comma(round(ssr
   `geom_smooth(method = "lm")` drew last week
 - "Least squares" is the whole idea. Everything else today is about reading
   what comes out
+:::
+
+## The sum of squared errors, written out {.smaller-90}
+
+::::: {.columns}
+::: {.column width="58%"}
+For any intercept $\beta_0$ and slope $\beta_1$, the line predicts
+$\hat{y}_i = \beta_0 + \beta_1 x_i$ and misses by $\epsilon_i = y_i - \hat{y}_i$:
+
+$$\text{SSE}(\beta_0, \beta_1) = \sum_{i=1}^{n} \epsilon_i^2
+= \sum_{i=1}^{n} \left(y_i - \beta_0 - \beta_1 x_i\right)^2$$
+
+- Every choice of $(\beta_0, \beta_1)$ gives a different line, hence a
+  different SSE. Line A and Line B are two such choices
+- OLS picks the pair that makes this sum as small as possible:
+
+$$(\hat{\beta}_0, \hat{\beta}_1) = \arg\min_{\beta_0,\, \beta_1} \; \text{SSE}(\beta_0, \beta_1)$$
+:::
+::: {.column width="42%"}
+```{r sse-table}
+#| echo: false
+sse_tab <- data.table(
+  x = marketing$youtube[1:4], y = marketing$sales[1:4],
+  yhat = fitted(m_yt)[1:4], e = resid(m_yt)[1:4])[, e2 := e^2]
+sse_tab <- rbind(sse_tab, data.table(x = NA, y = NA, yhat = NA, e = NA, e2 = NA),
+                 data.table(x = NA, y = NA, yhat = NA, e = NA, e2 = ssr_yt))
+knitr::kable(sse_tab, digits = 0, format.args = list(big.mark = ","),
+             col.names = c("$x_i$", "$y_i$", "$\\hat{y}_i$", "$\\epsilon_i$", "$\\epsilon_i^2$"),
+             row.names = FALSE) |>
+  gsub(pattern = "NA", replacement = "⋮")
+```
+::: {.smaller-80 .muted}
+Line B (the OLS line), first 4 of 200 campaigns. Bottom row: the sum over
+all 200, the number on the previous slide.
+:::
+:::
+:::::
+
+::: {.box}
+"Least squares" means exactly this: square each error, add them up, and pick
+the line that makes the total smallest.
 :::
 
 # Estimating a Regression in R {.divider}
@@ -273,13 +323,12 @@ Find the intercept and the slope in this output. What else is in there?
 coef(model)
 ```
 
-- **Intercept** $\beta_0 = 8.44$: a campaign with **no** YouTube spend is
-  predicted to sell about **8,400 units** (sales are in thousands)
-- **Slope** $\beta_1 = 0.0475$: each additional **\$1,000** on YouTube is
-  associated with **47.5 more units** sold (spend is in thousands of
-  dollars)
-- Prediction: with \$100k on YouTube, $8.44 + 0.0475 \times 100 = 13.2$
-  thousand units
+- **Intercept** $\beta_0 = 8{,}439$: a campaign with **no** YouTube spend is
+  predicted to sell about **8,400 units**
+- **Slope** $\beta_1 = 0.0475$: each additional **\$1** on YouTube is
+  associated with **0.0475 more units** sold
+- Prediction: with \$100,000 on YouTube,
+  $8{,}439 + 0.0475 \times 100{,}000 \approx 13{,}200$ units
 
 ::: {.box}
 Always translate the slope into **business units**: "one more unit of $X$
@@ -302,12 +351,13 @@ round(coef(summary(model)), 4)
   $0.0475 \pm 0.005$
 - `t value` = estimate / SE = $0.0475 / 0.0027 \approx$ **17.7**: the slope is
   about 18 standard errors away from zero
-- `Pr(>|t|)` is the **p-value**: here so small R prints it as `<2e-16`
+- `Pr(>|t|)` is the **p-value**: here so small that it rounds to **0**
+  (two slides back, `summary()` printed it as `<2e-16`)
 
 ## The question the p-value answers {.smaller-90}
 
 ::::: {.columns}
-::: {.column width="52%"}
+::: {.column width="45%"}
 **Hypothesis testing** is a way to decide between two claims with data:
 
 - $H_0$ (the null): **no relationship**, $\beta_1 = 0$. YouTube spend has
@@ -317,7 +367,7 @@ round(coef(summary(model)), 4)
 The **p-value** answers: *if $H_0$ were true, how likely is a slope at least
 this far from zero, just by luck?*
 :::
-::: {.column width="48%"}
+::: {.column width="45%" style="margin-left: 5%;"}
 **Decision rule**
 
 - p-value **< 0.05**: reject $H_0$. The coefficient is **statistically
@@ -363,13 +413,15 @@ p_mean <- ggplot(sub, aes(youtube, sales)) +
   geom_segment(aes(xend = youtube, yend = ybar), color = "steelblue", alpha = 0.6) +
   geom_hline(yintercept = mean(marketing$sales), color = "grey30", linewidth = 1) +
   geom_point(color = "darkgreen") +
-  labs(title = "Errors if we only knew the mean", x = "YouTube spend", y = "Sales") +
+  scale_x_continuous(labels = comma) + scale_y_continuous(labels = comma) +
+  labs(title = "Errors if we only knew the mean", x = "YouTube spend ($)", y = "Sales (units)") +
   theme_minimal(base_size = 13)
 p_line <- ggplot(sub, aes(youtube, sales)) +
   geom_segment(aes(xend = youtube, yend = yhat), color = "steelblue", alpha = 0.6) +
   geom_abline(intercept = b_yt[1], slope = b_yt[2], color = "firebrick", linewidth = 1) +
   geom_point(color = "darkgreen") +
-  labs(title = "Errors with the regression line", x = "YouTube spend", y = NULL) +
+  scale_x_continuous(labels = comma) + scale_y_continuous(labels = comma) +
+  labs(title = "Errors with the regression line", x = "YouTube spend ($)", y = NULL) +
   theme_minimal(base_size = 13)
 p_mean + p_line
 ```
@@ -389,8 +441,8 @@ $$R^2 = 1 - \frac{\text{sum of squared errors with the line}}{\text{sum of squar
   seasonality, luck
 - $R^2$ runs from 0 (the line is no better than the mean) to 1 (every point
   on the line)
-- **Residual standard error: 3.9**. The typical prediction misses by about
-  **3,900 units**. Same idea, in the units of $Y$
+- **Residual standard error: 3,910**. The typical prediction misses by
+  about **3,900 units**. Same idea as $R^2$, but in the units of $Y$
 - **Adjusted R-squared** is $R^2$ with a small penalty for every predictor
   you add. Use it to compare models with different numbers of predictors
 
@@ -471,14 +523,15 @@ m_loglev <- lm(log(sales) ~ youtube, data = marketing)
 m_loglog <- lm(log(sales) ~ log(youtube), data = marketing)
 stargazer(m_level, m_loglev, m_loglog, type = "text",
           column.labels = c("level-level", "log-level", "log-log"),
-          omit.stat = c("f", "ser", "adj.rsq"), digits = 4, no.space = TRUE)
+          omit.stat = c("f", "ser", "adj.rsq"), digits = 4, digits.extra = 4,
+          no.space = TRUE)
 ```
 
 ## Three ways: reading it {.smaller-90}
 
-- **Level-level** (column 1): \$1,000 more on YouTube → **47.5 more units**
-- **Log-level** (column 2): \$1,000 more on YouTube → about **0.32% more
-  sales** ($100 \times 0.0032$)
+- **Level-level** (column 1): \$1 more on YouTube → **0.0475 more units**
+- **Log-level** (column 2): \$1 more on YouTube → about **0.0003% more
+  sales** ($100 \times 0.000003$)
 - **Log-log** (column 3): 1% more YouTube spend → **0.36% more sales**. That
   is the **elasticity** of sales with respect to YouTube spend
 
@@ -526,14 +579,14 @@ stargazer(m_yt, m_all, type = "text", column.labels = c("YouTube only", "all thr
 ```
 
 ::: {.smaller-80 .muted}
-Which channel has the largest coefficient? What happened to newspaper?
+Which channel has the largest coefficient? Which one is essentially zero?
 :::
 
 ## More than one predictor: reading it {.smaller-90}
 
-- **Facebook** has the largest coefficient: \$1,000 more on Facebook,
-  holding YouTube and newspaper fixed, goes with about **189 more units**.
-  YouTube: 46 units per \$1,000
+- **Facebook** has the largest coefficient: \$1 more on Facebook,
+  holding YouTube and newspaper fixed, goes with about **0.19 more units**.
+  YouTube: 0.046 units per \$1
 - **Newspaper**: $-0.001$, p-value 0.86. Once YouTube and Facebook are in
   the model, newspaper spend tells us **nothing** about sales. Remember
   last week's flat newspaper panel

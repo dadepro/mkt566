@@ -275,10 +275,12 @@ Davide Proserpio
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1" data-code-line-numbers="3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="" aria-label="1"></a><span class="fu">ggplot</span>(marketing, <span class="fu">aes</span>(<span class="at">x =</span> youtube, <span class="at">y =</span> sales)) <span class="sc">+</span></span>
 <span id="cb1-2"><a href="" aria-label="2"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.5</span>, <span class="at">color =</span> <span class="st">"darkgreen"</span>) <span class="sc">+</span></span>
 <span id="cb1-3"><a href="" aria-label="3"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
-<span id="cb1-4"><a href="" aria-label="4"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Sales vs. YouTube Ad Spend"</span>,</span>
-<span id="cb1-5"><a href="" aria-label="5"></a>       <span class="at">x =</span> <span class="st">"YouTube ad spend (thousands $)"</span>,</span>
-<span id="cb1-6"><a href="" aria-label="6"></a>       <span class="at">y =</span> <span class="st">"Sales (thousands of units)"</span>) <span class="sc">+</span></span>
-<span id="cb1-7"><a href="" aria-label="7"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-4"><a href="" aria-label="4"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">labels =</span> comma) <span class="sc">+</span></span>
+<span id="cb1-5"><a href="" aria-label="5"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> comma) <span class="sc">+</span></span>
+<span id="cb1-6"><a href="" aria-label="6"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Sales vs. YouTube Ad Spend"</span>,</span>
+<span id="cb1-7"><a href="" aria-label="7"></a>       <span class="at">x =</span> <span class="st">"YouTube ad spend ($)"</span>,</span>
+<span id="cb1-8"><a href="" aria-label="8"></a>       <span class="at">y =</span> <span class="st">"Sales (units)"</span>) <span class="sc">+</span></span>
+<span id="cb1-9"><a href="" aria-label="9"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div><div class="column">
 <div class="cell-output-display">
 <div>
@@ -329,30 +331,30 @@ Davide Proserpio
 <table class="caption-top">
 <thead>
 <tr class="header">
-<th style="text-align: right;">x = youtube</th>
-<th style="text-align: right;">y = sales</th>
+<th style="text-align: right;">x = youtube ($)</th>
+<th style="text-align: right;">y = sales (units)</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: right;">276.1</td>
-<td style="text-align: right;">26.5</td>
+<td style="text-align: right;">276,120</td>
+<td style="text-align: right;">26,520</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">53.4</td>
-<td style="text-align: right;">12.5</td>
+<td style="text-align: right;">53,400</td>
+<td style="text-align: right;">12,480</td>
 </tr>
 <tr class="odd">
-<td style="text-align: right;">20.6</td>
-<td style="text-align: right;">11.2</td>
+<td style="text-align: right;">20,640</td>
+<td style="text-align: right;">11,160</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">181.8</td>
-<td style="text-align: right;">22.2</td>
+<td style="text-align: right;">181,800</td>
+<td style="text-align: right;">22,200</td>
 </tr>
 <tr class="odd">
-<td style="text-align: right;">217.0</td>
-<td style="text-align: right;">15.5</td>
+<td style="text-align: right;">216,960</td>
+<td style="text-align: right;">15,480</td>
 </tr>
 </tbody>
 </table>
@@ -387,6 +389,86 @@ Davide Proserpio
 <li>“Least squares” is the whole idea. Everything else today is about reading what comes out</li>
 </ul>
 </div>
+</section>
+<section id="the-sum-of-squared-errors-written-out" class="slide level2 smaller-90">
+<h2>The sum of squared errors, written out</h2>
+<div class="columns">
+<div class="column" style="width:58%;">
+<p>For any intercept <span class="math inline">\(\beta_0\)</span> and slope <span class="math inline">\(\beta_1\)</span>, the line predicts <span class="math inline">\(\hat{y}_i = \beta_0 + \beta_1 x_i\)</span> and misses by <span class="math inline">\(\epsilon_i = y_i - \hat{y}_i\)</span>:</p>
+<p><span class="math display">\[\text{SSE}(\beta_0, \beta_1) = \sum_{i=1}^{n} \epsilon_i^2
+= \sum_{i=1}^{n} \left(y_i - \beta_0 - \beta_1 x_i\right)^2\]</span></p>
+<ul>
+<li>Every choice of <span class="math inline">\((\beta_0, \beta_1)\)</span> gives a different line, hence a different SSE. Line A and Line B are two such choices</li>
+<li>OLS picks the pair that makes this sum as small as possible:</li>
+</ul>
+<p><span class="math display">\[(\hat{\beta}_0, \hat{\beta}_1) = \arg\min_{\beta_0,\, \beta_1} \; \text{SSE}(\beta_0, \beta_1)\]</span></p>
+</div><div class="column" style="width:42%;">
+<div class="cell">
+<div class="cell-output-display">
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: right;"><span class="math inline">\(x_i\)</span></th>
+<th style="text-align: right;"><span class="math inline">\(y_i\)</span></th>
+<th style="text-align: right;"><span class="math inline">\(\hat{y}_i\)</span></th>
+<th style="text-align: right;"><span class="math inline">\(\epsilon_i\)</span></th>
+<th style="text-align: right;"><span class="math inline">\(\epsilon_i^2\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">276,120</td>
+<td style="text-align: right;">26,520</td>
+<td style="text-align: right;">21,565</td>
+<td style="text-align: right;">4,955</td>
+<td style="text-align: right;">24,552,724</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">53,400</td>
+<td style="text-align: right;">12,480</td>
+<td style="text-align: right;">10,978</td>
+<td style="text-align: right;">1,502</td>
+<td style="text-align: right;">2,257,299</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">20,640</td>
+<td style="text-align: right;">11,160</td>
+<td style="text-align: right;">9,420</td>
+<td style="text-align: right;">1,740</td>
+<td style="text-align: right;">3,026,666</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">181,800</td>
+<td style="text-align: right;">22,200</td>
+<td style="text-align: right;">17,081</td>
+<td style="text-align: right;">5,119</td>
+<td style="text-align: right;">26,201,361</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">⋮</td>
+<td style="text-align: right;">⋮</td>
+<td style="text-align: right;">⋮</td>
+<td style="text-align: right;">⋮</td>
+<td style="text-align: right;">⋮</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">⋮</td>
+<td style="text-align: right;">⋮</td>
+<td style="text-align: right;">⋮</td>
+<td style="text-align: right;">⋮</td>
+<td style="text-align: right;">3,027,644,040</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="smaller-80 muted">
+<p>Line B (the OLS line), first 4 of 200 campaigns. Bottom row: the sum over all 200, the number on the previous slide.</p>
+</div>
+</div></div>
+<div class="box">
+<p>“Least squares” means exactly this: square each error, add them up, and pick the line that makes the total smallest.</p>
+</div>
 </section></section>
 <section>
 <section id="estimating-a-regression-in-r" class="title-slide slide level1 divider center">
@@ -405,16 +487,16 @@ lm(formula = sales ~ youtube, data = marketing)
 
 Residuals:
      Min       1Q   Median       3Q      Max 
--10.0632  -2.3454  -0.2295   2.4805   8.6548 
+-10063.2  -2345.4   -229.5   2480.5   8654.8 
 
 Coefficients:
-            Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept) 8.439112   0.549412   15.36   &lt;2e-16 ***
-youtube     0.047537   0.002691   17.67   &lt;2e-16 ***
+               Estimate  Std. Error t value Pr(&gt;|t|)    
+(Intercept) 8439.112259  549.411528   15.36   &lt;2e-16 ***
+youtube        0.047537    0.002691   17.67   &lt;2e-16 ***
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-Residual standard error: 3.91 on 198 degrees of freedom
+Residual standard error: 3910 on 198 degrees of freedom
 Multiple R-squared:  0.6119,    Adjusted R-squared:  0.6099 
 F-statistic: 312.1 on 1 and 198 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
@@ -428,14 +510,14 @@ F-statistic: 312.1 on 1 and 198 DF,  p-value: &lt; 2.2e-16</code></pre>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="" aria-label="1"></a><span class="fu">coef</span>(model)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>(Intercept)     youtube 
- 8.43911226  0.04753664 </code></pre>
+<pre><code>  (Intercept)       youtube 
+8439.11225895    0.04753664 </code></pre>
 </div>
 </div>
 <ul>
-<li><strong>Intercept</strong> <span class="math inline">\(\beta_0 = 8.44\)</span>: a campaign with <strong>no</strong> YouTube spend is predicted to sell about <strong>8,400 units</strong> (sales are in thousands)</li>
-<li><strong>Slope</strong> <span class="math inline">\(\beta_1 = 0.0475\)</span>: each additional <strong>$1,000</strong> on YouTube is associated with <strong>47.5 more units</strong> sold (spend is in thousands of dollars)</li>
-<li>Prediction: with $100k on YouTube, <span class="math inline">\(8.44 + 0.0475 \times 100 = 13.2\)</span> thousand units</li>
+<li><strong>Intercept</strong> <span class="math inline">\(\beta_0 = 8{,}439\)</span>: a campaign with <strong>no</strong> YouTube spend is predicted to sell about <strong>8,400 units</strong></li>
+<li><strong>Slope</strong> <span class="math inline">\(\beta_1 = 0.0475\)</span>: each additional <strong>$1</strong> on YouTube is associated with <strong>0.0475 more units</strong> sold</li>
+<li>Prediction: with $100,000 on YouTube, <span class="math inline">\(8{,}439 + 0.0475 \times 100{,}000 \approx 13{,}200\)</span> units</li>
 </ul>
 <div class="box">
 <p>Always translate the slope into <strong>business units</strong>: “one more unit of <span class="math inline">\(X\)</span> goes with <span class="math inline">\(\beta_1\)</span> more units of <span class="math inline">\(Y\)</span>”. If you cannot say it in a sentence a manager understands, you have not read the coefficient yet.</p>
@@ -447,28 +529,28 @@ F-statistic: 312.1 on 1 and 198 DF,  p-value: &lt; 2.2e-16</code></pre>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="" aria-label="1"></a><span class="fu">round</span>(<span class="fu">coef</span>(<span class="fu">summary</span>(model)), <span class="dv">4</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>            Estimate Std. Error t value Pr(&gt;|t|)
-(Intercept)   8.4391     0.5494 15.3603        0
-youtube       0.0475     0.0027 17.6676        0</code></pre>
+<pre><code>             Estimate Std. Error t value Pr(&gt;|t|)
+(Intercept) 8439.1123   549.4115 15.3603        0
+youtube        0.0475     0.0027 17.6676        0</code></pre>
 </div>
 </div>
 <ul>
 <li><code>Std. Error</code> of the slope: <strong>0.0027</strong>. The slope is pinned down to roughly <span class="math inline">\(0.0475 \pm 0.005\)</span></li>
 <li><code>t value</code> = estimate / SE = <span class="math inline">\(0.0475 / 0.0027 \approx\)</span> <strong>17.7</strong>: the slope is about 18 standard errors away from zero</li>
-<li><code>Pr(&gt;|t|)</code> is the <strong>p-value</strong>: here so small R prints it as <code>&lt;2e-16</code></li>
+<li><code>Pr(&gt;|t|)</code> is the <strong>p-value</strong>: here so small that it rounds to <strong>0</strong> (two slides back, <code>summary()</code> printed it as <code>&lt;2e-16</code>)</li>
 </ul>
 </section>
 <section id="the-question-the-p-value-answers" class="slide level2 smaller-90">
 <h2>The question the p-value answers</h2>
 <div class="columns">
-<div class="column" style="width:52%;">
+<div class="column" style="width:45%;">
 <p><strong>Hypothesis testing</strong> is a way to decide between two claims with data:</p>
 <ul>
 <li><span class="math inline">\(H_0\)</span> (the null): <strong>no relationship</strong>, <span class="math inline">\(\beta_1 = 0\)</span>. YouTube spend has nothing to do with sales</li>
 <li><span class="math inline">\(H_1\)</span> (the alternative): <strong>there is one</strong>, <span class="math inline">\(\beta_1 \neq 0\)</span></li>
 </ul>
 <p>The <strong>p-value</strong> answers: <em>if <span class="math inline">\(H_0\)</span> were true, how likely is a slope at least this far from zero, just by luck?</em></p>
-</div><div class="column" style="width:48%;">
+</div><div class="column" style="margin-left: 5%;">
 <p><strong>Decision rule</strong></p>
 <ul>
 <li>p-value <strong>&lt; 0.05</strong>: reject <span class="math inline">\(H_0\)</span>. The coefficient is <strong>statistically significant</strong> (different from zero)</li>
@@ -502,11 +584,11 @@ youtube       0.0475     0.0027 17.6676        0</code></pre>
 <section id="r-squared-reading-it" class="slide level2 smaller-90">
 <h2>R-squared: reading it</h2>
 <p><span class="math display">\[R^2 = 1 - \frac{\text{sum of squared errors with the line}}{\text{sum of squared errors with the mean}}
-= 1 - \frac{3,028}{7,801} = 0.61\]</span></p>
+= 1 - \frac{3,027,644,040}{7,800,694,200} = 0.61\]</span></p>
 <ul>
 <li><strong>Multiple R-squared: 0.61</strong>. YouTube spend explains <strong>61%</strong> of the variation in sales across campaigns. The other 39% is other channels, seasonality, luck</li>
 <li><span class="math inline">\(R^2\)</span> runs from 0 (the line is no better than the mean) to 1 (every point on the line)</li>
-<li><strong>Residual standard error: 3.9</strong>. The typical prediction misses by about <strong>3,900 units</strong>. Same idea, in the units of <span class="math inline">\(Y\)</span></li>
+<li><strong>Residual standard error: 3,910</strong>. The typical prediction misses by about <strong>3,900 units</strong>. Same idea as <span class="math inline">\(R^2\)</span>, but in the units of <span class="math inline">\(Y\)</span></li>
 <li><strong>Adjusted R-squared</strong> is <span class="math inline">\(R^2\)</span> with a small penalty for every predictor you add. Use it to compare models with different numbers of predictors</li>
 </ul>
 <div class="box">
@@ -637,35 +719,36 @@ youtube       0.0475     0.0027 17.6676        0</code></pre>
 <span id="cb8-3"><a href="" aria-label="3"></a>m_loglog <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">log</span>(sales) <span class="sc">~</span> <span class="fu">log</span>(youtube), <span class="at">data =</span> marketing)</span>
 <span id="cb8-4"><a href="" aria-label="4"></a><span class="fu">stargazer</span>(m_level, m_loglev, m_loglog, <span class="at">type =</span> <span class="st">"text"</span>,</span>
 <span id="cb8-5"><a href="" aria-label="5"></a>          <span class="at">column.labels =</span> <span class="fu">c</span>(<span class="st">"level-level"</span>, <span class="st">"log-level"</span>, <span class="st">"log-log"</span>),</span>
-<span id="cb8-6"><a href="" aria-label="6"></a>          <span class="at">omit.stat =</span> <span class="fu">c</span>(<span class="st">"f"</span>, <span class="st">"ser"</span>, <span class="st">"adj.rsq"</span>), <span class="at">digits =</span> <span class="dv">4</span>, <span class="at">no.space =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb8-6"><a href="" aria-label="6"></a>          <span class="at">omit.stat =</span> <span class="fu">c</span>(<span class="st">"f"</span>, <span class="st">"ser"</span>, <span class="st">"adj.rsq"</span>), <span class="at">digits =</span> <span class="dv">4</span>, <span class="at">digits.extra =</span> <span class="dv">4</span>,</span>
+<span id="cb8-7"><a href="" aria-label="7"></a>          <span class="at">no.space =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
-============================================
-                   Dependent variable:      
-             -------------------------------
-                sales        log(sales)     
-             level-level log-level  log-log 
-                 (1)        (2)       (3)   
---------------------------------------------
-youtube       0.0475***  0.0032***          
-              (0.0027)   (0.0002)           
-log(youtube)                       0.3550***
-                                   (0.0149) 
-Constant      8.4391***  2.1895*** 1.0228***
-              (0.5494)   (0.0362)  (0.0737) 
---------------------------------------------
-Observations     200        200       200   
-R2             0.6119     0.6156    0.7421  
-============================================
-Note:            *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01</code></pre>
+================================================
+                     Dependent variable:        
+             -----------------------------------
+                 sales          log(sales)      
+              level-level   log-level   log-log 
+                  (1)          (2)        (3)   
+------------------------------------------------
+youtube        0.0475***   0.000003***          
+               (0.0027)    (0.0000002)          
+log(youtube)                           0.3550***
+                                       (0.0149) 
+Constant     8,439.1120***  9.0973***  5.4781***
+              (549.4115)    (0.0362)   (0.1756) 
+------------------------------------------------
+Observations      200          200        200   
+R2              0.6119       0.6156     0.7421  
+================================================
+Note:                *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01</code></pre>
 </div>
 </div>
 </section>
 <section id="three-ways-reading-it" class="slide level2 smaller-90">
 <h2>Three ways: reading it</h2>
 <ul>
-<li><strong>Level-level</strong> (column 1): $1,000 more on YouTube → <strong>47.5 more units</strong></li>
-<li><strong>Log-level</strong> (column 2): $1,000 more on YouTube → about <strong>0.32% more sales</strong> (<span class="math inline">\(100 \times 0.0032\)</span>)</li>
+<li><strong>Level-level</strong> (column 1): $1 more on YouTube → <strong>0.0475 more units</strong></li>
+<li><strong>Log-level</strong> (column 2): $1 more on YouTube → about <strong>0.0003% more sales</strong> (<span class="math inline">\(100 \times 0.000003\)</span>)</li>
 <li><strong>Log-log</strong> (column 3): 1% more YouTube spend → <strong>0.36% more sales</strong>. That is the <strong>elasticity</strong> of sales with respect to YouTube spend</li>
 </ul>
 <div class="box">
@@ -700,31 +783,31 @@ Note:            *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01</code></pre>
              ----------------------------
                         sales            
               YouTube only    all three  
-                   (1)           (2)     
+                  (1)            (2)     
 -----------------------------------------
-youtube         0.048***       0.046***  
-                 (0.003)       (0.001)   
-facebook                       0.189***  
+youtube         0.048***      0.046***   
+                (0.003)        (0.001)   
+facebook                      0.189***   
                                (0.009)   
-newspaper                       -0.001   
+newspaper                      -0.001    
                                (0.006)   
-Constant        8.439***       3.527***  
-                 (0.549)       (0.374)   
+Constant      8,439.112***  3,526.667*** 
+               (549.412)      (374.290)  
 -----------------------------------------
-Observations       200           200     
-R2                0.612         0.897    
+Observations      200            200     
+R2               0.612          0.897    
 =========================================
 Note:         *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01</code></pre>
 </div>
 </div>
 <div class="smaller-80 muted">
-<p>Which channel has the largest coefficient? What happened to newspaper?</p>
+<p>Which channel has the largest coefficient? Which one is essentially zero?</p>
 </div>
 </section>
 <section id="more-than-one-predictor-reading-it" class="slide level2 smaller-90">
 <h2>More than one predictor: reading it</h2>
 <ul>
-<li><strong>Facebook</strong> has the largest coefficient: $1,000 more on Facebook, holding YouTube and newspaper fixed, goes with about <strong>189 more units</strong>. YouTube: 46 units per $1,000</li>
+<li><strong>Facebook</strong> has the largest coefficient: $1 more on Facebook, holding YouTube and newspaper fixed, goes with about <strong>0.19 more units</strong>. YouTube: 0.046 units per $1</li>
 <li><strong>Newspaper</strong>: <span class="math inline">\(-0.001\)</span>, p-value 0.86. Once YouTube and Facebook are in the model, newspaper spend tells us <strong>nothing</strong> about sales. Remember last week’s flat newspaper panel</li>
 <li><span class="math inline">\(R^2\)</span> goes from 0.61 to <strong>0.90</strong>: three channels explain 90% of the variation in sales</li>
 </ul>
