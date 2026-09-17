@@ -71,7 +71,7 @@ Last week you *looked* at how two variables move together. Today you put a
 **number** on it, and learn to tell when that number can be trusted.
 
 ::::: {.columns}
-::: {.column width="50%"}
+::: {.column width="45%"}
 **Today you learn to**
 
 1. Say what a regression **is** (a line, chosen a specific way)
@@ -79,7 +79,7 @@ Last week you *looked* at how two variables move together. Today you put a
 3. **Interpret** a coefficient in business units, with and without logs
 4. Handle **categorical** predictors (city, room type)
 :::
-::: {.column width="50%"}
+::: {.column width="45%" style="margin-left: 5%;"}
 **What stays the same**
 
 - The AI writes the code. You choose the model, and you read the result
