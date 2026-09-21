@@ -361,11 +361,14 @@ Davide Proserpio
 <h2>The fix: squash the line into 0–1</h2>
 <div class="columns">
 <div class="column" style="width:45%;">
-<p>Keep the linear part, <span class="math inline">\(z = \beta_0 + \beta_1 X\)</span>, and pass it through the <strong>logistic function</strong>:</p>
-<p><span class="math display">\[p = P(Y = 1 \mid X) = \frac{1}{1 + e^{-z}}\]</span></p>
+<p>Two steps, and only the second one is new:</p>
+<ol type="1">
+<li>Keep Thursday’s straight line, but treat its output as a <strong>score</strong>, not as the probability: <span class="math inline">\(z = \beta_0 + \beta_1 X\)</span>. A score can be any number: 0.3, 12, <span class="math inline">\(-70\)</span></li>
+<li><strong>Squash</strong> the score into 0–1 with the <strong>logistic function</strong>: <span class="math inline">\(p = \dfrac{1}{1 + e^{-z}}\)</span>. Any score in, a probability out</li>
+</ol>
 <ul>
-<li>Any <span class="math inline">\(z\)</span>, from <span class="math inline">\(-\infty\)</span> to <span class="math inline">\(+\infty\)</span>, comes out as a number between <strong>0 and 1</strong></li>
-<li><span class="math inline">\(z = 0\)</span> gives <span class="math inline">\(p = 0.5\)</span>. Large positive <span class="math inline">\(z\)</span>: close to 1. Large negative: close to 0</li>
+<li>A huge negative score becomes a probability near 0, <strong>never below it</strong>; a huge positive one, near 1, never above</li>
+<li>You will never compute this by hand: R does. Your job is to read what comes out</li>
 </ul>
 </div><div class="column" style="width:55%;">
 <div class="cell">
