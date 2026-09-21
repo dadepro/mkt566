@@ -138,7 +138,7 @@ In the level-level model the slope on `reviews_count` should be about **−0.35*
 
 Reviews alone explain almost nothing. Add what an investor would actually look at: estimate `price` as a function of `reviews_count`, `star_rating`, `bathrooms`, `bedrooms`, and `guests_included`, and print the table with `stargazer`.
 
-**Predict first:** write down the sign you expect for each of the five coefficients, and a rough dollar amount for `bedrooms`.
+**Predict first:** write down the sign you expect for each of the five coefficients.
 
 **Answer:**
 
