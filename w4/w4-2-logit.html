@@ -457,7 +457,19 @@ Davide Proserpio
 <li>Shortcut, as in Thursday’s log-level model: while the scaled coefficient is within about <span class="math inline">\(\pm 0.2\)</span>, just move the decimal (<span class="math inline">\(-0.08 \to\)</span> about <span class="math inline">\(-8\%\)</span>); bigger than that, use <code>exp()</code></li>
 </ul>
 <div class="box-warn">
-<p>The percent change is in the <strong>odds</strong>, not in the probability. To turn odds back into a probability: <span class="math inline">\(p = \text{odds} \,/\, (1 + \text{odds})\)</span>. So a 50% increase in odds takes a probability of 20% to 27%, not to 30%: odds of <span class="math inline">\(0.25\)</span> grow to <span class="math inline">\(0.375\)</span>, and <span class="math inline">\(p = 0.375 / 1.375 = 27\%\)</span>.</p>
+<p>The 8% drop is a change in the <strong>odds</strong>, not in the probability of being a gem. What it does to the probability takes one more conversion: next slide.</p>
+</div>
+</section>
+<section id="odds-fall-8-what-happens-to-the-probability" class="slide level2 smaller-90">
+<h2>Odds fall 8%: what happens to the probability?</h2>
+<p>Not “minus 8 points”. The model speaks on the <strong>odds</strong> scale, so walk the change through the odds and back, one step at a time:</p>
+<ol type="1">
+<li><strong>Write the probability as odds.</strong> A typical listing has a <strong>20%</strong> chance of being a gem. As odds: <span class="math inline">\(0.2 / 0.8 = 0.25\)</span> (slide 14’s table, first row)</li>
+<li><strong>Apply the change to the odds</strong>, because that is where it lives. $100 more multiplies the odds by <span class="math inline">\(0.923\)</span>, so: <span class="math inline">\(0.25 \times 0.923 = 0.231\)</span></li>
+<li><strong>Turn the new odds back into a probability</strong>, with the conversion formula: <span class="math inline">\(p = \dfrac{\text{odds}}{1 + \text{odds}} = \dfrac{0.231}{1.231} = 18.8\%\)</span></li>
+</ol>
+<div class="box-warn">
+<p>So $100 more takes the chance of being a gem from 20% to <strong>18.8%</strong>: a drop of <strong>1.2 percentage points</strong>, not 8. The “8%” lives on the odds scale; the probability always moves by less, and the gap between the two scales grows with the size of the change.</p>
 </div>
 </section>
 <section id="logit-on-price-the-curve-on-the-data" class="slide level2">

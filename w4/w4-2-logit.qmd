@@ -301,10 +301,29 @@ out at $\beta_1 = -0.0008$ per dollar. Your job is three steps:
   $-8\%$); bigger than that, use `exp()`
 
 ::: {.box-warn}
-The percent change is in the **odds**, not in the probability. To turn odds
-back into a probability: $p = \text{odds} \,/\, (1 + \text{odds})$. So a
-50% increase in odds takes a probability of 20% to 27%, not to 30%: odds of
-$0.25$ grow to $0.375$, and $p = 0.375 / 1.375 = 27\%$.
+The 8% drop is a change in the **odds**, not in the probability of being a
+gem. What it does to the probability takes one more conversion: next slide.
+:::
+
+## Odds fall 8%: what happens to the probability? {.smaller-90}
+
+Not "minus 8 points". The model speaks on the **odds** scale, so walk the
+change through the odds and back, one step at a time:
+
+1. **Write the probability as odds.** A typical listing has a **20%**
+   chance of being a gem. As odds: $0.2 / 0.8 = 0.25$ (slide 14's table,
+   first row)
+2. **Apply the change to the odds**, because that is where it lives.
+   \$100 more multiplies the odds by $0.923$, so:
+   $0.25 \times 0.923 = 0.231$
+3. **Turn the new odds back into a probability**, with the conversion
+   formula: $p = \dfrac{\text{odds}}{1 + \text{odds}} = \dfrac{0.231}{1.231} = 18.8\%$
+
+::: {.box-warn}
+So \$100 more takes the chance of being a gem from 20% to **18.8%**: a drop
+of **1.2 percentage points**, not 8. The "8%" lives on the odds scale; the
+probability always moves by less, and the gap between the two scales grows
+with the size of the change.
 :::
 
 ## Logit on price: the curve, on the data
