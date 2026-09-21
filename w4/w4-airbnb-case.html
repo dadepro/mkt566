@@ -2369,7 +2369,7 @@ window.Quarto = {
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Before each regression exists, write one sentence: <em>“I expect the coefficient on bedrooms to be positive, around $30 per bedroom.”</em> Then compare. If the table disagrees with you, decide: is it the <strong>data</strong> telling you something, or the <strong>code</strong> doing something you did not ask for? A prediction that turns out wrong is worth more than no prediction.</p>
+<p>Before each regression exists, write one sentence: <em>“I expect the coefficient on bedrooms to be positive: more bedrooms, higher price.”</em> Then compare. If the table disagrees with you, decide: is it the <strong>data</strong> telling you something, or the <strong>code</strong> doing something you did not ask for? A prediction that turns out wrong is worth more than no prediction.</p>
 </div>
 </div>
 <div class="callout callout-style-default callout-note callout-titled">
@@ -2498,7 +2498,7 @@ window.Quarto = {
 <ul>
 <li>How many rows and columns? What does one row represent?</li>
 <li>Median and mean price: which is larger, and what does that tell you about the shape of the distribution? (Remember week 2.)</li>
-<li>How many listings are in each city? One city is a problem for anything we conclude about it. Which one, and why?</li>
+<li>How many listings are in each city? One city has more listings than the other three combined. Which one, and what does that mean for any claim you make about “Airbnb” as a whole?</li>
 </ul>
 <p><strong>Explain it back:</strong> what is the difference between <code>summary()</code> and <code>table()</code>, and when would you use each?</p>
 </section>
@@ -2570,7 +2570,7 @@ window.Quarto = {
 </section>
 <section id="task-6-from-price-to-revenue" class="level2">
 <h2 class="anchored" data-anchor-id="task-6-from-price-to-revenue">Task 6: from price to revenue</h2>
-<p>An investor cares about revenue, not the nightly price. We do not observe bookings, but reviews are a rough trace of them, so define <code>revenue = price * reviews_count</code> (a crude proxy; you will come back to this in Task 8). Estimate revenue as a function of the Task 5 variables <strong>except</strong> <code>reviews_count</code> (why must it come out?), first with <code>city</code>, then adding <code>room_type</code>. Print both tables side by side.</p>
+<p>An investor cares about revenue, not the nightly price. We do not observe bookings, but reviews are a rough trace of them, so define <code>revenue = price * reviews_count</code> (a crude proxy; you will come back to this in Task 8). Estimate <code>revenue</code> on <code>star_rating</code>, <code>bathrooms</code>, <code>bedrooms</code>, <code>guests_included</code>, and <code>city</code>: the Task 5 model <strong>without</strong> <code>reviews_count</code> (why must it come out?). Then re-estimate adding <code>room_type</code>. Print both tables side by side.</p>
 <p><strong>Predict first:</strong> which city do you expect to generate the most revenue per listing? Which room type?</p>
 <p><strong>Answer:</strong></p>
 <ul>
@@ -2584,7 +2584,7 @@ window.Quarto = {
 <section id="task-7-does-quality-pay-a-dummy-you-build-yourself" class="level2">
 <h2 class="anchored" data-anchor-id="task-7-does-quality-pay-a-dummy-you-build-yourself">Task 7: does quality pay? A dummy you build yourself</h2>
 <p>Create <code>highQuality</code> = 1 if <code>star_rating</code> is 4.5 or higher, 0 otherwise. Re-estimate the last Task 6 model with <code>highQuality</code> in place of <code>star_rating</code>.</p>
-<p><strong>Predict first:</strong> what share of listings do you expect to be “high quality” by this definition? (Task 1’s summary of <code>star_rating</code> helps.)</p>
+<p><strong>Predict first:</strong> do you expect <strong>more or less than half</strong> of the listings to count as “high quality” by this definition? (Task 1’s summary of <code>star_rating</code> helps.)</p>
 <p><strong>Answer:</strong></p>
 <ul>
 <li>What share of listings has <code>highQuality = 1</code>? Is 4.5 a demanding cutoff on this platform?</li>
@@ -2637,7 +2637,7 @@ Tip
 <li><strong>The regression table does not appear.</strong> Tables print in the R terminal, not in a chart tab. Scroll up in the terminal. In the knitted report, the chunk must call <code>stargazer(..., type = &quot;text&quot;)</code>.</li>
 <li><strong><code>log(price)</code> gives <code>-Inf</code> or an error about NaNs.</strong> Some value is zero or negative. Ask the assistant to count them and decide with it what to do (there should be none in this data; if there are, something went wrong earlier).</li>
 <li><strong>Task 3 numbers do not match the check.</strong> Paste your table and Thursday’s numbers (slope −0.35, R-squared 0.002) into the chat and ask what is different.</li>
-<li><strong>The dummy model in Task 5 has an <code>NA</code> coefficient.</strong> You included all five dummies plus the constant. Leave one out.</li>
+<li><strong>The dummy model in Task 5 has an <code>NA</code> coefficient.</strong> You included all four dummies plus the constant. Leave one out.</li>
 <li><strong>Knitting fails</strong> mentioning pandoc, or a chunk. Same fixes as the <a href="https://raw.githack.com/dadepro/mkt566/main/w2/w2-1-variation-case.html#if-something-goes-wrong">variation case</a>.</li>
 <li><strong>The chart opens in a separate window instead of a VS Code tab.</strong> See the troubleshooting section of the <a href="https://raw.githack.com/dadepro/mkt566/main/w1/r-setup.html">Running R Code guide</a>.</li>
 </ul>

@@ -20,7 +20,7 @@ The client is an **investor** deciding where, and what kind of property, to buy 
 ::: {.callout-note}
 ## Predict before you run
 
-Before each regression exists, write one sentence: *"I expect the coefficient on bedrooms to be positive, around $30 per bedroom."* Then compare. If the table disagrees with you, decide: is it the **data** telling you something, or the **code** doing something you did not ask for? A prediction that turns out wrong is worth more than no prediction.
+Before each regression exists, write one sentence: *"I expect the coefficient on bedrooms to be positive: more bedrooms, higher price."* Then compare. If the table disagrees with you, decide: is it the **data** telling you something, or the **code** doing something you did not ask for? A prediction that turns out wrong is worth more than no prediction.
 :::
 
 ::: {.callout-note}
@@ -93,7 +93,7 @@ Paste this into your assistant, exactly as written:
 
 - How many rows and columns? What does one row represent?
 - Median and mean price: which is larger, and what does that tell you about the shape of the distribution? (Remember week 2.)
-- How many listings are in each city? One city is a problem for anything we conclude about it. Which one, and why?
+- How many listings are in each city? One city has more listings than the other three combined. Which one, and what does that mean for any claim you make about "Airbnb" as a whole?
 
 **Explain it back:** what is the difference between `summary()` and `table()`, and when would you use each?
 
@@ -164,7 +164,7 @@ Add `city` to the Task 4 model. Then check how R did it: ask the assistant to cr
 
 ## Task 6: from price to revenue
 
-An investor cares about revenue, not the nightly price. We do not observe bookings, but reviews are a rough trace of them, so define `revenue = price * reviews_count` (a crude proxy; you will come back to this in Task 8). Estimate revenue as a function of the Task 5 variables **except** `reviews_count` (why must it come out?), first with `city`, then adding `room_type`. Print both tables side by side.
+An investor cares about revenue, not the nightly price. We do not observe bookings, but reviews are a rough trace of them, so define `revenue = price * reviews_count` (a crude proxy; you will come back to this in Task 8). Estimate `revenue` on `star_rating`, `bathrooms`, `bedrooms`, `guests_included`, and `city`: the Task 5 model **without** `reviews_count` (why must it come out?). Then re-estimate adding `room_type`. Print both tables side by side.
 
 **Predict first:** which city do you expect to generate the most revenue per listing? Which room type?
 
@@ -181,7 +181,7 @@ An investor cares about revenue, not the nightly price. We do not observe bookin
 
 Create `highQuality` = 1 if `star_rating` is 4.5 or higher, 0 otherwise. Re-estimate the last Task 6 model with `highQuality` in place of `star_rating`.
 
-**Predict first:** what share of listings do you expect to be "high quality" by this definition? (Task 1's summary of `star_rating` helps.)
+**Predict first:** do you expect **more or less than half** of the listings to count as "high quality" by this definition? (Task 1's summary of `star_rating` helps.)
 
 **Answer:**
 
@@ -227,6 +227,6 @@ Before you close the chat:
 - **The regression table does not appear.** Tables print in the R terminal, not in a chart tab. Scroll up in the terminal. In the knitted report, the chunk must call `stargazer(..., type = "text")`.
 - **`log(price)` gives `-Inf` or an error about NaNs.** Some value is zero or negative. Ask the assistant to count them and decide with it what to do (there should be none in this data; if there are, something went wrong earlier).
 - **Task 3 numbers do not match the check.** Paste your table and Thursday's numbers (slope −0.35, R-squared 0.002) into the chat and ask what is different.
-- **The dummy model in Task 5 has an `NA` coefficient.** You included all five dummies plus the constant. Leave one out.
+- **The dummy model in Task 5 has an `NA` coefficient.** You included all four dummies plus the constant. Leave one out.
 - **Knitting fails** mentioning pandoc, or a chunk. Same fixes as the [variation case](https://raw.githack.com/dadepro/mkt566/main/w2/w2-1-variation-case.html#if-something-goes-wrong).
 - **The chart opens in a separate window instead of a VS Code tab.** See the troubleshooting section of the [Running R Code guide](https://raw.githack.com/dadepro/mkt566/main/w1/r-setup.html).
