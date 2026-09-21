@@ -205,10 +205,12 @@ round(min(pred), 2)    # the lowest one
 - The line crosses zero at a price of about
   **$`r comma(round(zero_at))`** and keeps going: a $10,000 listing gets a
   "probability" of **−70%**
-- A line cannot bend. But a probability must stay **between 0 and 1**, so
-  the true relationship must **flatten** as it approaches 0 (and 1)
-- A second problem: the line says $100 more changes the probability by the
-  same 0.9 points whether you start at 20% or at 2%
+- A probability is trapped **between 0 and 1**. As it approaches either
+  edge, the true relationship must **flatten**. A straight line cannot
+  flatten: it falls at the same rate forever
+- The slope has the same flaw: the line takes **0.9 points** off for every
+  $100, whether the listing starts at 20% or at 2%. A listing at 2% has
+  only 2 points left to lose, so near the edge the effect must shrink
 
 ::: {.box}
 For a yes/no outcome we need a curve that is **linear in the middle** and
