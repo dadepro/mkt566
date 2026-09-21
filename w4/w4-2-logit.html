@@ -346,7 +346,7 @@ Davide Proserpio
 <ul>
 <li>The line crosses zero at a price of about <strong>$2,372</strong> and keeps going: a $10,000 listing gets a “probability” of <strong>−70%</strong></li>
 <li>A probability is trapped <strong>between 0 and 1</strong>. As it approaches either edge, the true relationship must <strong>flatten</strong>. A straight line cannot flatten: it falls at the same rate forever</li>
-<li>The slope has the same flaw: the line takes <strong>0.9 points</strong> off for every $100, whether the listing starts at 20% or at 2%. A listing at 2% has only 2 points left to lose, so near the edge the effect must shrink</li>
+<li>The slope has the same flaw: the line takes <strong>0.9 points</strong> off for every $100, whether a listing’s chance of being a gem is at 20% (a cheap listing) or at 2% (a very expensive one). At 2% there are only 2 points left to lose, so near the edge the effect of price must shrink</li>
 </ul>
 <div class="box">
 <p>For a yes/no outcome we need a curve that is <strong>linear in the middle</strong> and <strong>flattens at both ends</strong>. That curve is the logistic function, and the model built on it is the <strong>logit</strong> (logistic regression).</p>
@@ -381,23 +381,23 @@ Davide Proserpio
 </section>
 <section id="odds-and-log-odds" class="slide level2 smaller-90">
 <h2>Odds and log-odds</h2>
-<p>The <strong>odds</strong> are the chance it happens, divided by the chance it does not: <span class="math inline">\(\text{odds} = \dfrac{p}{1 - p}\)</span>. Sports betting already speaks this language:</p>
+<p>The <strong>odds</strong> are the chance it happens, divided by the chance it does not. Sports betting already speaks this language:</p>
 <table class="caption-top">
 <colgroup>
-<col style="width: 33%">
-<col style="width: 33%">
-<col style="width: 33%">
+<col style="width: 44%">
+<col style="width: 18%">
+<col style="width: 38%">
 </colgroup>
 <thead>
 <tr class="header">
 <th>Probability</th>
-<th>Odds</th>
+<th>Odds <span class="math inline">\(= p / (1 - p)\)</span></th>
 <th>In words</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td><span class="math inline">\(p = 20\%\)</span> (a random listing is a gem)</td>
+<td><span class="math inline">\(p = 20\%\)</span> (the chance a random listing is a gem)</td>
 <td><span class="math inline">\(0.2 / 0.8 = 0.25\)</span></td>
 <td>one to four: 1 gem for every 4 non-gems</td>
 </tr>
