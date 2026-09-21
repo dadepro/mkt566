@@ -457,7 +457,7 @@ Davide Proserpio
 <li>Shortcut, same as Thursday’s log-level model: while the (scaled) coefficient stays within about <span class="math inline">\(\pm 0.2\)</span>, just move the decimal: <span class="math inline">\(-0.08 \to\)</span> about <span class="math inline">\(-8\%\)</span>. Bigger than that, use <code>exp()</code></li>
 </ul>
 <div class="box-warn">
-<p>The percent change is in the <strong>odds</strong>, not in the probability. A 50% increase in odds takes a probability of 20% to 27%, not to 30%: odds of <span class="math inline">\(0.25\)</span> grow to <span class="math inline">\(0.375\)</span>, and <span class="math inline">\(p = 0.375 / 1.375 = 27\%\)</span>.</p>
+<p>The percent change is in the <strong>odds</strong>, not in the probability. To turn odds back into a probability: <span class="math inline">\(p = \text{odds} \,/\, (1 + \text{odds})\)</span>. So a 50% increase in odds takes a probability of 20% to 27%, not to 30%: odds of <span class="math inline">\(0.25\)</span> grow to <span class="math inline">\(0.375\)</span>, and <span class="math inline">\(p = 0.375 / 1.375 = 27\%\)</span>.</p>
 </div>
 </section>
 <section id="logit-on-price-the-curve-on-the-data" class="slide level2">

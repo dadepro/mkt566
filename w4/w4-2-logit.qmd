@@ -299,8 +299,9 @@ R computes it for you (`exp(coef(m))`); your job is three steps:
   $-0.08 \to$ about $-8\%$. Bigger than that, use `exp()`
 
 ::: {.box-warn}
-The percent change is in the **odds**, not in the probability. A 50%
-increase in odds takes a probability of 20% to 27%, not to 30%: odds of
+The percent change is in the **odds**, not in the probability. To turn odds
+back into a probability: $p = \text{odds} \,/\, (1 + \text{odds})$. So a
+50% increase in odds takes a probability of 20% to 27%, not to 30%: odds of
 $0.25$ grow to $0.375$, and $p = 0.375 / 1.375 = 27\%$.
 :::
 
