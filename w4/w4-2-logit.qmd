@@ -91,8 +91,8 @@ In the `code/` folder on the course website, next to Thursday's:
 
 ::: {.box}
 [**`w4-code.zip`**](https://github.com/dadepro/mkt566/raw/main/w4/w4-code.zip)
-now contains both scripts and the data. If you downloaded it on Thursday,
-download it again.
+has all of week 4: Thursday's two scripts, today's, and the data. If you
+downloaded it on Thursday, you already have everything.
 :::
 
 # A Yes/No Outcome {.divider}
@@ -154,9 +154,9 @@ ggplot(bins, aes(x = pbin, y = share)) +
   theme_minimal(base_size = 13)
 ```
 
-- Gems are **rarer as price rises**: 22–23% of listings under $150, 12%
-  between $500 and $1,000, 6% above $1,000. The very cheapest bin is also
-  lower
+- Gems are **rarer as price rises**: 22–23% of listings between $50 and
+  $150, 12% between $500 and $1,000, 6% above $1,000. The very cheapest bin
+  is also lower
 - So the **probability** of being a gem depends on price. Can we model that
   probability with a regression, the way we modeled price on Thursday?
 
@@ -321,7 +321,7 @@ round(coef(lg1), 5)
 ```
 
 - The logit curve never goes below zero: at $2,372, where the line hits
-  zero, the curve still says about **8%**; at $10,000, essentially zero
+  zero, the curve still says about **4%**; at $10,000, essentially zero
 - In the range where most listings are (\$50–\$300) the two agree almost
   perfectly. The difference is in the tails, and in the guarantee
 - Coefficient on price: $-0.00081$. Each dollar multiplies the odds of
