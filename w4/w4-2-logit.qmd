@@ -549,11 +549,13 @@ recommendation.
 
 Cheaper listings are more likely to be gems. Three stories, as always:
 
-1. Lower prices bring more bookings, hence more reviews, hence gem status
-2. Hosts of listings that are already popular have no need to discount, and
-   hosts of struggling ones cut prices: the causality runs the other way
-3. Gems are **older** listings (20+ reviews take time), and older listings
-   were priced in an earlier, cheaper market
+1. **Price causes gem status**: lower price → more bookings → more
+   reviews → gem
+2. **Gem status causes price**: a host whose listing sits empty cuts the
+   price; a host booked solid at 4.8 stars does not have to. The price
+   reacts to success, it does not create it
+3. **Something else causes both**: gems are **older** (20+ reviews take
+   time), and older listings were priced in an earlier, cheaper market
 
 ::: {.box}
 "A \$100 higher price is **associated with** 16% lower odds of being a gem."
