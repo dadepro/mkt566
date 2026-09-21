@@ -9,7 +9,7 @@ format:
     link-external-newwindow: true
 ---
 
-In the RateBeer case you described how variables move together. Today you **model** it: the same Airbnb data from Thursday's lecture, 50,818 listings in four cities, and the tool is `lm()`.
+In the RateBeer case you described how variables move together. Today you **model** it: the same Airbnb data from Thursday's lecture, listings in four cities, and the tool is `lm()`.
 
 Same workflow: you say what you want, the AI writes the R, you run it, look, refine, and **you interpret**. The training wheels come off one step further: an exact prompt for Task 1, skeletons for Tasks 2 and 3, and from Task 4 on you write every prompt yourself.
 
@@ -42,7 +42,7 @@ Thursday's lecture in four lines. Use it on every table today:
 
 ## Setup (5 minutes)
 
-1. Download the dataset: [**`airbnb-case-data.zip`**](https://github.com/dadepro/mkt566/raw/main/w4/airbnb-case-data.zip) (600 KB). Unzip it to get `airbnb.csv` (3.5 MB, 50,818 rows).
+1. Download the dataset: [**`airbnb-case-data.zip`**](https://github.com/dadepro/mkt566/raw/main/w4/airbnb-case-data.zip) (600 KB). Unzip it to get `airbnb.csv` (3.5 MB).
 2. Make a new folder for today (for example `airbnb-case`), put `airbnb.csv` in it, and in VS Code choose **File → Open Folder...** to open that folder.
 3. Open your AI assistant panel (Claude Code, Codex, Copilot, or Cursor).
 4. New package today: **stargazer**, for regression tables. Task 3 installs it. Everything else (the R extension, rmarkdown, pandoc) is what you used for RateBeer.
