@@ -285,8 +285,10 @@ unit of $X$. Nobody thinks in log-odds, so the next slide converts.
 
 ## Reading a logit coefficient {.smaller-90}
 
-The rule: one more unit of $X$ **multiplies the odds by** $e^{\beta_1}$.
-R computes it for you (`exp(coef(m))`); your job is three steps:
+The rule: one more unit of $X$ **multiplies the odds by** $e^{\beta_1}$;
+R computes it for you (`exp(coef(m))`). The worked example previews the
+model we run next, a logit of **gem on price**: its coefficient will come
+out at $\beta_1 = -0.0008$ per dollar. Your job is three steps:
 
 | Step | Price example: $\beta_1 = -0.0008$ per dollar |
 |---|---|
@@ -294,9 +296,9 @@ R computes it for you (`exp(coef(m))`); your job is three steps:
 | **2. Scale**: multiply $\beta_1$ by the change you care about | for \$100 more: $100 \times -0.0008 = -0.08$ |
 | **3. Convert**: odds are multiplied by $e^{\beta_1}$; the percent change is $e^{\beta_1} - 1$ | $e^{-0.08} = 0.923$: \$100 more multiplies the odds by 0.923, and $0.923 - 1 = -0.077$: a **7.7% drop in the odds** |
 
-- Shortcut, same as Thursday's log-level model: while the (scaled)
-  coefficient stays within about $\pm 0.2$, just move the decimal:
-  $-0.08 \to$ about $-8\%$. Bigger than that, use `exp()`
+- Shortcut, as in Thursday's log-level model: while the scaled coefficient
+  is within about $\pm 0.2$, just move the decimal ($-0.08 \to$ about
+  $-8\%$); bigger than that, use `exp()`
 
 ::: {.box-warn}
 The percent change is in the **odds**, not in the probability. To turn odds

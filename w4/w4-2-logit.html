@@ -426,7 +426,7 @@ Davide Proserpio
 </section>
 <section id="reading-a-logit-coefficient" class="slide level2 smaller-90">
 <h2>Reading a logit coefficient</h2>
-<p>The rule: one more unit of <span class="math inline">\(X\)</span> <strong>multiplies the odds by</strong> <span class="math inline">\(e^{\beta_1}\)</span>. R computes it for you (<code>exp(coef(m))</code>); your job is three steps:</p>
+<p>The rule: one more unit of <span class="math inline">\(X\)</span> <strong>multiplies the odds by</strong> <span class="math inline">\(e^{\beta_1}\)</span>; R computes it for you (<code>exp(coef(m))</code>). The worked example previews the model we run next, a logit of <strong>gem on price</strong>: its coefficient will come out at <span class="math inline">\(\beta_1 = -0.0008\)</span> per dollar. Your job is three steps:</p>
 <table class="caption-top">
 <colgroup>
 <col style="width: 50%">
@@ -454,7 +454,7 @@ Davide Proserpio
 </tbody>
 </table>
 <ul>
-<li>Shortcut, same as Thursday’s log-level model: while the (scaled) coefficient stays within about <span class="math inline">\(\pm 0.2\)</span>, just move the decimal: <span class="math inline">\(-0.08 \to\)</span> about <span class="math inline">\(-8\%\)</span>. Bigger than that, use <code>exp()</code></li>
+<li>Shortcut, as in Thursday’s log-level model: while the scaled coefficient is within about <span class="math inline">\(\pm 0.2\)</span>, just move the decimal (<span class="math inline">\(-0.08 \to\)</span> about <span class="math inline">\(-8\%\)</span>); bigger than that, use <code>exp()</code></li>
 </ul>
 <div class="box-warn">
 <p>The percent change is in the <strong>odds</strong>, not in the probability. To turn odds back into a probability: <span class="math inline">\(p = \text{odds} \,/\, (1 + \text{odds})\)</span>. So a 50% increase in odds takes a probability of 20% to 27%, not to 30%: odds of <span class="math inline">\(0.25\)</span> grow to <span class="math inline">\(0.375\)</span>, and <span class="math inline">\(p = 0.375 / 1.375 = 27\%\)</span>.</p>
