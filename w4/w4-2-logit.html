@@ -483,7 +483,7 @@ Davide Proserpio
 <li><strong>Convert</strong>: the shortcut says about an <strong>8% drop in the odds</strong> per $100; the exact number, <span class="math inline">\(e^{-0.081} - 1 = -7.8\%\)</span>, agrees. The shortcut was close enough</li>
 </ul>
 <div class="box">
-<p>Predicted probabilities are the reading a manager understands. <code>predict(..., type = "response")</code> gives them: $50 → 21.5%, $200 → 19.6%, $500 → 16%, $1,000 → 11%, $5,000 → 0.5%.</p>
+<p>Odds are for reading the table. What a manager wants is the <strong>predicted probability</strong>: the chance that a listing at a given price is a gem. <code>predict(lg1, type = "response")</code> computes it (the score, squashed) for any price you name: a $50 listing has a <strong>21.5%</strong> chance, a $200 one 19.6%, $500 16%, $1,000 11%, $5,000 0.5%. That is the blue curve on the previous slide, read off point by point.</p>
 </div>
 </section>
 <section id="how-it-is-estimated-and-how-to-judge-the-fit" class="slide level2 smaller-90">

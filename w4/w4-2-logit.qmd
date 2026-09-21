@@ -349,9 +349,12 @@ round(coef(lg1), 5)
   shortcut was close enough
 
 ::: {.box}
-Predicted probabilities are the reading a manager understands. `predict(...,
-type = "response")` gives them: $50 → 21.5%, $200 → 19.6%, $500 → 16%,
-$1,000 → 11%, $5,000 → 0.5%.
+Odds are for reading the table. What a manager wants is the **predicted
+probability**: the chance that a listing at a given price is a gem.
+`predict(lg1, type = "response")` computes it (the score, squashed) for any
+price you name: a \$50 listing has a **21.5%** chance, a \$200 one 19.6%,
+\$500 16%, \$1,000 11%, \$5,000 0.5%. That is the blue curve on the
+previous slide, read off point by point.
 :::
 
 ## How it is estimated, and how to judge the fit {.smaller-90}
