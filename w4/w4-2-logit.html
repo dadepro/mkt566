@@ -469,19 +469,109 @@ Davide Proserpio
 </section>
 <section id="the-curve-reading-it" class="slide level2 smaller-90">
 <h2>The curve: reading it</h2>
+<div class="columns">
+<div class="column" style="width:48%;">
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="" aria-label="1"></a>lg1 <span class="ot">&lt;-</span> <span class="fu">glm</span>(gem <span class="sc">~</span> price, <span class="at">data =</span> airbnb, <span class="at">family =</span> binomial)</span>
-<span id="cb10-2"><a href="" aria-label="2"></a><span class="fu">round</span>(<span class="fu">coef</span>(lg1), <span class="dv">5</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>(Intercept)       price 
-   -1.25198    -0.00081 </code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="" aria-label="1"></a>lg1 <span class="ot">&lt;-</span> <span class="fu">glm</span>(gem <span class="sc">~</span> price, <span class="at">data =</span> airbnb,</span>
+<span id="cb10-2"><a href="" aria-label="2"></a>           <span class="at">family =</span> binomial)</span>
+<span id="cb10-3"><a href="" aria-label="3"></a><span class="fu">stargazer</span>(lg1, <span class="at">type =</span> <span class="st">"text"</span>,</span>
+<span id="cb10-4"><a href="" aria-label="4"></a>          <span class="at">omit.stat =</span> <span class="fu">c</span>(<span class="st">"f"</span>, <span class="st">"ser"</span>, <span class="st">"aic"</span>, <span class="st">"bic"</span>),</span>
+<span id="cb10-5"><a href="" aria-label="5"></a>          <span class="at">digits =</span> <span class="dv">4</span>, <span class="at">no.space =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
+<div class="stargazer-html">
+<table style="text-align:center">
+<tbody><tr>
+<td colspan="2" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+<em>Dependent variable:</em>
+</td>
+</tr>
+<tr>
+<td>
+</td>
+<td colspan="1" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+Gem (0/1)
+</td>
+</tr>
+<tr>
+<td colspan="2" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Price
+</td>
+<td>
+-0.0008<sup>***</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(0.0001)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Constant
+</td>
+<td>
+-1.2520<sup>***</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(0.0163)
+</td>
+</tr>
+<tr>
+<td colspan="2" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Observations
+</td>
+<td>
+50,818
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Log Likelihood
+</td>
+<td>
+-25,650
+</td>
+</tr>
+<tr>
+<td colspan="2" style="border-bottom: 1px solid black">
+</td>
+</tr>
+</tbody></table>
 </div>
+</div><div class="column" style="width: 47%; margin-left: 5%;">
 <ul>
-<li>The curve never dips below zero: at $2,372, where the line hits zero, it still says about <strong>4%</strong>; at $10,000, essentially zero. Where most listings are ($50–$300), curve and line agree almost perfectly</li>
-<li>The coefficient, with the recipe. <strong>Sign and stars</strong>: negative, significant: pricier listings are less likely to be gems. <strong>Scale</strong>, for $100: <span class="math inline">\(100 \times -0.00081 = -0.081\)</span></li>
-<li><strong>Convert</strong>: the shortcut says about an <strong>8% drop in the odds</strong> per $100; the exact number, <span class="math inline">\(e^{-0.081} - 1 = -7.8\%\)</span>, agrees. The shortcut was close enough</li>
+<li>Every regression you report goes in a <strong>table</strong>, logit included: same <code>stargazer</code> call as Thursday</li>
+<li>The curve never dips below zero: at $2,372, where the line hits zero, it still says about <strong>4%</strong>; at $10,000, essentially zero</li>
+<li>The coefficient, with the recipe. <strong>Sign and stars</strong>: negative, significant. <strong>Scale</strong>, for $100: <span class="math inline">\(100 \times -0.0008 = -0.08\)</span></li>
+<li><strong>Convert</strong>: the shortcut says about an <strong>8% drop in the odds</strong> per $100; the exact number, <span class="math inline">\(e^{-0.08} - 1 = -7.7\%\)</span>, agrees</li>
 </ul>
+</div></div>
 <div class="box">
 <p>Odds are for reading the table. What a manager wants is the <strong>predicted probability</strong>: the chance that a listing at a given price is a gem. <code>predict(lg1, type = "response")</code> computes it (the score, squashed) for any price you name: a $50 listing has a <strong>21.5%</strong> chance, a $200 one 19.6%, $500 16%, $1,000 11%, $5,000 0.5%. That is the blue curve on the previous slide, read off point by point.</p>
 </div>
@@ -512,9 +602,9 @@ Davide Proserpio
 <h2>One function: <code>glm()</code></h2>
 <p><code>glm()</code> works like <code>lm()</code>, with <code>family = binomial</code> to ask for a logit:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="" aria-label="1"></a>m_logit <span class="ot">&lt;-</span> <span class="fu">glm</span>(gem <span class="sc">~</span> price <span class="sc">+</span> guests_included <span class="sc">+</span> city <span class="sc">+</span> room_type, <span class="at">data =</span> airbnb, <span class="at">family =</span> binomial)</span>
-<span id="cb12-2"><a href="" aria-label="2"></a><span class="fu">stargazer</span>(m_logit, <span class="at">type =</span> <span class="st">"text"</span>, <span class="at">omit.stat =</span> <span class="fu">c</span>(<span class="st">"f"</span>, <span class="st">"ser"</span>, <span class="st">"aic"</span>, <span class="st">"bic"</span>),</span>
-<span id="cb12-3"><a href="" aria-label="3"></a>          <span class="at">digits =</span> <span class="dv">4</span>, <span class="at">no.space =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="" aria-label="1"></a>m_logit <span class="ot">&lt;-</span> <span class="fu">glm</span>(gem <span class="sc">~</span> price <span class="sc">+</span> guests_included <span class="sc">+</span> city <span class="sc">+</span> room_type, <span class="at">data =</span> airbnb, <span class="at">family =</span> binomial)</span>
+<span id="cb11-2"><a href="" aria-label="2"></a><span class="fu">stargazer</span>(m_logit, <span class="at">type =</span> <span class="st">"text"</span>, <span class="at">omit.stat =</span> <span class="fu">c</span>(<span class="st">"f"</span>, <span class="st">"ser"</span>, <span class="st">"aic"</span>, <span class="st">"bic"</span>),</span>
+<span id="cb11-3"><a href="" aria-label="3"></a>          <span class="at">digits =</span> <span class="dv">4</span>, <span class="at">no.space =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="stargazer-html">
 <table style="text-align:center">
@@ -753,11 +843,11 @@ Log Likelihood
 <h2>From odds to probabilities</h2>
 <p>Odds ratios compare. Probabilities decide. <code>predict()</code> with <code>type = "response"</code> gives the probability for any listing you describe:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="" aria-label="1"></a>examples <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">price =</span> <span class="fu">c</span>(<span class="dv">100</span>, <span class="dv">100</span>, <span class="dv">300</span>, <span class="dv">100</span>), <span class="at">guests_included =</span> <span class="dv">2</span>,</span>
-<span id="cb13-2"><a href="" aria-label="2"></a>                       <span class="at">city =</span> <span class="fu">c</span>(<span class="st">"Austin"</span>, <span class="st">"Boston"</span>, <span class="st">"Austin"</span>, <span class="st">"Austin"</span>),</span>
-<span id="cb13-3"><a href="" aria-label="3"></a>                       <span class="at">room_type =</span> <span class="fu">c</span>(<span class="st">"Entire home"</span>, <span class="st">"Entire home"</span>, <span class="st">"Entire home"</span>, <span class="st">"Shared room"</span>))</span>
-<span id="cb13-4"><a href="" aria-label="4"></a>examples<span class="sc">$</span>p_gem <span class="ot">&lt;-</span> <span class="fu">round</span>(<span class="fu">predict</span>(m_logit, examples, <span class="at">type =</span> <span class="st">"response"</span>), <span class="dv">3</span>)</span>
-<span id="cb13-5"><a href="" aria-label="5"></a>examples</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="" aria-label="1"></a>examples <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">price =</span> <span class="fu">c</span>(<span class="dv">100</span>, <span class="dv">100</span>, <span class="dv">300</span>, <span class="dv">100</span>), <span class="at">guests_included =</span> <span class="dv">2</span>,</span>
+<span id="cb12-2"><a href="" aria-label="2"></a>                       <span class="at">city =</span> <span class="fu">c</span>(<span class="st">"Austin"</span>, <span class="st">"Boston"</span>, <span class="st">"Austin"</span>, <span class="st">"Austin"</span>),</span>
+<span id="cb12-3"><a href="" aria-label="3"></a>                       <span class="at">room_type =</span> <span class="fu">c</span>(<span class="st">"Entire home"</span>, <span class="st">"Entire home"</span>, <span class="st">"Entire home"</span>, <span class="st">"Shared room"</span>))</span>
+<span id="cb12-4"><a href="" aria-label="4"></a>examples<span class="sc">$</span>p_gem <span class="ot">&lt;-</span> <span class="fu">round</span>(<span class="fu">predict</span>(m_logit, examples, <span class="at">type =</span> <span class="st">"response"</span>), <span class="dv">3</span>)</span>
+<span id="cb12-5"><a href="" aria-label="5"></a>examples</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  price guests_included   city   room_type p_gem
 1   100               2 Austin Entire home 0.208

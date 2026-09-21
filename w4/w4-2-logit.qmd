@@ -334,21 +334,43 @@ of listings). Which model fits the dots, and what happens past $2,000?
 
 ## The curve: reading it {.smaller-90}
 
+::::: {.columns}
+::: {.column width="48%"}
 ```{r logit-coef}
 #| echo: true
-lg1 <- glm(gem ~ price, data = airbnb, family = binomial)
-round(coef(lg1), 5)
+#| eval: false
+lg1 <- glm(gem ~ price, data = airbnb,
+           family = binomial)
+stargazer(lg1, type = "text",
+          omit.stat = c("f", "ser", "aic", "bic"),
+          digits = 4, no.space = TRUE)
 ```
 
-- The curve never dips below zero: at $2,372, where the line hits zero, it
-  still says about **4%**; at $10,000, essentially zero. Where most
-  listings are (\$50–\$300), curve and line agree almost perfectly
+::: {.stargazer-html}
+```{r logit-coef-table}
+#| results: asis
+tab <- capture.output(
+  stargazer(lg1, type = "html", omit.stat = c("f", "ser", "aic", "bic"),
+            digits = 4, no.space = TRUE,
+            dep.var.labels = "Gem (0/1)", covariate.labels = "Price"))
+tab <- sub('<tr><td style="text-align:left"><em>Note:</em>.*$', '', tab)
+tab <- sub("(Log Likelihood</td><td>-?[0-9,]+)\\.[0-9]+", "\\1", tab)
+cat(tab, sep = "\n")
+```
+:::
+:::
+::: {.column style="width: 47%; margin-left: 5%;"}
+- Every regression you report goes in a **table**, logit included: same
+  `stargazer` call as Thursday
+- The curve never dips below zero: at $2,372, where the line hits zero,
+  it still says about **4%**; at $10,000, essentially zero
 - The coefficient, with the recipe. **Sign and stars**: negative,
-  significant: pricier listings are less likely to be gems. **Scale**, for
-  \$100: $100 \times -0.00081 = -0.081$
+  significant. **Scale**, for \$100:
+  $100 \times -0.0008 = -0.08$
 - **Convert**: the shortcut says about an **8% drop in the odds** per
-  \$100; the exact number, $e^{-0.081} - 1 = -7.8\%$, agrees. The
-  shortcut was close enough
+  \$100; the exact number, $e^{-0.08} - 1 = -7.7\%$, agrees
+:::
+:::::
 
 ::: {.box}
 Odds are for reading the table. What a manager wants is the **predicted
