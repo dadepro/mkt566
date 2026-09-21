@@ -448,8 +448,8 @@ Davide Proserpio
 <td>for $100 more: <span class="math inline">\(100 \times -0.0008 = -0.08\)</span></td>
 </tr>
 <tr class="odd">
-<td><strong>3. Convert</strong>: <span class="math inline">\(e^{\beta_1}\)</span> is what the odds are multiplied by</td>
-<td><span class="math inline">\(e^{-0.08} = 0.92\)</span>: $100 more multiplies the odds by 0.92, an <strong>8% drop in the odds</strong></td>
+<td><strong>3. Convert</strong>: odds are multiplied by <span class="math inline">\(e^{\beta_1}\)</span>; the percent change is <span class="math inline">\(e^{\beta_1} - 1\)</span></td>
+<td><span class="math inline">\(e^{-0.08} = 0.923\)</span>: $100 more multiplies the odds by 0.923, and <span class="math inline">\(0.923 - 1 = -0.077\)</span>: a <strong>7.7% drop in the odds</strong></td>
 </tr>
 </tbody>
 </table>
@@ -480,7 +480,7 @@ Davide Proserpio
 <ul>
 <li>The curve never dips below zero: at $2,372, where the line hits zero, it still says about <strong>4%</strong>; at $10,000, essentially zero. Where most listings are ($50–$300), curve and line agree almost perfectly</li>
 <li>The coefficient, with the recipe. <strong>Sign and stars</strong>: negative, significant: pricier listings are less likely to be gems. <strong>Scale</strong>, for $100: <span class="math inline">\(100 \times -0.00081 = -0.081\)</span></li>
-<li><strong>Convert</strong>: the shortcut says about an <strong>8% drop in the odds</strong> per $100; the exact number, <span class="math inline">\(e^{-0.081} = 0.92\)</span>, says <strong>7.8%</strong>. The shortcut was close enough</li>
+<li><strong>Convert</strong>: the shortcut says about an <strong>8% drop in the odds</strong> per $100; the exact number, <span class="math inline">\(e^{-0.081} - 1 = -7.8\%\)</span>, agrees. The shortcut was close enough</li>
 </ul>
 <div class="box">
 <p>Predicted probabilities are the reading a manager understands. <code>predict(..., type = "response")</code> gives them: $50 → 21.5%, $200 → 19.6%, $500 → 16%, $1,000 → 11%, $5,000 → 0.5%.</p>

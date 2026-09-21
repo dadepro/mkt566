@@ -292,7 +292,7 @@ R computes it for you (`exp(coef(m))`); your job is three steps:
 |---|---|
 | **1. Sign and stars**, as in OLS | negative, significant: pricier listings are less likely to be gems |
 | **2. Scale**: multiply $\beta_1$ by the change you care about | for \$100 more: $100 \times -0.0008 = -0.08$ |
-| **3. Convert**: $e^{\beta_1}$ is what the odds are multiplied by | $e^{-0.08} = 0.92$: \$100 more multiplies the odds by 0.92, an **8% drop in the odds** |
+| **3. Convert**: odds are multiplied by $e^{\beta_1}$; the percent change is $e^{\beta_1} - 1$ | $e^{-0.08} = 0.923$: \$100 more multiplies the odds by 0.923, and $0.923 - 1 = -0.077$: a **7.7% drop in the odds** |
 
 - Shortcut, same as Thursday's log-level model: while the (scaled)
   coefficient stays within about $\pm 0.2$, just move the decimal:
@@ -344,7 +344,7 @@ round(coef(lg1), 5)
   significant: pricier listings are less likely to be gems. **Scale**, for
   \$100: $100 \times -0.00081 = -0.081$
 - **Convert**: the shortcut says about an **8% drop in the odds** per
-  \$100; the exact number, $e^{-0.081} = 0.92$, says **7.8%**. The
+  \$100; the exact number, $e^{-0.081} - 1 = -7.8\%$, agrees. The
   shortcut was close enough
 
 ::: {.box}
