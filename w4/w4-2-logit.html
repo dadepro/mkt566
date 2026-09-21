@@ -101,7 +101,7 @@
     code span.vs { color: #20794d; } /* VerbatimString */
     code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
-  <link rel="stylesheet" href="w4-2-logit_files/libs/revealjs/dist/theme/quarto-9020607064027a028cbd43559eef659d.css">
+  <link rel="stylesheet" href="w4-2-logit_files/libs/revealjs/dist/theme/quarto-6b56cf238055d53a7949d0df6ba2b67f.css">
   <link href="w4-2-logit_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="w4-2-logit_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="w4-2-logit_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -514,7 +514,7 @@ Davide Proserpio
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="" aria-label="1"></a>m_logit <span class="ot">&lt;-</span> <span class="fu">glm</span>(gem <span class="sc">~</span> price <span class="sc">+</span> guests_included <span class="sc">+</span> city <span class="sc">+</span> room_type, <span class="at">data =</span> airbnb, <span class="at">family =</span> binomial)</span>
 <span id="cb12-2"><a href="" aria-label="2"></a><span class="fu">stargazer</span>(m_logit, <span class="at">type =</span> <span class="st">"text"</span>, <span class="at">omit.stat =</span> <span class="fu">c</span>(<span class="st">"f"</span>, <span class="st">"ser"</span>, <span class="st">"aic"</span>, <span class="st">"bic"</span>),</span>
-<span id="cb12-3"><a href="" aria-label="3"></a>          <span class="at">digits =</span> <span class="dv">4</span>, <span class="at">no.space =</span> <span class="cn">TRUE</span>, <span class="at">single.row =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb12-3"><a href="" aria-label="3"></a>          <span class="at">digits =</span> <span class="dv">4</span>, <span class="at">no.space =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="stargazer-html">
 <table style="text-align:center">
@@ -551,7 +551,14 @@ Gem (0/1)
 Price
 </td>
 <td>
--0.0017<sup>***</sup> (0.0001)
+-0.0017<sup>***</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(0.0001)
 </td>
 </tr>
 <tr>
@@ -559,7 +566,14 @@ Price
 Guests included
 </td>
 <td>
-0.1119<sup>***</sup> (0.0079)
+0.1119<sup>***</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(0.0079)
 </td>
 </tr>
 <tr>
@@ -567,7 +581,14 @@ Guests included
 Boston
 </td>
 <td>
-0.1674<sup>***</sup> (0.0405)
+0.1674<sup>***</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(0.0405)
 </td>
 </tr>
 <tr>
@@ -575,7 +596,14 @@ Boston
 Los Angeles
 </td>
 <td>
-0.1617<sup>***</sup> (0.0293)
+0.1617<sup>***</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(0.0293)
 </td>
 </tr>
 <tr>
@@ -583,7 +611,14 @@ Los Angeles
 Miami
 </td>
 <td>
--0.1955<sup>***</sup> (0.0416)
+-0.1955<sup>***</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(0.0416)
 </td>
 </tr>
 <tr>
@@ -591,7 +626,14 @@ Miami
 Private room
 </td>
 <td>
--0.0072 (0.0265)
+-0.0072
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(0.0265)
 </td>
 </tr>
 <tr>
@@ -599,7 +641,14 @@ Private room
 Shared room
 </td>
 <td>
--0.7068<sup>***</sup> (0.0642)
+-0.7068<sup>***</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(0.0642)
 </td>
 </tr>
 <tr>
@@ -607,7 +656,14 @@ Shared room
 Constant
 </td>
 <td>
--1.3935<sup>***</sup> (0.0349)
+-1.3935<sup>***</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(0.0349)
 </td>
 </tr>
 <tr>
@@ -637,7 +693,7 @@ Log Likelihood
 </tbody></table>
 </div>
 <div class="smaller-80 muted">
-<p>Same table, typeset for the slide; in your terminal it prints as text. Standard errors in parentheses; stars: *p &lt; 0.1, **p &lt; 0.05, ***p &lt; 0.01. Read the signs, then the sizes. Which predictor has the largest effect?</p>
+<p>Same table, typeset for the slide; in your terminal it prints as text. Standard errors in parentheses under each coefficient; stars: *p &lt; 0.1, **p &lt; 0.05, ***p &lt; 0.01. Read the signs, then the sizes. Which predictor has the largest effect?</p>
 </div>
 </section>
 <section id="reading-the-table" class="slide level2 smaller-90">

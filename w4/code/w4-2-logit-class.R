@@ -143,7 +143,7 @@ logLik(lg1)                                   # closer to zero is better
 m_logit <- glm(gem ~ price + guests_included + city + room_type,
                data = airbnb, family = binomial)
 stargazer(m_logit, type = "text", omit.stat = c("f", "ser", "aic", "bic"),
-          digits = 4, no.space = TRUE, single.row = TRUE)   # SE next to each coefficient
+          digits = 4, no.space = TRUE)   # SE in parentheses under each coefficient
 
 # Odds ratios: exp() of each coefficient. Below 1 lowers the odds, above 1 raises them.
 round(exp(coef(m_logit)), 3)
