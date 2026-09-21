@@ -86,3 +86,15 @@ Course materials (slides, cases, code, and the syllabus) will be posted here as 
     - [Second half: the Airbnb data](https://github.com/dadepro/mkt566/blob/main/w4/code/w4-1-airbnb-class.R)
     - [Airbnb dataset](https://github.com/dadepro/mkt566/blob/main/w4/code/data/airbnb.csv) (also used in the Airbnb exercise on Tuesday, Sept. 22)
   - Homework 2 released (due Thursday, Oct. 8)
+
+### Week 5: Logit and clustering
+- Tuesday, Sept. 22:
+  - Slides ([html](https://raw.githack.com/dadepro/mkt566/main/w4/w4-2-logit.html), [pdf](https://raw.githack.com/dadepro/mkt566/main/w4/w4-2-logit.pdf)): regression for yes/no outcomes (logit)
+  - Required readings:
+    - Chapter [3.6](https://bookdown.org/content/6ef13ea6-4e86-4566-b665-ebcd19d45029/secondarydata.html#logistic) of R for Marketing Students
+  - Optional readings:
+    - Chapter 9.2 of R for Marketing Research and Analytics
+  - Code and data (download everything: [w4-code.zip](https://github.com/dadepro/mkt566/raw/main/w4/w4-code.zip), or browse the [w4/code](https://github.com/dadepro/mkt566/tree/main/w4/code) folder):
+    - [Every chart and model from the slides](https://github.com/dadepro/mkt566/blob/main/w4/code/w4-2-logit-class.R)
+  - In-class exercise, the Airbnb case: **[handout](https://raw.githack.com/dadepro/mkt566/main/w4/w4-airbnb-case.html)** and [data](https://github.com/dadepro/mkt566/raw/main/w4/airbnb-case-data.zip) (600 KB, the dataset from Thursday's lecture). A vibecoding exercise on regression: bring your laptop. Report due Sunday, Sept. 27
+  - Instructor solution (posted after the deadline): [html](https://raw.githack.com/dadepro/mkt566/main/w4/w4-airbnb-case-solution.html), [R Markdown](https://github.com/dadepro/mkt566/blob/main/w4/w4-airbnb-case-solution.Rmd)
