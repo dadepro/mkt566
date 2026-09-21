@@ -381,19 +381,7 @@ Davide Proserpio
 </section>
 <section id="odds-and-log-odds" class="slide level2 smaller-90">
 <h2>Odds and log-odds</h2>
-<p>Rearranging the same equation gives the form the coefficients live in:</p>
-<p><span class="math display">\[\frac{p}{1 - p} = e^{z} \qquad\qquad \log\left(\frac{p}{1 - p}\right) = z = \beta_0 + \beta_1 X\]</span></p>
-<ul>
-<li><span class="math inline">\(\dfrac{p}{1-p}\)</span> is the <strong>odds</strong>: the chance it happens against the chance it does not. <span class="math inline">\(p = 0.2\)</span> means odds of <span class="math inline">\(0.25\)</span>, “one to four”. <span class="math inline">\(p = 0.5\)</span> means odds of 1, “even”</li>
-<li>The <strong>log of the odds</strong> is a <strong>straight line</strong> in <span class="math inline">\(X\)</span>. That is what “logit” means, and why everything from OLS carries over: predictors, dummies, base levels, standard errors, stars</li>
-</ul>
-<div class="box">
-<p>A logit coefficient <span class="math inline">\(\beta_1\)</span> is the change in the <strong>log-odds</strong> for one more unit of <span class="math inline">\(X\)</span>. Nobody thinks in log-odds, so the next slide converts.</p>
-</div>
-</section>
-<section id="reading-a-logit-coefficient" class="slide level2 smaller-90">
-<h2>Reading a logit coefficient</h2>
-<p>Because <span class="math inline">\(\text{odds} = e^{z}\)</span>, one more unit of <span class="math inline">\(X\)</span> <strong>multiplies</strong> the odds by <span class="math inline">\(e^{\beta_1}\)</span>. Three ways to say the same thing:</p>
+<p>The <strong>odds</strong> are the chance it happens, divided by the chance it does not: <span class="math inline">\(\text{odds} = \dfrac{p}{1 - p}\)</span>. Sports betting already speaks this language:</p>
 <table class="caption-top">
 <colgroup>
 <col style="width: 33%">
@@ -402,35 +390,71 @@ Davide Proserpio
 </colgroup>
 <thead>
 <tr class="header">
-<th>Reading</th>
-<th>How</th>
-<th>Example with <span class="math inline">\(\beta_1 = -0.0008\)</span> per dollar</th>
+<th>Probability</th>
+<th>Odds</th>
+<th>In words</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td><strong>Sign and stars</strong></td>
-<td>as in OLS</td>
-<td>negative, significant: pricier listings are less likely to be gems</td>
+<td><span class="math inline">\(p = 20\%\)</span> (a random listing is a gem)</td>
+<td><span class="math inline">\(0.2 / 0.8 = 0.25\)</span></td>
+<td>one to four: 1 gem for every 4 non-gems</td>
 </tr>
 <tr class="even">
-<td><strong>Odds ratio</strong></td>
-<td><span class="math inline">\(e^{\beta_1}\)</span></td>
-<td><span class="math inline">\(e^{-0.0008} = 0.9992\)</span>: each dollar multiplies the odds by 0.9992</td>
+<td><span class="math inline">\(p = 50\%\)</span></td>
+<td><span class="math inline">\(0.5 / 0.5 = 1\)</span></td>
+<td>even: as likely as not</td>
 </tr>
 <tr class="odd">
-<td><strong>Percent change in odds</strong></td>
-<td><span class="math inline">\((e^{\beta_1} - 1) \times 100\)</span></td>
-<td><span class="math inline">\(-0.08\%\)</span> per dollar; for $100, <span class="math inline">\(e^{-0.08} - 1 = -7.8\%\)</span></td>
+<td><span class="math inline">\(p = 80\%\)</span></td>
+<td><span class="math inline">\(0.8 / 0.2 = 4\)</span></td>
+<td>four to one: 4 gems for every non-gem</td>
 </tr>
 </tbody>
 </table>
 <ul>
-<li>For small <span class="math inline">\(\beta_1\)</span> (below about 0.2), <span class="math inline">\(\beta_1 \times 100\)</span> is a fine approximation of the percent change in odds</li>
-<li>To change the unit, scale the coefficient <strong>before</strong> exponentiating: <span class="math inline">\(100 \times \beta_1\)</span> for a $100 change</li>
+<li>Rearranging the S-curve puts the model on this scale: <span class="math inline">\(\dfrac{p}{1-p} = e^{z}\)</span>, and taking logs, <span class="math inline">\(\log\left(\dfrac{p}{1-p}\right) = z = \beta_0 + \beta_1 X\)</span></li>
+<li>The right-hand side is Thursday’s <strong>straight line</strong>. That is what “logit” means, and why everything from OLS carries over: predictors, dummies, base levels, standard errors, stars</li>
+</ul>
+<div class="box">
+<p>A logit coefficient <span class="math inline">\(\beta_1\)</span> is the change in the <strong>log-odds</strong> for one more unit of <span class="math inline">\(X\)</span>. Nobody thinks in log-odds, so the next slide converts.</p>
+</div>
+</section>
+<section id="reading-a-logit-coefficient" class="slide level2 smaller-90">
+<h2>Reading a logit coefficient</h2>
+<p>The rule: one more unit of <span class="math inline">\(X\)</span> <strong>multiplies the odds by</strong> <span class="math inline">\(e^{\beta_1}\)</span>. R computes it for you (<code>exp(coef(m))</code>); your job is three steps:</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Step</th>
+<th>Price example: <span class="math inline">\(\beta_1 = -0.0008\)</span> per dollar</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>1. Sign and stars</strong>, as in OLS</td>
+<td>negative, significant: pricier listings are less likely to be gems</td>
+</tr>
+<tr class="even">
+<td><strong>2. Scale</strong>: multiply <span class="math inline">\(\beta_1\)</span> by the change you care about</td>
+<td>for $100 more: <span class="math inline">\(100 \times -0.0008 = -0.08\)</span></td>
+</tr>
+<tr class="odd">
+<td><strong>3. Convert</strong>: <span class="math inline">\(e^{\beta_1}\)</span> is what the odds are multiplied by</td>
+<td><span class="math inline">\(e^{-0.08} = 0.92\)</span>: $100 more multiplies the odds by 0.92, an <strong>8% drop in the odds</strong></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Shortcut, same as Thursday’s log-level model: while the (scaled) coefficient stays within about <span class="math inline">\(\pm 0.2\)</span>, just move the decimal: <span class="math inline">\(-0.08 \to\)</span> about <span class="math inline">\(-8\%\)</span>. Bigger than that, use <code>exp()</code></li>
 </ul>
 <div class="box-warn">
-<p>The percent change is in the <strong>odds</strong>, not in the probability. A 50% increase in odds takes a probability of 20% to 27%, not to 30%.</p>
+<p>The percent change is in the <strong>odds</strong>, not in the probability. A 50% increase in odds takes a probability of 20% to 27%, not to 30%: odds of <span class="math inline">\(0.25\)</span> grow to <span class="math inline">\(0.375\)</span>, and <span class="math inline">\(p = 0.375 / 1.375 = 27\%\)</span>.</p>
 </div>
 </section>
 <section id="logit-on-price-the-curve-on-the-data" class="slide level2">

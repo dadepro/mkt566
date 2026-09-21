@@ -252,16 +252,22 @@ ggplot(zz, aes(z, p)) +
 
 ## Odds and log-odds {.smaller-90}
 
-Rearranging the same equation gives the form the coefficients live in:
+The **odds** are the chance it happens, divided by the chance it does not:
+$\text{odds} = \dfrac{p}{1 - p}$. Sports betting already speaks this
+language:
 
-$$\frac{p}{1 - p} = e^{z} \qquad\qquad \log\left(\frac{p}{1 - p}\right) = z = \beta_0 + \beta_1 X$$
+| Probability | Odds | In words |
+|---|---|---|
+| $p = 20\%$ (a random listing is a gem) | $0.2 / 0.8 = 0.25$ | one to four: 1 gem for every 4 non-gems |
+| $p = 50\%$ | $0.5 / 0.5 = 1$ | even: as likely as not |
+| $p = 80\%$ | $0.8 / 0.2 = 4$ | four to one: 4 gems for every non-gem |
 
-- $\dfrac{p}{1-p}$ is the **odds**: the chance it happens against the chance
-  it does not. $p = 0.2$ means odds of $0.25$, "one to four". $p = 0.5$ means
-  odds of 1, "even"
-- The **log of the odds** is a **straight line** in $X$. That is what "logit"
-  means, and why everything from OLS carries over: predictors, dummies, base
-  levels, standard errors, stars
+- Rearranging the S-curve puts the model on this scale:
+  $\dfrac{p}{1-p} = e^{z}$, and taking logs,
+  $\log\left(\dfrac{p}{1-p}\right) = z = \beta_0 + \beta_1 X$
+- The right-hand side is Thursday's **straight line**. That is what "logit"
+  means, and why everything from OLS carries over: predictors, dummies,
+  base levels, standard errors, stars
 
 ::: {.box}
 A logit coefficient $\beta_1$ is the change in the **log-odds** for one more
@@ -270,23 +276,23 @@ unit of $X$. Nobody thinks in log-odds, so the next slide converts.
 
 ## Reading a logit coefficient {.smaller-90}
 
-Because $\text{odds} = e^{z}$, one more unit of $X$ **multiplies** the odds
-by $e^{\beta_1}$. Three ways to say the same thing:
+The rule: one more unit of $X$ **multiplies the odds by** $e^{\beta_1}$.
+R computes it for you (`exp(coef(m))`); your job is three steps:
 
-| Reading | How | Example with $\beta_1 = -0.0008$ per dollar |
-|---|---|---|
-| **Sign and stars** | as in OLS | negative, significant: pricier listings are less likely to be gems |
-| **Odds ratio** | $e^{\beta_1}$ | $e^{-0.0008} = 0.9992$: each dollar multiplies the odds by 0.9992 |
-| **Percent change in odds** | $(e^{\beta_1} - 1) \times 100$ | $-0.08\%$ per dollar; for \$100, $e^{-0.08} - 1 = -7.8\%$ |
+| Step | Price example: $\beta_1 = -0.0008$ per dollar |
+|---|---|
+| **1. Sign and stars**, as in OLS | negative, significant: pricier listings are less likely to be gems |
+| **2. Scale**: multiply $\beta_1$ by the change you care about | for \$100 more: $100 \times -0.0008 = -0.08$ |
+| **3. Convert**: $e^{\beta_1}$ is what the odds are multiplied by | $e^{-0.08} = 0.92$: \$100 more multiplies the odds by 0.92, an **8% drop in the odds** |
 
-- For small $\beta_1$ (below about 0.2), $\beta_1 \times 100$ is a fine
-  approximation of the percent change in odds
-- To change the unit, scale the coefficient **before** exponentiating:
-  $100 \times \beta_1$ for a \$100 change
+- Shortcut, same as Thursday's log-level model: while the (scaled)
+  coefficient stays within about $\pm 0.2$, just move the decimal:
+  $-0.08 \to$ about $-8\%$. Bigger than that, use `exp()`
 
 ::: {.box-warn}
 The percent change is in the **odds**, not in the probability. A 50%
-increase in odds takes a probability of 20% to 27%, not to 30%.
+increase in odds takes a probability of 20% to 27%, not to 30%: odds of
+$0.25$ grow to $0.375$, and $p = 0.375 / 1.375 = 27\%$.
 :::
 
 ## Logit on price: the curve, on the data
