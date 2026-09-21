@@ -88,6 +88,10 @@ $code-block-font-size: 0.7em;
 .reveal table td { padding: .4rem .7rem; border-bottom: 1px solid $rule; }
 .reveal table tr:last-child td { border-bottom: none; }
 
+// stargazer tables rendered as html: keep stargazer's own rules, not ours
+.stargazer-html table { margin: 0 auto; font-size: .78em; line-height: 1.35; }
+.stargazer-html table td { padding: .16rem 1.2rem; border-bottom: none; }
+
 .reveal .slide-number { color: $muted; }
 .reveal a { text-decoration: none; border-bottom: 1px solid rgba(153,0,0,.3); }
 .reveal a:hover { border-bottom-color: $usc-cardinal; }

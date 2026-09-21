@@ -126,7 +126,7 @@ ggplot() +
   geom_line(data = grid, aes(price, line, color = "OLS line"), linewidth = 1) +
   geom_line(data = grid, aes(price, logit, color = "Logit curve"), linewidth = 1.3) +
   geom_point(data = mids, aes(price, share, size = n), color = "darkgreen", alpha = 0.8) +
-  scale_color_manual(values = c("OLS line" = "firebrick", "Logit curve" = "#990000"), name = NULL) +
+  scale_color_manual(values = c("OLS line" = "firebrick", "Logit curve" = "#0072B2"), name = NULL) +
   scale_size_area(max_size = 9, guide = "none") +
   scale_y_continuous(labels = percent) +
   labs(title = "Probability of Being a Gem vs. Price", x = "Nightly price ($)", y = "P(gem)") +

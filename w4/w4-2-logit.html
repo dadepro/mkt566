@@ -101,7 +101,7 @@
     code span.vs { color: #20794d; } /* VerbatimString */
     code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
-  <link rel="stylesheet" href="w4-2-logit_files/libs/revealjs/dist/theme/quarto-80bfa77cf879cdeec7850b9befca25f7.css">
+  <link rel="stylesheet" href="w4-2-logit_files/libs/revealjs/dist/theme/quarto-9020607064027a028cbd43559eef659d.css">
   <link href="w4-2-logit_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="w4-2-logit_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="w4-2-logit_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -475,9 +475,9 @@ Davide Proserpio
 </div>
 </div>
 <ul>
-<li>The logit curve never goes below zero: at $2,372, where the line hits zero, the curve still says about <strong>4%</strong>; at $10,000, essentially zero</li>
-<li>In the range where most listings are ($50–$300) the two agree almost perfectly. The difference is in the tails, and in the guarantee</li>
-<li>Coefficient on price: <span class="math inline">\(-0.00081\)</span>. Each dollar multiplies the odds of being a gem by <span class="math inline">\(e^{-0.00081} = 0.9992\)</span>. For $100: odds <span class="math inline">\(\times\)</span> 0.92, an <strong>8% drop in the odds</strong></li>
+<li>The curve never dips below zero: at $2,372, where the line hits zero, it still says about <strong>4%</strong>; at $10,000, essentially zero. Where most listings are ($50–$300), curve and line agree almost perfectly</li>
+<li>The coefficient, with the recipe. <strong>Sign and stars</strong>: negative, significant: pricier listings are less likely to be gems. <strong>Scale</strong>, for $100: <span class="math inline">\(100 \times -0.00081 = -0.081\)</span></li>
+<li><strong>Convert</strong>: the shortcut says about an <strong>8% drop in the odds</strong> per $100; the exact number, <span class="math inline">\(e^{-0.081} = 0.92\)</span>, says <strong>7.8%</strong>. The shortcut was close enough</li>
 </ul>
 <div class="box">
 <p>Predicted probabilities are the reading a manager understands. <code>predict(..., type = "response")</code> gives them: $50 → 21.5%, $200 → 19.6%, $500 → 16%, $1,000 → 11%, $5,000 → 0.5%.</p>
@@ -512,30 +512,129 @@ Davide Proserpio
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="" aria-label="1"></a>m_logit <span class="ot">&lt;-</span> <span class="fu">glm</span>(gem <span class="sc">~</span> price <span class="sc">+</span> guests_included <span class="sc">+</span> city <span class="sc">+</span> room_type, <span class="at">data =</span> airbnb, <span class="at">family =</span> binomial)</span>
 <span id="cb12-2"><a href="" aria-label="2"></a><span class="fu">stargazer</span>(m_logit, <span class="at">type =</span> <span class="st">"text"</span>, <span class="at">omit.stat =</span> <span class="fu">c</span>(<span class="st">"f"</span>, <span class="st">"ser"</span>, <span class="st">"aic"</span>, <span class="st">"bic"</span>),</span>
 <span id="cb12-3"><a href="" aria-label="3"></a>          <span class="at">digits =</span> <span class="dv">4</span>, <span class="at">no.space =</span> <span class="cn">TRUE</span>, <span class="at">single.row =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-=================================================
-                          Dependent variable:    
-                      ---------------------------
-                                  gem            
--------------------------------------------------
-price                     -0.0017*** (0.0001)    
-guests_included           0.1119*** (0.0079)     
-cityBoston                0.1674*** (0.0405)     
-cityLos Angeles           0.1617*** (0.0293)     
-cityMiami                 -0.1955*** (0.0416)    
-room_typePrivate room      -0.0072 (0.0265)      
-room_typeShared room      -0.7068*** (0.0642)    
-Constant                  -1.3935*** (0.0349)    
--------------------------------------------------
-Observations                    50,818           
-Log Likelihood               -25,420.2300        
-=================================================
-Note:                 *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01</code></pre>
 </div>
+<div class="stargazer-html">
+<table style="text-align:center">
+<tbody><tr>
+<td colspan="2" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+<em>Dependent variable:</em>
+</td>
+</tr>
+<tr>
+<td>
+</td>
+<td colspan="1" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+Gem (0/1)
+</td>
+</tr>
+<tr>
+<td colspan="2" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Price
+</td>
+<td>
+-0.0017<sup>***</sup> (0.0001)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Guests included
+</td>
+<td>
+0.1119<sup>***</sup> (0.0079)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Boston
+</td>
+<td>
+0.1674<sup>***</sup> (0.0405)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Los Angeles
+</td>
+<td>
+0.1617<sup>***</sup> (0.0293)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Miami
+</td>
+<td>
+-0.1955<sup>***</sup> (0.0416)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Private room
+</td>
+<td>
+-0.0072 (0.0265)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Shared room
+</td>
+<td>
+-0.7068<sup>***</sup> (0.0642)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Constant
+</td>
+<td>
+-1.3935<sup>***</sup> (0.0349)
+</td>
+</tr>
+<tr>
+<td colspan="2" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Observations
+</td>
+<td>
+50,818
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Log Likelihood
+</td>
+<td>
+-25,420
+</td>
+</tr>
+<tr>
+<td colspan="2" style="border-bottom: 1px solid black">
+</td>
+</tr>
+</tbody></table>
 </div>
 <div class="smaller-80 muted">
-<p>Standard errors in parentheses next to each coefficient. Read the signs, then the sizes. Which predictor has the largest effect?</p>
+<p>Same table, typeset for the slide; in your terminal it prints as text. Standard errors in parentheses; stars: *p &lt; 0.1, **p &lt; 0.05, ***p &lt; 0.01. Read the signs, then the sizes. Which predictor has the largest effect?</p>
 </div>
 </section>
 <section id="reading-the-table" class="slide level2 smaller-90">
@@ -555,12 +654,12 @@ Note:                 *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td>price <span class="math inline">\(-0.0017\)</span></td>
+<td>Price <span class="math inline">\(-0.0017\)</span></td>
 <td><span class="math inline">\(e^{-0.17} = 0.84\)</span> per $100</td>
 <td>$100 more: odds of being a gem <strong>16% lower</strong></td>
 </tr>
 <tr class="even">
-<td>guests_included <span class="math inline">\(0.11\)</span></td>
+<td>Guests included <span class="math inline">\(0.11\)</span></td>
 <td><span class="math inline">\(1.12\)</span> per guest</td>
 <td>one more guest included: odds <strong>12% higher</strong></td>
 </tr>
@@ -595,11 +694,11 @@ Note:                 *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01</code></pre>
 <h2>From odds to probabilities</h2>
 <p>Odds ratios compare. Probabilities decide. <code>predict()</code> with <code>type = "response"</code> gives the probability for any listing you describe:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="" aria-label="1"></a>examples <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">price =</span> <span class="fu">c</span>(<span class="dv">100</span>, <span class="dv">100</span>, <span class="dv">300</span>, <span class="dv">100</span>), <span class="at">guests_included =</span> <span class="dv">2</span>,</span>
-<span id="cb14-2"><a href="" aria-label="2"></a>                       <span class="at">city =</span> <span class="fu">c</span>(<span class="st">"Austin"</span>, <span class="st">"Boston"</span>, <span class="st">"Austin"</span>, <span class="st">"Austin"</span>),</span>
-<span id="cb14-3"><a href="" aria-label="3"></a>                       <span class="at">room_type =</span> <span class="fu">c</span>(<span class="st">"Entire home"</span>, <span class="st">"Entire home"</span>, <span class="st">"Entire home"</span>, <span class="st">"Shared room"</span>))</span>
-<span id="cb14-4"><a href="" aria-label="4"></a>examples<span class="sc">$</span>p_gem <span class="ot">&lt;-</span> <span class="fu">round</span>(<span class="fu">predict</span>(m_logit, examples, <span class="at">type =</span> <span class="st">"response"</span>), <span class="dv">3</span>)</span>
-<span id="cb14-5"><a href="" aria-label="5"></a>examples</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="" aria-label="1"></a>examples <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">price =</span> <span class="fu">c</span>(<span class="dv">100</span>, <span class="dv">100</span>, <span class="dv">300</span>, <span class="dv">100</span>), <span class="at">guests_included =</span> <span class="dv">2</span>,</span>
+<span id="cb13-2"><a href="" aria-label="2"></a>                       <span class="at">city =</span> <span class="fu">c</span>(<span class="st">"Austin"</span>, <span class="st">"Boston"</span>, <span class="st">"Austin"</span>, <span class="st">"Austin"</span>),</span>
+<span id="cb13-3"><a href="" aria-label="3"></a>                       <span class="at">room_type =</span> <span class="fu">c</span>(<span class="st">"Entire home"</span>, <span class="st">"Entire home"</span>, <span class="st">"Entire home"</span>, <span class="st">"Shared room"</span>))</span>
+<span id="cb13-4"><a href="" aria-label="4"></a>examples<span class="sc">$</span>p_gem <span class="ot">&lt;-</span> <span class="fu">round</span>(<span class="fu">predict</span>(m_logit, examples, <span class="at">type =</span> <span class="st">"response"</span>), <span class="dv">3</span>)</span>
+<span id="cb13-5"><a href="" aria-label="5"></a>examples</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  price guests_included   city   room_type p_gem
 1   100               2 Austin Entire home 0.208
