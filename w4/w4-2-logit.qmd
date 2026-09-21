@@ -393,11 +393,34 @@ cat(tab, sep = "\n")
 
 ::: {.box}
 Odds are for reading the table. What a manager wants is the **predicted
-probability**: the chance that a listing at a given price is a gem.
-`predict(lg1, type = "response")` computes it (the score, squashed) for any
-price you name: a \$50 listing has a **21.5%** chance, a \$200 one 19.6%,
-\$500 16%, \$1,000 11%, \$5,000 0.5%. That is the blue curve on the
-previous slide, read off point by point.
+probability**: the chance that a listing at a given price is a gem. Next
+slide: how to get it, at any price you like.
+:::
+
+## A probability at any price {.smaller-90}
+
+The two steps from "the fix" slide, run forward with the two numbers in
+the table: **score, then squash**.
+
+1. **Score.** Take the constant and the price coefficient from the table.
+   At \$500: $z = -1.252 + (-0.0008 \times 500) = -1.65$
+2. **Squash.** $p = \dfrac{1}{1 + e^{-z}} = \dfrac{1}{1 + e^{1.65}} = 0.16$:
+   a \$500 listing has a **16%** chance of being a gem
+
+`predict()` runs both steps for you. Give it the **saved model** (`lg1`,
+which remembers the two coefficients), the prices you want as a little
+table, and `type = "response"`, which means "answer in probabilities":
+
+```{r predict-prices}
+#| echo: true
+prices <- data.frame(price = c(50, 500, 5000))
+round(predict(lg1, prices, type = "response"), 3)
+```
+
+::: {.box}
+One probability per price: **21.5%** at \$50, **16%** at \$500 (matching
+the hand computation above), **0.5%** at \$5,000. The blue curve is
+exactly these numbers, computed at every price.
 :::
 
 ## How it is estimated, and how to judge the fit {.smaller-90}
