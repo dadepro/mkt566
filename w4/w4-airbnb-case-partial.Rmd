@@ -127,7 +127,7 @@ stargazer(m1, m2, m3, type = "text",
 
 - Interpret the coefficient on `reviews_count` in each model, in one sentence each, with the right units: dollars per review, percent per review, or percent per percent. (Thursday's functional-forms table.)
 - What are the three R-squared values? Are they good, bad, or beside the point? What do they say about how much reviews tell you about price?
-- All three coefficients have three stars. Does that mean reviews matter a lot for price? Use the "significant is not big" slide.
+- All three coefficients have three stars. Does that mean reviews matter a lot for price?
 
 ## Task 4: more predictors
 
