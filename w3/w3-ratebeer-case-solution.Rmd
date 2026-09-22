@@ -1,0 +1,296 @@
+---
+title: 'The RateBeer Case: Instructor Solution'
+author: "MKT 566 · Fall 2026"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+---
+
+<!-- INSTRUCTOR ONLY: keep out of w3/code/ and the zips. Mirrors what a good
+     student ratebeer-report.Rmd should look like (one section per task, the
+     code chunk, prediction / answer / explain-it-back), with model answers.
+     Reads the gz dataset from data/, so it knits from w3/ root. -->
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(message = FALSE, warning = FALSE,
+                      fig.width = 8, fig.height = 4.5)
+library(data.table)
+library(ggplot2)
+library(scales)
+beer <- fread("data/ratebeer-sampled.csv.gz")
+```
+
+## Task 1: look at the data
+
+```{r look}
+head(beer)
+nrow(beer); ncol(beer)
+str(beer)
+uniqueN(beer$beer_beerId); uniqueN(beer$beer_brewerId); uniqueN(beer$review_profileName)
+```
+
+**My prediction:** one row is one review.
+
+**My answer:** 292,680 rows and 12 columns. One row is one **review** of one
+beer by one reviewer, not one beer: there are 50,826 distinct beers, 5,841
+breweries, and 13,030 reviewers. So "reviews by style" counts a beer once per
+review; a style with a few heavily reviewed beers can look bigger than a style
+with many lightly reviewed ones.
+
+**Explain it back:** `fread()` (from data.table) reads a CSV like `read.csv()`
+but is many times faster on large files, and returns a data.table.
+
+## Task 2: find the dirt
+
+```{r dirt}
+for (col in c("beer_ABV", "review_overall", "review_time", "beer_style")) {
+  cat("\n==", col, "(", class(beer[[col]]), ")\n")
+  print(head(sort(table(beer[[col]]), decreasing = TRUE), 6))
+}
+sort(unique(beer$beer_style))
+```
+
+**My answer:**
+
+- The five `review_` columns are **text** like `"14/20"`: the score and its
+  scale glued together. R cannot average text.
+- `beer_ABV` is text too, because 14,140 rows contain `"-"`. It means
+  **missing**, not zero: real non-alcoholic beers appear in the data with
+  ABV 0.0–0.5, and treating 14,140 missing values as zero would pull the
+  mean ABV from 6.6 down to about 6.3 and put 14,000 beers in the
+  "alcohol-free" bin.
+- `review_time` is a **Unix timestamp**: seconds since January 1, 1970.
+  1157587200 is September 7, 2006.
+- `beer_style` includes sake (12 styles starting with `Sak`), cider, perry,
+  and mead. Several names are garbled by encoding: `Klsch` (Kölsch),
+  `Oktoberfest/Mrzen` (Märzen), `Bire de Garde`, and HTML entities such as
+  `&#40;IPA&#41;` for "(IPA)". Cosmetic, but a reminder that the data went
+  through a scraper.
+
+**Explain it back:** a number column stores quantities R can add and average;
+a text column stores characters. `"14/20"` is a string of five characters, so
+`mean()` has nothing to compute until we extract the 14.
+
+## Task 3: clean it
+
+```{r clean}
+rating_cols <- c("review_overall", "review_aroma", "review_appearance",
+                 "review_palate", "review_taste")
+for (col in rating_cols) beer[, (col) := as.numeric(sub("/.*", "", get(col)))]
+beer[, beer_ABV := as.numeric(ifelse(beer_ABV == "-", NA, beer_ABV))]
+beer[, review_date := as.Date(as.POSIXct(review_time, origin = "1970-01-01", tz = "UTC"))]
+n_before <- nrow(beer)
+beer <- beer[!grepl("Sak|Cider|Perry|Mead", beer_style)]
+n_before - nrow(beer); nrow(beer)
+summary(beer[, c(rating_cols, "beer_ABV", "review_date"), with = FALSE])
+sum(is.na(beer$beer_ABV))
+```
+
+**My answer:** overall is on a 1–20 scale, taste and aroma 1–10, appearance
+and palate 1–5, so a taste of 7 is 70% of its scale while an overall of 14 is
+70% of a different one; they can only be compared after rescaling. Removing
+non-beers dropped 3,693 rows, leaving 288,987. 14,019 reviews have a missing
+ABV: keep them for everything about ratings, and drop them only in the ABV
+charts (that is what `na.rm = TRUE` does). Reviews run from April 2000 to
+January 13, 2012.
+
+**Explain it back:** `sub("/.*", "", x)` deletes the slash and everything after
+it, turning `"14/20"` into `"14"`; `as.numeric()` then makes it a number.
+
+## Task 4: variation warm-up
+
+```{r style-bars}
+style_n <- beer[, .N, by = beer_style][order(-N)][1:20]
+ggplot(style_n, aes(x = reorder(beer_style, N), y = N)) +
+  geom_col(fill = "steelblue") +
+  coord_flip() +
+  scale_y_continuous(labels = comma) +
+  labs(title = "Reviews by Style (top 20)", x = NULL, y = "Reviews") +
+  theme_minimal()
+```
+
+```{r abv-hist}
+ggplot(beer[!is.na(beer_ABV)], aes(beer_ABV)) +
+  geom_histogram(binwidth = 0.5, fill = "steelblue", color = "grey20") +
+  labs(title = "Distribution of ABV", x = "ABV (%)", y = "Reviews") +
+  theme_minimal()
+beer[which.max(beer_ABV), .(beer_name, beer_style, beer_ABV)]
+```
+
+**My prediction:** IPA most reviewed; typical ABV around 5–6%.
+
+**My answer:** IPAs lead (18,635 reviews), then Pale Lager, Belgian Strong
+Ale, and Imperial Stout. "Most reviewed" measures what RateBeer's users, who
+are enthusiasts, like to write about: Pale Lager is by far the most
+*consumed* style in the world and it is second here only because everybody
+has tried one. For a craft brewery, review volume is a proxy for enthusiast
+attention, not sales. ABV is right-skewed: most reviews are of beers between
+4% and 8%, with a long tail. The maximum, Schorschbräu Schorschbock at
+57.7%, is a real product (a freeze-distilled Eisbock that held the world
+record), not a typo. Outliers are not necessarily errors; check before
+dropping.
+
+**Explain it back:** `reorder(beer_style, N)` sorts the style labels by their
+review count, so the bars come out in order instead of alphabetically.
+
+## Task 5: rating by style
+
+```{r rating-by-style, fig.height=6}
+style_stats <- beer[, .(avg = mean(review_overall), se = sd(review_overall) / sqrt(.N),
+                        n = .N, abv = mean(beer_ABV, na.rm = TRUE)), by = beer_style][n >= 500]
+ggplot(style_stats, aes(x = reorder(beer_style, avg), y = avg)) +
+  geom_col(fill = "steelblue") +
+  geom_errorbar(aes(ymin = avg - 1.96 * se, ymax = avg + 1.96 * se), width = 0.3) +
+  coord_flip() +
+  labs(title = "Average Overall Rating by Style (styles with 500+ reviews)",
+       x = NULL, y = "Average overall rating (out of 20)") +
+  theme_minimal()
+style_stats[order(-avg)][c(1:3, (.N - 2):.N), .(beer_style, avg = round(avg, 2), n, abv = round(abv, 1))]
+```
+
+**My prediction:** IPAs highest, light lagers lowest.
+
+**My answer:** Imperial Stout (15.9), Abt/Quadrupel (15.7), and Imperial/Double
+IPA (15.4) top the list; Pale Lager (7.4), Malt Liquor (6.8), and Low Alcohol
+(6.4) are at the bottom, less than half the top scores. The minimum-review
+rule keeps a style with 12 lucky reviews from topping the chart; with
+thousands of reviews per style the error bars are tiny, so these differences
+are not noise. The top styles are all strong (9–11% ABV), dark or intense;
+the bottom styles are light lagers around 5% or weaker. Style and alcohol
+content are confounded, which is exactly the next task.
+
+**Explain it back:** the standard error, `sd / sqrt(n)`, says how much the
+average would move if we drew another sample of reviews; mean ± 1.96 × SE is
+the range (95% confidence interval) where the true average plausibly sits.
+
+## Task 6: rating vs. alcohol
+
+```{r abv-scatter, fig.height=4}
+ggplot(beer[!is.na(beer_ABV)], aes(beer_ABV, review_overall)) +
+  geom_point(alpha = 0.02, size = 0.5) +
+  labs(title = "Overall Rating vs. ABV (all reviews)", x = "ABV (%)", y = "Overall rating") +
+  theme_minimal()
+```
+
+```{r abv-binned, fig.height=4}
+abv_bins <- beer[!is.na(beer_ABV) & beer_ABV <= 15,
+                 .(avg = mean(review_overall), n = .N), by = .(abv = round(beer_ABV))]
+ggplot(abv_bins, aes(abv, avg)) +
+  geom_line(color = "grey50") +
+  geom_point(aes(size = n), color = "steelblue") +
+  scale_size_continuous(labels = comma) +
+  labs(title = "Average Overall Rating by ABV", x = "ABV (%, rounded)",
+       y = "Average overall rating", size = "Reviews") +
+  theme_minimal()
+cor(beer$beer_ABV, beer$review_overall, use = "complete.obs")
+```
+
+**My prediction:** stronger beers rated higher.
+
+**My answer:** The raw scatter is a blob: 275,000 points on a grid of
+integer ratings, so nothing is visible even with transparency. Averaging
+within each ABV value shows a strong positive relationship: from about 11/20
+at 3–4% to 15/20 at 9–10%, with a correlation of 0.40. Above 10% the curve
+flattens; beyond 13% the averages bounce around because few beers exist
+there. Causal? Not necessarily: strong beers are mostly imperial stouts,
+quadrupels, and barley wines, brewed with more ingredients and care, and
+reviewed by enthusiasts who sought them out. A 12% beer is rarely a casual
+purchase, so its reviews come from people predisposed to like it.
+
+**Explain it back:** `by = .(abv = round(beer_ABV))` groups every review by
+its ABV rounded to the nearest percent and averages the ratings inside each
+group, turning 275,000 points into 16, which is why the chart became readable.
+
+## Task 7: the brewery table
+
+```{r brewery}
+brewer <- beer[, .(n_styles = uniqueN(beer_style), n_reviews = .N,
+                   avg = mean(review_overall)), by = beer_brewerId][n_reviews >= 10]
+nrow(brewer); summary(brewer$n_styles)
+ggplot(brewer, aes(n_styles, avg)) +
+  geom_point(alpha = 0.3) +
+  geom_smooth(method = "lm", color = "firebrick") +
+  labs(title = "Breweries: Number of Styles vs. Average Rating (10+ reviews)",
+       x = "Distinct styles", y = "Average overall rating") +
+  theme_minimal()
+cor(brewer$n_styles, brewer$avg)
+brewer[order(-avg)][1]; brewer[order(avg)][1]
+```
+
+**My prediction:** more styles, higher rating.
+
+**My answer:** 2,439 breweries with at least 10 reviews; the median brewery
+has 8 styles, a quarter have 13 or more. Breadth and rating are positively
+related (correlation 0.35): breweries with 20+ styles average about 13.7
+versus 10.6 for single-style breweries. Two stories other than "variety makes
+you good": survivorship (only breweries that were already good and popular
+lasted long enough to launch many styles), and reverse causality (good
+ratings bring demand, and demand funds new styles). Highest-rated brewery
+with 10+ reviews: id 623 (17.4 on 422 reviews); lowest: id 4603 (5.5 on 48).
+
+**Explain it back:** `by = beer_brewerId` collapses the 289,000 review rows
+into one row per brewery, computing the three summaries inside each group;
+the individual reviews are gone from this table, only their summaries remain.
+
+## Task 8: over time
+
+```{r time, fig.height=3.8}
+by_year <- beer[, .(reviews = .N, avg = mean(review_overall)), by = .(year = year(review_date))][order(year)]
+ggplot(by_year, aes(year, reviews)) + geom_line() + geom_point() +
+  scale_y_continuous(labels = comma) + scale_x_continuous(breaks = 2000:2012) +
+  labs(title = "Reviews per Year", x = NULL, y = "Reviews") + theme_minimal()
+ggplot(by_year, aes(year, avg)) + geom_line() + geom_point() +
+  scale_x_continuous(breaks = 2000:2012) +
+  labs(title = "Average Overall Rating per Year", x = NULL, y = "Average overall rating") +
+  theme_minimal()
+range(beer$review_date)
+```
+
+**My prediction:** ratings flat.
+
+**My answer:** Reviews grow from 461 in 2000 to 45,112 in 2011, then
+"collapse" to 1,355 in 2012, because the data ends on January 13, 2012: the
+last year has 13 days, not a crisis. Reporting a partial period as a drop is
+the most common trend-chart mistake. The average rating drifts up from 12.3
+(2001) to 13.5 (2011). Two non-beer explanations: the reviewer population
+changed (early users were hardcore critics, later ones more generous), and
+the mix of beers changed (the craft boom means more imperial stouts and IPAs,
+which score higher, in the later years).
+
+**Explain it back:** `year(review_date)` extracts the four-digit year from a
+date, so `by = year` groups all reviews posted in the same calendar year.
+
+## Task 9: the recommendation
+
+```{r ipa-share, fig.height=3.8}
+share <- beer[year(review_date) %in% 2002:2011,
+              .(share = mean(beer_style %in% c("India Pale Ale &#40;IPA&#41;", "Imperial/Double IPA"))),
+              by = .(year = year(review_date))][order(year)]
+ggplot(share, aes(year, share)) + geom_line() + geom_point() +
+  scale_y_continuous(labels = percent) + scale_x_continuous(breaks = 2002:2011) +
+  labs(title = "Share of Reviews Going to IPAs and Double IPAs", x = NULL, y = "Share of reviews") +
+  theme_minimal()
+```
+
+1. **Lead with a strong, intense style.** Imperial stouts, quadrupels, and
+   double IPAs average 15.4–15.9/20 versus 7.4 for pale lager (Task 5), and
+   ratings rise with ABV up to about 10% (Task 6). A flagship in the 8–10%
+   range plays where enthusiasts are most generous.
+2. **Include an IPA and plan to grow the range.** IPAs are the most reviewed
+   style (Task 4) and their share of all reviews grew from under 5% in 2002
+   to 13% in 2011 (chart above); breweries with broader portfolios are rated higher
+   (Task 7, correlation 0.35), though partly because good breweries survive
+   to grow.
+3. **Limitation: this is enthusiast attention, not sales.** RateBeer users
+   under-represent the pale-lager drinker who accounts for most beer volume,
+   and the data has no prices, costs, or volumes. Use it to pick what wins
+   with the enthusiast segment, and validate volume and margin elsewhere.
+
+<!-- Common student variants and what they should find:
+     - Boxplot of rating by style instead of bars+SE: fine, same ordering.
+     - Rating by ABV with all ABV values: the tail past 15% is noisy (few
+       beers); reward students who notice n and cap the axis.
+     - Time trend of a single style's average rating: mostly flat within
+       style, which is itself a nice contrast with the overall drift (mix
+       effect). -->

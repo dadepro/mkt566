@@ -70,6 +70,7 @@ Course materials (slides, cases, code, and the syllabus) will be posted here as 
     - [Dataset](https://github.com/dadepro/mkt566/tree/main/w3/code/data) (the week 2 case dataset)
 - Thursday, Sept. 10:
   - In-class exercise, the RateBeer case: **[handout](https://raw.githack.com/dadepro/mkt566/main/w3/w3-ratebeer-case.html)** and [data](https://github.com/dadepro/mkt566/raw/main/w3/ratebeer-case-data.zip) (5 MB, download before class). A vibecoding exercise on real, dirty data, over two sessions (Sept. 10 and Sept. 15): bring your laptop
+  - Instructor solution (posted after the deadline): [html](https://raw.githack.com/dadepro/mkt566/main/w3/w3-ratebeer-case-solution.html), [R Markdown](https://github.com/dadepro/mkt566/blob/main/w3/w3-ratebeer-case-solution.Rmd)
 
 ### Week 4: RateBeer case (cont.) and OLS
 - Tuesday, Sept. 15:
@@ -97,4 +98,3 @@ Course materials (slides, cases, code, and the syllabus) will be posted here as 
   - Code and data (download everything: [w4-code.zip](https://github.com/dadepro/mkt566/raw/main/w4/w4-code.zip), or browse the [w4/code](https://github.com/dadepro/mkt566/tree/main/w4/code) folder):
     - [Every chart and model from the slides](https://github.com/dadepro/mkt566/blob/main/w4/code/w4-2-logit-class.R)
   - In-class exercise, the Airbnb case: **[handout](https://raw.githack.com/dadepro/mkt566/main/w4/w4-airbnb-case.html)** and [data](https://github.com/dadepro/mkt566/raw/main/w4/airbnb-case-data.zip) (600 KB, the dataset from Thursday's lecture). A vibecoding exercise on regression: bring your laptop. Report due Sunday, Sept. 27
-  - Instructor solution (posted after the deadline): [html](https://raw.githack.com/dadepro/mkt566/main/w4/w4-airbnb-case-solution.html), [R Markdown](https://github.com/dadepro/mkt566/blob/main/w4/w4-airbnb-case-solution.Rmd)
