@@ -551,12 +551,13 @@ Cheaper listings are more likely to be gems. Three stories, as always:
 
 1. **Price causes gem status**: lower price → more bookings → more
    reviews → gem
-2. **The host causes both**: a host who hustles sets a sharp price *and*
-   cleans well, answers fast, earns 5 stars; a careless host overprices
-   *and* under-delivers. The low price is a symptom of a good host, not a
-   lever anyone can pull
+2. **The host causes both**: a good host sets a fair price *and* delivers
+   a 5-star stay; a careless host overprices *and* under-delivers
 3. **Age causes both**: gems are **older** (20+ reviews take time), and
-   older listings were priced in an earlier, cheaper market
+   older listings were priced in a cheaper market
+
+The regression cannot tell the three stories apart. So say it the careful
+way:
 
 ::: {.box}
 "A \$100 higher price is **associated with** 16% lower odds of being a gem."
