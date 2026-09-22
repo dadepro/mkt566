@@ -74,7 +74,7 @@ Course materials (slides, cases, code, and the syllabus) will be posted here as 
 
 ### Week 4: RateBeer case (cont.) and OLS
 - Tuesday, Sept. 15:
-  - RateBeer case, part 2: debrief of Tasks 1–6, then Tasks 7–9 ([slides](https://raw.githack.com/dadepro/mkt566/main/w3/w3-2-ratebeer-debrief.html) ([pdf](https://raw.githack.com/dadepro/mkt566/main/w3/w3-2-ratebeer-debrief.pdf)), [handout](https://raw.githack.com/dadepro/mkt566/main/w3/w3-ratebeer-case.html)). Deadline for forming groups
+  - RateBeer case, part 2: debrief of Tasks 1–6, then Tasks 7–9 ([slides](https://raw.githack.com/dadepro/mkt566/main/w3/w3-2-ratebeer-debrief.html) ([pdf](https://raw.githack.com/dadepro/mkt566/main/w3/w3-2-ratebeer-debrief.pdf)), [handout](https://raw.githack.com/dadepro/mkt566/main/w3/w3-ratebeer-case.html), **[solution](https://raw.githack.com/dadepro/mkt566/main/w3/w3-ratebeer-case-solution.html)**). Deadline for forming groups
 - Thursday, Sept. 17:
   - Slides ([html](https://raw.githack.com/dadepro/mkt566/main/w4/w4-1-ols.html), [pdf](https://raw.githack.com/dadepro/mkt566/main/w4/w4-1-ols.pdf)): regressions (OLS)
   - Required readings:
