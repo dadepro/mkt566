@@ -307,23 +307,23 @@ gem. What it does to the probability takes one more conversion: next slide.
 
 ## Odds fall 8%: what happens to the probability? {.smaller-90}
 
-Not "minus 8 points". The model speaks on the **odds** scale, so walk the
-change through the odds and back, one step at a time:
+Not "minus 8 points". The 8% lives on the **odds** scale, so the route has
+three steps: go to odds, apply the change there, come back.
 
-1. **Write the probability as odds.** A typical listing has a **20%**
-   chance of being a gem. As odds: $0.2 / 0.8 = 0.25$ (slide 14's table,
-   first row)
-2. **Apply the change to the odds**, because that is where it lives.
-   \$100 more multiplies the odds by $0.923$, so:
-   $0.25 \times 0.923 = 0.231$
-3. **Turn the new odds back into a probability**, with the conversion
-   formula: $p = \dfrac{\text{odds}}{1 + \text{odds}} = \dfrac{0.231}{1.231} = 18.8\%$
+| Step | Rule | Our numbers |
+|---|---|---|
+| **1. Probability → odds** | $\text{odds} = p / (1 - p)$ | a typical listing is a gem with $p = 20\%$ (slide 14's table): $0.20 / 0.80 = 0.25$ |
+| **2. Apply the change to the odds** | multiply by $e^{\text{scaled } \beta_1}$ | \$100 more multiplies the odds by $0.923$ (last slide, step 3): $0.25 \times 0.923 = 0.231$ |
+| **3. Odds → probability** | $p = \text{odds} / (1 + \text{odds})$ | $0.231 / 1.231 = 18.8\%$ |
+
+: {tbl-colwidths="[24,26,50]"}
+
+**The whole trip:** 20% → odds 0.25 → × 0.923 → odds 0.231 → back to **18.8%**
 
 ::: {.box-warn}
-So \$100 more takes the chance of being a gem from 20% to **18.8%**: a drop
-of **1.2 percentage points**, not 8. The "8%" lives on the odds scale; the
-probability always moves by less, and the gap between the two scales grows
-with the size of the change.
+\$100 more takes a typical listing from 20% to **18.8%**. The **odds** fell
+7.7% (the "8%"); the **probability** fell **1.2 percentage points**. Same
+change, two scales, and the probability always moves by less than the odds.
 :::
 
 ## Logit on price: the curve, on the data

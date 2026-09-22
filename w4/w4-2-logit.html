@@ -462,14 +462,41 @@ Davide Proserpio
 </section>
 <section id="odds-fall-8-what-happens-to-the-probability" class="slide level2 smaller-90">
 <h2>Odds fall 8%: what happens to the probability?</h2>
-<p>Not “minus 8 points”. The model speaks on the <strong>odds</strong> scale, so walk the change through the odds and back, one step at a time:</p>
-<ol type="1">
-<li><strong>Write the probability as odds.</strong> A typical listing has a <strong>20%</strong> chance of being a gem. As odds: <span class="math inline">\(0.2 / 0.8 = 0.25\)</span> (slide 14’s table, first row)</li>
-<li><strong>Apply the change to the odds</strong>, because that is where it lives. $100 more multiplies the odds by <span class="math inline">\(0.923\)</span>, so: <span class="math inline">\(0.25 \times 0.923 = 0.231\)</span></li>
-<li><strong>Turn the new odds back into a probability</strong>, with the conversion formula: <span class="math inline">\(p = \dfrac{\text{odds}}{1 + \text{odds}} = \dfrac{0.231}{1.231} = 18.8\%\)</span></li>
-</ol>
+<p>Not “minus 8 points”. The 8% lives on the <strong>odds</strong> scale, so the route has three steps: go to odds, apply the change there, come back.</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 24%">
+<col style="width: 26%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Step</th>
+<th>Rule</th>
+<th>Our numbers</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>1. Probability → odds</strong></td>
+<td><span class="math inline">\(\text{odds} = p / (1 - p)\)</span></td>
+<td>a typical listing is a gem with <span class="math inline">\(p = 20\%\)</span> (slide 14’s table): <span class="math inline">\(0.20 / 0.80 = 0.25\)</span></td>
+</tr>
+<tr class="even">
+<td><strong>2. Apply the change to the odds</strong></td>
+<td>multiply by <span class="math inline">\(e^{\text{scaled } \beta_1}\)</span></td>
+<td>$100 more multiplies the odds by <span class="math inline">\(0.923\)</span> (last slide, step 3): <span class="math inline">\(0.25 \times 0.923 = 0.231\)</span></td>
+</tr>
+<tr class="odd">
+<td><strong>3. Odds → probability</strong></td>
+<td><span class="math inline">\(p = \text{odds} / (1 + \text{odds})\)</span></td>
+<td><span class="math inline">\(0.231 / 1.231 = 18.8\%\)</span></td>
+</tr>
+</tbody>
+</table>
+<p><strong>The whole trip:</strong> 20% → odds 0.25 → × 0.923 → odds 0.231 → back to <strong>18.8%</strong></p>
 <div class="box-warn">
-<p>So $100 more takes the chance of being a gem from 20% to <strong>18.8%</strong>: a drop of <strong>1.2 percentage points</strong>, not 8. The “8%” lives on the odds scale; the probability always moves by less, and the gap between the two scales grows with the size of the change.</p>
+<p>$100 more takes a typical listing from 20% to <strong>18.8%</strong>. The <strong>odds</strong> fell 7.7% (the “8%”); the <strong>probability</strong> fell <strong>1.2 percentage points</strong>. Same change, two scales, and the probability always moves by less than the odds.</p>
 </div>
 </section>
 <section id="logit-on-price-the-curve-on-the-data" class="slide level2">
