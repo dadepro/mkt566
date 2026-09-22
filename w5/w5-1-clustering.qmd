@@ -110,21 +110,53 @@ numbers, and one question: **who is similar to whom?**
 :::
 :::::
 
-## Why marketers cluster {.smaller-90}
+## Why marketers cluster (and map) {.smaller-90}
 
+::::: {.columns}
+::: {.column width="48%"}
 Grouping similar customers is **segmentation**, and almost everything in
 marketing is segment-specific:
 
-- **Messaging**: bargain hunters get the discount email, service seekers get
-  the concierge pitch
+- **Messaging**: bargain hunters get the discount email, service seekers
+  get the concierge pitch
 - **Product and pricing**: which features matter to which group, and who
   will pay for them
 - **Budget**: which segments are growing, and where the next dollar goes
+- **Positioning**: the same kind of data, mapped, shows who competes with
+  whom and where the gaps are: the **perceptual map** on the right
+:::
+::: {.column style="width: 47%; margin-left: 5%;"}
+```{r perceptual-sketch}
+#| fig-width: 5.8
+#| fig-height: 4.4
+cars <- data.table(
+  brand = c("Toyota", "Honda", "Kia", "Volvo", "Mercedes", "BMW", "Porsche", "Mazda"),
+  x = c(-2.2, -1.7, -2.4, 1.3, 2.2, 2.1, 2.8, -0.9),
+  y = c(-1.2, -0.5, 0.2, -2.0, -0.4, 1.0, 2.2, 1.3)
+)
+ggplot(cars, aes(x, y, label = brand)) +
+  geom_vline(xintercept = 0, linetype = 3, color = "grey60") +
+  geom_hline(yintercept = 0, linetype = 3, color = "grey60") +
+  geom_point(color = "#990000", size = 3.5) +
+  geom_text_repel(size = 4.6, fontface = "bold") +
+  scale_x_continuous(limits = c(-3.4, 3.4)) +
+  scale_y_continuous(limits = c(-2.9, 2.9)) +
+  labs(title = "The car market, as customers see it",
+       x = "← affordable    ·    premium →",
+       y = "← practical    ·    sporty →") +
+  theme_minimal(base_size = 14) +
+  theme(axis.text = element_blank())
+```
+
+::: {.smaller-80 .muted}
+A sketch, not data. You will build a real one with PCA at the end of today.
+:::
+:::
+:::::
 
 ::: {.box}
 Two tools today. **K-means** finds the groups. **PCA** draws the map you
-need to *see* them, and it powers the classic marketing **perceptual map**
-along the way.
+need to *see* them, and it powers the perceptual map.
 :::
 
 # Finding Groups: K-Means {.divider}
@@ -156,7 +188,7 @@ total. How many groups do you see, and how would you describe each one?
 cents <- toy[, .(purchases = mean(purchases), spend = mean(spend)), by = cluster]
 p_toy +
   geom_point(data = toy, aes(color = cluster), size = 3, alpha = 0.85) +
-  geom_point(data = cents, aes(color = cluster), shape = 4, size = 6, stroke = 2) +
+  geom_point(data = cents, shape = 4, size = 6, stroke = 2, color = "black") +
   scale_color_manual(values = unname(seg_cols), guide = "none") +
   labs(title = "The Same Customers, Colored by K-Means (k = 3)")
 ```
@@ -177,6 +209,9 @@ You pick **k**, the number of clusters. The algorithm does the rest:
 3. **Move** each center to the middle of the customers assigned to it
 4. Repeat 2 and 3 until the centers stop moving
 
+- On the last chart, that is: drop three **X**'s at random, color every
+  dot by its nearest X, move each X to the middle of its color, repeat.
+  The X's you saw are where they stopped
 - "Nearest" means plain **distance** between rows of numbers, so every
   column you feed it counts
 - The random start means results can vary run to run: `set.seed()` makes
@@ -354,6 +389,9 @@ in **six**. A screen has two axes; you cannot plot six.
   today we squash six columns into two axes)
 - Each respondent gets a coordinate on each new axis: **PC1** and **PC2**.
   Plot those two and you have the best two-axis picture of the data
+- Each axis is just a **weighted mix** of the six ratings, the way a GPA is
+  a weighted mix of grades. The weights are what the axis *means*: next
+  slide
 
 ```{r pca-echo}
 #| echo: true

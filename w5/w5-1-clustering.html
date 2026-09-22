@@ -247,16 +247,33 @@ Davide Proserpio
 </ul>
 </div></div>
 </section>
-<section id="why-marketers-cluster" class="slide level2 smaller-90">
-<h2>Why marketers cluster</h2>
+<section id="why-marketers-cluster-and-map" class="slide level2 smaller-90">
+<h2>Why marketers cluster (and map)</h2>
+<div class="columns">
+<div class="column" style="width:48%;">
 <p>Grouping similar customers is <strong>segmentation</strong>, and almost everything in marketing is segment-specific:</p>
 <ul>
 <li><strong>Messaging</strong>: bargain hunters get the discount email, service seekers get the concierge pitch</li>
 <li><strong>Product and pricing</strong>: which features matter to which group, and who will pay for them</li>
 <li><strong>Budget</strong>: which segments are growing, and where the next dollar goes</li>
+<li><strong>Positioning</strong>: the same kind of data, mapped, shows who competes with whom and where the gaps are: the <strong>perceptual map</strong> on the right</li>
 </ul>
+</div><div class="column" style="width: 47%; margin-left: 5%;">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="w5-1-clustering_files/figure-revealjs/perceptual-sketch-1.png" width="556"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="smaller-80 muted">
+<p>A sketch, not data. You will build a real one with PCA at the end of today.</p>
+</div>
+</div></div>
 <div class="box">
-<p>Two tools today. <strong>K-means</strong> finds the groups. <strong>PCA</strong> draws the map you need to <em>see</em> them, and it powers the classic marketing <strong>perceptual map</strong> along the way.</p>
+<p>Two tools today. <strong>K-means</strong> finds the groups. <strong>PCA</strong> draws the map you need to <em>see</em> them, and it powers the perceptual map.</p>
 </div>
 </section></section>
 <section>
@@ -290,6 +307,7 @@ Davide Proserpio
 <li>Repeat 2 and 3 until the centers stop moving</li>
 </ol>
 <ul>
+<li>On the last chart, that is: drop three <strong>X</strong>’s at random, color every dot by its nearest X, move each X to the middle of its color, repeat. The X’s you saw are where they stopped</li>
 <li>“Nearest” means plain <strong>distance</strong> between rows of numbers, so every column you feed it counts</li>
 <li>The random start means results can vary run to run: <code>set.seed()</code> makes them reproducible, and <code>nstart = 20</code> runs it 20 times and keeps the best</li>
 </ul>
@@ -479,6 +497,7 @@ Davide Proserpio
 <ul>
 <li><strong>PCA</strong> (principal component analysis) squashes the six columns into <strong>two new axes</strong>, chosen so the map keeps as much of the respondents’ <strong>variation</strong> as possible (Tuesday we squashed a score into a probability; today we squash six columns into two axes)</li>
 <li>Each respondent gets a coordinate on each new axis: <strong>PC1</strong> and <strong>PC2</strong>. Plot those two and you have the best two-axis picture of the data</li>
+<li>Each axis is just a <strong>weighted mix</strong> of the six ratings, the way a GPA is a weighted mix of grades. The weights are what the axis <em>means</em>: next slide</li>
 </ul>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="" aria-label="1"></a>pca <span class="ot">&lt;-</span> <span class="fu">prcomp</span>(ratings, <span class="at">center =</span> <span class="cn">TRUE</span>, <span class="at">scale. =</span> <span class="cn">TRUE</span>)</span>
