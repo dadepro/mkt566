@@ -1,0 +1,252 @@
+---
+title: 'The Airbnb Case: Regression, Partial Solution'
+author: "MKT 566 · Decision Making Using Marketing Analytics · Fall 2026"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+---
+
+<!-- Student-facing partial solution: all code run, figures and tables
+     displayed, questions kept, answers removed. Students answer the
+     questions, write the recommendation, and prepare a presentation.
+     Reads code/data/airbnb.csv via root.dir, so it knits from w4/ root. -->
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(message = FALSE, warning = FALSE,
+                      fig.width = 8, fig.height = 4.5)
+knitr::opts_knit$set(root.dir = "code/data")
+library(data.table)
+library(ggplot2)
+library(stargazer)
+```
+
+This is the Airbnb case with the coding already done. Every figure and every
+table is below, produced by the code shown above it. Nothing to install,
+nothing to run.
+
+Your job is the part the investor actually pays for: **the reading**. For
+each task, answer the questions in plain English, with the number that
+supports each claim. Then write the recommendation (Task 8) and turn your
+findings into a short presentation.
+
+The client is an **investor** deciding where, and what kind of property, to
+buy and list on Airbnb. Every task builds toward your recommendation.
+
+Using your AI assistant to talk through a table is fine, and a good idea.
+The sentences and slides you submit must be your own reading.
+
+## Reading a regression table: the checklist
+
+Thursday's lecture in four lines. Use it on every table below:
+
+1. **Size**: one more unit of $X$ goes with how many units (or what percent) of $Y$? Say it in dollars.
+2. **Stars**: is the coefficient distinguishable from zero? With 50,000 rows, almost everything is. That is not the interesting part.
+3. **R-squared**: how much of the variation in $Y$ does the model explain?
+4. **Base level**: for a categorical variable, every coefficient is a difference from the group that is missing from the table.
+
+## The data
+
+One row per **listing**. Columns:
+
+| Column | What it is |
+|---|---|
+| `listing_id` | the listing |
+| `price` | nightly price in dollars |
+| `bedrooms`, `bathrooms` | number of bedrooms and bathrooms |
+| `guests_included` | guests included in the price |
+| `star_rating` | average rating, 1 to 5 |
+| `reviews_count` | number of reviews the listing has |
+| `city` | Austin, Boston, Los Angeles, Miami |
+| `room_type` | Entire home, Private room, Shared room |
+| `property_type`, `cancellation_policy`, `zipcode` | more details, not needed today |
+
+Want to rerun or extend anything? The data is
+[**`airbnb-case-data.zip`**](https://github.com/dadepro/mkt566/raw/main/w4/airbnb-case-data.zip)
+and every line of code is on this page. But nothing below requires it.
+
+## Task 1: look at the data
+
+First look: the size of the data, prices, reviews, and where the listings
+are.
+
+```{r look}
+airbnb <- fread("airbnb.csv")
+head(airbnb)
+nrow(airbnb); ncol(airbnb)
+summary(airbnb$price)
+summary(airbnb$reviews_count)
+table(airbnb$city)
+table(airbnb$room_type)
+```
+
+**Questions:**
+
+- How many rows and columns? What does one row represent?
+- Median and mean price: which is larger, and what does that tell you about the shape of the distribution? (Remember week 2.)
+- How many listings are in each city? One city has more listings than the other three combined. Which one, and what does that mean for any claim you make about "Airbnb" as a whole?
+
+## Task 2: three pictures of the same relationship
+
+On Thursday, price against the number of reviews was a cloud with no line in
+it. Here it is again, three ways: raw, with price logged, and with both
+logged.
+
+```{r pictures, fig.height=3.8}
+p1 <- ggplot(airbnb, aes(reviews_count, price)) +
+  geom_point(alpha = 0.2) + geom_smooth(method = "lm", se = FALSE) +
+  labs(title = "(1) price vs. reviews") + theme_minimal()
+p2 <- ggplot(airbnb, aes(reviews_count, log(price))) +
+  geom_point(alpha = 0.2) + geom_smooth(method = "lm", se = FALSE) +
+  labs(title = "(2) log(price) vs. reviews") + theme_minimal()
+p3 <- ggplot(airbnb, aes(log(reviews_count), log(price))) +
+  geom_point(alpha = 0.2) + geom_smooth(method = "lm", se = FALSE) +
+  labs(title = "(3) log(price) vs. log(reviews)") + theme_minimal()
+p1; p2; p3
+```
+
+**Questions:**
+
+- Describe what changes from chart (1) to (2) to (3). Where did the $10,000 listings go in chart (2)?
+- In which chart does a straight line make the most sense? Why did logging help? (Thursday's "why take logs" slide has the three reasons; which ones apply here?)
+
+## Task 3: the three models
+
+The regressions that go with the three charts, side by side.
+
+```{r three-models}
+m1 <- lm(price ~ reviews_count, data = airbnb)
+m2 <- lm(log(price) ~ reviews_count, data = airbnb)
+m3 <- lm(log(price) ~ log(reviews_count), data = airbnb)
+stargazer(m1, m2, m3, type = "text",
+          column.labels = c("level-level", "log-level", "log-log"),
+          omit.stat = c("f", "ser", "adj.rsq"), digits = 4, no.space = TRUE)
+```
+
+**Questions:**
+
+- Interpret the coefficient on `reviews_count` in each model, in one sentence each, with the right units: dollars per review, percent per review, or percent per percent. (Thursday's functional-forms table.)
+- What are the three R-squared values? Are they good, bad, or beside the point? What do they say about how much reviews tell you about price?
+- All three coefficients have three stars. Does that mean reviews matter a lot for price? Use the "significant is not big" slide.
+
+## Task 4: more predictors
+
+Reviews alone explain almost nothing. Add what an investor would actually
+look at: rating, bathrooms, bedrooms, and guests included.
+
+```{r more-predictors}
+m4 <- lm(price ~ reviews_count + star_rating + bathrooms + bedrooms + guests_included,
+         data = airbnb)
+stargazer(m4, type = "text", omit.stat = c("f", "ser", "adj.rsq"), digits = 3, no.space = TRUE)
+```
+
+**Questions:**
+
+- Walk through the coefficients: one sentence each, in dollars, "holding the others fixed". Do the signs make sense? Any surprise?
+- What happened to the R-squared compared with Task 3? What does that tell you about which variables matter for price?
+- The number of observations is a little smaller than in Task 3. Why? (What does `lm()` do with rows that have a missing value?)
+
+## Task 5: where is it expensive? City as a categorical variable
+
+Add `city` to the Task 4 model. Then the check: the same model with dummy
+variables built by hand, leaving Austin out.
+
+```{r city}
+m5 <- lm(price ~ reviews_count + star_rating + bathrooms + bedrooms + guests_included + city,
+         data = airbnb)
+airbnb[, austin := as.integer(city == "Austin")]
+airbnb[, boston := as.integer(city == "Boston")]
+airbnb[, la     := as.integer(city == "Los Angeles")]
+airbnb[, miami  := as.integer(city == "Miami")]
+m5b <- lm(price ~ reviews_count + star_rating + bathrooms + bedrooms + guests_included +
+            boston + la + miami, data = airbnb)
+stargazer(m5, m5b, type = "text", column.labels = c("factor", "dummies by hand"),
+          omit.stat = c("f", "ser", "adj.rsq"), digits = 3, no.space = TRUE)
+```
+
+**Questions:**
+
+- How many city coefficients do you get, and why not four? What is the base level, and what does the constant now mean?
+- Interpret the city coefficients: which city is the most expensive and which the least, for a listing of the same size and rating? By how many dollars?
+- Compare the factor version with the hand-made dummies. Same numbers? What does that tell you about what `lm()` does with a text column?
+
+## Task 6: from price to revenue
+
+An investor cares about revenue, not the nightly price. We do not observe
+bookings, but reviews are a rough trace of them, so define
+`revenue = price * reviews_count` (a crude proxy; it returns in Task 8).
+First with `city`, then adding `room_type`. Notice that `reviews_count` is
+not in these models; the first question asks why.
+
+```{r revenue}
+airbnb[, revenue := price * reviews_count]
+summary(airbnb$revenue)
+m6  <- lm(revenue ~ star_rating + bathrooms + bedrooms + guests_included + city, data = airbnb)
+m6b <- lm(revenue ~ star_rating + bathrooms + bedrooms + guests_included + city + room_type,
+          data = airbnb)
+stargazer(m6, m6b, type = "text", column.labels = c("city", "city + room type"),
+          omit.stat = c("f", "ser", "adj.rsq"), digits = 2, no.space = TRUE)
+```
+
+**Questions:**
+
+- Why must `reviews_count` be dropped from a model of `price * reviews_count`?
+- Which city has the highest revenue coefficient? Is it significant? Which is the highest **significant** one? Where would you buy, based on this table alone?
+- Interpret the `room_type` coefficients: what is the base level, and how much less revenue does a private room or a shared room generate, holding the rest fixed?
+- Did the city coefficients change when `room_type` came in? What would explain a change?
+
+## Task 7: does quality pay?
+
+Create `highQuality` = 1 if the rating is 4.5 or higher, 0 otherwise, and
+put it in place of `star_rating` in the last Task 6 model. The table shows
+both versions side by side.
+
+```{r quality}
+airbnb[, highQuality := as.integer(star_rating >= 4.5)]
+mean(airbnb$highQuality)
+m7 <- lm(revenue ~ highQuality + bathrooms + bedrooms + guests_included + city + room_type,
+         data = airbnb)
+stargazer(m6b, m7, type = "text", column.labels = c("star rating", "high-quality dummy"),
+          omit.stat = c("f", "ser", "adj.rsq"), digits = 2, no.space = TRUE)
+```
+
+**Questions:**
+
+- What share of listings has `highQuality = 1`? (The `mean()` line above the table is that share.) Is 4.5 a demanding cutoff on this platform?
+- Interpret the `highQuality` coefficient in one sentence, in dollars of revenue.
+- Compare with the `star_rating` coefficient from Task 6: why are the two numbers not directly comparable? (What is "one unit" of each?)
+- Is quality a big deal for revenue on Airbnb, according to this model? Give one reason the coefficient might overstate it and one reason it might understate it.
+
+## Task 8: the recommendation
+
+You are advising the investor on **where to buy and what to list**. Write
+**three recommendations**, each one sentence plus the coefficient (with
+units) that supports it, naming the task and table it comes from. One of the
+three must state a **limitation** of this analysis for the decision. Two
+candidates: what `price * reviews_count` misses about revenue (does every
+guest leave a review? is the listed price the price paid? does a listing
+with 300 reviews earn that every year?), and what a regression on listings
+that *exist* cannot tell you about a property that does not yet exist.
+
+## The presentation
+
+Turn your findings into a deck for the investor: **5 to 7 slides**.
+
+1. **One slide**: the question and the data, one sentence each.
+2. **Two or three slides**: your key findings. One finding per slide, stated
+   as a full sentence with the number, its units, and the table it comes
+   from. A chart or a cropped table per slide is fine; code is not.
+3. **One slide**: the recommendation, where to buy and what to list.
+4. **One slide**: the limitation, and what data you would want next.
+
+The test for every slide: could the investor, who has not seen this handout,
+read it in ten seconds and repeat the point?
+
+## Submit
+
+On **Brightspace**, by **Sunday, Sept. 27, 11:59 pm**:
+
+1. A document with your answers, one short section per task (PDF or HTML).
+2. Your slides (PDF or PowerPoint).
+
+Every student submits their own.
