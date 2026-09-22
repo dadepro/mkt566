@@ -1487,21 +1487,41 @@ Fall 2026</h4>
 
 
 <!-- Student-facing partial solution: all code run, figures and tables
-     displayed, questions kept, answers removed. Students answer the
-     questions, write the recommendation, and prepare a presentation.
-     Reads code/data/airbnb.csv via root.dir, so it knits from w4/ root. -->
+     displayed, questions kept, answers removed. Students fill in the
+     "My answers:" blocks, knit, and submit the HTML, plus a presentation.
+     Reads airbnb.csv from its own folder; to knit the repo copy, copy
+     code/data/airbnb.csv next to this file first, then delete it. -->
+<p><strong>Name and USC ID:</strong> ______</p>
 <p>This is the Airbnb case with the coding already done. Every figure
-and every table is below, produced by the code shown above it. Nothing
-to install, nothing to run.</p>
+and every table is below, produced by the code shown above it. You write
+no code: this file is also your report.</p>
 <p>Your job is the part the investor actually pays for: <strong>the
 reading</strong>. For each task, answer the questions in plain English,
-with the number that supports each claim. Then write the recommendation
-(Task 8) and turn your findings into a short presentation.</p>
+with the number that supports each claim, in the <strong>My
+answers:</strong> block under the questions. Then write the
+recommendation (Task 8) and turn your findings into a short
+presentation.</p>
 <p>The client is an <strong>investor</strong> deciding where, and what
 kind of property, to buy and list on Airbnb. Every task builds toward
 your recommendation.</p>
 <p>Using your AI assistant to talk through a table is fine, and a good
 idea. The sentences and slides you submit must be your own reading.</p>
+<div id="how-to-work-on-it" class="section level2">
+<h2>How to work on it</h2>
+<ol style="list-style-type: decimal">
+<li>Download the <a href="https://github.com/dadepro/mkt566/raw/main/w4/w4-airbnb-case-partial.Rmd">R
+Markdown source of this page</a> (right-click, Save Link As…) and the <a href="https://github.com/dadepro/mkt566/raw/main/w4/airbnb-case-data.zip">data</a>.
+Put <code>w4-airbnb-case-partial.Rmd</code> and the unzipped
+<code>airbnb.csv</code> in the same folder, and open that folder in VS
+Code.</li>
+<li>Fill in every <strong>My answers:</strong> block, and your name
+above.</li>
+<li>Knit to HTML with the play button and check that every figure and
+table is visible in the knitted file. If knitting fails with “there is
+no package called ‘stargazer’”, run
+<code>install.packages(&quot;stargazer&quot;)</code> once in the R terminal.</li>
+</ol>
+</div>
 <div id="reading-a-regression-table-the-checklist" class="section level2">
 <h2>Reading a regression table: the checklist</h2>
 <p>Thursday’s lecture in four lines. Use it on every table below:</p>
@@ -1572,9 +1592,6 @@ table.</li>
 </tr>
 </tbody>
 </table>
-<p>Want to rerun or extend anything? The data is <a href="https://github.com/dadepro/mkt566/raw/main/w4/airbnb-case-data.zip"><strong><code>airbnb-case-data.zip</code></strong></a>
-and every line of code is on this page. But nothing below requires
-it.</p>
 </div>
 <div id="task-1-look-at-the-data" class="section level2">
 <h2>Task 1: look at the data</h2>
@@ -1624,6 +1641,7 @@ about the shape of the distribution? (Remember week 2.)</li>
 the other three combined. Which one, and what does that mean for any
 claim you make about “Airbnb” as a whole?</li>
 </ul>
+<p><strong>My answers:</strong></p>
 </div>
 <div id="task-2-three-pictures-of-the-same-relationship" class="section level2">
 <h2>Task 2: three pictures of the same relationship</h2>
@@ -1648,6 +1666,7 @@ $10,000 listings go in chart (2)?</li>
 <li>In which chart does a straight line make the most sense? Why did
 logging help?</li>
 </ul>
+<p><strong>My answers:</strong></p>
 </div>
 <div id="task-3-the-three-models" class="section level2">
 <h2>Task 3: the three models</h2>
@@ -1689,6 +1708,7 @@ price?</li>
 <li>All three coefficients have three stars. Does that mean reviews
 matter a lot for price?</li>
 </ul>
+<p><strong>My answers:</strong></p>
 </div>
 <div id="task-4-more-predictors" class="section level2">
 <h2>Task 4: more predictors</h2>
@@ -1730,6 +1750,7 @@ tell you about which variables matter for price?</li>
 (What does <code>lm()</code> do with rows that have a missing
 value?)</li>
 </ul>
+<p><strong>My answers:</strong></p>
 </div>
 <div id="task-5-where-is-it-expensive-city-as-a-categorical-variable" class="section level2">
 <h2>Task 5: where is it expensive? City as a categorical variable</h2>
@@ -1793,6 +1814,7 @@ many dollars?</li>
 What does that tell you about what <code>lm()</code> does with a text
 column?</li>
 </ul>
+<p><strong>My answers:</strong></p>
 </div>
 <div id="task-6-from-price-to-revenue" class="section level2">
 <h2>Task 6: from price to revenue</h2>
@@ -1857,6 +1879,7 @@ generate, holding the rest fixed?</li>
 <li>Did the city coefficients change when <code>room_type</code> came
 in? What would explain a change?</li>
 </ul>
+<p><strong>My answers:</strong></p>
 </div>
 <div id="task-7-does-quality-pay" class="section level2">
 <h2>Task 7: does quality pay?</h2>
@@ -1919,6 +1942,7 @@ each?)</li>
 model? Give one reason the coefficient might overstate it and one reason
 it might understate it.</li>
 </ul>
+<p><strong>My answers:</strong></p>
 </div>
 <div id="task-8-the-recommendation" class="section level2">
 <h2>Task 8: the recommendation</h2>
@@ -1932,6 +1956,7 @@ candidates: what <code>price * reviews_count</code> misses about revenue
 does a listing with 300 reviews earn that every year?), and what a
 regression on listings that <em>exist</em> cannot tell you about a
 property that does not yet exist.</p>
+<p><strong>My recommendations:</strong></p>
 </div>
 <div id="the-presentation" class="section level2">
 <h2>The presentation</h2>
