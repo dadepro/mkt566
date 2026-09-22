@@ -247,6 +247,6 @@ read it in ten seconds and repeat the point?
 On **Brightspace**, by **Sunday, Sept. 27, 11:59 pm**:
 
 1. A document with your answers, one short section per task (PDF or HTML).
-2. Your slides (PDF or PowerPoint).
+2. Your slides (PDF, PowerPoint, or HTML).
 
 Every student submits their own.
