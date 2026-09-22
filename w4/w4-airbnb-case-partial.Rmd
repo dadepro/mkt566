@@ -108,7 +108,7 @@ p1; p2; p3
 **Questions:**
 
 - Describe what changes from chart (1) to (2) to (3). Where did the $10,000 listings go in chart (2)?
-- In which chart does a straight line make the most sense? Why did logging help? (Thursday's "why take logs" slide has the three reasons; which ones apply here?)
+- In which chart does a straight line make the most sense? Why did logging help?
 
 ## Task 3: the three models
 
