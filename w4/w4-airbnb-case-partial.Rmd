@@ -241,12 +241,3 @@ Turn your findings into a deck for the investor: **5 to 7 slides**.
 
 The test for every slide: could the investor, who has not seen this handout,
 read it in ten seconds and repeat the point?
-
-## Submit
-
-On **Brightspace**, by **Sunday, Sept. 27, 11:59 pm**:
-
-1. A document with your answers, one short section per task (PDF or HTML).
-2. Your slides (PDF, PowerPoint, or HTML).
-
-Every student submits their own.
