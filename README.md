@@ -88,7 +88,7 @@ Course materials (slides, cases, code, and the syllabus) will be posted here as 
     - [Airbnb dataset](https://github.com/dadepro/mkt566/blob/main/w4/code/data/airbnb.csv) (also used in the Airbnb exercise on Tuesday, Sept. 22)
   - Homework 2 released (due Thursday, Oct. 8)
 
-### Week 5: Logit and clustering
+### Week 5: Logit and the Airbnb case
 - Tuesday, Sept. 22:
   - Slides ([html](https://raw.githack.com/dadepro/mkt566/main/w4/w4-2-logit.html), [pdf](https://raw.githack.com/dadepro/mkt566/main/w4/w4-2-logit.pdf)): regression for yes/no outcomes (logit)
   - Required readings:
@@ -98,3 +98,5 @@ Course materials (slides, cases, code, and the syllabus) will be posted here as 
   - Code and data (download everything: [w4-code.zip](https://github.com/dadepro/mkt566/raw/main/w4/w4-code.zip), or browse the [w4/code](https://github.com/dadepro/mkt566/tree/main/w4/code) folder):
     - [Every chart and model from the slides](https://github.com/dadepro/mkt566/blob/main/w4/code/w4-2-logit-class.R)
   - In-class exercise, the Airbnb case: **[partial-solution handout](https://raw.githack.com/dadepro/mkt566/main/w4/w4-airbnb-case-partial.html)**, with all the code already run and every figure and table displayed. Your job: fill in the answers in the **[Rmd template](https://github.com/dadepro/mkt566/raw/main/w4/w4-airbnb-case-partial.Rmd)** (put it in one folder with the [data](https://github.com/dadepro/mkt566/raw/main/w4/airbnb-case-data.zip), 600 KB), knit, and prepare a short presentation of your findings. Knitted HTML with your answers due Sunday, Sept. 27. Optional, if you want to run it yourself: the [full vibecoding version](https://raw.githack.com/dadepro/mkt566/main/w4/w4-airbnb-case.html) and [data](https://github.com/dadepro/mkt566/raw/main/w4/airbnb-case-data.zip) (600 KB)
+- Thursday, Sept. 24:
+  - In-class exercise, the Airbnb case (cont.): group presentations of your findings
