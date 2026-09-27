@@ -540,7 +540,7 @@ customers next year can pull in different directions. Picking the goal is a
 marketing decision, not a technical one.
 :::
 
-## In-class discussion: Netflix {.smaller-90}
+## In-class assignment: Netflix {.smaller-90}
 
 In small groups, talk about what Netflix's recommender has to get right.
 Pick a few questions from each area:
@@ -558,7 +558,7 @@ Pick a few questions from each area:
 ::: {.box}
 Each group shares **one or two things** that surprised you and **one
 challenge** you see for Netflix. Full questions:
-[discussion sheet](case/recommender-discussion-assigment.pdf).
+[assignment sheet](case/recommender-discussion-assigment.pdf).
 :::
 
 ## Wrap-up

@@ -119,7 +119,7 @@ Course materials (slides, cases, code, and the syllabus) will be posted here as 
     - [Marketing Automation: Recommendation Systems](https://medium.com/geekculture/marketing-automation-recommendation-systems-ae39d61aa38)
   - Optional readings:
     - [Two decades of recommender systems at Amazon](https://www.amazon.science/publications/two-decades-of-recommender-systems-at-amazon-com)
-  - [Streaming platforms in-class discussion](https://raw.githack.com/dadepro/mkt566/main/w6/case/recommender-discussion-assigment.pdf)
+  - [In-class assignment](https://raw.githack.com/dadepro/mkt566/main/w6/case/recommender-discussion-assigment.pdf): what Netflix's recommender has to get right
 
 ### Week 7: Fall recess, no class
 - Tuesday, Oct. 6, and Thursday, Oct. 8: no class (fall recess)
