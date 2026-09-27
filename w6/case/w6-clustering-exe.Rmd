@@ -1,0 +1,236 @@
+---
+title: "Clustering Exercise: Customer Segmentation"
+author: "MKT 566 · Decision Making Using Marketing Analytics · Fall 2026"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+---
+
+<!-- Student-facing: all code run, figures and tables displayed, questions
+     kept, answers removed. Generated from the same body as
+     w6-clustering-exe-solution.Rmd. Reads customer_clustering_data.csv
+     from its own folder. -->
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(message = FALSE, warning = FALSE,
+                      fig.width = 8, fig.height = 4.5)
+library(data.table)
+library(ggplot2)
+options(width = 110)
+```
+
+**Name and USC ID:** ______
+
+The coding is done: every chart and table below is produced by the code
+shown above it. Your job is **the reading**. For each task, answer the
+questions in plain English, with the number that supports each claim, in the
+**My answers:** block under the questions.
+
+Using your AI assistant to talk through a table is fine, and a good idea. The
+sentences you write must be your own reading.
+
+## How to work on it
+
+1. Download the [R Markdown source of this page](https://github.com/dadepro/mkt566/raw/main/w6/case/w6-clustering-exe.Rmd)
+   (right-click, Save Link As...) and the
+   [data](https://github.com/dadepro/mkt566/raw/main/w6/case/clustering-exercise-data.zip).
+   Put `w6-clustering-exe.Rmd` and the unzipped `customer_clustering_data.csv`
+   in the same folder, and open that folder in VS Code.
+2. Fill in every **My answers:** block, and your name above.
+3. Knit to HTML with the play button and check that every figure and table
+   is visible in the knitted file.
+
+## The data
+
+One row per **customer** of a retailer that sells both online and in its
+stores. Columns:
+
+| Column | What it is |
+|---|---|
+| `CustomerID` | the customer |
+| `Age` | age in years |
+| `Income` | annual income, in dollars |
+| `Online_Spend` | dollars the customer spent online last year |
+| `InStore_Spend` | dollars the customer spent in the stores last year |
+
+The retailer wants to know **what kinds of customers it has**, and what to
+do with each kind. There is no outcome to predict: this is k-means and PCA,
+as in Tuesday's slides.
+
+## Task 1: look at the data
+
+```{r task1}
+# load the data (the file must be in the same folder as this Rmd)
+df <- fread("customer_clustering_data.csv")
+
+# the first rows, and a summary of the four numeric columns
+head(df)
+summary(df[, .(Age, Income, Online_Spend, InStore_Spend)])
+```
+
+- How many customers are there, and what does one row describe?
+- Look at the ranges of the four columns. Which column has by far the
+  largest numbers? Why does that matter for k-means? (Tuesday's "Watch the
+  units" slide.)
+
+**My answers:**
+
+## Task 2: a first picture
+
+```{r task2}
+ggplot(df, aes(x = Online_Spend, y = InStore_Spend)) +
+  geom_point(size = 2, alpha = 0.7, color = "grey35") +
+  labs(title = "Online vs. In-Store Spend, Last Year",
+       x = "Online spend ($)", y = "In-store spend ($)") +
+  theme_minimal(base_size = 13)
+```
+
+- How many groups do you see? Describe each one in words.
+
+**My answers:**
+
+## Task 3: standardize, then choose k
+
+```{r task3}
+# the four columns we cluster on
+feat <- df[, .(Online_Spend, InStore_Spend, Age, Income)]
+
+# standardize: each column becomes (value - its mean) / its standard deviation
+X <- scale(feat)
+round(head(X), 2)
+
+# elbow curve: run k-means for k = 2 to 10 and record the within-cluster spread
+set.seed(123)
+wss <- sapply(2:10, function(k) kmeans(X, centers = k, nstart = 20)$tot.withinss)
+elbow <- data.table(k = 2:10, wss = round(wss, 1))
+elbow
+
+ggplot(elbow, aes(x = k, y = wss)) +
+  geom_line(color = "#990000", linewidth = 1.1) +
+  geom_point(size = 3) +
+  scale_x_continuous(breaks = 2:10) +
+  labs(title = "Total Within-Cluster Sum of Squares vs. k",
+       x = "Number of clusters k", y = "Total within-cluster SS") +
+  theme_minimal(base_size = 13)
+```
+
+- After `scale()`, what does a value of 0 in `X` mean? And a value of 1?
+- Where is the elbow? Propose a k, with the numbers from the `elbow` table.
+
+**My answers:**
+
+## Task 4: k-means with k = 3, and the profile table
+
+```{r task4}
+# k-means on the standardized columns; nstart = 20 tries 20 random starts
+set.seed(123)
+km <- kmeans(X, centers = 3, nstart = 20)
+df[, cluster := factor(km$cluster)]
+
+# profile each cluster in the ORIGINAL units (dollars, years)
+profile <- df[, .(customers     = .N,
+                  online_spend  = round(mean(Online_Spend)),
+                  instore_spend = round(mean(InStore_Spend)),
+                  total_spend   = round(mean(Online_Spend + InStore_Spend)),
+                  age           = round(mean(Age), 1),
+                  income        = round(mean(Income)),
+                  total_all     = sum(Online_Spend + InStore_Spend)),
+              keyby = cluster]
+# each cluster's share of all the money customers spent
+profile[, share_of_spend_pct := round(100 * total_all / sum(total_all), 1)]
+profile[, total_all := NULL]
+profile
+
+ggplot(df, aes(x = Online_Spend, y = InStore_Spend, color = cluster)) +
+  geom_point(size = 2, alpha = 0.8) +
+  scale_color_manual(values = c("1" = "#990000", "2" = "#0072B2", "3" = "#E69F00")) +
+  labs(title = "The Same Customers, Colored by K-Means (k = 3)",
+       x = "Online spend ($)", y = "In-store spend ($)", color = "Cluster") +
+  theme_minimal(base_size = 13) +
+  theme(legend.position = "top")
+```
+
+- Describe each cluster with the numbers from the profile table, and give
+  each one a name a marketer would use.
+- Why is the profile table computed on the original columns (`df`) and not
+  on the standardized ones (`X`)?
+
+**My answers:**
+
+## Task 5: what if we had not standardized?
+
+```{r task5}
+# the same k-means, on the raw columns (no scale())
+set.seed(123)
+km_raw <- kmeans(feat, centers = 3, nstart = 20)
+df[, cluster_raw := factor(km_raw$cluster)]
+
+df[, .(customers     = .N,
+       online_spend  = round(mean(Online_Spend)),
+       instore_spend = round(mean(InStore_Spend)),
+       age           = round(mean(Age), 1),
+       income        = round(mean(Income))),
+   keyby = cluster_raw]
+
+# where did each customer go? rows: raw clusters; columns: Task 4 clusters
+table(raw = df$cluster_raw, standardized = df$cluster)
+```
+
+- What separates the three raw clusters? Look at the income column.
+- Use the cross-table: which Task 4 segment gets split or mixed up? Which
+  clustering would you hand to the marketing team?
+
+**My answers:**
+
+## Task 6: the PCA map
+
+```{r task6}
+# PCA on the four columns, standardized inside prcomp()
+pca <- prcomp(feat, center = TRUE, scale. = TRUE)
+summary(pca)
+
+# loadings: how much each column counts in PC1 and PC2
+round(pca$rotation[, 1:2], 2)
+
+# the map: every customer at its (PC1, PC2), colored by cluster, plus the arrows
+scores   <- data.table(pca$x[, 1:2], cluster = df$cluster)
+loadings <- data.table(pca$rotation[, 1:2], variable = rownames(pca$rotation))
+arrow_scale <- 2.5
+
+ggplot() +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "grey70") +
+  geom_vline(xintercept = 0, linetype = "dashed", color = "grey70") +
+  geom_point(data = scores, aes(x = PC1, y = PC2, color = cluster),
+             size = 2, alpha = 0.7) +
+  geom_segment(data = loadings,
+               aes(x = 0, y = 0, xend = PC1 * arrow_scale, yend = PC2 * arrow_scale),
+               arrow = arrow(length = unit(0.25, "cm")), linewidth = 0.8) +
+  geom_label(data = loadings,
+             aes(x = PC1 * arrow_scale * 1.3, y = PC2 * arrow_scale * 1.3,
+                 label = variable), size = 4, fill = "white", alpha = 0.85) +
+  scale_color_manual(values = c("1" = "#990000", "2" = "#0072B2", "3" = "#E69F00")) +
+  labs(title = "PCA Map of the 198 Customers",
+       x = "PC1", y = "PC2", color = "Cluster") +
+  theme_minimal(base_size = 13) +
+  theme(legend.position = "top")
+```
+
+- How much of the variation do PC1 and PC2 keep together? (The
+  "Cumulative Proportion" row of the summary.)
+- Read the loadings: what does it mean to move **right** on PC1? To move
+  **down** on PC2? (PCA picks the direction of each axis arbitrarily; only
+  the arrows tell you what the axes mean.)
+- Where does each cluster sit on the map? Do they separate?
+
+**My answers:**
+
+## Task 7: the recommendation
+
+- Which segment is the most valuable: per customer, and in total? Use the
+  profile table from Task 4.
+- Propose **one marketing action per segment**: which channel, which offer,
+  which message.
+- State **one limitation** of this analysis for those decisions.
+
+**My answers:**

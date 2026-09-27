@@ -1,0 +1,1343 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="w6-2-recommendations_files/libs/clipboard/clipboard.min.js"></script>
+<script src="w6-2-recommendations_files/libs/quarto-html/tabby.min.js"></script>
+<script src="w6-2-recommendations_files/libs/quarto-html/popper.min.js"></script>
+<script src="w6-2-recommendations_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="w6-2-recommendations_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="w6-2-recommendations_files/libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="w6-2-recommendations_files/libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.10.18">
+
+  <meta name="author" content="Davide Proserpio">
+  <title>Recommendation Systems</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="w6-2-recommendations_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="w6-2-recommendations_files/libs/revealjs/dist/reveal.css">
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+  </style>
+  <link rel="stylesheet" href="w6-2-recommendations_files/libs/revealjs/dist/theme/quarto-314b5dd18fc2250662022fd299606ba3.css">
+  <link href="w6-2-recommendations_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="w6-2-recommendations_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="w6-2-recommendations_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="w6-2-recommendations_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">Recommendation Systems</h1>
+  <p class="subtitle">MKT 566 · Fall 2026</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Davide Proserpio
+</div>
+        <p class="quarto-title-affiliation">
+            USC Marshall School of Business
+          </p>
+    </div>
+</div>
+
+</section>
+<section>
+<section id="before-we-start" class="title-slide slide level1 divider center">
+<h1>Before We Start</h1>
+
+</section>
+<section id="housekeeping" class="slide level2">
+<h2>Housekeeping</h2>
+<ul>
+<li><strong>Homework 2</strong> (box office) due <strong>Thursday, Oct.&nbsp;8</strong></li>
+<li><strong>Group project</strong>: proposal presentations on <strong>Oct.&nbsp;13 and 15</strong></li>
+<li>Next week: <strong>fall recess</strong>, no class (Oct.&nbsp;6 and 8)</li>
+<li>Today: <strong>recommendation systems</strong>, then a group discussion on Netflix</li>
+</ul>
+</section>
+<section id="proposal-presentations-how-we-grade-them" class="slide level2 smaller-90">
+<h2>Proposal presentations: how we grade them</h2>
+<p><strong>Oct.&nbsp;13 and 15</strong>, 15 minutes per group. Send your slides by <strong>Monday, Oct. 12</strong>. The plan does not need to be finished: this is where you get feedback.</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 27%">
+<col style="width: 72%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>What we look at</th>
+<th>What a good proposal does</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>The question</strong></td>
+<td>says clearly what you want to find out, and why a marketer would care</td>
+</tr>
+<tr class="even">
+<td><strong>The data</strong></td>
+<td>says where your data comes from, and shows you can get it</td>
+</tr>
+<tr class="odd">
+<td><strong>The method</strong></td>
+<td>says how you will answer the question, with at least one tool from this class</td>
+</tr>
+<tr class="even">
+<td><strong>The talk</strong></td>
+<td>clear slides, finishes on time, speaks to the room, handles questions well</td>
+</tr>
+</tbody>
+</table>
+<div class="box">
+<p>Each of the four parts gets <strong>10, 14, 16, 18, or 25 points</strong>, from “needs improvement” to “excellent”, so the total is out of <strong>100</strong>. The proposal counts for <strong>15%</strong> of your group project grade.</p>
+</div>
+</section>
+<section id="recommendations-are-everywhere" class="slide level2">
+<h2>Recommendations are everywhere</h2>
+
+<img data-src="images/recs-netflix.png" class="quarto-figure quarto-figure-center r-stretch" style="width:80.0%"><div class="smaller-80 muted">
+<p>The Netflix home screen. What is Netflix recommending, and how might it decide?</p>
+</div>
+</section>
+<section id="recommendations-are-everywhere-1" class="slide level2">
+<h2>Recommendations are everywhere</h2>
+
+<img data-src="images/recs-amazon.png" class="quarto-figure quarto-figure-center r-stretch" style="width:62.0%"><div class="smaller-80 muted">
+<p>An Amazon page for a bag of coffee. On the right, Amazon suggests two things: a <strong>bundle</strong> of the same coffee, and a cheaper coffee from its <strong>own brand</strong>. Why would Amazon show you each one? Who benefits, you or Amazon?</p>
+</div>
+</section>
+<section id="why-recommendations-matter-for-marketing" class="slide level2">
+<h2>Why recommendations matter for marketing</h2>
+<ul>
+<li>Customers <strong>stay longer</strong> when what they see is relevant</li>
+<li>Customers <strong>buy more</strong> when the right product is in front of them</li>
+<li>Customers <strong>come back</strong> when they feel the store “gets” them</li>
+<li><strong>The risk</strong>: show people only what they already like, and they get stuck in a <strong>filter bubble</strong>. They never discover anything new</li>
+</ul>
+<div class="box">
+<p>Every recommendation is a small marketing decision, made millions of times a day: <strong>which product do we show this person, right now?</strong></p>
+</div>
+</section>
+<section id="clustering-vs.-recommendations" class="slide level2 smaller-90">
+<h2>Clustering vs.&nbsp;recommendations</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>Clustering (Tuesday)</th>
+<th>Recommendations</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Goal</td>
+<td>put similar customers in groups</td>
+<td>guess what one customer will like</td>
+</tr>
+<tr class="even">
+<td>Result</td>
+<td>a group name (“bargain hunters”)</td>
+<td>a list of products, best first, for each customer</td>
+</tr>
+<tr class="odd">
+<td>Who gets what</td>
+<td>everyone in a group gets the same thing</td>
+<td>every customer gets their own list</td>
+</tr>
+<tr class="even">
+<td>Example</td>
+<td>a different email for each group</td>
+<td>“because you watched…”</td>
+</tr>
+</tbody>
+</table>
+<div class="box">
+<p><strong>Clustering</strong> sorts customers into a few big groups. <strong>Recommendations</strong> tell <em>one</em> customer what to try next.</p>
+</div>
+</section>
+<section id="two-ways-to-build-a-recommender" class="slide level2 smaller-90">
+<h2>Two ways to build a recommender</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>Counting</th>
+<th>Learning</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Question</td>
+<td>which products are bought together?</td>
+<td>what will this customer like?</td>
+</tr>
+<tr class="even">
+<td>Result</td>
+<td>rules like “bread → butter”</td>
+<td>a score for every product, for every customer</td>
+</tr>
+<tr class="odd">
+<td>Example</td>
+<td>“frequently bought together”</td>
+<td>“because you watched…”</td>
+</tr>
+<tr class="even">
+<td>Checked with</td>
+<td>support, confidence, lift</td>
+<td>how often the list is right; clicks; sales</td>
+</tr>
+</tbody>
+</table>
+<div class="smaller-80 muted">
+<p>We start with counting, which needs nothing but a calculator. Then we move to learning, which is what people mean by machine learning.</p>
+</div>
+</section></section>
+<section>
+<section id="counting-what-goes-with-what" class="title-slide slide level1 divider center">
+<h1>Counting: What Goes With What</h1>
+
+</section>
+<section id="rules-people-who-buy-a-also-buy-b" class="slide level2 smaller-90">
+<h2>Rules: “people who buy A also buy B”</h2>
+<p>A <strong>rule</strong> reads <strong>A → B</strong>: customers who buy A also tend to buy B. Finding these rules is called <strong>market basket analysis</strong>.</p>
+<ul>
+<li>The data: one row per <strong>basket</strong> (one shopping trip), one column per product: 1 if the product is in the basket, 0 if not</li>
+<li>The method: <strong>count</strong> how often products show up together</li>
+<li>What stores do with the rules:
+<ul>
+<li>Suggest the second product: “frequently bought together”</li>
+<li>Put the two products near each other on the shelves</li>
+<li>Sell them together as a discounted bundle</li>
+</ul></li>
+</ul>
+</section>
+<section id="five-shopping-baskets" class="slide level2">
+<h2>Five shopping baskets</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Basket</th>
+<th>Bread</th>
+<th>Butter</th>
+<th>Milk</th>
+<th>Beer</th>
+<th>Diapers</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<div class="smaller-80 muted">
+<p>1 means the product is in the basket. Which products seem to go together? How would you measure “together” with a number?</p>
+</div>
+</section>
+<section id="three-numbers-for-a-rule" class="slide level2 smaller-90">
+<h2>Three numbers for a rule</h2>
+<div class="columns">
+<div class="column" style="width: 36%;">
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Basket</th>
+<th>Bread</th>
+<th>Butter</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td>0</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+</div><div class="column" style="width: 59%; margin-left: 5%;">
+<p>Take the rule <strong>bread → butter</strong> and count from the table:</p>
+<ul>
+<li><strong>Support</strong>: how common is the pair? Baskets with both, out of all baskets. Baskets 1 and 4: <strong>2 of 5 = 40%</strong></li>
+<li><strong>Confidence</strong>: when someone buys bread, how often do they also buy butter? Bread is in baskets 1, 3, and 4; two of those have butter: <strong>2 of 3 = 67%</strong></li>
+<li><strong>Lift</strong>: how much does buying bread raise the chance of butter? Confidence divided by the share of all baskets with butter (2 of 5 = 40%): <strong>67% ÷ 40% = 1.67</strong></li>
+</ul>
+</div></div>
+<div class="box">
+<p>Lift <strong>1.67</strong>: a bread buyer is 1.67 times as likely to buy butter as a typical shopper. Lift <strong>1</strong>: the two products have nothing to do with each other. <strong>Below 1</strong>: buying one makes the other <em>less</em> likely.</p>
+</div>
+</section>
+<section id="your-turn-diapers-and-beer" class="slide level2">
+<h2>Your turn: diapers and beer</h2>
+<p>A store looks at <strong>100 shopping baskets</strong>:</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>What is in the basket</th>
+<th>Baskets</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Diapers and beer</td>
+<td>2</td>
+</tr>
+<tr class="even">
+<td>Diapers only</td>
+<td>1</td>
+</tr>
+<tr class="odd">
+<td>Beer only</td>
+<td>38</td>
+</tr>
+<tr class="even">
+<td>Neither</td>
+<td>59</td>
+</tr>
+</tbody>
+</table>
+<div class="smaller-80 muted">
+<p>Compute the support, confidence, and lift of diapers → beer. Would you build a promotion on it?</p>
+</div>
+</section>
+<section id="diapers-and-beer-the-answer" class="slide level2 smaller-90">
+<h2>Diapers and beer: the answer</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Number</th>
+<th>How to get it</th>
+<th>Diapers → beer</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Support</td>
+<td>baskets with both ÷ all baskets</td>
+<td>2 ÷ 100 = <strong>2%</strong></td>
+</tr>
+<tr class="even">
+<td>Confidence</td>
+<td>baskets with both ÷ baskets with diapers (2 + 1)</td>
+<td>2 ÷ 3 = <strong>67%</strong></td>
+</tr>
+<tr class="odd">
+<td>Share with beer</td>
+<td>baskets with beer (2 + 38) ÷ all baskets</td>
+<td>40 ÷ 100 = <strong>40%</strong></td>
+</tr>
+<tr class="even">
+<td>Lift</td>
+<td>confidence ÷ share with beer</td>
+<td>67% ÷ 40% = <strong>1.67</strong></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Diaper buyers are 1.67 times as likely to buy beer as a typical shopper. That sounds <strong>strong</strong></li>
+<li>But the support is <strong>2%</strong>: the pattern comes from 2 baskets out of 100. Only 3 shoppers bought diapers at all. Too few to trust, and too few to be worth a promotion</li>
+</ul>
+<div class="box-warn">
+<p>Always read the three numbers together. A big lift on a tiny support is a fun fact, not a strategy. Stores ignore rules below a <strong>minimum support</strong>.</p>
+</div>
+</section>
+<section id="from-rules-to-recommendations" class="slide level2">
+<h2>From rules to recommendations</h2>
+<ol type="1">
+<li><strong>Count</strong> support, confidence, and lift for every pair of products</li>
+<li><strong>Drop</strong> the rules that are too rare or too weak</li>
+<li>When a customer puts A in the basket, <strong>suggest</strong> B, starting with the strongest lift</li>
+</ol>
+<div class="box">
+<p>This is Amazon’s “frequently bought together”. It needs only past baskets: no model, and nothing about the customer. Its limit: it knows what goes with what, not who <em>you</em> are.</p>
+</div>
+</section></section>
+<section>
+<section id="learning-people-like-you" class="title-slide slide level1 divider center">
+<h1>Learning: People Like You</h1>
+
+</section>
+<section id="three-approaches" class="slide level2">
+<h2>Three approaches</h2>
+<ul>
+<li><strong>Collaborative filtering</strong>: “people like you also liked this”. MBA students who like R tend to like Python too, so suggest Python</li>
+<li><strong>Content-based filtering</strong>: “more like what you liked”. You liked a sci-fi book, so suggest another sci-fi book</li>
+<li><strong>Hybrid</strong>: most real platforms mix the two</li>
+</ul>
+</section>
+<section id="the-core-idea-a-map-of-tastes" class="slide level2 smaller-90">
+<h2>The core idea: a map of tastes</h2>
+<ul>
+<li>Put every customer and every product on a <strong>map</strong>, so that similar ones sit <strong>close together</strong></li>
+<li>To recommend, find the products <strong>closest</strong> to the customer</li>
+<li>The computer draws the map from what people watch, click, and buy. Its axes capture tastes (genre, price, brand) that nobody had to name</li>
+<li>An <strong>embedding</strong> is the list of numbers that places a customer or a product on the map, one number per axis. On the next map, the movie <em>Crazy, Stupid, Love</em> has the embedding (1.35, 1.05): toward romance, and toward a big budget. Similar embeddings mean similar tastes</li>
+</ul>
+<div class="box">
+<p>You saw this on Tuesday: <strong>PCA</strong> gave every shopper two coordinates, PC1 and PC2, and we worked out what the axes meant by reading the arrows. Same idea here, learned from millions of clicks.</p>
+</div>
+</section>
+<section id="movies-on-a-map" class="slide level2">
+<h2>Movies on a map</h2>
+
+<img data-src="w6-2-recommendations_files/figure-revealjs/movie-map-1.png" width="768" class="r-stretch"><div class="smaller-80 muted">
+<p>A made-up map with four movies and one viewer, Bob. Which movie would you recommend to Bob?</p>
+</div>
+</section>
+<section id="movies-on-a-map-reading-it" class="slide level2 smaller-90">
+<h2>Movies on a map: reading it</h2>
+
+<img data-src="w6-2-recommendations_files/figure-revealjs/movie-map-2-1.png" width="768" class="r-stretch"><ul>
+<li><strong>Crazy, Stupid, Love</strong> is closest to Bob: romance, big budget. Recommend it first, and the action movies last</li>
+<li>A real system does the same with <strong>hundreds of axes</strong> instead of two, and axes nobody has named. The hard part is <strong>drawing the map</strong></li>
+</ul>
+</section>
+<section id="collaborative-filtering" class="slide level2">
+<h2>Collaborative filtering</h2>
+<ul>
+<li>Guesses what you will like from what <strong>other people</strong> liked</li>
+<li>The bet: people who agreed in the past will agree again</li>
+<li>It only needs to know <strong>who watched, bought, or rated what</strong>. It knows nothing about the movies themselves</li>
+<li>“Collaborative” because everyone’s choices help make everyone else’s recommendations</li>
+</ul>
+</section>
+<section id="five-users-five-movies" class="slide level2">
+<h2>Five users, five movies</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>User</th>
+<th>The Matrix</th>
+<th>Titanic</th>
+<th>Toy Story</th>
+<th>The Godfather</th>
+<th>Inception</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<div class="smaller-80 muted">
+<p>1 means the user watched and liked the movie. User 1 has not seen Titanic or The Godfather. Which one would you recommend to User 1, and why?</p>
+</div>
+</section>
+<section id="five-users-the-answer" class="slide level2 smaller-90">
+<h2>Five users: the answer</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>User</th>
+<th>Movies in common with User 1</th>
+<th>Watched Titanic?</th>
+<th>Watched The Godfather?</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>2</td>
+<td>1 (The Matrix)</td>
+<td>yes</td>
+<td>yes</td>
+</tr>
+<tr class="even">
+<td>3</td>
+<td>1 (Toy Story)</td>
+<td>yes</td>
+<td>no</td>
+</tr>
+<tr class="odd">
+<td>4</td>
+<td><strong>2</strong> (The Matrix, Inception)</td>
+<td>no</td>
+<td><strong>yes</strong></td>
+</tr>
+<tr class="even">
+<td>5</td>
+<td>1 (Inception)</td>
+<td>yes</td>
+<td>yes</td>
+</tr>
+</tbody>
+</table>
+<ol type="1">
+<li><strong>Compare</strong>: count the movies each user has in common with User 1</li>
+<li><strong>Find the closest</strong>: User 4, with 2 movies in common</li>
+<li><strong>Recommend</strong> what User 4 liked and User 1 has not seen: <strong>The Godfather</strong></li>
+</ol>
+<div class="smaller-80 muted">
+<p>Real systems compare you with thousands of users and use a finer measure of similarity than a simple count. The logic is the same.</p>
+</div>
+</section>
+<section id="the-catch-cold-start" class="slide level2 smaller-90">
+<h2>The catch: cold start</h2>
+<p>Collaborative filtering needs history. No history, no one to compare with. This is called the <strong>cold start</strong> problem:</p>
+<ul>
+<li>A <strong>new customer</strong> has watched nothing: who is this customer similar to?</li>
+<li>A <strong>new movie</strong> has no viewers yet, so it never gets recommended, so it never gets viewers</li>
+</ul>
+<p>And most of the table is empty anyway. A real example: <strong>MovieLens</strong>, a movie-recommendation website run by researchers at the University of Minnesota, where users rate movies from 0.5 to 5 stars. In its public sample, <strong>610</strong> users rated <strong>9,724</strong> movies:</p>
+<ul>
+<li>Only <strong>1.7%</strong> of the user-and-movie pairs have a rating</li>
+<li><strong>66%</strong> of the movies have <strong>5 ratings or fewer</strong></li>
+</ul>
+<div class="smaller-80 muted">
+<p>Source: the MovieLens “small” dataset (GroupLens, University of Minnesota), 100,836 ratings. A new dataset, used only on this slide.</p>
+</div>
+</section>
+<section id="content-based-recommenders" class="slide level2 smaller-90">
+<h2>Content-based recommenders</h2>
+<ul>
+<li>Recommend products that <strong>look like</strong> what the customer liked before, using what we know about each product: genre, cast, description, price</li>
+<li>Example: you watched a sci-fi thriller, so suggest movies with similar descriptions</li>
+<li><strong>Plus</strong>: a new movie has a description from day one, so it can be recommended right away</li>
+<li><strong>Minus</strong>: the <strong>filter bubble</strong>. Everything looks like what you already watched, so you never try anything new</li>
+</ul>
+</section>
+<section id="which-one-when" class="slide level2 smaller-90">
+<h2>Which one when?</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th></th>
+<th>Collaborative filtering</th>
+<th>Content-based</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Needs</td>
+<td>who watched or bought what</td>
+<td>a description of each product</td>
+</tr>
+<tr class="even">
+<td>New product</td>
+<td>cannot recommend it</td>
+<td>can recommend it right away</td>
+</tr>
+<tr class="odd">
+<td>New customer</td>
+<td>cannot recommend</td>
+<td>needs a few choices first</td>
+</tr>
+<tr class="even">
+<td>Good at</td>
+<td>surprises: “people like you liked this”</td>
+<td>more of the same</td>
+</tr>
+<tr class="odd">
+<td>Risk</td>
+<td>popular products win</td>
+<td>filter bubble</td>
+</tr>
+</tbody>
+</table>
+<div class="box">
+<p>Most platforms use both (<strong>hybrid</strong>): content-based for new products and new customers, collaborative once there is enough history.</p>
+</div>
+</section></section>
+<section>
+<section id="the-modern-version-deep-learning" class="title-slide slide level1 divider center">
+<h1>The Modern Version: Deep Learning</h1>
+
+</section>
+<section id="deep-learning-in-one-picture" class="slide level2 smaller-90">
+<h2>Deep learning, in one picture</h2>
+<div class="columns">
+<div class="column" style="width: 42%;">
+<ul>
+<li><strong>Deep learning</strong>: computer models built in many <strong>layers</strong>. Each layer spots more complex patterns than the one before</li>
+<li>It works with almost any data: pictures, text, sound, clicks, video</li>
+<li><strong>ChatGPT, Claude, and Gemini</strong> are deep learning models trained on huge amounts of text: <strong>large language models (LLMs)</strong></li>
+</ul>
+</div><div class="column" style="width: 53%; margin-left: 5%;">
+<p><img data-src="images/deep-learning-layers.png" style="width:100.0%"></p>
+<div class="smaller-80 muted">
+<p>Recognizing a dog: the first layer sees dots of color, the next sees edges, later layers see shapes, and the last one says “dog”.</p>
+</div>
+</div></div>
+</section>
+<section id="what-deep-learning-adds" class="slide level2 smaller-90">
+<h2>What deep learning adds</h2>
+
+<img data-src="images/deep-learning-embeddings.png" class="quarto-figure quarto-figure-center r-stretch" style="width:44.0%"><div class="smaller-80 muted">
+<p>You do not need the details: every kind of data goes in at the top, and one spot on the map comes out at the bottom.</p>
+</div>
+<ul>
+<li>It draws <strong>much better maps</strong>, because it uses every kind of data: who the customer is, what they bought, their reviews, even product photos</li>
+<li>Content-based, the modern way: an LLM reads each movie’s plot and cast and places the movie on the map</li>
+</ul>
+</section></section>
+<section>
+<section id="does-the-recommendation-system-work" class="title-slide slide level1 divider center">
+<h1>Does the Recommendation System Work?</h1>
+
+</section>
+<section id="two-ways-to-test-a-recommender" class="slide level2 smaller-90">
+<h2>Two ways to test a recommender</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 18%">
+<col style="width: 40%">
+<col style="width: 40%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>Test 1: on past data</th>
+<th>Test 2: with real customers</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>When</strong></td>
+<td>before any customer sees the new recommendations</td>
+<td>after the new recommendations go live on the site</td>
+</tr>
+<tr class="even">
+<td><strong>How</strong></td>
+<td>hide last month, let the system guess, compare with what customers really did</td>
+<td>give the new system to half the customers and the old one to the other half</td>
+</tr>
+<tr class="odd">
+<td><strong>What you measure</strong></td>
+<td>precision and recall</td>
+<td>clicks, sales, return visits</td>
+</tr>
+<tr class="even">
+<td><strong>Why</strong></td>
+<td>cheap and fast: catches a bad system before any customer sees it</td>
+<td>the real answer: do customers actually click and buy more?</td>
+</tr>
+</tbody>
+</table>
+<div class="box">
+<p>Run test 1 first, because it costs nothing. Run test 2 before you trust the system, because past data cannot tell you how customers will react to new suggestions.</p>
+</div>
+</section>
+<section id="test-1-on-past-data-precision-and-recall" class="slide level2 smaller-90 nostretch">
+<h2>Test 1, on past data: precision and recall</h2>
+<p>Take one customer’s history and <strong>hide last month</strong>. The system looks only at the months before and picks <strong>5 movies</strong> for them. Then we check what the customer <strong>actually liked</strong> last month:</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="w6-2-recommendations_files/figure-revealjs/prec-recall-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The <strong>2 matches</strong> (in red) are the movies we showed <strong>and</strong> you liked:</p>
+<ul>
+<li><strong>Precision</strong> = matches ÷ movies we showed = 2 ÷ 5 = <strong>40%</strong>. Of what we showed, how much did you like?</li>
+<li><strong>Recall</strong> = matches ÷ movies you liked = 2 ÷ 4 = <strong>50%</strong>. Of what you liked, how much did we show?</li>
+</ul>
+<div class="smaller-80 muted">
+<p>Two more checks: <strong>variety</strong> (does the list cover much of the catalog?) and <strong>surprise</strong> (does it ever show something less popular that people enjoy?).</p>
+</div>
+</section>
+<section id="test-2-with-real-customers-an-ab-test" class="slide level2 smaller-90">
+<h2>Test 2, with real customers: an A/B test</h2>
+<p>Once the new system is live, split the customers <strong>at random</strong> into two groups:</p>
+<ul>
+<li><strong>Group A</strong> (half the customers) keeps the <strong>old</strong> recommendations</li>
+<li><strong>Group B</strong> (the other half) gets the <strong>new</strong> ones</li>
+</ul>
+<p>Then compare the two groups on <strong>clicks</strong> (do they click on what we recommend?), <strong>sales</strong> (do they buy, book, or stream?), and <strong>return visits</strong> (do they come back?).</p>
+<div class="box">
+<p>Example: in group A, 5 of every 100 customers click on a recommendation; in group B, 8 of every 100 do. The new system raises clicks from 5% to 8%. Because the split was random, the two groups are alike in everything except the recommender, so the difference comes from the new system. More on experiments later in the course.</p>
+</div>
+</section>
+<section id="beyond-the-numbers" class="slide level2">
+<h2>Beyond the numbers</h2>
+<ul>
+<li><strong>Fairness</strong>: do small brands and new artists ever get shown, or only the big ones?</li>
+<li><strong>Explanation</strong>: <em>should</em> a customer see <strong>why</strong> something was recommended (“Because you watched…”)? It builds trust, but it also shows how much the company knows about them</li>
+<li><strong>The long run</strong>: do recommendations build loyalty, or just quick clicks?</li>
+</ul>
+<div class="box-warn">
+<p>Every recommender is built to maximize <em>something</em>. Clicks today and loyal customers next year can pull in different directions. Picking the goal is a marketing decision, not a technical one.</p>
+</div>
+</section>
+<section id="in-class-discussion-netflix" class="slide level2 smaller-90">
+<h2>In-class discussion: Netflix</h2>
+<p>In small groups, talk about what Netflix’s recommender has to get right. Pick a few questions from each area:</p>
+<ul>
+<li><strong>The viewer</strong>: something new, or the safe pick? What do you show a brand-new subscriber?</li>
+<li><strong>Filter bubbles</strong>: how far outside your usual taste should Netflix go?</li>
+<li><strong>The business</strong>: watch time, keeping subscribers, what shows cost. Should Netflix push its own shows?</li>
+<li><strong>The data</strong>: what reveals taste best: finishing a show, rewatching, browsing?</li>
+<li><strong>Ethics and the long run</strong>: privacy, fairness, clicks vs.&nbsp;real satisfaction</li>
+</ul>
+<div class="box">
+<p>Each group shares <strong>one or two things</strong> that surprised you and <strong>one challenge</strong> you see for Netflix. Full questions: <a href="case/recommender-discussion-assigment.pdf">discussion sheet</a>.</p>
+</div>
+</section>
+<section id="wrap-up" class="slide level2">
+<h2>Wrap-up</h2>
+<ul>
+<li><strong>Counting</strong>: rules find what is bought together. Read support, confidence, and lift <strong>together</strong></li>
+<li><strong>Learning</strong>: collaborative filtering (people like you) and content-based filtering (more like what you liked). Most platforms mix both</li>
+<li>Both come down to <strong>similarity</strong>: who or what is close to whom on a map of tastes</li>
+<li>Test a recommender twice: on past data (precision, recall), then with real customers in an A/B test (clicks, sales, return visits). And decide what it should aim for</li>
+</ul>
+<div class="smaller-80 muted">
+<p>Required reading: <a href="https://www.linkedin.com/pulse/netflixs-billion-dollar-secret-how-recommendation-systems-qin-phd-7zece/">Netflix’s billion-dollar secret</a> and <a href="https://medium.com/geekculture/marketing-automation-recommendation-systems-ae39d61aa38">Marketing automation: recommendation systems</a>. Optional: <a href="https://www.amazon.science/publications/two-decades-of-recommender-systems-at-amazon-com">Two decades of recommender systems at Amazon</a>. Next week: fall recess, no class.</p>
+</div>
+</section></section>
+<section id="questions" class="title-slide slide level1 divider center">
+<h1>Questions?</h1>
+
+</section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<div class="footer footer-default">
+<p>MKT 566 · Marketing Analytics</p>
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="w6-2-recommendations_files/libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="w6-2-recommendations_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="w6-2-recommendations_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="w6-2-recommendations_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="w6-2-recommendations_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="w6-2-recommendations_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="w6-2-recommendations_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="w6-2-recommendations_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="w6-2-recommendations_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="w6-2-recommendations_files/libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': false,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: true,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'fade',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'fast',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1280,
+
+        height: 720,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    
+    <script>
+      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+      // slide changes (different for each slide format).
+      (function () {
+        // dispatch for htmlwidgets
+        function fireSlideEnter() {
+          const event = window.document.createEvent("Event");
+          event.initEvent("slideenter", true, true);
+          window.document.dispatchEvent(event);
+        }
+
+        function fireSlideChanged(previousSlide, currentSlide) {
+          fireSlideEnter();
+
+          // dispatch for shiny
+          if (window.jQuery) {
+            if (previousSlide) {
+              window.jQuery(previousSlide).trigger("hidden");
+            }
+            if (currentSlide) {
+              window.jQuery(currentSlide).trigger("shown");
+            }
+          }
+        }
+
+        // hookup for slidy
+        if (window.w3c_slidy) {
+          window.w3c_slidy.add_observer(function (slide_num) {
+            // slide_num starts at position 1
+            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+          });
+        }
+
+      })();
+    </script>
+
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+                // target, if specified
+                link.setAttribute("target", "_blank");
+                if (link.getAttribute("rel") === null) {
+                  link.setAttribute("rel", "noopener");
+                }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>

@@ -100,3 +100,26 @@ Course materials (slides, cases, code, and the syllabus) will be posted here as 
   - In-class exercise, the Airbnb case: **[partial-solution handout](https://raw.githack.com/dadepro/mkt566/main/w4/w4-airbnb-case-partial.html)**, with all the code already run and every figure and table displayed. Your job: fill in the answers in the **[Rmd template](https://github.com/dadepro/mkt566/raw/main/w4/w4-airbnb-case-partial.Rmd)** (put it in one folder with the [data](https://github.com/dadepro/mkt566/raw/main/w4/airbnb-case-data.zip), 600 KB), knit, and prepare a short presentation of your findings. Knitted HTML with your answers due Sunday, Sept. 27. Optional, if you want to run it yourself: the [full vibecoding version](https://raw.githack.com/dadepro/mkt566/main/w4/w4-airbnb-case.html) and [data](https://github.com/dadepro/mkt566/raw/main/w4/airbnb-case-data.zip) (600 KB)
 - Thursday, Sept. 24:
   - In-class exercise, the Airbnb case (cont.): group presentations of your findings
+
+### Week 6: Clustering and recommendation systems
+- Tuesday, Sept. 29:
+  - Slides ([html](https://raw.githack.com/dadepro/mkt566/main/w6/w6-1-clustering.html), [pdf](https://raw.githack.com/dadepro/mkt566/main/w6/w6-1-clustering.pdf)): customer segmentation, clustering (k-means) and PCA
+  - Required readings:
+    - Chapters [5](https://bookdown.org/content/6ef13ea6-4e86-4566-b665-ebcd19d45029/pca_office.html), [6](https://bookdown.org/content/6ef13ea6-4e86-4566-b665-ebcd19d45029/pca_toothpase.html), and [7](https://bookdown.org/content/6ef13ea6-4e86-4566-b665-ebcd19d45029/cluster.html) of R for Marketing Students
+  - Optional readings:
+    - Chapters 11.1–11.3 of R for Marketing Research and Analytics
+  - Optional, the R code behind the slides (download everything: [w6-code.zip](https://github.com/dadepro/mkt566/raw/main/w6/w6-code.zip), or browse the [w6/code](https://github.com/dadepro/mkt566/tree/main/w6/code) folder):
+    - [Clustering: elbow, k-means, profiles, the PCA map](https://github.com/dadepro/mkt566/blob/main/w6/code/w6-1-clustering-class.R) and [data](https://github.com/dadepro/mkt566/blob/main/w6/code/data/segmentation_office.xlsx)
+    - [PCA: the brand perceptual map](https://github.com/dadepro/mkt566/blob/main/w6/code/w6-1-pca-class.R) and [data](https://github.com/dadepro/mkt566/blob/main/w6/code/data/perceptual_map_office.csv)
+  - Clustering exercise (practice): [html](https://raw.githack.com/dadepro/mkt566/main/w6/case/w6-clustering-exe.html), [R Markdown](https://github.com/dadepro/mkt566/raw/main/w6/case/w6-clustering-exe.Rmd), [data](https://github.com/dadepro/mkt566/raw/main/w6/case/clustering-exercise-data.zip)
+- Thursday, Oct. 1:
+  - Slides ([html](https://raw.githack.com/dadepro/mkt566/main/w6/w6-2-recommendations.html), [pdf](https://raw.githack.com/dadepro/mkt566/main/w6/w6-2-recommendations.pdf)): recommendation systems
+  - Required readings:
+    - [Netflix Billion Dollar Secret](https://www.linkedin.com/pulse/netflixs-billion-dollar-secret-how-recommendation-systems-qin-phd-7zece/)
+    - [Marketing Automation: Recommendation Systems](https://medium.com/geekculture/marketing-automation-recommendation-systems-ae39d61aa38)
+  - Optional readings:
+    - [Two decades of recommender systems at Amazon](https://www.amazon.science/publications/two-decades-of-recommender-systems-at-amazon-com)
+  - [Streaming platforms in-class discussion](https://raw.githack.com/dadepro/mkt566/main/w6/case/recommender-discussion-assigment.pdf)
+
+### Week 7: Fall recess, no class
+- Tuesday, Oct. 6, and Thursday, Oct. 8: no class (fall recess)
