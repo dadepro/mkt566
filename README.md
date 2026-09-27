@@ -108,7 +108,7 @@ Course materials (slides, cases, code, and the syllabus) will be posted here as 
     - Chapters [5](https://bookdown.org/content/6ef13ea6-4e86-4566-b665-ebcd19d45029/pca_office.html), [6](https://bookdown.org/content/6ef13ea6-4e86-4566-b665-ebcd19d45029/pca_toothpase.html), and [7](https://bookdown.org/content/6ef13ea6-4e86-4566-b665-ebcd19d45029/cluster.html) of R for Marketing Students
   - Optional readings:
     - Chapters 11.1–11.3 of R for Marketing Research and Analytics
-  - Optional, the R code behind the slides (download everything: [w6-code.zip](https://github.com/dadepro/mkt566/raw/main/w6/w6-code.zip), or browse the [w6/code](https://github.com/dadepro/mkt566/tree/main/w6/code) folder):
+  - The R code behind the slides (download everything: [w6-code.zip](https://github.com/dadepro/mkt566/raw/main/w6/w6-code.zip), or browse the [w6/code](https://github.com/dadepro/mkt566/tree/main/w6/code) folder):
     - [Clustering: elbow, k-means, profiles, the PCA map](https://github.com/dadepro/mkt566/blob/main/w6/code/w6-1-clustering-class.R) and [data](https://github.com/dadepro/mkt566/blob/main/w6/code/data/segmentation_office.xlsx)
     - [PCA: the brand perceptual map](https://github.com/dadepro/mkt566/blob/main/w6/code/w6-1-pca-class.R) and [data](https://github.com/dadepro/mkt566/blob/main/w6/code/data/perceptual_map_office.csv)
   - Clustering exercise (practice): [html](https://raw.githack.com/dadepro/mkt566/main/w6/case/w6-clustering-exe.html), [R Markdown](https://github.com/dadepro/mkt566/raw/main/w6/case/w6-clustering-exe.Rmd), [data](https://github.com/dadepro/mkt566/raw/main/w6/case/clustering-exercise-data.zip)

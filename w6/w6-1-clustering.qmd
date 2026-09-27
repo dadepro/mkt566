@@ -820,7 +820,7 @@ arrow), so the segments are real, not something k-means made up.
 ## Wrap-up
 
 ::: {.box}
-Optional: the R code and data behind every chart and table:
+The R code and data behind every chart and table:
 
 - [**`w6-code.zip`**](w6-code.zip):
   both scripts and both datasets
