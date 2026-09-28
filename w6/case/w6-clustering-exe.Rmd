@@ -64,9 +64,17 @@ as in Tuesday's slides.
 # load the data (the file must be in the same folder as this Rmd)
 df <- fread("customer_clustering_data.csv")
 
-# the first rows, and a summary of the four numeric columns
-head(df)
-summary(df[, .(Age, Income, Online_Spend, InStore_Spend)])
+# the first rows of the data
+knitr::kable(head(df), format.args = list(big.mark = ","))
+
+# a summary of the four numeric columns: smallest, middle, average, largest
+num <- df[, .(Age, Income, Online_Spend, InStore_Spend)]
+knitr::kable(data.table(Column   = names(num),
+                        Smallest = sapply(num, min),
+                        Median   = round(sapply(num, median)),
+                        Average  = round(sapply(num, mean)),
+                        Largest  = sapply(num, max)),
+             format.args = list(big.mark = ","))
 ```
 
 - How many customers are there, and what does one row describe?
@@ -98,13 +106,13 @@ feat <- df[, .(Online_Spend, InStore_Spend, Age, Income)]
 
 # standardize: each column becomes (value - its mean) / its standard deviation
 X <- scale(feat)
-round(head(X), 2)
+knitr::kable(round(head(X), 2))
 
 # elbow curve: run k-means for k = 2 to 10 and record the within-cluster spread
 set.seed(123)
 wss <- sapply(2:10, function(k) kmeans(X, centers = k, nstart = 20)$tot.withinss)
 elbow <- data.table(k = 2:10, wss = round(wss, 1))
-elbow
+knitr::kable(elbow, col.names = c("k", "Within-cluster spread"))
 
 ggplot(elbow, aes(x = k, y = wss)) +
   geom_line(color = "#990000", linewidth = 1.1) +
@@ -116,7 +124,7 @@ ggplot(elbow, aes(x = k, y = wss)) +
 ```
 
 - After `scale()`, what does a value of 0 in `X` mean? And a value of 1?
-- Where is the elbow? Propose a k, with the numbers from the `elbow` table.
+- Where is the elbow? Propose a k, with the numbers from the elbow table.
 
 **My answers:**
 
@@ -140,7 +148,10 @@ profile <- df[, .(customers     = .N,
 # each cluster's share of all the money customers spent
 profile[, share_of_spend_pct := round(100 * total_all / sum(total_all), 1)]
 profile[, total_all := NULL]
-profile
+knitr::kable(profile, format.args = list(big.mark = ","),
+             col.names = c("Cluster", "Customers", "Online spend (dollars)",
+                           "In-store spend (dollars)", "Total spend (dollars)", "Age",
+                           "Income (dollars)", "Share of all spend (%)"))
 
 ggplot(df, aes(x = Online_Spend, y = InStore_Spend, color = cluster)) +
   geom_point(size = 2, alpha = 0.8) +
@@ -166,12 +177,15 @@ set.seed(123)
 km_raw <- kmeans(feat, centers = 3, nstart = 20)
 df[, cluster_raw := factor(km_raw$cluster)]
 
-df[, .(customers     = .N,
-       online_spend  = round(mean(Online_Spend)),
-       instore_spend = round(mean(InStore_Spend)),
-       age           = round(mean(Age), 1),
-       income        = round(mean(Income))),
-   keyby = cluster_raw]
+raw_profile <- df[, .(customers     = .N,
+                      online_spend  = round(mean(Online_Spend)),
+                      instore_spend = round(mean(InStore_Spend)),
+                      age           = round(mean(Age), 1),
+                      income        = round(mean(Income))),
+                  keyby = cluster_raw]
+knitr::kable(raw_profile, format.args = list(big.mark = ","),
+             col.names = c("Raw cluster", "Customers", "Online spend (dollars)",
+                           "In-store spend (dollars)", "Age", "Income (dollars)"))
 
 # where did each customer go? Rows: the raw clusters from this task.
 # Columns: the standardized clusters from Task 4. Each cell counts the
@@ -195,10 +209,10 @@ knitr::kable(where, align = "c",
 ```{r task6}
 # PCA on the four columns, standardized inside prcomp()
 pca <- prcomp(feat, center = TRUE, scale. = TRUE)
-summary(pca)
+knitr::kable(round(summary(pca)$importance, 2))
 
 # loadings: how much each column counts in PC1 and PC2
-round(pca$rotation[, 1:2], 2)
+knitr::kable(round(pca$rotation[, 1:2], 2))
 
 # the map: every customer at its (PC1, PC2), colored by cluster, plus the arrows
 scores   <- data.table(pca$x[, 1:2], cluster = df$cluster)
@@ -224,7 +238,7 @@ ggplot() +
 ```
 
 - How much of the variation do PC1 and PC2 keep together? (The
-  "Cumulative Proportion" row of the summary.)
+  "Cumulative Proportion" row of the first table.)
 - Read the loadings: what does it mean to move **right** on PC1? To move
   **down** on PC2? (PCA picks the direction of each axis arbitrarily; only
   the arrows tell you what the axes mean.)
