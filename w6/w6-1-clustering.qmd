@@ -175,9 +175,6 @@ ggplot(cars, aes(x, y, label = brand)) +
   theme(axis.text = element_blank())
 ```
 
-::: {.smaller-80 .muted}
-A sketch, not data. You will build a real one with PCA at the end of today.
-:::
 :::
 :::::
 
@@ -220,9 +217,9 @@ p_toy +
   labs(title = "The Same Customers, Colored by K-Means (k = 3)")
 ```
 
-- We gave k-means only the **numbers** and **k = 3**. Where your eyes
-  hesitated, it drew the borders by **distance**, the same way every time.
-  Dots near a border could go either way: normal with real customers
+- The only thing we told k-means is the **number of clusters, k = 3**. It
+  found the groups from the data alone. Where your eyes hesitated, it drew
+  the borders by **distance**, the same way every time
 - The **X** marks each cluster's center. Read the centers and the groups get
   names: **occasional shoppers** (`r fmt_toy(1)`), **frequent small-basket
   shoppers** (`r fmt_toy(2)`), and **big spenders** (`r fmt_toy(3)`)

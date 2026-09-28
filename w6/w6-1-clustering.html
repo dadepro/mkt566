@@ -238,9 +238,6 @@ Davide Proserpio
 </div>
 </div>
 </div>
-<div class="smaller-80 muted">
-<p>A sketch, not data. You will build a real one with PCA at the end of today.</p>
-</div>
 </div></div>
 <div class="box">
 <p>Two tools today. <strong>K-means</strong> finds the groups. <strong>PCA</strong> draws the map you need to <em>see</em> them, and it powers the perceptual map.</p>
@@ -270,7 +267,7 @@ Davide Proserpio
 </div>
 </div>
 <ul>
-<li>We gave k-means only the <strong>numbers</strong> and <strong>k = 3</strong>. Where your eyes hesitated, it drew the borders by <strong>distance</strong>, the same way every time. Dots near a border could go either way: normal with real customers</li>
+<li>The only thing we told k-means is the <strong>number of clusters, k = 3</strong>. It found the groups from the data alone. Where your eyes hesitated, it drew the borders by <strong>distance</strong>, the same way every time</li>
 <li>The <strong>X</strong> marks each cluster’s center. Read the centers and the groups get names: <strong>occasional shoppers</strong> (about 6 purchases, $290), <strong>frequent small-basket shoppers</strong> (about 14 purchases, $560), and <strong>big spenders</strong> (about 16 purchases, $1,180)</li>
 <li>Eyes can handle 2 columns and 60 customers, not <strong>6 columns and thousands of customers</strong>. The algorithm can, with the same logic</li>
 </ul>
