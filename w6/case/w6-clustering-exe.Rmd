@@ -173,12 +173,19 @@ df[, .(customers     = .N,
        income        = round(mean(Income))),
    keyby = cluster_raw]
 
-# where did each customer go? rows: raw clusters; columns: Task 4 clusters
-table(raw = df$cluster_raw, standardized = df$cluster)
+# where did each customer go? Rows: the raw clusters from this task.
+# Columns: the standardized clusters from Task 4. Each cell counts the
+# customers who are in both.
+where <- as.data.frame.matrix(table(df$cluster_raw, df$cluster))
+colnames(where) <- paste("Task 4 cluster", colnames(where))
+rownames(where) <- paste("Raw cluster", rownames(where))
+knitr::kable(where, align = "c",
+             caption = "Number of customers in each raw cluster (rows) and each Task 4 cluster (columns)")
 ```
 
 - What separates the three raw clusters? Look at the income column.
-- Use the cross-table: which Task 4 segment gets split or mixed up? Which
+- Use the last table (where each customer went): which Task 4 cluster gets
+  split or mixed up? Which
   clustering would you hand to the marketing team?
 
 **My answers:**

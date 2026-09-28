@@ -1703,18 +1703,58 @@ df[, .(customers     = .N,
 ## 1:           1        79          777          2361  42.8  61931
 ## 2:           2        45         1920          2099  35.8  85681
 ## 3:           3        74         1132           530  27.2  36117</code></pre>
-<pre class="r"><code># where did each customer go? rows: raw clusters; columns: Task 4 clusters
-table(raw = df$cluster_raw, standardized = df$cluster)</code></pre>
-<pre><code>##    standardized
-## raw  1  2  3
-##   1 59  1 19
-##   2  2  0 43
-##   3  7 66  1</code></pre>
+<pre class="r"><code># where did each customer go? Rows: the raw clusters from this task.
+# Columns: the standardized clusters from Task 4. Each cell counts the
+# customers who are in both.
+where &lt;- as.data.frame.matrix(table(df$cluster_raw, df$cluster))
+colnames(where) &lt;- paste(&quot;Task 4 cluster&quot;, colnames(where))
+rownames(where) &lt;- paste(&quot;Raw cluster&quot;, rownames(where))
+knitr::kable(where, align = &quot;c&quot;,
+             caption = &quot;Number of customers in each raw cluster (rows) and each Task 4 cluster (columns)&quot;)</code></pre>
+<table>
+<caption>Number of customers in each raw cluster (rows) and each Task 4
+cluster (columns)</caption>
+<colgroup>
+<col width="20%" />
+<col width="26%" />
+<col width="26%" />
+<col width="26%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="center">Task 4 cluster 1</th>
+<th align="center">Task 4 cluster 2</th>
+<th align="center">Task 4 cluster 3</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Raw cluster 1</td>
+<td align="center">59</td>
+<td align="center">1</td>
+<td align="center">19</td>
+</tr>
+<tr class="even">
+<td align="left">Raw cluster 2</td>
+<td align="center">2</td>
+<td align="center">0</td>
+<td align="center">43</td>
+</tr>
+<tr class="odd">
+<td align="left">Raw cluster 3</td>
+<td align="center">7</td>
+<td align="center">66</td>
+<td align="center">1</td>
+</tr>
+</tbody>
+</table>
 <ul>
 <li>What separates the three raw clusters? Look at the income
 column.</li>
-<li>Use the cross-table: which Task 4 segment gets split or mixed up?
-Which clustering would you hand to the marketing team?</li>
+<li>Use the last table (where each customer went): which Task 4 cluster
+gets split or mixed up? Which clustering would you hand to the marketing
+team?</li>
 </ul>
 <p><strong>My answers:</strong></p>
 </div>

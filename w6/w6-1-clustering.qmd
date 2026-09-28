@@ -219,7 +219,7 @@ p_toy +
 
 - The only thing we told k-means is the **number of clusters, k = 3**. It
   found the groups from the data alone. Where your eyes hesitated, it drew
-  the borders by **distance**, the same way every time
+  the borders by **distance**
 - The **X** marks each cluster's center. Read the centers and the groups get
   names: **occasional shoppers** (`r fmt_toy(1)`), **frequent small-basket
   shoppers** (`r fmt_toy(2)`), and **big spenders** (`r fmt_toy(3)`)
@@ -822,7 +822,7 @@ The R code and data behind every chart and table:
 - [**`w6-code.zip`**](w6-code.zip):
   both scripts and both datasets
 - [**`w6-1-clustering-class.R`**](code/w6-1-clustering-class.R):
-  elbow, k-means, profiles, the PCA map
+  the 60-customer example, k-means step by step, elbow, profiles, the PCA maps
 - [**`w6-1-pca-class.R`**](code/w6-1-pca-class.R):
   the brand perceptual map
 :::
