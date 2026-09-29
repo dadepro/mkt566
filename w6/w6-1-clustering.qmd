@@ -590,6 +590,35 @@ most of the story. If they kept, say, 40%, the map would hide more than it
 shows.
 :::
 
+## Loadings: what each axis is made of {.smaller-90}
+
+::::: {.columns}
+::: {.column style="width: 36%;"}
+```{r loadings-table}
+knitr::kable(loadings[, .(Rating = attribute, PC1 = round(PC1, 2), PC2 = round(PC2, 2))],
+             align = "lcc")
+```
+:::
+::: {.column style="width: 59%; margin-left: 5%;"}
+Each axis is a **mix** of the six ratings. The **loadings** are the weights
+in the mix: how much each rating counts in PC1 and in PC2.
+
+- **Sign**: a positive weight pulls shoppers who rate it high toward the
+  positive end of the axis; a negative weight, toward the negative end
+- **Size**: the bigger the number (ignoring the sign), the more that rating
+  counts. Near 0, it barely matters for that axis
+- **PC1**: variety, electronics, and furniture are all negative; the other
+  three are positive. PC1 separates shoppers who want a big assortment from
+  the rest
+- **PC2**: low prices is the biggest positive (0.57), quality of service the
+  biggest negative (−0.63). PC2 separates price from service
+:::
+:::::
+
+::: {.smaller-80 .muted}
+Next slide: the same numbers drawn as arrows, one per rating.
+:::
+
 ## What do the two axes mean? {.smaller-90}
 
 ::::: {.columns}
@@ -610,7 +639,8 @@ ggplot(loadings, aes(x = PC1 * arrow_scale, y = PC2 * arrow_scale, label = attri
 ```
 :::
 ::: {.column width="45%"}
-Each arrow is one rating. It points to where shoppers who rate it **high**
+Each arrow is one rating, drawn from its two loadings (last slide). It
+points to where shoppers who rate it **high**
 end up on the map:
 
 - **PC1** (left vs. right): **three** arrows point left: variety,
@@ -793,6 +823,38 @@ Three cautions for both methods:
 - Clusters **describe** customers; they do not explain them. Service
   seekers are older on average, but that does not mean age makes people
   want service. It only tells us who tends to be in the group
+:::
+
+## Clustering or PCA? When to use which {.smaller-90}
+
+Ask one question first: **do I need groups, or do I need a picture?**
+
+::::: {.columns}
+::: {.column style="width: 47%;"}
+**Clustering** when you need **groups** to act on
+
+- You will treat customers differently: a different email, offer, or
+  product for each group
+- You need to put every customer in a bucket: "which segment is this
+  customer in?"
+- Our example: bargain hunters get the discount email, service seekers get
+  the concierge pitch
+:::
+::: {.column style="width: 47%; margin-left: 6%;"}
+**PCA** when you need to **see** or **simplify**
+
+- Too many columns to look at: squeeze them into two axes you can plot
+- Many columns say the same thing: find the few big dimensions (our
+  example: assortment, and price vs. service)
+- Positioning: put brands on a map to see competitors and gaps (the
+  perceptual map)
+:::
+:::::
+
+::: {.box}
+**Both**, when you segment on many columns: k-means finds the groups, and
+the PCA map shows whether they really stand apart. That is what we did with
+the 40 office-store shoppers.
 :::
 
 ## From clustering to PCA: the steps, and why {.smaller-80}

@@ -623,6 +623,68 @@ Davide Proserpio
 <p>Two axes keep 78% here, so the map tells most of the story. If they kept, say, 40%, the map would hide more than it shows.</p>
 </div>
 </section>
+<section id="loadings-what-each-axis-is-made-of" class="slide level2 smaller-90">
+<h2>Loadings: what each axis is made of</h2>
+<div class="columns">
+<div class="column" style="width: 36%;">
+<div class="cell">
+<div class="cell-output-display">
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Rating</th>
+<th style="text-align: center;">PC1</th>
+<th style="text-align: center;">PC2</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">variety</td>
+<td style="text-align: center;">-0.41</td>
+<td style="text-align: center;">0.41</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">electronics</td>
+<td style="text-align: center;">-0.45</td>
+<td style="text-align: center;">-0.16</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">furniture</td>
+<td style="text-align: center;">-0.52</td>
+<td style="text-align: center;">0.06</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">quality of service</td>
+<td style="text-align: center;">0.26</td>
+<td style="text-align: center;">-0.63</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">low prices</td>
+<td style="text-align: center;">0.33</td>
+<td style="text-align: center;">0.57</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">return policy</td>
+<td style="text-align: center;">0.43</td>
+<td style="text-align: center;">0.27</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div><div class="column" style="width: 59%; margin-left: 5%;">
+<p>Each axis is a <strong>mix</strong> of the six ratings. The <strong>loadings</strong> are the weights in the mix: how much each rating counts in PC1 and in PC2.</p>
+<ul>
+<li><strong>Sign</strong>: a positive weight pulls shoppers who rate it high toward the positive end of the axis; a negative weight, toward the negative end</li>
+<li><strong>Size</strong>: the bigger the number (ignoring the sign), the more that rating counts. Near 0, it barely matters for that axis</li>
+<li><strong>PC1</strong>: variety, electronics, and furniture are all negative; the other three are positive. PC1 separates shoppers who want a big assortment from the rest</li>
+<li><strong>PC2</strong>: low prices is the biggest positive (0.57), quality of service the biggest negative (−0.63). PC2 separates price from service</li>
+</ul>
+</div></div>
+<div class="smaller-80 muted">
+<p>Next slide: the same numbers drawn as arrows, one per rating.</p>
+</div>
+</section>
 <section id="what-do-the-two-axes-mean" class="slide level2 smaller-90">
 <h2>What do the two axes mean?</h2>
 <div class="columns">
@@ -637,7 +699,7 @@ Davide Proserpio
 </div>
 </div>
 </div><div class="column" style="width:45%;">
-<p>Each arrow is one rating. It points to where shoppers who rate it <strong>high</strong> end up on the map:</p>
+<p>Each arrow is one rating, drawn from its two loadings (last slide). It points to where shoppers who rate it <strong>high</strong> end up on the map:</p>
 <ul>
 <li><strong>PC1</strong> (left vs.&nbsp;right): <strong>three</strong> arrows point left: variety, electronics, and furniture. Name the axis by what the three share: left means “wants a <strong>big assortment</strong>”. “Furniture” alone would leave out the other two</li>
 <li><strong>PC2</strong> (up vs.&nbsp;down): <strong>low prices</strong> reaches highest, <strong>quality of service</strong> reaches lowest. Up means “cares about price, not service”; down, the reverse</li>
@@ -842,6 +904,29 @@ Davide Proserpio
 <li>Clusters and axes mean <strong>nothing</strong> until you read them: the averages for clusters, the arrows for axes</li>
 <li>Clusters <strong>describe</strong> customers; they do not explain them. Service seekers are older on average, but that does not mean age makes people want service. It only tells us who tends to be in the group</li>
 </ul>
+</div>
+</section>
+<section id="clustering-or-pca-when-to-use-which" class="slide level2 smaller-90">
+<h2>Clustering or PCA? When to use which</h2>
+<p>Ask one question first: <strong>do I need groups, or do I need a picture?</strong></p>
+<div class="columns">
+<div class="column" style="width: 47%;">
+<p><strong>Clustering</strong> when you need <strong>groups</strong> to act on</p>
+<ul>
+<li>You will treat customers differently: a different email, offer, or product for each group</li>
+<li>You need to put every customer in a bucket: “which segment is this customer in?”</li>
+<li>Our example: bargain hunters get the discount email, service seekers get the concierge pitch</li>
+</ul>
+</div><div class="column" style="width: 47%; margin-left: 6%;">
+<p><strong>PCA</strong> when you need to <strong>see</strong> or <strong>simplify</strong></p>
+<ul>
+<li>Too many columns to look at: squeeze them into two axes you can plot</li>
+<li>Many columns say the same thing: find the few big dimensions (our example: assortment, and price vs.&nbsp;service)</li>
+<li>Positioning: put brands on a map to see competitors and gaps (the perceptual map)</li>
+</ul>
+</div></div>
+<div class="box">
+<p><strong>Both</strong>, when you segment on many columns: k-means finds the groups, and the PCA map shows whether they really stand apart. That is what we did with the 40 office-store shoppers.</p>
 </div>
 </section>
 <section id="from-clustering-to-pca-the-steps-and-why" class="slide level2 smaller-80">
