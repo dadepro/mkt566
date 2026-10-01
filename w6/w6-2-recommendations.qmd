@@ -69,6 +69,10 @@ p_map <- ggplot(movies_map, aes(x, y)) +
 
 # Before We Start {.divider}
 
+## Homework 1: the grades {.nostretch}
+
+![](images/hw1_score_distribution_excl.png){fig-align="center" width="64%"}
+
 ## Housekeeping
 
 - **Homework 2** (box office) due **Thursday, Oct. 8**
@@ -542,8 +546,11 @@ marketing decision, not a technical one.
 
 ## In-class assignment: Netflix {.smaller-90}
 
-In small groups, talk about what Netflix's recommender has to get right.
-Pick a few questions from each area:
+**Read the assigned reading**,
+[Netflix's billion-dollar secret](https://www.linkedin.com/pulse/netflixs-billion-dollar-secret-how-recommendation-systems-qin-phd-7zece/),
+and **answer the questions** in the
+[assignment](case/recommender-discussion-assigment.pdf), in small groups.
+The questions cover five areas:
 
 - **The viewer**: something new, or the safe pick? What do you show a
   brand-new subscriber?
@@ -556,9 +563,7 @@ Pick a few questions from each area:
   satisfaction
 
 ::: {.box}
-Each group shares **one or two things** that surprised you and **one
-challenge** you see for Netflix. Full questions:
-[assignment sheet](case/recommender-discussion-assigment.pdf).
+We will **discuss the answers together**.
 :::
 
 ## Wrap-up
