@@ -825,6 +825,21 @@ Davide Proserpio
 <li>It draws <strong>much better maps</strong>, because it uses every kind of data: who the customer is, what they bought, their reviews, even product photos</li>
 <li>Content-based, the modern way: an LLM reads each movie’s plot and cast and places the movie on the map</li>
 </ul>
+</section>
+<section id="an-example-spotify-and-brand-new-songs" class="slide level2 smaller-90">
+<h2>An example: Spotify and brand-new songs</h2>
+<p><strong>Remember the cold start?</strong> A song released today has no plays, so collaborative filtering has nothing to learn from.</p>
+<ul>
+<li>Spotify’s answer: a deep learning model <strong>listens to the song itself</strong>: its tempo, instruments, voice, and mood</li>
+<li>It turns the sound into an <strong>embedding</strong>: a spot on the map, next to songs that sound alike</li>
+<li>So the song can be <strong>recommended on day one</strong>, before anyone has played it. Once people start playing it, their plays can take over</li>
+</ul>
+<div class="box">
+<p>This is content-based filtering, the modern way: the “description” of the song is the sound itself, something no person could write down.</p>
+</div>
+<div class="smaller-80 muted">
+<p>Source: Sander Dieleman, “Recommending music on Spotify with deep learning” (2014).</p>
+</div>
 </section></section>
 <section>
 <section id="does-the-recommendation-system-work" class="title-slide slide level1 divider center">
