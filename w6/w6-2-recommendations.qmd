@@ -59,8 +59,8 @@ p_map <- ggplot(movies_map, aes(x, y)) +
   scale_color_manual(values = c(Movie = "#0072B2", Viewer = "#990000"),
                      name = NULL) +
   scale_shape_manual(values = c(Movie = 16, Viewer = 17), name = NULL) +
-  scale_x_continuous(limits = c(-2.4, 2.6), breaks = NULL) +
-  scale_y_continuous(limits = c(-2, 2.1), breaks = NULL) +
+  scale_x_continuous(limits = c(-2.4, 2.6), breaks = -2:2) +
+  scale_y_continuous(limits = c(-2, 2.1), breaks = -2:2) +
   labs(x = "Action  ←    →  Romance",
        y = "Budget  ←    →  Premium") +
   theme_minimal(base_size = 16) +
@@ -286,12 +286,6 @@ with what, not who *you* are.
 - To recommend, find the products **closest** to the customer
 - The computer draws the map from what people watch, click, and buy. Its
   axes capture tastes (genre, price, brand) that nobody had to name
-- An **embedding** is the list of numbers that places a customer or a
-  product on the map, one number per axis. On the next map, the movie
-  *Crazy, Stupid, Love* has the embedding
-  (`r movies_map[label == "Crazy, Stupid, Love", x]`,
-  `r movies_map[label == "Crazy, Stupid, Love", y]`): toward romance, and
-  toward a big budget. Similar embeddings mean similar tastes
 
 ::: {.box}
 You saw this on Tuesday: **PCA** gave every shopper two coordinates, PC1 and
@@ -312,16 +306,21 @@ A made-up map with four movies and one viewer, Bob. Which movie would you
 recommend to Bob?
 :::
 
-## Movies on a map: reading it {.smaller-90}
+## Movies on a map: reading it {.smaller-90 .nostretch}
 
 ```{r movie-map-2}
 #| fig-width: 8
-#| fig-height: 3.3
+#| fig-height: 3.1
 p_map + theme(legend.position = "none")
 ```
 
-- **Crazy, Stupid, Love** is closest to Bob: romance, big budget. Recommend
-  it first, and the action movies last
+- Each spot is a list of numbers, one per axis: an **embedding**. *Crazy,
+  Stupid, Love* sits at (`r movies_map[label == "Crazy, Stupid, Love", x]`,
+  `r movies_map[label == "Crazy, Stupid, Love", y]`), toward romance and a big
+  budget; Bob at (`r movies_map[label == "Bob", x]`,
+  `r movies_map[label == "Bob", y]`). Similar embeddings mean similar tastes
+- **Crazy, Stupid, Love** is closest to Bob: recommend it first, and the
+  action movies last
 - A real system does the same with **hundreds of axes** instead of two, and
   axes nobody has named. The hard part is **drawing the map**
 

@@ -557,7 +557,6 @@ Davide Proserpio
 <li>Put every customer and every product on a <strong>map</strong>, so that similar ones sit <strong>close together</strong></li>
 <li>To recommend, find the products <strong>closest</strong> to the customer</li>
 <li>The computer draws the map from what people watch, click, and buy. Its axes capture tastes (genre, price, brand) that nobody had to name</li>
-<li>An <strong>embedding</strong> is the list of numbers that places a customer or a product on the map, one number per axis. On the next map, the movie <em>Crazy, Stupid, Love</em> has the embedding (1.35, 1.05): toward romance, and toward a big budget. Similar embeddings mean similar tastes</li>
 </ul>
 <div class="box">
 <p>You saw this on Tuesday: <strong>PCA</strong> gave every shopper two coordinates, PC1 and PC2, and we worked out what the axes meant by reading the arrows. Same idea here, learned from millions of clicks.</p>
@@ -570,11 +569,20 @@ Davide Proserpio
 <p>A made-up map with four movies and one viewer, Bob. Which movie would you recommend to Bob?</p>
 </div>
 </section>
-<section id="movies-on-a-map-reading-it" class="slide level2 smaller-90">
+<section id="movies-on-a-map-reading-it" class="slide level2 smaller-90 nostretch">
 <h2>Movies on a map: reading it</h2>
-
-<img data-src="w6-2-recommendations_files/figure-revealjs/movie-map-2-1.png" width="768" class="r-stretch"><ul>
-<li><strong>Crazy, Stupid, Love</strong> is closest to Bob: romance, big budget. Recommend it first, and the action movies last</li>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="w6-2-recommendations_files/figure-revealjs/movie-map-2-1.png" width="768"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li>Each spot is a list of numbers, one per axis: an <strong>embedding</strong>. <em>Crazy, Stupid, Love</em> sits at (1.35, 1.05), toward romance and a big budget; Bob at (1.65, 1.45). Similar embeddings mean similar tastes</li>
+<li><strong>Crazy, Stupid, Love</strong> is closest to Bob: recommend it first, and the action movies last</li>
 <li>A real system does the same with <strong>hundreds of axes</strong> instead of two, and axes nobody has named. The hard part is <strong>drawing the map</strong></li>
 </ul>
 </section>
