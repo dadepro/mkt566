@@ -284,29 +284,39 @@ with what, not who *you* are.
 - Put every customer and every product on a **map**, so that similar ones
   sit **close together**
 - To recommend, find the products **closest** to the customer
-- The computer draws the map from what people watch, click, and buy. Its
-  axes capture tastes (genre, price, brand) that nobody had to name
+- The map can be drawn two ways: from what people watch, click, and buy
+  (**collaborative filtering**), or from what the products are, like genre,
+  cast, and description (**content-based**)
 
 ::: {.box}
 You saw this on Tuesday: **PCA** gave every shopper two coordinates, PC1 and
 PC2, and we worked out what the axes meant by reading the arrows. Same idea
-here, learned from millions of clicks.
+here.
 :::
 
-## Movies on a map
+## Collaborative filtering
+
+- Guesses what you will like from what **other people** liked
+- The bet: people who agreed in the past will agree again
+- It only needs to know **who watched, bought, or rated what**. It knows
+  nothing about the movies themselves
+- "Collaborative" because everyone's choices help make everyone else's
+  recommendations
+
+## Collaborative filtering, as a map {.nostretch}
 
 ```{r movie-map}
 #| fig-width: 8
-#| fig-height: 4.6
+#| fig-height: 4.3
 p_map
 ```
 
 ::: {.smaller-80 .muted}
-A made-up map with four movies and one viewer, Bob. Which movie would you
-recommend to Bob?
+A made-up map: four movies and one viewer, Bob, placed by what people
+watched and liked. Which movie would you recommend to Bob?
 :::
 
-## Movies on a map: reading it {.smaller-90 .nostretch}
+## Collaborative filtering, as a map: reading it {.smaller-90 .nostretch}
 
 ```{r movie-map-2}
 #| fig-width: 8
@@ -324,14 +334,17 @@ p_map + theme(legend.position = "none")
 - A real system does the same with **hundreds of axes** instead of two, and
   axes nobody has named. The hard part is **drawing the map**
 
-## Collaborative filtering
+## Where do the coordinates come from?
 
-- Guesses what you will like from what **other people** liked
-- The bet: people who agreed in the past will agree again
-- It only needs to know **who watched, bought, or rated what**. It knows
-  nothing about the movies themselves
-- "Collaborative" because everyone's choices help make everyone else's
-  recommendations
+In **collaborative filtering**, the computer **learns** them from ratings:
+
+- It starts with every user and every movie at a **random** spot on the map
+- Then it keeps **moving** them, until each user sits **close to the movies
+  they liked** and **far from the ones they did not**
+
+::: {.box}
+Nobody names the axes: we read them afterwards, as with PCA.
+:::
 
 ## Five users, five movies
 

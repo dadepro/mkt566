@@ -556,21 +556,38 @@ Davide Proserpio
 <ul>
 <li>Put every customer and every product on a <strong>map</strong>, so that similar ones sit <strong>close together</strong></li>
 <li>To recommend, find the products <strong>closest</strong> to the customer</li>
-<li>The computer draws the map from what people watch, click, and buy. Its axes capture tastes (genre, price, brand) that nobody had to name</li>
+<li>The map can be drawn two ways: from what people watch, click, and buy (<strong>collaborative filtering</strong>), or from what the products are, like genre, cast, and description (<strong>content-based</strong>)</li>
 </ul>
 <div class="box">
-<p>You saw this on Tuesday: <strong>PCA</strong> gave every shopper two coordinates, PC1 and PC2, and we worked out what the axes meant by reading the arrows. Same idea here, learned from millions of clicks.</p>
+<p>You saw this on Tuesday: <strong>PCA</strong> gave every shopper two coordinates, PC1 and PC2, and we worked out what the axes meant by reading the arrows. Same idea here.</p>
 </div>
 </section>
-<section id="movies-on-a-map" class="slide level2">
-<h2>Movies on a map</h2>
-
-<img data-src="w6-2-recommendations_files/figure-revealjs/movie-map-1.png" width="768" class="r-stretch"><div class="smaller-80 muted">
-<p>A made-up map with four movies and one viewer, Bob. Which movie would you recommend to Bob?</p>
+<section id="collaborative-filtering" class="slide level2">
+<h2>Collaborative filtering</h2>
+<ul>
+<li>Guesses what you will like from what <strong>other people</strong> liked</li>
+<li>The bet: people who agreed in the past will agree again</li>
+<li>It only needs to know <strong>who watched, bought, or rated what</strong>. It knows nothing about the movies themselves</li>
+<li>“Collaborative” because everyone’s choices help make everyone else’s recommendations</li>
+</ul>
+</section>
+<section id="collaborative-filtering-as-a-map" class="slide level2 nostretch">
+<h2>Collaborative filtering, as a map</h2>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="w6-2-recommendations_files/figure-revealjs/movie-map-1.png" width="768"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="smaller-80 muted">
+<p>A made-up map: four movies and one viewer, Bob, placed by what people watched and liked. Which movie would you recommend to Bob?</p>
 </div>
 </section>
-<section id="movies-on-a-map-reading-it" class="slide level2 smaller-90 nostretch">
-<h2>Movies on a map: reading it</h2>
+<section id="collaborative-filtering-as-a-map-reading-it" class="slide level2 smaller-90 nostretch">
+<h2>Collaborative filtering, as a map: reading it</h2>
 <div class="cell">
 <div class="cell-output-display">
 <div>
@@ -586,14 +603,16 @@ Davide Proserpio
 <li>A real system does the same with <strong>hundreds of axes</strong> instead of two, and axes nobody has named. The hard part is <strong>drawing the map</strong></li>
 </ul>
 </section>
-<section id="collaborative-filtering" class="slide level2">
-<h2>Collaborative filtering</h2>
+<section id="where-do-the-coordinates-come-from" class="slide level2">
+<h2>Where do the coordinates come from?</h2>
+<p>In <strong>collaborative filtering</strong>, the computer <strong>learns</strong> them from ratings:</p>
 <ul>
-<li>Guesses what you will like from what <strong>other people</strong> liked</li>
-<li>The bet: people who agreed in the past will agree again</li>
-<li>It only needs to know <strong>who watched, bought, or rated what</strong>. It knows nothing about the movies themselves</li>
-<li>“Collaborative” because everyone’s choices help make everyone else’s recommendations</li>
+<li>It starts with every user and every movie at a <strong>random</strong> spot on the map</li>
+<li>Then it keeps <strong>moving</strong> them, until each user sits <strong>close to the movies they liked</strong> and <strong>far from the ones they did not</strong></li>
 </ul>
+<div class="box">
+<p>Nobody names the axes: we read them afterwards, as with PCA.</p>
+</div>
 </section>
 <section id="five-users-five-movies" class="slide level2">
 <h2>Five users, five movies</h2>
