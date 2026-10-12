@@ -124,3 +124,9 @@ Course materials (slides, cases, code, and the syllabus) will be posted here as 
 
 ### Week 7: Fall recess, no class
 - Tuesday, Oct. 6, and Thursday, Oct. 8: no class (fall recess)
+
+### Week 8: Project proposals
+- Tuesday, Oct. 13:
+  - Project proposal presentations: groups 1, 2, 3, and 5
+- Thursday, Oct. 15:
+  - Project proposal presentations: groups 6, 7, 8, and 9
