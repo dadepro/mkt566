@@ -112,6 +112,7 @@ Course materials (slides, cases, code, and the syllabus) will be posted here as 
     - [Clustering: the 60-customer example, k-means step by step, elbow, profiles, the PCA maps](https://github.com/dadepro/mkt566/blob/main/w6/code/w6-1-clustering-class.R) and [data](https://github.com/dadepro/mkt566/blob/main/w6/code/data/segmentation_office.xlsx)
     - [PCA: the brand perceptual map](https://github.com/dadepro/mkt566/blob/main/w6/code/w6-1-pca-class.R) and [data](https://github.com/dadepro/mkt566/blob/main/w6/code/data/perceptual_map_office.csv)
   - Clustering exercise (practice): [html](https://raw.githack.com/dadepro/mkt566/main/w6/case/w6-clustering-exe.html), [R Markdown](https://github.com/dadepro/mkt566/raw/main/w6/case/w6-clustering-exe.Rmd), [data](https://github.com/dadepro/mkt566/raw/main/w6/case/clustering-exercise-data.zip)
+  - Instructor solution: [html](https://raw.githack.com/dadepro/mkt566/main/w6/case/w6-clustering-exe-solution.html), [R Markdown](https://github.com/dadepro/mkt566/blob/main/w6/case/w6-clustering-exe-solution.Rmd)
 - Thursday, Oct. 1:
   - Slides ([html](https://raw.githack.com/dadepro/mkt566/main/w6/w6-2-recommendations.html), [pdf](https://raw.githack.com/dadepro/mkt566/main/w6/w6-2-recommendations.pdf)): recommendation systems
   - Required readings:
