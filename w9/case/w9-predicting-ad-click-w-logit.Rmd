@@ -25,6 +25,16 @@ if (length(to_install) > 0) install.packages(to_install, quiet = TRUE)
 invisible(lapply(pkgs, library, character.only = TRUE))
 ```
 
+**What we are doing.** An advertiser pays every time its ad is shown, but
+earns only when someone clicks. If we can predict **which impressions are
+likely to turn into a click**, the ad can go to the right people, in the
+right spot on the page, and less money is wasted. In this exercise you take
+5,000 past ad impressions and run the full classifier recipe from class on
+them: split the data, fit a logit, turn its probabilities into yes/no calls,
+grade the calls with the confusion matrix (accuracy, precision, recall, F1),
+draw the ROC curve, and read the model through odds ratios. The outcome is
+`click`: 1 if the user clicked the ad, 0 if not.
+
 # Load Data & Explore Baseline Click Rate
 ```{r load}
 # Load the ad-click data (one row per impression) from CSV into a data.frame
