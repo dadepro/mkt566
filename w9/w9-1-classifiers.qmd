@@ -1,0 +1,867 @@
+---
+title: "Classifiers: Predicting Who Will Do What"
+subtitle: "MKT 566 · Fall 2026"
+author: "Davide Proserpio"
+institute: "USC Marshall School of Business"
+format:
+  revealjs:
+    theme: theme.scss
+    slide-number: c/t
+    width: 1280
+    height: 720
+    incremental: false
+    transition: fade
+    transition-speed: fast
+    controls: true
+    progress: true
+    hash: true
+    embed-resources: false
+    link-external-newwindow: true
+    footer: "MKT 566 · Marketing Analytics"
+    pdf-separate-fragments: true
+execute:
+  echo: false
+  warning: false
+  message: false
+fig-width: 7
+fig-height: 4.2
+fig-align: center
+---
+
+```{r setup}
+#| include: false
+library(data.table)
+library(ggplot2)
+library(scales)
+library(randomForest)
+library(pROC)
+
+options(width = 110)
+
+usc_red  <- "#990000"
+usc_gold <- "#E69F00"
+blue     <- "#0072B2"
+
+# --- the churn data: 3,000 customers of a subscription business ---
+churn <- fread("data/churn_data.csv")
+churn[, region := factor(region)]
+churn_rate <- mean(churn$churn)
+
+plain_names <- c(
+  tenure_months      = "tenure (months)",
+  logins_last30      = "logins, last 30 days",
+  tickets_30d        = "support tickets, last 30 days",
+  email_engagement   = "email engagement (0 to 1)",
+  price_increase_60d = "price increase, last 60 days",
+  plan_downgrade     = "plan downgrade",
+  region             = "region")
+
+# --- stratified 70/30 train/test split ---
+set.seed(123)
+idx_pos <- which(churn$churn == 1)
+idx_neg <- which(churn$churn == 0)
+train_id <- sort(c(sample(idx_pos, floor(0.7 * length(idx_pos))),
+                   sample(idx_neg, floor(0.7 * length(idx_neg)))))
+train <- churn[train_id]
+test  <- churn[-train_id]
+
+# --- two models: logit and random forest ---
+logit_fit <- glm(churn ~ ., data = train, family = binomial())
+set.seed(123)
+rf_fit <- randomForest(factor(churn) ~ ., data = train, ntree = 300, importance = TRUE)
+
+test[, p_logit := predict(logit_fit, newdata = test, type = "response")]
+test[, p_rf    := predict(rf_fit, newdata = test, type = "prob")[, "1"]]
+
+# --- metric helpers ---
+conf_metrics <- function(y, p, thr = 0.5) {
+  yhat <- as.integer(p >= thr)
+  TP <- sum(yhat == 1 & y == 1); FP <- sum(yhat == 1 & y == 0)
+  FN <- sum(yhat == 0 & y == 1); TN <- sum(yhat == 0 & y == 0)
+  acc  <- (TP + TN) / length(y)
+  prec <- ifelse(TP + FP == 0, NA, TP / (TP + FP))
+  rec  <- ifelse(TP + FN == 0, NA, TP / (TP + FN))
+  f1   <- ifelse(is.na(prec) | is.na(rec) | prec + rec == 0, NA,
+                 2 * prec * rec / (prec + rec))
+  data.table(TP = TP, FP = FP, FN = FN, TN = TN,
+             accuracy = acc, precision = prec, recall = rec, f1 = f1)
+}
+m_logit <- conf_metrics(test$churn, test$p_logit)
+m_rf    <- conf_metrics(test$churn, test$p_rf)
+
+roc_logit <- roc(test$churn, test$p_logit, quiet = TRUE)
+roc_rf    <- roc(test$churn, test$p_rf,    quiet = TRUE)
+auc_logit <- as.numeric(auc(roc_logit))
+auc_rf    <- as.numeric(auc(roc_rf))
+
+# --- the threshold sweep for the precision-recall tradeoff ---
+sweep <- rbindlist(lapply(seq(0.05, 0.60, by = 0.01), function(t)
+  cbind(thr = t, conf_metrics(test$churn, test$p_logit, t))))
+sweep <- sweep[!is.na(precision)]
+
+# --- the worked threshold pick: lowest threshold with precision >= 50% ---
+pick <- sweep[precision >= 0.5][thr == min(thr)]
+
+# --- odds ratios (logit), with plain labels ---
+or <- data.table(term = names(coef(logit_fit)), beta = coef(logit_fit))[term != "(Intercept)"]
+or_labels <- c(
+  tenure_months      = "tenure (per extra month)",
+  logins_last30      = "logins last 30 days (per extra login)",
+  tickets_30d        = "support tickets (per extra ticket)",
+  email_engagement   = "email engagement (0 to 1)",
+  price_increase_60d = "price increase in last 60 days (yes vs. no)",
+  plan_downgrade     = "plan downgrade (yes vs. no)",
+  regionNorth        = "region: North (vs. East)",
+  regionSouth        = "region: South (vs. East)",
+  regionWest         = "region: West (vs. East)")
+or[, label := or_labels[term]]
+or[, odds := exp(beta)]
+or <- or[!grepl("^region", term)]        # keep the deck readable: drop region dummies
+or <- or[order(odds)]
+or[, label := factor(label, levels = label)]
+
+# --- random forest importance, with plain labels ---
+imp <- data.table(term = rownames(importance(rf_fit)),
+                  gain = importance(rf_fit)[, "MeanDecreaseAccuracy"])
+imp[, label := plain_names[term]]
+imp <- imp[order(gain)]
+imp[, label := factor(label, levels = label)]
+
+# --- the ad-click exercise data, for the practice slide ---
+ad <- fread("data/ad_click_data.csv")
+
+# --- capacity view: the retention team can contact the top 10% ---
+K <- ceiling(0.10 * nrow(test))
+top_rf <- test[order(-p_rf)][1:K]
+prec_k <- mean(top_rf$churn)
+rec_k  <- sum(top_rf$churn) / sum(test$churn)
+
+fmt_pct <- function(x, d = 0)
+  ifelse(is.na(x), "undefined", sprintf(paste0("%.", d, "f%%"), 100 * x))
+```
+
+# Before We Start {.divider}
+
+## Housekeeping
+
+- **Project proposals**: feedback and grades are posted on Brightspace
+  (Assignments → Project: Proposal presentation)
+- **Homework 3** due **Thursday, Oct. 29**
+- **Thursday**: guest speaker **Hong Zhang**, Marketing Data Science Manager
+  at **Netflix**. Come with questions
+- Today: **classifiers**, models that predict who will do what
+
+## From explaining to predicting {.smaller-90}
+
+So far every model answered "**what drives** Y": what drives price, what
+drives the chance a listing is a gem. We read **coefficients** and told a
+story about the market.
+
+Today we ask a different question: "**who will do it?**"
+
+- Which customers will **cancel** next month? (churn: yes/no)
+- Who will **click** this ad? Who will **use** the coupon?
+- Which reviews are **fake** and which are organic?
+
+::: {.box}
+Same tools, different goal: we no longer care only about *why*. We care
+whether the model can **call the right names**, customer by customer,
+so marketing can act: who gets the retention offer, the ad, the audit.
+:::
+
+## What is a classifier? {.smaller-90}
+
+A **classifier** is a model that assigns each customer (each row) to a
+**class**, a bucket:
+
+| Kind | Classes | Marketing example |
+|---|---|------|
+| **Binary** | 2 | churn vs. stay, click vs. no click |
+| **Multi-class** | 3 or more | which ad (A, B, or C), which product category |
+| **Ordinal** | ordered | star rating (1 to 5) |
+
+- Inputs are **features**: tenure, logins, past purchases, ad impressions
+- Output is a **predicted class**, usually through a **probability**:
+  the model says $p(\text{churn}) = 0.72$, and a **decision rule** turns it
+  into a label: if $p \geq 0.5$, predict "churn"
+
+::: {.box}
+You already built one. The **logit** from week 5 outputs a probability:
+add a cutoff, and it is a classifier. Today: how to **judge** it, and what
+else is in the toolbox.
+:::
+
+## The toolbox, in plain words {.smaller-80}
+
+| Model | How it decides | Can you read it? |
+|-----|---------------|-----------|
+| **Logistic regression** | one score from a weighted sum of features, turned into a probability | yes: coefficients and odds ratios (week 5). The usual **baseline**: the simple model you start from and try to beat |
+| **Decision tree** | a flowchart of simple rules ("age < 30 and visits > 3: likely buyer") | yes: show the tree to a manager |
+| **Random forest** | hundreds of trees, each on a random slice of the data; they **vote** | partly: it ranks which features matter, but there are no rules to read |
+| **Boosting** (XGBoost) | trees built one after another, each fixing the previous one's mistakes | partly: many settings to get right |
+| **Neural network** | layers that learn combinations of features | no: a black box |
+
+::: {.box}
+The tradeoff that runs through the whole table: **better predictions vs. a
+story you can read**. Forests and boosting usually predict a little better;
+the logit is the easiest to explain. Start with the logit, then check
+whether the fancy model beats it by enough to matter.
+:::
+
+## Trees and forests, drawn {.smaller-80}
+
+::::: {.columns}
+::: {.column width="48%"}
+```{r tree-sketch}
+#| fig-width: 5.6
+#| fig-height: 3.6
+edges <- data.table(
+  x    = c(0.50, 0.50, 0.78, 0.78),
+  y    = c(0.93, 0.93, 0.50, 0.50),
+  xend = c(0.16, 0.78, 0.56, 0.95),
+  yend = c(0.50, 0.50, 0.08, 0.08))
+ggplot() +
+  geom_segment(data = edges, aes(x, y, xend = xend, yend = yend),
+               color = "grey55", linewidth = 0.7) +
+  annotate("text", x = c(0.26, 0.70, 0.62, 0.92), y = c(0.74, 0.74, 0.30, 0.30),
+           label = c("no", "yes", "no", "yes"), color = "grey35", size = 4.2) +
+  annotate("label", x = 0.50, y = 0.93, label = "age < 30?",
+           size = 4.6, fontface = "bold", label.padding = unit(0.35, "lines")) +
+  annotate("label", x = 0.78, y = 0.50, label = "visited > 3 times?",
+           size = 4.6, fontface = "bold", label.padding = unit(0.35, "lines")) +
+  annotate("label", x = 0.16, y = 0.50, label = "15 of 100\nbuy",
+           size = 4.2, fill = "grey88", label.padding = unit(0.3, "lines")) +
+  annotate("label", x = 0.56, y = 0.08, label = "30 of 100\nbuy",
+           size = 4.2, fill = "grey88", label.padding = unit(0.3, "lines")) +
+  annotate("label", x = 0.95, y = 0.08, label = "70 of 100\nbuy",
+           size = 4.2, fontface = "bold", fill = usc_red, color = "white",
+           label.padding = unit(0.3, "lines")) +
+  scale_x_continuous(limits = c(0, 1.08)) +
+  scale_y_continuous(limits = c(-0.05, 1.02)) +
+  theme_void()
+```
+
+- A tree sorts customers by asking **one question at a time**; every
+  customer lands in exactly **one leaf** (one of the boxes at the end)
+- The leaf's history is the prediction: of the 100 past customers in the
+  right-most leaf, **70 bought**, so a new customer there gets **p = 0.70**
+:::
+::: {.column style="width: 48%; margin-left: 4%;"}
+```{r forest-sketch}
+#| fig-width: 5.6
+#| fig-height: 3.6
+votes <- data.table(x = 1:7,
+                    vote = c("buy", "pass", "buy", "buy", "pass", "buy", "buy"))
+ggplot(votes) +
+  geom_tile(aes(x, y = 0.84), width = 0.07, height = 0.14, fill = "grey40") +
+  geom_point(aes(x, y = 1), shape = 17, size = 9, color = "grey35") +
+  geom_text(aes(x, y = 0.62, label = vote, color = vote),
+            fontface = "bold", size = 4.2) +
+  scale_color_manual(values = c(buy = usc_red, pass = "grey60"), guide = "none") +
+  annotate("label", x = 4, y = 0.18,
+           label = "5 of 7 trees say \"buy\"\nthe forest predicts buy: 5/7 = 71%",
+           size = 4.4, fontface = "bold", color = usc_red,
+           label.padding = unit(0.45, "lines")) +
+  scale_x_continuous(limits = c(0.4, 7.6)) +
+  scale_y_continuous(limits = c(-0.05, 1.15)) +
+  theme_void()
+```
+
+- A **random forest** grows many trees, each on a **random slice** of the
+  data, so the trees disagree a little
+- For a new customer **every tree votes**, and the forest averages the
+  votes: one tree memorizes quirks, the **average washes them out**
+:::
+:::::
+
+::: {.smaller-80 .muted}
+An illustration with made-up numbers: the splits, the counts, and the votes
+are for reading practice, not from data.
+:::
+
+## Forests and boosting: one table {.smaller-80}
+
+Both combine many trees. They differ in **how** the trees are built:
+
+| | Random forest | Boosting (XGBoost) |
+|---|--------|--------|
+| How it works | many trees **in parallel**, each on a random sample; predictions are **averaged** | trees **one after another**; each new tree fixes the previous mistakes |
+| What it improves | steadier predictions: one odd tree cannot sway the average | sharper predictions: each tree fixes what the last one missed |
+| Tuning | few knobs, works well out of the box | many knobs: how fast it learns, how deep each tree goes, how many trees |
+| Risk of memorizing quirks | lower | higher, if not tuned carefully |
+| When to use | a fast, strong baseline on noisy data | chasing the best predictions, with time to tune |
+
+# Scoring a Classifier {.divider}
+
+## Every prediction lands in one of four boxes {.smaller-90}
+
+Suppose we predict whether each customer **churns (yes/no)**, and then watch
+what actually happens. Four things are possible:
+
+| | Predicted: churn | Predicted: stay |
+|---|:---:|:---:|
+| **Actually churned** | **true positive (TP)** | **false negative (FN)**, we missed one |
+| **Actually stayed** | **false positive (FP)**, false alarm | **true negative (TN)** |
+
+This 2-by-2 count is the **confusion matrix**: every customer falls in
+exactly one cell.
+
+::: {.box}
+The two mistakes are **not the same mistake**. A false positive wastes a
+retention offer on someone who was staying anyway. A false negative lets a
+churner walk out the door. Which one costs more depends on the business.
+:::
+
+## A worked example: 200 customers {.smaller-90}
+
+Our classifier made a call for 200 customers, and then we watched what
+happened:
+
+| | Predicted: churn | Predicted: stay |
+|---|:---:|:---:|
+| **Actually churned** | 50 (TP) | 10 (FN) |
+| **Actually stayed** | 20 (FP) | 120 (TN) |
+
+Three questions, three metrics. Compute them from the table:
+
+- **Accuracy**: what share of all 200 calls were correct?
+- **Precision**: of the customers we **called churners**, how many were?
+- **Recall**: of the customers who **actually churned**, how many did we catch?
+
+::: {.smaller-80 .muted}
+Take a minute: each answer is one fraction, read straight off the table.
+:::
+
+## The same example, computed {.smaller-80}
+
+| | Predicted: churn | Predicted: stay |
+|---|:---:|:---:|
+| **Actually churned** | 50 (TP) | 10 (FN) |
+| **Actually stayed** | 20 (FP) | 120 (TN) |
+
+- **Accuracy** $= \frac{TP + TN}{200} = \frac{50 + 120}{200} = 0.85$:
+  the model gets 85% of all calls right
+- **Precision** $= \frac{TP}{TP + FP} = \frac{50}{50 + 20} = 0.71$:
+  when it says "churner", it is right 71% of the time. The other **29% of
+  retention offers are wasted** on customers who were staying anyway
+- **Recall** $= \frac{TP}{TP + FN} = \frac{50}{50 + 10} = 0.83$:
+  it catches 83% of the real churners. The other **17% slip away unflagged**
+
+## When accuracy lies {.smaller-80}
+
+Churn is usually **rare**. Say 10,000 customers, **5% churn**: 500 churners,
+9,500 stayers. Compare two models:
+
+| Model | Predicted churn | TP | FP | FN | TN | Accuracy | Precision | Recall |
+|-----|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| "Nobody churns" | 0 | 0 | 0 | 500 | 9,500 | **95%** | undefined | **0%** |
+| A useful model | 600 | 300 | 300 | 200 | 9,200 | **95%** | 50% | 60% |
+
+- The do-nothing model scores **95% accuracy** by predicting "stay" for
+  everyone, and catches **zero** churners. Accuracy 95% here means nothing
+- The useful model has the **same accuracy**, but it finds 300 of the 500
+  churners. Precision and recall see the difference; accuracy cannot
+
+::: {.smaller-90 .muted}
+Why "undefined": the first model never says "churn", so there are no churn
+calls to grade. Precision would be 0 divided by 0.
+:::
+
+::: {.box}
+When the "yes" class is rare (churners, clickers, fraud), **never judge a
+model by accuracy alone**. Look at precision and recall.
+:::
+
+## One number, when you need one: F1 {.smaller-90}
+
+**F1** combines precision and recall into one number between 0 and 1:
+
+$$F1 = 2 \cdot \frac{\text{Precision} \times \text{Recall}}{\text{Precision} + \text{Recall}}$$
+
+- For the useful model above:
+  $F1 = 2 \cdot \frac{0.50 \times 0.60}{0.50 + 0.60} = 0.55$
+- For the do-nothing model: recall is 0, so **F1 = 0**. The 95% accuracy
+  disappears
+- F1 is high only when **both** precision and recall are reasonably high:
+  few wasted offers **and** few missed churners
+
+::: {.smaller-90 .muted}
+Use F1 to rank models with one number when one class is rare. But for
+decisions, keep precision and recall separate: they price two different
+mistakes.
+:::
+
+# Will It Work on New Customers? {.divider}
+
+## The trap: memorizing the past {.smaller-90}
+
+The goal is to predict **new, unseen customers**. The danger is a model that
+**memorizes** the old ones instead:
+
+- A flexible model can learn quirks of the data it learned from, like a tree
+  that learns "customer #123 always buys". Perfect on the past, **useless**
+  for the future
+- This is **overfitting**: accuracy on that same old data looks great (even
+  100%), and predictions on new customers fail
+
+::: {.box}
+A model is only as good as its performance on data it has **never seen**.
+Grading it on the data it learned from is letting it grade its own homework.
+:::
+
+## The fix: hold some data out {.smaller-90}
+
+**Split the data before fitting** (usually 70/30 or 80/20):
+
+| Set | What it is for |
+|---|---------|
+| **Training set** | fit the model: estimate coefficients, grow the trees |
+| **Test set** | held out, never touched during fitting: it plays the role of **new customers** |
+
+Then compare:
+
+- Accuracy on the training set **much higher** than on the test set:
+  **overfitting**
+- The two similar: the model **generalizes**, it works beyond the data it
+  learned from
+
+::: {.box}
+A churn example with real calendar time: train on 2019 to 2024 customers,
+test on 2025 customers. If it holds up on 2025, we can trust it for 2026.
+:::
+
+## Cross-validation: a fairer check {.smaller-90}
+
+One split can get lucky. **K-fold cross-validation** repeats the check:
+
+1. Split the training data into **k** equal parts, called folds (say k = 5)
+2. For each fold: fit the model on the other 4, check the metric (say,
+   precision) on the held-out fold
+3. **Average** the metric across the 5 folds
+4. Pick the model (or tuning) with the best average, then refit on all the
+   training data
+
+- Every row gets used for training **and** for validation (in turns)
+- Prevents overfitting to **one lucky split**, and compares models fairly
+
+::: {.smaller-90 .muted}
+We will not run cross-validation by hand today: R does it in a few lines,
+and the exercise sticks to one train/test split. What matters is the idea:
+**never grade a model on the data it trained on.**
+:::
+
+## Very rare classes: rebalancing the training data {.smaller-80}
+
+Rare classes break accuracy: a few slides ago, the do-nothing model scored
+**95%** and caught **zero** churners. Our first fix was better grading:
+judge the model by **precision** (how good its "churn" calls are) and
+**recall** (how many churners it catches), not by accuracy. When the "yes"
+class is **truly scarce** (1% fraud, not 18% churn), there is a second
+lever: change what the model **trains on**.
+
+| Option | What it does |
+|---|-----------|
+| **Oversample** the rare class | repeat the existing churners (or create lookalike ones) in the training set until the model sees them often |
+| **Undersample** the common class | drop stayers from the training set |
+| **Class weights** | keep the data as it is; tell the model that missing a churner is a bigger mistake than flagging a customer who was going to stay anyway |
+
+- All three push the model to **say "churn" more often**, instead of playing
+  it safe with "stay" (the answer that is almost always right when churn is
+  rare). So it **catches more real churners (recall up)** and **wastes more
+  calls on stayers (precision down)**. Nothing is free; you are choosing
+  which mistake to make more often
+
+## Rebalancing: the two rules {.smaller-90}
+
+- Rule 1: rebalance the **training set only**. The test set's job is to
+  show how the model will do in the real world, so it must stay as
+  imbalanced as reality
+- Rule 2: after rebalancing, the **scores come out too high**. Why: a
+  model's score for a customer is, roughly, the churn share among the
+  **training customers who look like them**, and rebalancing faked that
+  share
+  - Say 1 of 10 lookalikes churns: the true chance is **10%**. Oversample by
+    duplicating that one churner until he appears 9 times: the training data
+    now shows 9 churner rows against the 9 stayers, so the model counts
+    **9 of 18 = 50%**. The world did not change; the photocopies did that
+- The inflation hits everyone, so the **order is still right**: riskier
+  customers still score higher. Use the scores to decide **who to call
+  first**; just do not read 0.50 as "a 50% chance"
+
+::: {.box}
+Rebalancing does not create information that is not in the data. Try the
+honest version first: keep the data as it is, grade with precision and
+recall, and if the model flags too few churners, lower the bar in the
+decision rule (predict churn at a score of 0.2 instead of 0.5).
+:::
+
+# A Churn Model, End to End {.divider}
+
+## Our running example: churn at a subscription business {.smaller-80}
+
+**Laptops out: from here we build the model together in R.** Download
+[`w9-code.zip`](w9-code.zip) from the course page, open
+`w9-1-classifiers-class.R`, and run along; every chart and table on the
+slides comes out of that script.
+
+The data: `r format(nrow(churn), big.mark = ",")` customers
+of a subscription service, **`r fmt_pct(churn_rate, 1)` churned**. For each
+customer we see:
+
+| Feature | Why it should matter |
+|------|-----------|
+| tenure (months) | long-time customers are safer |
+| logins, last 30 days | fewer logins, higher risk |
+| support tickets, last 30 days | more tickets, higher risk |
+| email engagement (0 to 1) | engaged customers are safer |
+| price increase, last 60 days | a price hike raises risk |
+| plan downgrade | a downgrade is a warning sign |
+| region | small differences across markets |
+
+::: {.box}
+Setup: **70/30 split** (`r format(nrow(train), big.mark = ",")` train,
+`r format(nrow(test), big.mark = ",")` test), then a **logit** on the
+training set. Every number that follows is computed on the **test set**:
+customers the model has never seen.
+:::
+
+## The model's output is a score {.smaller-90}
+
+```{r score-hist}
+#| fig-width: 8
+#| fig-height: 4.2
+p_hist <- ggplot(test, aes(x = p_logit, fill = factor(churn))) +
+  geom_histogram(bins = 40, alpha = 0.75, position = "identity", color = "white") +
+  scale_fill_manual(values = c("0" = "grey65", "1" = usc_red),
+                    labels = c("stayed", "churned"), name = NULL) +
+  scale_x_continuous(labels = percent) +
+  labs(title = "Predicted Churn Probability on the Test Set",
+       x = "Predicted probability of churn (logit)", y = "Customers") +
+  theme_minimal(base_size = 14) + theme(legend.position = "top")
+p_hist
+```
+
+::: {.smaller-80 .muted}
+Each test customer gets a predicted churn probability. Grey: customers who
+stayed. Red: customers who actually churned. What do you see?
+:::
+
+## Reading the scores {.smaller-90 .nostretch}
+
+```{r score-hist-2}
+#| fig-width: 8
+#| fig-height: 2.9
+p_hist + labs(title = NULL)
+```
+
+- The model **separates** the groups, imperfectly: churners (red) pile up at
+  higher scores, stayers at lower ones, and the middle **overlaps**
+- To act, we must draw a line: a **threshold**. Everyone to the right gets
+  the retention offer, everyone to the left does not
+- Wherever we draw it, we make both mistakes: some grey to the right
+  (wasted offers), some red to the left (missed churners). The threshold
+  only chooses the **mix**
+
+## The threshold is a dial {.smaller-90}
+
+```{r sweep-chart}
+#| fig-width: 8
+#| fig-height: 4.2
+p_sweep <- ggplot(melt(sweep[, .(thr, precision, recall)], id.vars = "thr"),
+       aes(x = thr, y = value, color = variable)) +
+  geom_line(linewidth = 1.2) +
+  scale_color_manual(values = c(precision = usc_red, recall = blue),
+                     labels = c("precision (offers not wasted)",
+                                "recall (churners caught)"), name = NULL) +
+  scale_x_continuous(labels = percent) + scale_y_continuous(labels = percent) +
+  labs(title = "Precision and Recall as the Threshold Moves (Logit, Test Set)",
+       x = "Threshold: predict churn when score is above...", y = NULL) +
+  theme_minimal(base_size = 14) + theme(legend.position = "top")
+p_sweep
+```
+
+::: {.smaller-80 .muted}
+The same logit, scored at every threshold from 5% to 60%. What happens to
+each line as the threshold rises, and where would you set the dial?
+:::
+
+## Reading the dial {.smaller-80 .nostretch}
+
+```{r sweep-chart-2}
+#| fig-width: 8
+#| fig-height: 2.4
+p_sweep + labs(title = NULL)
+```
+
+- **Raise the threshold** (only customers with very high scores get called
+  churners): the few calls you still make are usually correct, so
+  **precision rises**. But real churners with medium scores no longer
+  make the cut, so you miss them: **recall falls**
+- **Lower the threshold** (customers with even modest scores get called
+  churners): you now catch nearly every real churner, so **recall rises**.
+  But many of the people you call were going to stay anyway, so
+  **precision falls**
+- There is no "correct" threshold: it is a **business choice**, and it
+  follows from **which mistake costs more**
+  - A **wasted offer** costs more (say the offer is a big discount): protect
+    **precision**, so raise the threshold
+  - A **lost customer** costs more (say each account is worth thousands):
+    protect **recall**, so lower it
+- 0.5 is just a default: with rare events the useful thresholds sit
+  **well below** it
+
+## So how do you pick the threshold? {.smaller-90}
+
+The dial chart is a **menu**, and the business picks from it. Say the
+retention team insists that **at least half the offers land on real
+churners**:
+
+1. **Turn the goal into a metric target**: the offers go to the customers we
+   call churners, so "the share of offers that land on real churners" is,
+   word for word, **precision** (of our "churn" calls, how many were right).
+   The target: precision at or above 50%, with as much recall as that allows
+2. **Read it off the dial chart** (on the test set): the lowest threshold
+   that clears 50% precision is **`r fmt_pct(pick$thr)`**
+3. **Check what it costs**: at a threshold of `r fmt_pct(pick$thr)`,
+   precision is `r fmt_pct(pick$precision, 1)` and recall is
+   `r fmt_pct(pick$recall, 1)`: about half the churners still slip through.
+   If that is unacceptable, the goal (or the model) has to change
+
+::: {.box}
+Different goals pick different spots on the **same chart**: cheap offers
+favor recall (set the bar low), expensive offers favor precision (set it
+high). And when the team can only make so many calls (say, 90), skip the
+threshold entirely: rank the customers by score and work from the top of
+the list (coming up in a few slides).
+:::
+
+## ROC and AUC: comparing models before choosing a threshold {.smaller-80}
+
+The **ROC curve** traces the whole threshold dial at once: for every
+threshold, it plots the share of churners caught (y) against the share of
+stayers wrongly called churners (x).
+
+- **Top-left is best**: catch many churners, few false alarms
+- The **diagonal** is coin-flipping
+- **AUC** (area under the curve) summarizes it in one number: the chance the
+  model scores a random churner **above** a random stayer. 0.5 = random,
+  1.0 = perfect
+- AUC is **threshold-free**: good for comparing models early, before the
+  business has picked its threshold
+
+## ROC on our test set: logit vs. random forest {.smaller-90}
+
+```{r roc-chart}
+#| fig-width: 8
+#| fig-height: 4.2
+roc_dt <- rbind(
+  data.table(fpr = 1 - roc_logit$specificities, tpr = roc_logit$sensitivities,
+             model = sprintf("logit (AUC = %.2f)", auc_logit)),
+  data.table(fpr = 1 - roc_rf$specificities, tpr = roc_rf$sensitivities,
+             model = sprintf("random forest (AUC = %.2f)", auc_rf)))
+p_roc <- ggplot(roc_dt, aes(x = fpr, y = tpr, color = model)) +
+  geom_abline(slope = 1, intercept = 0, linetype = "dashed", color = "grey55") +
+  geom_line(linewidth = 1.2) +
+  scale_color_manual(values = setNames(c(usc_red, blue), unique(roc_dt$model)),
+                     name = NULL) +
+  scale_x_continuous(labels = percent) + scale_y_continuous(labels = percent) +
+  labs(title = "ROC Curves on the Test Set",
+       x = "Stayers wrongly flagged (false positive rate)",
+       y = "Churners caught (recall)") +
+  theme_minimal(base_size = 14) + theme(legend.position = "top")
+p_roc
+```
+
+::: {.smaller-80 .muted}
+Both models, every threshold, one chart. The dashed diagonal is random
+guessing. Which model would you take to the retention team?
+:::
+
+## Reading the ROC {.smaller-90 .nostretch}
+
+```{r roc-chart-2}
+#| fig-width: 8
+#| fig-height: 2.9
+p_roc + labs(title = NULL)
+```
+
+- Both curves sit **well above the diagonal**: either model beats
+  coin-flipping by a lot
+- The baseline wins: AUC **`r sprintf("%.2f", auc_logit)`** (logit) vs.
+  **`r sprintf("%.2f", auc_rf)`** (forest). The churn signal here is mostly
+  **simple**: each feature pushes risk up or down on its own, which is
+  exactly the kind of pattern a logit captures
+- That is a common and useful result: the fancy model is not automatically
+  better. When the logit matches or beats the forest, take the logit:
+  **the same predictions, plus a story you can read**
+
+## The recipe {.smaller-90}
+
+What we just did, as steps you can rerun on any yes/no problem:
+
+| Step | What to do |
+|----|-----------|
+| **1. Data** | one row per customer: the outcome (0/1) and the features |
+| **2. Split** | 70/30 train/test, before touching any model |
+| **3. Fit** | a logit first (the baseline), then a challenger (random forest) |
+| **4. Score** | predicted probabilities on the **test set** only |
+| **5. Compare** | AUC and the metrics table: does the challenger beat the baseline? |
+| **6. Read** | odds ratios (logit), feature importance (forest): what drives risk |
+| **7. Act** | pick the threshold that matches the business goal, or rank by score and act on the top of the list |
+
+## Step 5: the metrics table {.smaller-90}
+
+Both models on the test set, threshold at the 0.5 default:
+
+| | Accuracy | Precision | Recall | AUC |
+|---|:---:|:---:|:---:|:---:|
+| **Logit** | `r fmt_pct(m_logit$accuracy, 1)` | `r fmt_pct(m_logit$precision, 1)` | `r fmt_pct(m_logit$recall, 1)` | `r sprintf("%.2f", auc_logit)` |
+| **Random forest** | `r fmt_pct(m_rf$accuracy, 1)` | `r fmt_pct(m_rf$precision, 1)` | `r fmt_pct(m_rf$recall, 1)` | `r sprintf("%.2f", auc_rf)` |
+
+- Accuracy looks great for both, but churn is only
+  `r fmt_pct(churn_rate, 1)` of customers: we know better than to stop there
+- Read the logit row: when it says "churn" it is right
+  `r fmt_pct(m_logit$precision, 1)` of the time (precision), but it catches
+  only `r fmt_pct(m_logit$recall, 1)` of the real churners (recall). The
+  reason: at the 0.5 cutoff it calls just
+  **`r m_logit$TP + m_logit$FP` of the `r format(nrow(test), big.mark = ",")`**
+  test customers churners
+- Why so few? Look back at the score histogram: hardly anyone scored above
+  50%, so a 0.5 cutoff barely ever fires. The fix is not a new model, it is
+  a **lower threshold**: that is exactly how we picked
+  `r fmt_pct(pick$thr)` a few slides ago
+
+## Step 6: what drives churn (logit odds ratios) {.smaller-90}
+
+::::: {.columns}
+::: {.column style="width: 55%;"}
+```{r odds-chart}
+#| fig-width: 6.6
+#| fig-height: 4.6
+ggplot(or, aes(x = odds, y = label)) +
+  geom_col(fill = usc_red, width = 0.65) +
+  geom_vline(xintercept = 1, linetype = "dashed", color = "grey40") +
+  geom_text(aes(label = sprintf("%.2f", odds)), hjust = -0.15, size = 3.4) +
+  scale_x_continuous(expand = expansion(mult = c(0, 0.15))) +
+  labs(title = "Odds Ratios from the Logit",
+       x = "Odds ratio (dashed line = no effect)", y = NULL) +
+  theme_minimal(base_size = 13)
+```
+:::
+::: {.column style="width: 40%; margin-left: 5%;"}
+- Each bar turns a logit coefficient (week 5) into a **multiplier on the
+  odds** of churn: a bar at 2.0 means that feature **doubles the odds**,
+  holding the others fixed
+- Right of the dashed line raises risk: a **plan downgrade** and a recent
+  **price increase** are the loudest warnings, and every extra **support
+  ticket** adds risk
+- Left of the line protects: **engaged** customers and **long-tenure**
+  customers churn less
+- Week 5 logic, new job: the same odds ratios now tell the retention team
+  **what to watch**
+:::
+:::::
+
+## Step 6: what the forest relied on {.smaller-80}
+
+::::: {.columns}
+::: {.column style="width: 55%;"}
+```{r importance-chart}
+#| fig-width: 6.6
+#| fig-height: 4.6
+ggplot(imp, aes(x = gain, y = label)) +
+  geom_col(fill = blue, width = 0.65) +
+  labs(title = "Random Forest: Feature Importance",
+       x = "Importance (drop in accuracy if the feature is shuffled)", y = NULL) +
+  theme_minimal(base_size = 13)
+```
+:::
+::: {.column style="width: 40%; margin-left: 5%;"}
+- The forest has no coefficients to read, so we test a feature by
+  **breaking it**: mix up one column at random, so every customer gets
+  **someone else's tenure** and the other columns stay put. Same numbers,
+  **wrong customers**
+- Predict again with the broken column: if the predictions get **much
+  worse**, the forest was relying on it. Each bar is that **drop in
+  accuracy**; near zero means the feature barely matters
+- The ranking broadly **agrees with the logit**: the plan downgrade on top,
+  then tenure, logins, and the price increase. Agreement across two
+  different models is reassuring
+- Importance says **what the model uses**, not why, and not causation:
+  shuffling tells us about predictions, not about customers
+:::
+:::::
+
+## Step 7: act on the scores {.smaller-90}
+
+Suppose the retention team can call **10% of the test customers**
+(`r format(K, big.mark = ",")` calls). Skip the threshold: rank by score and
+take the **top `r format(K, big.mark = ",")`** (the forest's list):
+
+- **Precision at the top 10%**: `r fmt_pct(prec_k, 1)` of the called
+  customers were real churners (vs. a base rate of
+  `r fmt_pct(mean(test$churn), 1)` if we called at random)
+- **Recall at the top 10%**: the list catches `r fmt_pct(rec_k, 1)` of all
+  the churners in the test set
+- That is the whole business case in two numbers: **how good the calls
+  are**, and **how much of the problem they cover**
+
+::: {.box}
+Three ways to run the same model: the default 0.5 cutoff (fine when both
+mistakes cost about the same and the outcome is not rare), a threshold
+chosen to hit a precision or recall target, or **top-K** when the team can
+only handle so many customers. The model gives scores; **the business sets
+the dial.**
+:::
+
+## What a classifier will not tell you {.smaller-90}
+
+- **Prediction is not causation.** "Support tickets predict churn" does not
+  mean tickets cause churn; unhappy customers file tickets *and* leave. The
+  model finds **who** is at risk, not **what to change**
+- **Garbage in, garbage out.** The model only sees the features you give it;
+  a missing driver (a competitor's promo) is invisible
+- **The past must look like the future.** A model trained before a price
+  change may break after it. Retrain, and re-test, on fresh data
+- **A score is not a strategy.** Knowing who will churn is step one; the
+  offer, and whether it works, is an experiment (coming later in the course)
+
+## Practice: predicting ad clicks {.smaller-90}
+
+Same recipe, new question: **who clicks the ad?**
+
+- The exercise: fit a logit on
+  `r format(nrow(ad), big.mark = ",")` ad impressions, predict clicks at
+  the 0.5 cutoff, build the **confusion matrix** by hand, then compute
+  **accuracy, precision, recall, and F1**, with questions at every step
+- Everything you need, also linked on the course page:
+  the **[handout](https://raw.githack.com/dadepro/mkt566/main/w9/case/w9-predicting-ad-click-w-logit.html)**,
+  the [R Markdown template](https://github.com/dadepro/mkt566/blob/main/w9/case/w9-predicting-ad-click-w-logit.Rmd),
+  and the [data](https://github.com/dadepro/mkt566/blob/main/w9/data/ad_click_data.csv)
+  (put the template and the data in **one folder**, then knit)
+- One thing to notice: clicks here are
+  **`r fmt_pct(mean(ad$click), 1)` of impressions**, not rare. The 0.5
+  default behaves reasonably on this data; compare that with our churn data
+  (`r fmt_pct(churn_rate, 1)`), where 0.5 barely ever fired
+- Work through it before Thursday if you can: it is the best preparation
+  for the homework
+
+## Wrap-up
+
+::: {.box}
+The R code and data behind every chart and table:
+
+- [**`w9-code.zip`**](w9-code.zip): the class script, the churn data, and
+  the ad-click data for the exercise
+- [**`w9-1-classifiers-class.R`**](code/w9-1-classifiers-class.R): the churn
+  model end to end: split, logit vs. forest, metrics, ROC, odds ratios,
+  importance, top-K
+:::
+
+::: {.smaller-80 .muted}
+Optional reading: chapters 11.4 to 11.6 of *R for Marketing Research and
+Analytics*. Thursday: **Hong Zhang (Netflix)**, bring questions about data
+science careers in marketing.
+:::
+
+# Questions? {.divider}

@@ -130,3 +130,16 @@ Course materials (slides, cases, code, and the syllabus) will be posted here as 
   - Project proposal presentations: groups 1, 2, 3, and 5
 - Thursday, Oct. 15:
   - Project proposal presentations: groups 6, 7, 8, and 9
+
+### Week 9: Classifiers
+- Tuesday, Oct. 20:
+  - Slides ([html](https://raw.githack.com/dadepro/mkt566/main/w9/w9-1-classifiers.html), [pdf](https://raw.githack.com/dadepro/mkt566/main/w9/w9-1-classifiers.pdf)): classifiers, models that predict who will do what: train/test split, precision and recall, ROC and AUC, then a churn model end to end
+  - Optional readings:
+    - Chapters 11.4–11.6 of R for Marketing Research and Analytics
+  - Code and data (download everything: [w9-code.zip](https://github.com/dadepro/mkt566/raw/main/w9/w9-code.zip), or browse the [w9/code](https://github.com/dadepro/mkt566/tree/main/w9/code) folder):
+    - [The churn model end to end: split, logit vs. forest, metrics, ROC, odds ratios, importance, top-K](https://github.com/dadepro/mkt566/blob/main/w9/code/w9-1-classifiers-class.R)
+    - [Churn dataset](https://github.com/dadepro/mkt566/blob/main/w9/data/churn_data.csv)
+  - In-class exercise, predicting ad clicks with a logit: **[handout](https://raw.githack.com/dadepro/mkt566/main/w9/case/w9-predicting-ad-click-w-logit.html)**, [R Markdown template](https://github.com/dadepro/mkt566/blob/main/w9/case/w9-predicting-ad-click-w-logit.Rmd), and [data](https://github.com/dadepro/mkt566/blob/main/w9/data/ad_click_data.csv) (put the template and the data in one folder)
+  - Instructor solution (posted after class): [html](https://raw.githack.com/dadepro/mkt566/main/w9/case/w9-predicting-ad-click-w-logit-solutions.html), [R Markdown](https://github.com/dadepro/mkt566/blob/main/w9/case/w9-predicting-ad-click-w-logit-solutions.Rmd)
+- Thursday, Oct. 22:
+  - Guest speaker: **Hong Zhang**, Marketing Data Science Manager at Netflix
