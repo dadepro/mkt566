@@ -162,10 +162,24 @@ round(auc_val, 3)
 - What is the maximum possible AUC? What would an AUC of 0.5 mean?
 
 # Interpretability: Odds Ratios (exp(beta))
-```{r odds}
+```{r odds, fig.height=3.5}
 # Convert log-odds coefficients into odds ratios for manager-friendly interpretation
+# Drop the intercept: it is the baseline, not a feature effect
 or <- exp(coef(logit_fit))
-round(or, 3)
+or <- or[names(or) != "(Intercept)"]
+
+# An ordered bar chart beats a table: the dashed line at 1 means "no effect"
+or_dt <- data.table(feature = names(or), odds_ratio = as.numeric(or))[order(odds_ratio)]
+or_dt[, feature := factor(feature, levels = feature)]
+ggplot(or_dt, aes(x = odds_ratio, y = feature)) +
+  geom_col(fill = "#990000", width = 0.6) +
+  geom_vline(xintercept = 1, linetype = "dashed", color = "grey40") +
+  geom_text(aes(label = round(odds_ratio, 2)), hjust = -0.15, size = 3.5) +
+  scale_x_continuous(expand = expansion(mult = c(0, 0.15))) +
+  labs(title = "Odds ratios (dashed line = no effect)",
+       x = "Odds ratio: how the feature multiplies the odds of a click",
+       y = NULL) +
+  theme_minimal(base_size = 13)
 ```
 **Questions**
 
