@@ -1,0 +1,129 @@
+---
+title: "Exercise: Predict Ad Click Probability (the vibecoding version)"
+author: "Davide Proserpio"
+date: "`r format(Sys.Date(), '%Y-%m-%d')`"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    number_sections: true
+---
+
+# What this is
+
+The same ad-click exercise as the regular handout, with **no code given**:
+just the tasks. You (and your AI assistant) write every line yourself, the
+way you did for the variation, RateBeer, and Airbnb cases.
+
+**Setup.** Put `ad_click_data.csv` in a fresh folder, open it in VS Code,
+and work in an R script or an R Markdown file. When you are done, compare
+your numbers and charts with the regular handout: they should match (set
+the seed to 123 and use a 70/30 split to get identical results).
+
+**The data.** One row per ad impression, 5,000 impressions in total:
+
+| Column | What it is |
+|---|-----------|
+| `click` | the outcome: 1 if the user clicked the ad, 0 if not |
+| `device` | mobile or desktop |
+| `ad_position` | where the ad sat on the page: top, middle, or bottom |
+| `user_segment` | new or returning visitor |
+| `pages_viewed` | how many pages the user viewed in the session |
+| `time_on_site` | seconds spent on the site |
+| `topic_match` | 1 if the ad topic matches the page content, 0 if not |
+| `past_ctr_hi` | 1 if the user clicked ads often in the past, 0 if not |
+
+# Task 1: Load and explore
+
+Read the data, look at the first rows and a summary, and compute the
+**baseline click rate** (the share of impressions that got a click).
+
+**Questions**
+
+- What is the dependent variable here, and how is it coded?
+- Which variables are categorical, and which are numeric?
+
+# Task 2: Train/test split
+
+Split the data into a **training set (70%)** and a **test set (30%)**, at
+random. Fit everything on the training set; compute every metric on the
+test set.
+
+**Questions**
+
+- Why is it important to separate training and testing sets?
+- What would happen if we trained and evaluated on the same data?
+
+# Task 3: Fit a logistic regression
+
+Fit a logit that predicts `click` from **pages viewed** and **ad
+position**, on the training set. Show the coefficients in a readable table.
+
+**Questions**
+
+- Interpret the sign of each coefficient. Which variables increase or
+  decrease the odds of clicking?
+
+# Task 4: Predict and classify at 0.5
+
+Use the model to predict the **click probability** of every test
+impression, then turn the probabilities into labels with the default
+decision rule: predict "click" when the probability is at least 0.5. Show
+the true outcome, the probability, and the label for a few rows.
+
+**Questions**
+
+- What does the threshold of 0.5 mean in practice?
+- How would the results change if we used 0.3 or 0.7 instead?
+
+# Task 5: The confusion matrix and the metrics
+
+Count the four boxes on the test set (true positives, false positives,
+false negatives, true negatives), then compute **accuracy, precision,
+recall, and F1** from those counts, with the formulas from the slides.
+
+**Questions**
+
+- If the business cares most about "catching all potential clickers",
+  which metric should we prioritize?
+- What tradeoff exists between precision and recall?
+
+# Task 6: The ROC curve
+
+Plot the ROC curve for your model on the test set, with the random-guess
+diagonal for reference.
+
+**Questions**
+
+- Why is the diagonal a "random guess" baseline?
+- What does it mean if our curve is very close to that line?
+
+# Task 7: AUC
+
+Compute the **AUC** of your model on the test set.
+
+**Questions**
+
+- What is the maximum possible AUC? What would an AUC of 0.5 mean?
+
+# Task 8: Odds ratios, drawn
+
+Turn the logit coefficients into **odds ratios**, drop the intercept (it is
+the baseline, not a feature effect), and show them as an **ordered bar
+chart** with a dashed line at 1 (no effect).
+
+**Questions**
+
+- If the top ad position has an odds ratio of about 2.5, how should we
+  interpret this?
+- Why might odds ratios be more intuitive for managers than raw
+  coefficients?
+
+# If you finish early
+
+- Add the remaining features (device, user segment, time on site, topic
+  match, past click behavior) to the model. Does the AUC improve, and by
+  how much?
+- Pick a threshold for a business goal, the way we did in class: say the ad
+  team wants at least 60% precision. What is the lowest threshold that
+  clears it, and what recall does it leave you?

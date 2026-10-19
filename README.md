@@ -140,6 +140,7 @@ Course materials (slides, cases, code, and the syllabus) will be posted here as 
     - [The churn model end to end: split, logit vs. forest, metrics, ROC, odds ratios, importance, top-K](https://github.com/dadepro/mkt566/blob/main/w9/code/w9-1-classifiers-class.R)
     - [Churn dataset](https://github.com/dadepro/mkt566/blob/main/w9/data/churn_data.csv)
   - In-class exercise, predicting ad clicks with a logit: **[handout](https://raw.githack.com/dadepro/mkt566/main/w9/case/w9-predicting-ad-click-w-logit.html)**, [R Markdown template](https://github.com/dadepro/mkt566/blob/main/w9/case/w9-predicting-ad-click-w-logit.Rmd), and [data](https://github.com/dadepro/mkt566/blob/main/w9/data/ad_click_data.csv) (put the template and the data in one folder)
+  - Feeling brave? The **[vibecoding version](https://raw.githack.com/dadepro/mkt566/main/w9/case/w9-predicting-ad-click-vibecoding.html)**: the same exercise with no code given, just the tasks. Write everything yourself, then check your numbers against the handout
   - Instructor solution (posted after class): [html](https://raw.githack.com/dadepro/mkt566/main/w9/case/w9-predicting-ad-click-w-logit-solutions.html), [R Markdown](https://github.com/dadepro/mkt566/blob/main/w9/case/w9-predicting-ad-click-w-logit-solutions.Rmd)
 - Thursday, Oct. 22:
   - Guest speaker: **Hong Zhang**, Marketing Data Science Manager at Netflix

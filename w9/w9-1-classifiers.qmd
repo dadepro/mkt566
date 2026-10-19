@@ -843,6 +843,9 @@ Same recipe, new question: **who clicks the ad?**
   **`r fmt_pct(mean(ad$click), 1)` of impressions**, not rare. The 0.5
   default behaves reasonably on this data; compare that with our churn data
   (`r fmt_pct(churn_rate, 1)`), where 0.5 barely ever fired
+- Feeling brave? Do the
+  **[vibecoding version](https://raw.githack.com/dadepro/mkt566/main/w9/case/w9-predicting-ad-click-vibecoding.html)**
+  instead: the same tasks, **no code given**
 - Work through it before Thursday if you can: it is the best preparation
   for the homework
 
