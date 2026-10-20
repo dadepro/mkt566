@@ -142,6 +142,10 @@ fmt_pct <- function(x, d = 0)
 
 # Before We Start {.divider}
 
+## Homework 2: the grades {.nostretch}
+
+![](images/hw2_score_distribution_all.png){fig-align="center" width="64%"}
+
 ## Housekeeping
 
 - **Project proposals**: feedback and grades are posted on Brightspace
