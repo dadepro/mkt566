@@ -352,6 +352,31 @@ Davide Proserpio
 </tr>
 </tbody>
 </table>
+</section>
+<section id="neural-networks-in-one-picture" class="slide level2 smaller-80">
+<h2>Neural networks, in one picture</h2>
+<div class="columns">
+<div class="column" style="width:48%;">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="w9-1-classifiers_files/figure-revealjs/nn-sketch-1.png" width="537"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="smaller-80 muted">
+<p>A sketch, not a fitted model: the features flow left to right, and every line carries a weight the model learns.</p>
+</div>
+</div><div class="column" style="width: 48%; margin-left: 4%;">
+<ul>
+<li>Each middle node builds a <strong>combination</strong> of the inputs, and the output combines the combinations into one score</li>
+<li>That is the power: it learns <strong>interactions on its own</strong>. Say few logins only signal churn for customers who <strong>also</strong> got a price hike: a logit must be told that; a neural network finds it</li>
+<li>The price: it wants <strong>much more data</strong> than we have here, and there is nothing to read: no coefficients, no rules, a <strong>black box</strong></li>
+<li>Where it shines in marketing: <strong>text and images</strong> (reviews, ad creatives, product photos). That is exactly where the course goes <strong>next week</strong></li>
+</ul>
+</div></div>
 </section></section>
 <section>
 <section id="scoring-a-classifier" class="title-slide slide level1 divider center">

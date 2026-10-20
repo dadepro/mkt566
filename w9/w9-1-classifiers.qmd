@@ -295,6 +295,57 @@ Both combine many trees. They differ in **how** the trees are built:
 | Risk of memorizing quirks | lower | higher, if not tuned carefully |
 | When to use | a fast, strong baseline on noisy data | chasing the best predictions, with time to tune |
 
+## Neural networks, in one picture {.smaller-80}
+
+::::: {.columns}
+::: {.column width="48%"}
+```{r nn-sketch}
+#| fig-width: 5.6
+#| fig-height: 3.9
+inp <- data.table(x = 0, y = 1:4,
+                  lab = c("engagement", "price hike", "logins", "tenure"))
+hid <- data.table(x = 1.15, y = c(1.5, 2.5, 3.5))
+out <- data.table(x = 2.3, y = 2.5)
+e1 <- CJ(i = 1:4, j = 1:3)[, .(x = 0, y = i, xend = 1.15, yend = hid$y[j])]
+e2 <- data.table(x = 1.15, y = hid$y, xend = 2.3, yend = 2.5)
+ggplot() +
+  geom_segment(data = rbind(e1, e2), aes(x, y, xend = xend, yend = yend),
+               color = "grey70", linewidth = 0.5) +
+  geom_point(data = inp, aes(x, y), shape = 21, size = 11,
+             fill = "grey88", color = "grey40") +
+  geom_point(data = hid, aes(x, y), shape = 21, size = 11,
+             fill = blue, color = blue) +
+  geom_point(data = out, aes(x, y), shape = 21, size = 13,
+             fill = usc_red, color = usc_red) +
+  geom_text(data = inp, aes(x - 0.12, y, label = lab),
+            hjust = 1, size = 4.2, color = "grey25") +
+  annotate("text", x = 2.3, y = 1.95, label = "churn\nscore",
+           size = 4.2, fontface = "bold", color = usc_red, lineheight = 0.9) +
+  annotate("text", x = 1.15, y = 4.15, label = "combinations the\nmodel builds itself",
+           size = 4, color = blue, lineheight = 0.9) +
+  scale_x_continuous(limits = c(-0.75, 2.75)) +
+  scale_y_continuous(limits = c(0.6, 4.55)) +
+  theme_void()
+```
+
+::: {.smaller-80 .muted}
+A sketch, not a fitted model: the features flow left to right, and every
+line carries a weight the model learns.
+:::
+:::
+::: {.column style="width: 48%; margin-left: 4%;"}
+- Each middle node builds a **combination** of the inputs, and the output
+  combines the combinations into one score
+- That is the power: it learns **interactions on its own**. Say few logins
+  only signal churn for customers who **also** got a price hike: a logit
+  must be told that; a neural network finds it
+- The price: it wants **much more data** than we have here, and there is
+  nothing to read: no coefficients, no rules, a **black box**
+- Where it shines in marketing: **text and images** (reviews, ad creatives,
+  product photos). That is exactly where the course goes **next week**
+:::
+:::::
+
 # Scoring a Classifier {.divider}
 
 ## Every prediction lands in one of four boxes {.smaller-90}
