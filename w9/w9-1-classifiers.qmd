@@ -321,7 +321,7 @@ ggplot() +
             hjust = 1, size = 4.2, color = "grey25") +
   annotate("text", x = 2.3, y = 1.95, label = "churn\nscore",
            size = 4.2, fontface = "bold", color = usc_red, lineheight = 0.9) +
-  annotate("text", x = 1.15, y = 4.15, label = "combinations the\nmodel builds itself",
+  annotate("text", x = 1.15, y = 4.15, label = "new signals the\nmodel builds",
            size = 4, color = blue, lineheight = 0.9) +
   scale_x_continuous(limits = c(-0.75, 2.75)) +
   scale_y_continuous(limits = c(0.6, 4.55)) +
@@ -329,20 +329,20 @@ ggplot() +
 ```
 
 ::: {.smaller-80 .muted}
-A sketch, not a fitted model: the features flow left to right, and every
-line carries a weight the model learns.
+A sketch: the features flow left to right, and the model learns the weight
+of every line.
 :::
 :::
 ::: {.column style="width: 48%; margin-left: 4%;"}
-- Each middle node builds a **combination** of the inputs, and the output
-  combines the combinations into one score
-- That is the power: it learns **interactions on its own**. Say few logins
-  only signal churn for customers who **also** got a price hike: a logit
-  must be told that; a neural network finds it
-- The price: it wants **much more data** than we have here, and there is
-  nothing to read: no coefficients, no rules, a **black box**
-- Where it shines in marketing: **text and images** (reviews, ad creatives,
-  product photos). That is exactly where the course goes **next week**
+- Each blue node **mixes the inputs** into a new signal; the red node turns
+  those signals into one churn score
+- It can find patterns that involve **several features at once**: say few
+  logins matter only for customers who also got a price hike. In a logit
+  you have to add that by hand; a neural network picks it up by itself
+- Downsides: it needs **a lot of data**, and there is nothing to read: no
+  coefficients, no rules, a **black box**
+- In marketing it is used mostly for **text and images** (reviews, ads,
+  product photos): next week's topic
 :::
 :::::
 
