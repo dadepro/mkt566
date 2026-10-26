@@ -1,0 +1,134 @@
+---
+title: "Mini-Project: Predict Ad Clicks and Present Your Results"
+author: "Davide Proserpio"
+date: "`r format(Sys.Date(), '%Y-%m-%d')`"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    number_sections: true
+---
+
+# What this is
+
+**What we are doing.** An advertiser pays every time its ad is shown, but
+earns only when someone clicks. If we can predict **which impressions are
+likely to turn into a click**, the ad can go to the right people, in the
+right spot on the page, and less money is wasted. In week 9 you saw the
+full classifier recipe on exactly this problem. This week you run it
+yourselves, in groups, end to end.
+
+One addition, and it is the point of the week: **an analysis is useless
+until someone acts on it**. So this time the deliverable is not a knitted
+report. It is a short slide deck, presented to the class on Thursday, as
+if you were pitching the model to the marketing VP who decides whether it
+goes live. The VP is smart but has never heard the words "recall" or
+"AUC". Your job is to make them understand, and to tell them what to do.
+
+**Logistics.**
+
+- Work in your **project groups**, laptops out, both sessions
+- **Tuesday:** the analysis (Part 1)
+- **Thursday:** finish the slides (Part 2), then **every group presents**
+  (Part 3): about 5 minutes per group, order drawn at random
+- Have your slides ready as a **PDF** by the time presentations start on
+  Thursday
+
+# The data
+
+One row per ad impression, 5,000 impressions:
+[`ad_click_data.csv`](https://github.com/dadepro/mkt566/raw/main/w9/data/ad_click_data.csv)
+(the same data as the week 9 exercise). Put it in a fresh folder and work
+in an R script or an R Markdown file.
+
+| Column | What it is |
+|---|-----------|
+| `click` | the outcome: 1 if the user clicked the ad, 0 if not |
+| `device` | mobile or desktop |
+| `ad_position` | where the ad sat on the page: top, middle, or bottom |
+| `user_segment` | new or returning visitor |
+| `pages_viewed` | how many pages the user viewed in the session |
+| `time_on_site` | seconds spent on the site |
+| `topic_match` | 1 if the ad topic matches the page content, 0 if not |
+| `past_ctr_hi` | 1 if the user clicked ads often in the past, 0 if not |
+
+# Part 1: The analysis (Tuesday)
+
+Run the full recipe from the classifiers week. Use **seed 123 and a 70/30
+train/test split** so every group's numbers are comparable.
+
+1. **Load and explore.** What is the baseline click rate (the share of
+   impressions with a click)?
+2. **Split** into training (70%) and test (30%). Fit everything on the
+   training set; compute every metric on the test set.
+3. **Fit a logit** of `click` on pages viewed and ad position, like in
+   class. Then fit a second logit that **adds the remaining features**
+   (device, user segment, time on site, topic match, past click behavior).
+   Compare the two on test AUC and keep the better one as "your model"
+4. **Classify at 0.5** and build the confusion matrix on the test set:
+   the four counts, then accuracy, precision, recall, and F1
+5. **Draw the ROC curve** and compute the AUC
+6. **Odds ratios**, as an ordered bar chart, intercept dropped, dashed
+   line at 1: which features move the odds of a click, and by how much?
+7. **Pick the threshold for a business goal.** Choose one, for example:
+   the ad team wants at least 60% precision (most of the impressions you
+   flag should be real clickers), or the budget only allows targeting the
+   top 20% of impressions. Find the threshold that meets your goal and
+   write down what it costs you on the other metric
+
+If you want more structure, the week 9
+[handout](https://raw.githack.com/dadepro/mkt566/main/w9/case/w9-predicting-ad-click-w-logit.html)
+walks through the same steps with the code given; the
+[vibecoding version](https://raw.githack.com/dadepro/mkt566/main/w9/case/w9-predicting-ad-click-vibecoding.html)
+has the tasks only. As always, your AI assistant is allowed and
+encouraged; keep your `ai-log.md` going.
+
+# Part 2: The slides (Thursday)
+
+At most **6 slides** (plus a title slide), built for the VP, not for us.
+Any tool you like: PowerPoint, Google Slides, Keynote, or Quarto if you
+are feeling brave. A slide a minute is a good pace for a 5-minute talk.
+
+1. **The problem.** Why predict clicks at all, what the baseline click
+   rate is in this data, and what the company would do differently if the
+   model works
+2. **The model.** What goes in, what comes out, and the one chart that
+   shows what matters (the odds-ratio bar chart works well). Two
+   takeaways in plain words: "an ad at the top of the page is about X
+   times more likely to be clicked" beats "the coefficient is 0.9"
+3. **How good is it.** The confusion matrix counts at the 0.5 cutoff, and
+   accuracy, precision, and recall translated into plain words: "of the
+   impressions we flag, X% really click; we catch Y% of all real clickers"
+4. **The dial.** Your business goal from Part 1, the threshold you chose
+   to meet it, and the trade-off: what you gain and what you give up
+5. **The proof.** The ROC curve with the AUC, and one sentence on what
+   that number means
+6. **The recommendation.** Should the ad team use this model? What is the
+   one thing that could go wrong (one honest limitation)?
+
+**Rules for the slides:**
+
+- **No code on slides.** The VP does not read R
+- Every number on a slide must come from **your own output**, and you
+  should be able to show the line of code that produced it if asked
+- Charts have titles and labeled axes; no screenshot of a raw R console
+- Plain words before jargon: if a term from class appears, the slide (or
+  you) must say what it means
+
+# Part 3: The presentation (Thursday)
+
+- About **5 minutes per group**, then one or two questions from me or the
+  class
+- Presentation order is drawn at random, so be ready when class starts
+- **Anyone in the group can get a question.** Everyone should understand
+  every slide, including the ones they did not make
+- What a good talk sounds like: one idea per slide, numbers interpreted
+  rather than read out loud, and a clear answer to "so what should we do?"
+
+# If you finish early
+
+- Try a different business goal in Part 1, step 7, and check how much the
+  threshold moves
+- Compute how much money the model saves under simple assumptions: say an
+  impression costs 1 cent and a click is worth 50 cents. Compare showing
+  the ad to everyone vs. only above your threshold
