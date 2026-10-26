@@ -139,9 +139,7 @@ Course materials (slides, cases, code, and the syllabus) will be posted here as 
   - Code and data (download everything: [w9-code.zip](https://github.com/dadepro/mkt566/raw/main/w9/w9-code.zip), or browse the [w9/code](https://github.com/dadepro/mkt566/tree/main/w9/code) folder):
     - [The churn model end to end: split, logit vs. forest, metrics, ROC, odds ratios, importance, top-K](https://github.com/dadepro/mkt566/blob/main/w9/code/w9-1-classifiers-class.R)
     - [Churn dataset](https://github.com/dadepro/mkt566/blob/main/w9/data/churn_data.csv)
-  - In-class exercise, predicting ad clicks with a logit: **[handout](https://raw.githack.com/dadepro/mkt566/main/w9/case/w9-predicting-ad-click-w-logit.html)**, [R Markdown template](https://github.com/dadepro/mkt566/blob/main/w9/case/w9-predicting-ad-click-w-logit.Rmd), and [data](https://github.com/dadepro/mkt566/blob/main/w9/data/ad_click_data.csv) (put the template and the data in one folder)
-  - Feeling brave? The **[vibecoding version](https://raw.githack.com/dadepro/mkt566/main/w9/case/w9-predicting-ad-click-vibecoding.html)**: the same exercise with no code given, just the tasks. Write everything yourself, then check your numbers against the handout
-  - Instructor solution: will be posted after the week 10 presentations
+  - The ad-click prediction exercise has become the **week 10 mini-project**: see below
 - Thursday, Oct. 22:
   - Guest speaker: **Hong Zhang**, Marketing Data Science Manager at Netflix
 
@@ -150,3 +148,4 @@ Course materials (slides, cases, code, and the syllabus) will be posted here as 
   - **[Project brief](https://raw.githack.com/dadepro/mkt566/main/w10/case/w10-classifier-project.html)**: run the full classifier recipe on the ad-click data, build a short slide deck for a business audience, and present it on Thursday (about 5 minutes per group)
   - The data: [ad_click_data.csv](https://github.com/dadepro/mkt566/raw/main/w9/data/ad_click_data.csv) (the same data as the week 9 exercise)
   - If you want more structure: the week 9 [handout](https://raw.githack.com/dadepro/mkt566/main/w9/case/w9-predicting-ad-click-w-logit.html) walks through the same steps with the code given; the [vibecoding version](https://raw.githack.com/dadepro/mkt566/main/w9/case/w9-predicting-ad-click-vibecoding.html) has the tasks only
+  - Instructor solution: posted after the presentations
