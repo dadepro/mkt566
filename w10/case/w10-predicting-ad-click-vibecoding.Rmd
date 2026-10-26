@@ -27,7 +27,8 @@ every line yourself, the way you did for the variation, RateBeer, and
 Airbnb cases.
 
 **Setup.** Put `ad_click_data.csv` in a fresh folder, open it in VS Code,
-and work in an R script or an R Markdown file. Use **seed 123 and a 70/30
+and work in an R script or an R Markdown file (or Python, if your group
+prefers it). Use **seed 123 and a 70/30
 train/test split** so every group's numbers are comparable.
 
 **The data.** One row per ad impression, 5,000 impressions in total:
