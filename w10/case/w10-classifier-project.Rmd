@@ -20,19 +20,21 @@ yourselves, in groups, end to end.
 
 One addition, and it is the point of the week: **an analysis is useless
 until someone acts on it**. So this time the deliverable is not a knitted
-report. It is a short slide deck, presented to the class on Thursday, as
-if you were pitching the model to the marketing VP who decides whether it
-goes live. The VP is smart but has never heard the words "recall" or
-"AUC". Your job is to make them understand, and to tell them what to do.
+report. It is a short slide deck, built as if you were pitching the model
+to the marketing VP who decides whether it goes live. On Thursday a few
+groups, drawn at random, present theirs to the class. The VP is smart but
+has never heard the words "recall" or "AUC". Your job is to make them
+understand, and to tell them what to do.
 
 **Logistics.**
 
 - Work in your **project groups**, laptops out, both sessions
 - **Tuesday:** the analysis (Part 1)
-- **Thursday:** finish the slides (Part 2), then **every group presents**
-  (Part 3): about 5 minutes per group, order drawn at random
-- Have your slides ready as a **PDF** by the time presentations start on
-  Thursday
+- **Thursday:** finish the slides (Part 2), then **about three groups,
+  drawn at random, present** (Part 3): about 5 minutes per group
+- Every group has their slides ready as a **PDF** by the time
+  presentations start on Thursday: you will not know in advance whether
+  you are the one presenting
 
 # The data
 
@@ -121,9 +123,10 @@ are feeling brave. A slide a minute is a good pace for a 5-minute talk.
 
 # Part 3: The presentation (Thursday)
 
+- Not every group presents: I will draw **about three groups at random**
+  when presentations start, so every group must be ready
 - About **5 minutes per group**, then one or two questions from me or the
   class
-- Presentation order is drawn at random, so be ready when class starts
 - **Anyone in the group can get a question.** Everyone should understand
   every slide, including the ones they did not make
 - What a good talk sounds like: one idea per slide, numbers interpreted
