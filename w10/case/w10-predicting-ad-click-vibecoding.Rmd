@@ -51,8 +51,8 @@ Read the data, look at the first rows and a summary, and compute the
 
 **Questions**
 
-- What is the dependent variable here, and how is it coded?
-- Which variables are categorical, and which are numeric?
+- Which variable is the outcome, and which features are categorical vs.
+  numeric?
 
 # Task 2: Train/test split
 
@@ -62,8 +62,7 @@ test set.
 
 **Questions**
 
-- Why is it important to separate training and testing sets?
-- What would happen if we trained and evaluated on the same data?
+- Why do we evaluate the model on data it never saw during training?
 
 # Task 3: Fit two logits and keep the better one
 
@@ -77,10 +76,6 @@ better one as "your model" for everything that follows.
 **Questions**
 
 - Why did you pick those two?
-- Interpret the sign of each coefficient. Which variables increase or
-  decrease the odds of clicking?
-- Why do we compare the models on the test set rather than the training
-  set?
 - Which model wins, and by how much? How close did your two picks get to
   the full model?
 
@@ -97,10 +92,8 @@ recall, and F1** from those counts, with the formulas from the slides.
 **Questions**
 
 - What does the threshold of 0.5 mean in practice?
-- How would the results change if we used 0.3 or 0.7 instead?
 - If the business cares most about "catching all potential clickers",
   which metric should we prioritize?
-- What tradeoff exists between precision and recall?
 
 # Task 5: The ROC curve and the AUC
 
@@ -109,8 +102,8 @@ diagonal for reference, and compute the **AUC**.
 
 **Questions**
 
-- Why is the diagonal a "random guess" baseline?
-- What does it mean if our curve is very close to that line?
+- Why is the diagonal a "random guess" baseline, and what would it mean
+  if our curve sat right on it?
 - What is the maximum possible AUC? What would an AUC of 0.5 mean?
 
 # Task 6: Odds ratios, drawn
@@ -123,8 +116,6 @@ chart** with a dashed line at 1 (no effect).
 
 - If the top ad position has an odds ratio of about 2.5, how should we
   interpret this?
-- Why might odds ratios be more intuitive for managers than raw
-  coefficients?
 
 # Task 7: Pick a threshold for the business goal
 
@@ -138,7 +129,6 @@ threshold that clears the 75% bar.
 
 - What is the lowest threshold that clears 75% precision, and what recall
   does it leave you?
-- Compared to the 0.5 cutoff, what did you gain and what did you give up?
 - Compute accuracy at both thresholds. Does it move as much as precision
   and recall do? What does that say about accuracy as the metric to watch
   here?

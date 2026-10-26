@@ -1563,8 +1563,8 @@ impressions in total:</p>
 a click).</p>
 <p><strong>Questions</strong></p>
 <ul>
-<li>What is the dependent variable here, and how is it coded?</li>
-<li>Which variables are categorical, and which are numeric?</li>
+<li>Which variable is the outcome, and which features are categorical
+vs. numeric?</li>
 </ul>
 </div>
 <div id="task-2-traintest-split" class="section level1">
@@ -1574,8 +1574,8 @@ a click).</p>
 training set; compute every metric on the test set.</p>
 <p><strong>Questions</strong></p>
 <ul>
-<li>Why is it important to separate training and testing sets?</li>
-<li>What would happen if we trained and evaluated on the same data?</li>
+<li>Why do we evaluate the model on data it never saw during
+training?</li>
 </ul>
 </div>
 <div id="task-3-fit-two-logits-and-keep-the-better-one" class="section level1">
@@ -1590,10 +1590,6 @@ two models on <strong>test AUC</strong>, and keep the better one as
 <p><strong>Questions</strong></p>
 <ul>
 <li>Why did you pick those two?</li>
-<li>Interpret the sign of each coefficient. Which variables increase or
-decrease the odds of clicking?</li>
-<li>Why do we compare the models on the test set rather than the
-training set?</li>
 <li>Which model wins, and by how much? How close did your two picks get
 to the full model?</li>
 </ul>
@@ -1611,10 +1607,8 @@ with the formulas from the slides.</p>
 <p><strong>Questions</strong></p>
 <ul>
 <li>What does the threshold of 0.5 mean in practice?</li>
-<li>How would the results change if we used 0.3 or 0.7 instead?</li>
 <li>If the business cares most about “catching all potential clickers”,
 which metric should we prioritize?</li>
-<li>What tradeoff exists between precision and recall?</li>
 </ul>
 </div>
 <div id="task-5-the-roc-curve-and-the-auc" class="section level1">
@@ -1624,8 +1618,8 @@ random-guess diagonal for reference, and compute the
 <strong>AUC</strong>.</p>
 <p><strong>Questions</strong></p>
 <ul>
-<li>Why is the diagonal a “random guess” baseline?</li>
-<li>What does it mean if our curve is very close to that line?</li>
+<li>Why is the diagonal a “random guess” baseline, and what would it
+mean if our curve sat right on it?</li>
 <li>What is the maximum possible AUC? What would an AUC of 0.5
 mean?</li>
 </ul>
@@ -1640,8 +1634,6 @@ effect).</p>
 <ul>
 <li>If the top ad position has an odds ratio of about 2.5, how should we
 interpret this?</li>
-<li>Why might odds ratios be more intuitive for managers than raw
-coefficients?</li>
 </ul>
 </div>
 <div id="task-7-pick-a-threshold-for-the-business-goal" class="section level1">
@@ -1655,8 +1647,6 @@ clears the 75% bar.</p>
 <ul>
 <li>What is the lowest threshold that clears 75% precision, and what
 recall does it leave you?</li>
-<li>Compared to the 0.5 cutoff, what did you gain and what did you give
-up?</li>
 <li>Compute accuracy at both thresholds. Does it move as much as
 precision and recall do? What does that say about accuracy as the metric
 to watch here?</li>
