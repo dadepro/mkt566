@@ -144,3 +144,27 @@ Course materials (slides, cases, code, and the syllabus) will be posted here as 
   - Instructor solution (posted after class): [html](https://raw.githack.com/dadepro/mkt566/main/w9/case/w9-predicting-ad-click-w-logit-solutions.html), [R Markdown](https://github.com/dadepro/mkt566/blob/main/w9/case/w9-predicting-ad-click-w-logit-solutions.Rmd)
 - Thursday, Oct. 22:
   - Guest speaker: **Hong Zhang**, Marketing Data Science Manager at Netflix
+
+### Week 10: Text analysis and sentiment prediction
+- Tuesday, Oct. 27:
+  - Slides ([html](https://raw.githack.com/dadepro/mkt566/main/w10/w10-1-text-analysis.html), [pdf](https://raw.githack.com/dadepro/mkt566/main/w10/w10-1-text-analysis.pdf)): turning words into numbers: cleaning and tokenizing, bag-of-words, TF-IDF, word embeddings, and measuring sentiment with a dictionary
+  - Readings:
+    - [Chapter 8 of Introduction to R for Data Science](https://bookdown.org/jdholster1/idsr/text-analysis.html)
+    - [HBR: How fake customer reviews do, and don't, work](https://hbr.org/2020/11/how-fake-customer-reviews-do-and-dont-work)
+  - Optional readings:
+    - Text analysis in R: [word embeddings](https://m-clark.github.io/text-analysis-with-R/word-embeddings.html)
+    - [Reputation systems](https://dl.acm.org/doi/pdf/10.1145/355112.355122)
+    - [Detecting fake review buyers using network structure](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4147920)
+    - [Fake it till you make it: reputation, competition, and Yelp review fraud](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2293164)
+  - Code (download everything: [w10-code.zip](https://github.com/dadepro/mkt566/raw/main/w10/w10-code.zip), or browse the [w10/code](https://github.com/dadepro/mkt566/tree/main/w10/code) folder; the 5,000 movie reviews load from the `text2vec` package, so there is no dataset to download):
+    - [Text analysis end to end: tokenizing, stopwords, bag-of-words, TF-IDF by hand, and the sentimentr dictionary](https://github.com/dadepro/mkt566/blob/main/w10/code/w10-1-text-analysis-class.R)
+- Thursday, Oct. 29:
+  - Slides ([html](https://raw.githack.com/dadepro/mkt566/main/w10/w10-2-glmnet.html), [pdf](https://raw.githack.com/dadepro/mkt566/main/w10/w10-2-glmnet.pdf)): predicting sentiment with a regularized logit (glmnet): why too many columns make the plain logit memorize, lasso and ridge, choosing the penalty by cross-validation, and reading the words the model keeps
+  - Optional reading: [the glmnet package in R](https://www.geeksforgeeks.org/r-language/what-is-the-glmnet-package-in-r/)
+  - Code (in [w10-code.zip](https://github.com/dadepro/mkt566/raw/main/w10/w10-code.zip) or the [w10/code](https://github.com/dadepro/mkt566/tree/main/w10/code) folder):
+    - [The sentiment model end to end: TF-IDF matrix, the overfitting demo, cv.glmnet, the scoreboard, the word coefficients](https://github.com/dadepro/mkt566/blob/main/w10/code/w10-2-glmnet-class.R)
+    - The in-class **sentiment game**: [w10-sentiment-analysis-game.R](https://github.com/dadepro/mkt566/blob/main/w10/code/w10-sentiment-analysis-game.R) (bring a laptop with R working)
+  - Practice (optional, for after class):
+    - Replica of the Harry Potter analysis from Chapter 8 of Introduction to R for Data Science: [R Markdown](https://github.com/dadepro/mkt566/blob/main/w10/code/w10-harry_potter_sentiment_datatable_commented.Rmd), [html](https://raw.githack.com/dadepro/mkt566/main/w10/code/w10-harry_potter_sentiment_datatable_commented.html)
+    - Cleaning review text and computing TF-IDF by hand: [R Markdown](https://github.com/dadepro/mkt566/blob/main/w10/code/mini_tfidf_exercise_commented.Rmd), [html](https://raw.githack.com/dadepro/mkt566/main/w10/code/mini_tfidf_exercise_commented.html)
+    - TF-IDF vs. word2vec, the same classifier two ways: [R script](https://github.com/dadepro/mkt566/blob/main/w10/code/w10-sentiment-analysis-tfidf-vs-w2v.R) (needs the [pretrained word2vec model](https://www.kaggle.com/datasets/leadbest/googlenewsvectorsnegative300), a 3.6 GB download)

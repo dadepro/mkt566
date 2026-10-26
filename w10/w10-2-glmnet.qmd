@@ -1,0 +1,473 @@
+---
+title: "Predicting Sentiment: The Regularized Logit"
+subtitle: "MKT 566 · Fall 2026"
+author: "Davide Proserpio"
+institute: "USC Marshall School of Business"
+format:
+  revealjs:
+    theme: theme.scss
+    slide-number: c/t
+    width: 1280
+    height: 720
+    incremental: false
+    transition: fade
+    transition-speed: fast
+    controls: true
+    progress: true
+    hash: true
+    embed-resources: false
+    link-external-newwindow: true
+    footer: "MKT 566 · Marketing Analytics"
+    pdf-separate-fragments: true
+execute:
+  echo: false
+  warning: false
+  message: false
+fig-width: 7
+fig-height: 4.2
+fig-align: center
+---
+
+```{r setup}
+#| include: false
+library(data.table)
+library(ggplot2)
+library(scales)
+library(text2vec)
+library(glmnet)
+library(pROC)
+library(sentimentr)
+library(knitr)
+
+usc_red  <- "#990000"
+usc_gold <- "#E69F00"
+blue     <- "#0072B2"
+
+# --- the same 5,000 reviews as Tuesday, with their TRUE labels ---
+data("movie_review", package = "text2vec")
+dt <- as.data.table(movie_review)
+dt[, id := .I]
+dt[, label := factor(ifelse(sentiment == 1, "pos", "neg"))]
+
+# --- split 80/20, build the TF-IDF matrix (vocabulary from TRAIN only) ---
+set.seed(123)
+idx   <- sample.int(nrow(dt), floor(0.8 * nrow(dt)))
+train <- dt[idx]
+test  <- dt[-idx]
+
+it_train   <- itoken(tolower(train$review), tokenizer = word_tokenizer,
+                     ids = train$id, progressbar = FALSE)
+vocab_full <- create_vocabulary(it_train)
+vocab      <- prune_vocabulary(vocab_full, term_count_min = 10)
+vectorizer <- vocab_vectorizer(vocab)
+dtm_train  <- create_dtm(it_train, vectorizer)
+it_test    <- itoken(tolower(test$review), tokenizer = word_tokenizer,
+                     ids = test$id, progressbar = FALSE)
+dtm_test   <- create_dtm(it_test, vectorizer)
+tfidf      <- TfIdf$new(norm = "l2")
+X_train    <- tfidf$fit_transform(dtm_train)
+X_test     <- tfidf$transform(dtm_test)
+
+n_train <- nrow(X_train); n_test <- nrow(X_test)
+p_full  <- nrow(vocab_full); p_pruned <- ncol(X_train)
+
+# --- the overfitting demo: a logit with (almost) no penalty ---
+m0    <- glmnet(X_train, train$label, family = "binomial",
+                lambda = 1e-5, alpha = 1)
+auc_of <- function(truth, p) as.numeric(auc(roc(
+  truth, p, levels = c("neg", "pos"), direction = "<", quiet = TRUE)))
+p0_tr <- as.numeric(predict(m0, X_train, type = "response"))
+p0_te <- as.numeric(predict(m0, X_test,  type = "response"))
+auc0_tr <- auc_of(train$label, p0_tr); acc0_tr <- mean((p0_tr >= .5) == (train$label == "pos"))
+auc0_te <- auc_of(test$label,  p0_te); acc0_te <- mean((p0_te >= .5) == (test$label == "pos"))
+nz0     <- sum(coef(m0)[-1] != 0)
+
+# --- the real thing: lasso with lambda chosen by 5-fold CV on AUC ---
+set.seed(123)
+cvfit <- cv.glmnet(X_train, train$label, family = "binomial",
+                   type.measure = "auc", nfolds = 5, alpha = 1)
+lam_min <- cvfit$lambda.min; lam_1se <- cvfit$lambda.1se
+p_min   <- as.numeric(predict(cvfit, X_test, s = "lambda.min", type = "response"))
+auc_min <- auc_of(test$label, p_min)
+acc_min <- mean((p_min >= .5) == (test$label == "pos"))
+nz_min  <- sum(coef(cvfit, s = "lambda.min")[-1] != 0)
+nz_1se  <- sum(coef(cvfit, s = "lambda.1se")[-1] != 0)
+
+cv_dt <- data.table(lambda = cvfit$lambda, auc = cvfit$cvm,
+                    lo = cvfit$cvlo, up = cvfit$cvup)
+
+# --- Tuesday's dictionary, scored on the SAME test reviews ---
+test_clean <- gsub("<[^>]+>", " ", test$review)
+dict_sc    <- sentiment_by(get_sentences(test_clean))$ave_sentiment
+dict_auc   <- auc_of(test$label, dict_sc)
+dict_acc   <- mean((dict_sc > 0) == (test$label == "pos"))
+
+# --- the words the model trusts most, each way ---
+cf <- coef(cvfit, s = "lambda.min")
+cf <- data.table(word = rownames(cf)[-1], beta = as.numeric(cf)[-1])[beta != 0]
+top_words <- rbind(cf[order(beta)][1:10][, side := "pushes the score down (negative)"],
+                   cf[order(-beta)][1:10][, side := "pushes the score up (positive)"])
+top_words <- top_words[order(beta)]
+top_words[, word := factor(word, levels = word)]
+
+pct <- function(x) paste0(round(100 * x), "%")
+r3  <- function(x) format(round(x, 3), nsmall = 3)
+fmt_n <- function(x) format(x, big.mark = ",")
+```
+
+# Before We Start {.divider}
+
+## Housekeeping
+
+- **Homework 3 is due tonight, 11:59 PM**, on Brightspace
+- **Homework 4 is out today** (due Nov. 19)
+- Today we train the model Tuesday promised: predicting whether a review is
+  positive or negative, **from its words alone**
+- Second half of class: the **sentiment game**, in teams, laptops out
+
+## Where Tuesday left us {.smaller-90}
+
+| Step | Status |
+|---|------|
+| 1. Label each review positive or negative | done: the data comes labeled |
+| 2. Vectorize: the TF-IDF matrix | done Tuesday |
+| 3. Split into train and test | week 9 machinery |
+| 4. **Classify: a logit on the word columns** | **today** |
+| 5. Evaluate on the test set | today, AUC and accuracy |
+
+::: {.box}
+The number to beat: Tuesday's **dictionary** (sentimentr), which needs no
+training data. On today's test reviews it gets
+**`r pct(dict_acc)` accuracy**. If training a model does not beat that, why
+bother?
+:::
+
+# Too Many Columns {.divider}
+
+## The matrix is wider than it is tall {.smaller-90}
+
+Build Tuesday's TF-IDF matrix on the training reviews and count:
+
+- **`r fmt_n(n_train)` training reviews** (80% of the 5,000; the other
+  `r fmt_n(n_test)` are locked away as the test set)
+- The training reviews contain **`r fmt_n(p_full)` distinct words**. First
+  cleanup: drop every word seen **fewer than 10 times**; you cannot learn
+  what "ferrari" means for sentiment from 3 examples. That leaves
+  **`r fmt_n(p_pruned)` word columns**
+- A logit estimates **one coefficient per column**: `r fmt_n(p_pruned)`
+  coefficients from `r fmt_n(n_train)` examples. Still almost **two knobs
+  per example**
+
+::: {.box}
+Week 5's logit was built for a handful of columns. Nothing in it says what
+to do when the columns outnumber the rows. Something has to give.
+:::
+
+## What actually goes wrong: memorizing {.smaller-90}
+
+We ran that logit, with no guardrails, on the `r fmt_n(p_pruned)`-column
+matrix. Here is its report card:
+
+| | Training reviews | Test reviews (never seen) |
+|---|:---:|:---:|
+| **Accuracy** | **`r pct(acc0_tr)`** | `r pct(acc0_te)` |
+| **AUC** | **`r r3(auc0_tr)`** | `r r3(auc0_te)` |
+
+- `r pct(acc0_tr)` accuracy on the training set: the model found enough
+  rare-word combinations to label every training review **perfectly**, like
+  a student who memorizes past exams instead of learning the material
+- On new reviews it drops to `r pct(acc0_te)`. The gap between the two
+  columns **is** overfitting, week 9's trap at full scale
+- And it used `r fmt_n(nz0)` words to do it: far too many to read or trust
+
+# The Fix: Regularization {.divider}
+
+## The idea, in plain words {.smaller-90}
+
+Make the model **pay a price for every coefficient it uses**. Instead of
+minimizing only its mistakes, it now minimizes:
+
+$$\text{Loss} \;=\; \text{how wrong the predictions are} \;+\; \lambda \times \text{how big the coefficients are}$$
+
+- Week 5's logit minimized only the first term; the second term is **the
+  new penalty**
+- A word now earns a coefficient **only if it improves predictions enough
+  to justify its price**. Rare coincidences ("ferrari" appeared in 3
+  positive reviews) are no longer worth paying for
+- **λ (lambda) sets the price.** λ = 0: no penalty, the memorizing logit
+  from the last slide. λ huge: every coefficient gets forced to zero and
+  the model predicts the same probability for everyone
+- This is called **regularization**, and the R package that does it for the
+  logit is **glmnet**
+
+## The formula, symbol by symbol {.smaller-80}
+
+$$\text{Loss} \;=\; \text{DataFit} \;+\; \lambda \left[\, \alpha \,\|\beta\|_1 \;+\; (1-\alpha)\,\|\beta\|_2^2 \,\right]$$
+
+| Symbol | Name | In plain words |
+|:---:|-----|----------|
+| DataFit | the logit's loss | how wrong the predictions are on the training data (what week 5's `glm` minimized) |
+| $\beta$ | the coefficients | one per word: how much that word moves the score |
+| $\|\beta\|_1$ | sum of absolute values | the **lasso** penalty: every nonzero coefficient costs |
+| $\|\beta\|_2^2$ | sum of squares | the **ridge** penalty: big coefficients cost extra |
+| $\lambda$ | penalty strength | the price dial: 0 = free, huge = everything forced to zero |
+| $\alpha$ | the mix | 1 = pure lasso, 0 = pure ridge, in between = elastic net |
+
+::: {.box}
+Two dials to set, and only two: **α** (which penalty) and **λ** (how
+strong).
+:::
+
+## Dial 1, α: lasso or ridge? {.smaller-80}
+
+| | Lasso (α = 1) | Ridge (α = 0) | Elastic net (0 < α < 1) |
+|---|------|------|------|
+| What it does to coefficients | pushes many to **exactly zero** | shrinks all toward zero, none exactly | a mix of both |
+| What you get | a **short list** of words that matter | every word keeps a small say | a compromise |
+| Pick it when | you believe **few** features carry the signal | you believe **many** features each matter a little | you are not sure (α = 0.5 is a common default) |
+
+- Lasso's exact zeros are the headline: it does **feature selection for
+  free**. Out of thousands of words, it hands you the few hundred worth
+  keeping, and you can read them
+- Today we use **lasso (α = 1)**: we expect a modest set of opinion words
+  to carry most of the signal, and we want the readable shortlist
+
+## Dial 2, λ: do not guess, cross-validate {.smaller-90}
+
+- λ = 0 memorizes; λ = huge predicts the base rate for everyone. The right
+  value is somewhere in between, and it **differs for every dataset**, so
+  nobody picks it by hand
+- The tool you already have: **cross-validation** (week 9). Try a grid of
+  λ values; for each one, do 5-fold CV on the **training set** and record
+  the average AUC; pick the λ that scores best
+- In R this is one line: `cv.glmnet(X, y, family = "binomial",
+  type.measure = "auc", nfolds = 5, alpha = 1)` tries about 100 values of
+  λ and does all the folding for you
+
+::: {.box}
+The test set is **not touched** during any of this. It stays in the vault
+until the very end, exactly like week 9.
+:::
+
+# Live: Training the Model {.divider}
+
+## The setup, step by step {.smaller-80}
+
+Everything below ran live when this deck was built (the class script has
+the code):
+
+| Step | What we did | Guardrail |
+|---|---------|--------|
+| 1. Split | 80% train (`r fmt_n(n_train)`), 20% test (`r fmt_n(n_test)`), seed 123 | test set in the vault |
+| 2. Tokenize | lowercase, split into words | same as Tuesday |
+| 3. Vocabulary | all words from the **training** reviews only | the test set must not shape the features |
+| 4. Prune | drop words seen < 10 times: `r fmt_n(p_full)` → `r fmt_n(p_pruned)` | can't learn from 3 examples |
+| 5. TF-IDF | weights **fit on train**, then applied to both | no leakage |
+| 6. Model | `cv.glmnet(...)`, lasso, 5-fold CV on AUC | λ chosen by CV, not by us |
+
+::: {.box}
+Note how many of the guardrails are **week 9 rules**, not new text rules.
+Text changed the features; the discipline is unchanged.
+:::
+
+## The CV curve {.smaller-90}
+
+```{r cv-curve}
+#| fig-width: 8
+#| fig-height: 4.2
+p_cv <- ggplot(cv_dt, aes(x = lambda, y = auc)) +
+  geom_ribbon(aes(ymin = lo, ymax = up), fill = "grey85") +
+  geom_line(color = usc_red, linewidth = 1) +
+  geom_vline(xintercept = lam_min, linetype = "dashed", color = blue) +
+  geom_vline(xintercept = lam_1se, linetype = "dashed", color = usc_gold) +
+  annotate("text", x = lam_min, y = min(cv_dt$lo) + 0.01, label = "lambda.min",
+           color = blue, hjust = 1.1, size = 4) +
+  annotate("text", x = lam_1se, y = min(cv_dt$lo) + 0.04, label = "lambda.1se",
+           color = usc_gold, hjust = -0.1, size = 4) +
+  scale_x_log10() +
+  labs(title = "Cross-Validated AUC, Across ~100 Values of the Penalty",
+       x = "the penalty strength λ (log scale: tiny on the left, heavy on the right)",
+       y = "average AUC across the 5 folds") +
+  theme_minimal(base_size = 14)
+p_cv
+```
+
+::: {.smaller-80 .muted}
+One point per candidate λ: the average AUC over the 5 folds (grey band:
+± one standard error). What happens at the two ends, and where would you
+set the dial?
+:::
+
+## Reading the CV curve {.smaller-90 .nostretch}
+
+```{r cv-curve-2}
+#| fig-width: 8
+#| fig-height: 2.6
+p_cv + labs(title = NULL)
+```
+
+- **Left edge** (λ near zero): almost no penalty, the model memorizes, and
+  the cross-validated AUC suffers. **Right edge** (heavy λ): the model is
+  forced to drop everything and AUC collapses toward 0.5, a coin flip
+- The top of the curve is the sweet spot. `cv.glmnet` marks two choices:
+  **lambda.min** (blue), the λ with the best average AUC, and
+  **lambda.1se** (gold), the heaviest penalty still within one standard
+  error of the best: a "just as good, but simpler" option
+- The sizes here: lambda.min keeps **`r fmt_n(nz_min)` words**;
+  lambda.1se keeps only **`r fmt_n(nz_1se)`**. We use lambda.min today
+
+## The scoreboard {.smaller-80}
+
+All four scored on the **same `r fmt_n(n_test)` test reviews** none of them
+saw:
+
+| Model | Needs labeled data? | AUC | Accuracy |
+|---|:---:|:---:|:---:|
+| Coin flip | no | 0.500 | 50% |
+| Tuesday's dictionary (sentimentr) | no | `r r3(dict_auc)` | `r pct(dict_acc)` |
+| Logit, no penalty (λ ≈ 0) | yes | `r r3(auc0_te)` | `r pct(acc0_te)` |
+| **Lasso at lambda.min** | yes | **`r r3(auc_min)`** | **`r pct(acc_min)`** |
+
+- Training on labels buys about **`r round(100 * (acc_min - dict_acc))`
+  points of accuracy** over the dictionary; that is the price of the
+  labels, paid back
+- The penalty beats no penalty on every metric **and** uses
+  `r fmt_n(nz_min)` words instead of `r fmt_n(nz0)`: better *and* smaller
+
+## The words the model trusts {.smaller-90}
+
+```{r coef-chart}
+#| fig-width: 8
+#| fig-height: 4.4
+p_coef <- ggplot(top_words, aes(x = beta, y = word, fill = side)) +
+  geom_col(width = 0.7) +
+  geom_vline(xintercept = 0) +
+  scale_fill_manual(values = setNames(c(usc_red, blue),
+                    c("pushes the score down (negative)",
+                      "pushes the score up (positive)")), name = NULL) +
+  labs(title = "The 10 Biggest Coefficients, Each Way",
+       x = "the word's coefficient in the lasso logit", y = NULL) +
+  theme_minimal(base_size = 14) + theme(legend.position = "top")
+p_coef
+```
+
+::: {.smaller-80 .muted}
+The lasso's largest surviving coefficients. A review's score is, at heart,
+the **sum of the coefficients of the words it contains**. What do you
+recognize from Tuesday?
+:::
+
+## Reading the words {.smaller-90 .nostretch}
+
+```{r coef-chart-2}
+#| fig-width: 8
+#| fig-height: 2.6
+p_coef + labs(title = NULL)
+```
+
+- These are Tuesday's counting-chart words again (**worst, awful, waste**
+  vs. **great, perfect, excellent**), but this time **learned from the
+  labels**, each with a weight, jointly, accounting for all other words
+- Of the `r fmt_n(p_pruned)` words, the lasso kept `r fmt_n(nz_min)` and
+  set the other `r fmt_n(p_pruned - nz_min)` to exactly zero. What
+  survives is a shortlist a manager can read and sanity-check
+- This is the quiet payoff of lasso + text: the model is **accurate and
+  explainable at the same time**, which the random forest never was
+
+## The code: glm vs. glmnet {.smaller-80}
+
+::: {.columns}
+::: {.column width="48%"}
+**Week 5, the plain logit**
+
+```r
+m <- glm(y ~ x1 + x2,
+         data = train,
+         family = "binomial")
+```
+
+- a formula and a data frame
+- fine for a handful of columns
+- one model back
+:::
+::: {.column width="52%"}
+**This week, the regularized logit**
+
+```r
+cv <- cv.glmnet(X_train, y_train,
+                family = "binomial",
+                type.measure = "auc",
+                nfolds = 5, alpha = 1)
+p <- predict(cv, X_test,
+             s = "lambda.min",
+             type = "response")
+```
+
+- a **matrix** (sparse is fine), not a formula
+- built for thousands of columns
+- a whole path of models, one per λ, with CV built in
+:::
+:::
+
+## The recipe, reusable {.smaller-90}
+
+::: {.box}
+**Text classification, end to end:**
+
+1. Get **labeled** examples (positive/negative, spam/not, churned/stayed)
+2. Split train/test; the test set goes in the vault
+3. Clean, tokenize, build the vocabulary **on the training set**, prune rare terms
+4. TF-IDF, fit on train, applied to both
+5. `cv.glmnet(..., family = "binomial", type.measure = "auc")`
+6. Evaluate on the test set; pick the threshold the business needs (week 9)
+7. **Read the surviving words**: do they make sense?
+:::
+
+::: {.smaller-90}
+The same seven steps run spam filters, support-ticket routers, and
+fake-review detectors. Only step 1 changes.
+:::
+
+# The Game {.divider}
+
+## The sentiment game {.smaller-80}
+
+Teams, laptops out:
+[**`w10-sentiment-analysis-game.R`**](code/w10-sentiment-analysis-game.R)
+(also in `w10-code.zip`). Run the top of the script once, then call
+`run_tfidf_experiment(dt, ...)` with your own settings. One twist: in the
+game the labels come from **Tuesday's dictionary** (that is how teams label
+text when nobody has labeled it for them).
+
+| Knob | What it changes |
+|---|-----------|
+| `ngram_max = 2` | add **bigrams**: "not_good" becomes its own feature |
+| `remove_rare`, `term_count_min` | drop rare words (we used 10 today) |
+| `remove_popular`, `doc_proportion_max` | drop words that are in almost every review |
+| `l2_norm` | normalize each review's TF-IDF row |
+| `alpha` | 1 = lasso, 0 = ridge, between = elastic net |
+| `use_cv = TRUE` / `lambda_no_cv` | CV-chosen λ vs. a λ you set by hand |
+
+::: {.box}
+**The rules:** do not touch the seed or the split. Highest **test AUC**
+wins; ties go to the smaller model. You have 25 minutes, then every team
+reports its best settings and we discuss *why* they won.
+:::
+
+## Wrap-up
+
+::: {.box}
+The code:
+
+- [**`w10-code.zip`**](w10-code.zip): both class scripts + the game
+- [**`w10-2-glmnet-class.R`**](code/w10-2-glmnet-class.R): today's model,
+  end to end, runnable line by line
+:::
+
+::: {.smaller-90}
+The arc so far: weeks 4-5 gave you regression and the logit, week 9 taught
+you to **test models honestly**, and this week text became just another
+input. Homework 4 is out today, due Nov. 19.
+:::
+
+# Questions? {.divider}

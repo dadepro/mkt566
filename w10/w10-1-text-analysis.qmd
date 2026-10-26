@@ -1,0 +1,518 @@
+---
+title: "Text Analysis: Turning Words into Numbers"
+subtitle: "MKT 566 · Fall 2026"
+author: "Davide Proserpio"
+institute: "USC Marshall School of Business"
+format:
+  revealjs:
+    theme: theme.scss
+    slide-number: c/t
+    width: 1280
+    height: 720
+    incremental: false
+    transition: fade
+    transition-speed: fast
+    controls: true
+    progress: true
+    hash: true
+    embed-resources: false
+    link-external-newwindow: true
+    footer: "MKT 566 · Marketing Analytics"
+    pdf-separate-fragments: true
+execute:
+  echo: false
+  warning: false
+  message: false
+fig-width: 7
+fig-height: 4.2
+fig-align: center
+---
+
+```{r setup}
+#| include: false
+library(data.table)
+library(ggplot2)
+library(scales)
+library(text2vec)
+library(sentimentr)
+library(stopwords)
+library(knitr)
+
+usc_red  <- "#990000"
+usc_gold <- "#E69F00"
+blue     <- "#0072B2"
+
+# --- the real corpus: 5,000 IMDB movie reviews that ship with {text2vec} ---
+data("movie_review", package = "text2vec")
+rv <- as.data.table(movie_review)
+rv[, label := ifelse(sentiment == 1, "positive", "negative")]
+rv[, clean := gsub("<[^>]+>", " ", tolower(review))]   # lowercase + strip HTML tags
+rv[, clean := gsub("\\\\", "", clean)]                  # drop escape backslashes
+pos_show <- rv[label == "positive" & nchar(clean) > 150][2]
+neg_show <- rv[label == "negative" & nchar(clean) > 150][3]
+
+# --- word counts, before and after stopwords ---
+toks  <- word_tokenizer(rv$clean)
+vocab <- as.data.table(create_vocabulary(itoken(toks, progressbar = FALSE)))
+setorder(vocab, -term_count)
+sw <- stopwords::stopwords("en")
+vocab[, is_stop := term %in% sw]
+top_all    <- vocab[1:15]
+top_nostop <- vocab[is_stop == FALSE][1:10]
+n_tokens   <- sum(vocab$term_count)
+n_terms    <- nrow(vocab)
+
+# --- the 3-review toy corpus for the by-hand slides (made up, tiny on purpose) ---
+toy <- data.table(
+  doc  = c("A", "B", "C"),
+  text = c("great phone great camera",
+           "terrible battery terrible screen",
+           "great battery"))
+toy_long <- toy[, .(word = unlist(strsplit(text, " "))), by = doc]
+dtm_toy  <- dcast(toy_long[, .N, by = .(doc, word)], doc ~ word,
+                  value.var = "N", fill = 0)
+tf_tab <- toy_long[, .N, by = .(doc, word)]
+tf_tab[, tf := N / sum(N), by = doc]
+df_tab <- toy_long[, .(df = uniqueN(doc)), by = word]
+tf_tab <- merge(tf_tab, df_tab, by = "word")
+tf_tab[, idf := log(3 / df)]
+tf_tab[, tf_idf := round(tf * idf, 3)]
+
+# --- which words separate positive from negative reviews ---
+tok_dt <- data.table(doc = rep(seq_len(nrow(rv)), lengths(toks)),
+                     word = unlist(toks))
+tok_dt[, label := rv$label[doc]]
+freq <- tok_dt[!word %in% sw & nchar(word) > 2,
+               .N, by = .(label, word)]
+freq[, per10k := N / sum(N) * 10000, by = label]
+wide <- dcast(freq, word ~ label, value.var = "per10k", fill = 0)
+wide <- wide[positive + negative > 8]              # keep reasonably common words
+wide[, times_neg := (negative + 0.5) / (positive + 0.5)]
+wide[, times_pos := (positive + 0.5) / (negative + 0.5)]
+sep_words <- rbind(
+  wide[order(-times_neg)][1:6][, .(word, times = -times_neg,
+                                   side = "used more in negative reviews")],
+  wide[order(-times_pos)][1:6][, .(word, times = times_pos,
+                                   side = "used more in positive reviews")])
+sep_words <- sep_words[order(times)]
+sep_words[, word := factor(word, levels = word)]
+
+# --- sentimentr demo on four sentences ---
+demo_sent <- c("This movie is great.",
+               "This movie is not great.",
+               "Absolutely terrible, I want my money back.",
+               "The plot is slow at first, but the ending is fantastic.")
+sent_demo <- as.data.table(sentiment_by(demo_sent))
+demo_tab <- data.table(Sentence = demo_sent,
+                       `Sentiment score` = round(sent_demo$ave_sentiment, 2))
+
+fmt_n <- function(x) format(x, big.mark = ",")
+```
+
+# Before We Start {.divider}
+
+## Housekeeping
+
+- **Homework 3** is due **Thursday, Oct. 29, 11:59 PM**, on Brightspace
+- **Homework 4** will be released **Thursday** (due Nov. 19)
+- Today: **text analysis**, how words become numbers
+- Thursday: **predicting sentiment** from text with a regularized logit, and
+  an in-class game
+
+## Last week's promise {.smaller-90}
+
+Last Tuesday the neural network slide said: in marketing, the fancy models
+shine on **text and images**. This week we make good on the text half.
+
+- Reviews, tweets, chat transcripts, survey comments: most of what customers
+  tell you arrives as **text**, not as a spreadsheet
+- Every model we have used this semester (regression, logit, trees, forests)
+  eats **rows and columns of numbers**
+- So the whole game today is one move: **turn text into numbers without
+  losing what it says**. Once that is done, Thursday's prediction step is
+  machinery you already know
+
+## Why marketers care about text {.smaller-90}
+
+- Text reveals **what customers think** (perception), **what happened to
+  them** (experience), and **how they feel about it** (emotion), in their
+  own words
+- What marketing teams do with it: track **brand health** across millions of
+  posts, find the **product flaw** behind a wave of one-star reviews, route
+  angry support tickets first, detect **fake reviews**
+- The scale is the point: no team can read a million reviews, but a model
+  can score all of them in minutes
+
+::: {.box}
+This is not a new kind of analytics. It is the same pipeline as always,
+with one extra step at the front: **text in, numbers out, then the usual
+models.**
+:::
+
+# From Text to Numbers {.divider}
+
+## The pipeline, start to finish {.smaller-90}
+
+| Step | What it does | Example |
+|---|----------|--------|
+| **1. Clean** | lowercase, strip punctuation and HTML | "Great movie!" becomes "great movie" |
+| **2. Tokenize** | split the text into words | "great movie" becomes ["great", "movie"] |
+| **3. Drop stopwords** | remove glue words that carry no meaning | "the", "a", "and" go away |
+| **4. Count** | one row per document, one column per word | the bag-of-words matrix |
+| **5. Weight** | up-weight distinctive words | TF-IDF |
+| **6. Model** | feed the numbers to a model | the logit from week 5, Thursday |
+
+::: {.box}
+Steps 1 to 5 are new today. Step 6 is **not new**: once text is a matrix of
+numbers, everything from weeks 4 to 9 applies unchanged.
+:::
+
+## Our running example: 5,000 movie reviews {.smaller-80}
+
+Real data, loaded live: the `movie_review` dataset that ships with the
+`text2vec` R package. `r fmt_n(nrow(rv))` IMDB reviews, each labeled
+**positive or negative** (`r fmt_n(rv[label == "positive", .N])` positive,
+`r fmt_n(rv[label == "negative", .N])` negative).
+
+Two real examples, shortened:
+
+::: {.smaller-90}
+> `r substr(pos_show$clean, 1, 220)`...
+> (**positive**)
+
+> `r substr(neg_show$clean, 1, 220)`...
+> (**negative**)
+:::
+
+::: {.box}
+After cleaning, these 5,000 reviews contain about
+**`r format(round(n_tokens / 1e6, 1))` million words** drawn from
+**`r fmt_n(n_terms)` distinct terms**. Nobody reads that; the pipeline
+turns it into a table.
+:::
+
+## Steps 1 and 2: clean, then tokenize {.smaller-90}
+
+One sentence, worked through:
+
+| Stage | Result |
+|---|---------|
+| Raw | `Great movie!! <br /> A must-see... 10/10` |
+| Lowercase | `great movie!! <br /> a must-see... 10/10` |
+| Strip HTML and punctuation | `great movie a must see 10 10` |
+| **Tokenize** (split on spaces) | `great` · `movie` · `a` · `must` · `see` · `10` · `10` |
+
+- Each piece is a **token**. From here on, the model never sees sentences,
+  only tokens and their counts
+- Real text is dirty: these reviews contain leftover HTML like `<br />`,
+  which would otherwise become a nonsense token. **Look at your tokens
+  before you model them**
+
+## N-grams: when one word is not enough {.smaller-90}
+
+Splitting into single words destroys word order, and sometimes the order is
+the meaning:
+
+- "good" and "**not** good" say opposite things, but as single tokens they
+  both contribute the word `good`
+- The fix: also count **pairs of consecutive words**, called **bigrams**:
+  `not_good` becomes its own token, distinct from `good`
+- Single words are **unigrams**; you can go to trigrams and beyond, but the
+  number of distinct terms explodes, so most marketing work stops at bigrams
+
+## The most common words {.smaller-90}
+
+```{r freq-before}
+#| fig-width: 8
+#| fig-height: 4.2
+p_before <- ggplot(top_all, aes(x = term_count, y = reorder(term, term_count))) +
+  geom_col(fill = usc_red, width = 0.7) +
+  scale_x_continuous(labels = comma) +
+  labs(title = "The 15 Most Common Words in 5,000 Reviews",
+       x = "Times the word appears", y = NULL) +
+  theme_minimal(base_size = 14)
+p_before
+```
+
+::: {.smaller-80 .muted}
+Every word in all 5,000 reviews, counted. What do you notice about the
+words at the top, and how useful would they be for telling a good review
+from a bad one?
+:::
+
+## Stopwords: the glue gets removed {.smaller-90 .nostretch}
+
+```{r freq-after}
+#| fig-width: 8
+#| fig-height: 2.6
+ggplot(top_nostop, aes(x = term_count, y = reorder(term, term_count))) +
+  geom_col(fill = blue, width = 0.7) +
+  scale_x_continuous(labels = comma) +
+  labs(title = "The Top 10 After Removing Stopwords",
+       x = "Times the word appears", y = NULL) +
+  theme_minimal(base_size = 13)
+```
+
+- The raw top 15 was all **the, a, and, of**: grammar glue. These words
+  appear in every document, so they cannot separate anything from anything
+- Words like these are called **stopwords**, and step 3 simply deletes them
+  from a standard list (the list is a choice: in some problems "not" matters,
+  so check before deleting it)
+- After removal, the top words are **movie, film, story, time**: now the
+  counts start to mean something
+
+## Bag-of-words: the counting step {.smaller-80}
+
+Take a tiny, made-up corpus of three phone reviews, and **count every word
+in every document**:
+
+- A: "`r toy$text[1]`"
+- B: "`r toy$text[2]`"
+- C: "`r toy$text[3]`"
+
+```{r dtm-toy}
+kable(dtm_toy, align = "lcccccc")
+```
+
+- This table is the **bag-of-words matrix**: one row per document, one
+  column per word, counts in the cells. Review A **is** the vector
+  (0, 1, 2, 1, 0, 0)
+- "Bag" because order is thrown away: "great phone" and "phone great" give
+  the same row. That is the price of turning text into a table
+
+## Bag-of-words at real scale {.smaller-90}
+
+On the real corpus, the same table is `r fmt_n(nrow(rv))` rows by
+**`r fmt_n(n_terms)` columns**, one column for every distinct term.
+
+- Almost every cell is **zero**: a 200-word review touches 200 of the
+  `r fmt_n(n_terms)` columns. This is called a **sparse matrix**, and R
+  stores only the non-zero cells
+- Simple and interpretable: every column is a word you can read
+- Two problems remain: common words get big counts **just for being
+  common**, and `r fmt_n(n_terms)` columns is far more columns than we have
+  reviews. The first problem we fix now; the second is **Thursday's whole
+  topic**
+
+## TF-IDF: up-weight the words that identify a document {.smaller-80}
+
+A word matters for a document when it is **common in that document but rare
+everywhere else**. TF-IDF scores exactly that, in two parts:
+
+- **TF (term frequency)**: how much of document $d$ is word $t$?
+  $\text{TF}(t,d) = \frac{\text{count of } t \text{ in } d}{\text{words in } d}$
+- **IDF (inverse document frequency)**: how rare is the word across
+  documents? $\text{IDF}(t) = \log\frac{N}{\text{docs containing } t}$,
+  with $N$ the number of documents. A word in **every** document gets
+  $\log(1) = 0$: no weight at all
+- **TF-IDF** $= \text{TF} \times \text{IDF}$: big only when both parts are
+  big
+
+## TF-IDF by hand, on the toy corpus {.smaller-80}
+
+For document A ("`r toy$text[1]`", 4 words) with $N = 3$ documents:
+
+```{r tfidf-toy}
+show <- tf_tab[doc == "A", .(word, `count in A` = N, `TF = count/4` = round(tf, 2),
+                             `docs with word` = df,
+                             `IDF = log(3/df)` = round(idf, 2),
+                             `TF-IDF` = tf_idf)][order(-`TF-IDF`)]
+tfidf_great <- show[word == "great"][["TF-IDF"]]
+tfidf_phone <- show[word == "phone"][["TF-IDF"]]
+kable(show, align = "lccccc")
+```
+
+- "great" appears **twice** in A, but it is also in 2 of the 3 documents,
+  so its IDF is low: TF-IDF = `r tfidf_great`
+- "phone" appears **once**, but **only A** has it: TF-IDF =
+  `r tfidf_phone`, the highest score
+- That is the whole idea: **"great" is everywhere; "phone" tells you which
+  review this is.** The model should listen to "phone" more
+
+## Which words separate good reviews from bad ones {.smaller-90}
+
+```{r sep-chart}
+#| fig-width: 8
+#| fig-height: 4.2
+p_sep <- ggplot(sep_words, aes(x = times, y = word, fill = side)) +
+  geom_col(width = 0.7) +
+  geom_vline(xintercept = 0) +
+  scale_fill_manual(values = setNames(c(usc_red, blue),
+                    c("used more in negative reviews", "used more in positive reviews")),
+                    name = NULL) +
+  scale_x_continuous(breaks = seq(-8, 4, 2),
+                     labels = function(x) paste0(abs(x), "x")) +
+  labs(title = "Which Words Tilt Negative, Which Tilt Positive",
+       x = "How many times more often the word appears on that side", y = NULL) +
+  theme_minimal(base_size = 14) + theme(legend.position = "top")
+p_sep
+```
+
+::: {.smaller-80 .muted}
+For every word, we counted how often positive reviews use it and how often
+negative reviews use it (per 10,000 words), then took the ratio. "worst" at
+8x on the left means negative reviews use it 8 times more often than
+positive ones. What do you see?
+:::
+
+## Reading the chart {.smaller-90 .nostretch}
+
+```{r sep-chart-2}
+#| fig-width: 8
+#| fig-height: 2.6
+p_sep + labs(title = NULL)
+```
+
+- Negative reviews lean on **worst, waste, awful, stupid**: direct
+  complaint words. Positive reviews lean on **excellent, wonderful,
+  perfect, amazing**
+- Nobody told the data which words are "good": the labels plus simple
+  counting surfaced them. This is exactly the signal Thursday's model will
+  learn from
+- The two sides are not symmetric: the sharpest negative word tilts about
+  **8x**, the sharpest positive one only about **4x**. Complaints use
+  extreme words; praise words also show up inside negative reviews ("the
+  trailer was great, the movie was not"). **No single word decides a
+  review**, which is why the model adds up thousands of small signals
+
+## Word embeddings, in plain words {.smaller-90}
+
+Bag-of-words has one blind spot left: to it, "great" and "awesome" are as
+unrelated as "great" and "battery": **different columns, nothing shared**.
+
+- **Embeddings** fix that by giving every word a list of, say, 300 numbers
+  (a **vector**), learned so that words used in similar contexts get
+  **similar vectors**: awesome ends up close to great, far from battery
+- They are learned from huge text collections by models like **word2vec**
+  (guess the word from its neighbors), and you download them **pretrained**
+  rather than training your own
+- The trade-off by now is familiar: embeddings capture **meaning** but the
+  300 numbers are unreadable; counts are readable but treat every word as an
+  island
+
+## Three ways to turn text into numbers {.smaller-80}
+
+| Method | Each document becomes | Strength | Weakness |
+|---|-----|------|------|
+| **Bag-of-words** | counts over the vocabulary | simple, readable | common words dominate; synonyms unrelated |
+| **TF-IDF** | weighted counts | highlights distinctive words; the workhorse | still ignores meaning and order |
+| **Embeddings** | an average of word vectors | captures meaning (great is close to awesome) | unreadable numbers; needs a pretrained model |
+
+::: {.box}
+Default advice for marketing problems: **start with TF-IDF**. It is fast,
+transparent, and with a linear model it is a strong baseline. Reach for
+embeddings when synonyms clearly matter and you have the labels to prove
+the gain. Thursday we test exactly this on our 5,000 reviews.
+:::
+
+# Measuring Opinion: Sentiment {.divider}
+
+## Sentiment: the first thing marketers ask of text {.smaller-90}
+
+- **Sentiment** is the polarity of an opinion: positive, negative, or
+  neutral. "Is this review happy or angry?"
+- Where it earns money: track **customer satisfaction** without surveys,
+  watch a **campaign** land in real time, spot a **brand crisis** while it
+  is still small, prioritize the angriest **support tickets**
+- Two ways to measure it, and they differ in what they need: a
+  **dictionary** or **labeled data**
+
+## Way 1: a dictionary of charged words {.smaller-90}
+
+Lexicon-based sentiment (the `sentimentr` package in R):
+
+- Start from a **dictionary**: thousands of words pre-scored by humans
+  (great = +0.75, terrible = -0.75, table = 0)
+- Score a sentence by **averaging the scores of its words**
+- The good packages also handle **valence shifters**: "**not** great" flips
+  the sign, "**absolutely** terrible" amplifies it. This is why they work at
+  the sentence level, not word by word
+
+::: {.box}
+No training data needed: you can score a million reviews on day one. The
+price: the dictionary does not know your domain ("thin" is bad for a
+laptop battery and good for a laptop).
+:::
+
+## sentimentr, live on four sentences {.smaller-80}
+
+```{r sent-demo}
+kable(demo_tab, align = "lc")
+```
+
+- Sentence 1 vs. sentence 2: the **"not"** flips a clearly positive score
+  to a negative one. A plain word count would have scored both as positive,
+  because both contain "great"
+- Sentence 3: "absolutely" **amplifies** "terrible", the most negative
+  score of the four
+- Sentence 4 is the honest case: mixed opinions inside one review average
+  out to a mildly positive score. Real reviews are full of this, which is
+  why sentence-level scoring beats word counting
+
+## Way 2: train a classifier (Thursday) {.smaller-80}
+
+Supervised sentiment is **week 9 on text features**. Every step is something
+you already know:
+
+| Step | What you do | Where you learned it |
+|---|---------|-------|
+| **1. Label** | each review marked positive or negative (ours already are) | the outcome, week 5 |
+| **2. Vectorize** | TF-IDF matrix: 5,000 rows, thousands of word columns | today |
+| **3. Split** | train/test, fit on train only | week 9 |
+| **4. Classify** | a logit on the word columns | week 5, plus Thursday's fix for "too many columns" |
+| **5. Evaluate** | accuracy, precision, recall, AUC on the test set | week 9 |
+
+::: {.box}
+When you have labels, the trained model beats the dictionary **in your
+domain**: it learns that "thin" is bad for batteries from your own
+reviews. Thursday we run this end to end and read which words the model
+trusts.
+:::
+
+## Beyond positive vs. negative {.smaller-90}
+
+Two directions you should know exist, both one Google away:
+
+- **Emotion detection**: dictionaries that map words to emotions rather
+  than polarity (the NRC lexicon tags ~14,000 words with joy, anger, fear,
+  trust...). "Which campaign made people excited, and which made them
+  anxious?"
+- **Topic modeling** (LDA): unsupervised grouping of documents by the words
+  they share, clustering for text. "What are the five things people
+  complain about?" It finds the themes; **you** name them, exactly like the
+  customer segments in week 6
+
+## What text analysis will not tell you {.smaller-90}
+
+- **Sarcasm and context**: "Great, it broke after two days" scores
+  positive on words. Dictionaries fall for it; trained models only partly
+  escape it
+- **The domain shifts**: a dictionary built on movie reviews mis-scores
+  banking complaints. Re-check whenever you change domains
+- **Volume is not representativeness**: the people who write reviews are
+  not your average customers (week 1's Groupon paper all over again)
+- **Correlation is not causation**, still: angry reviews predict churn;
+  that does not mean the words cause it
+
+## Wrap-up
+
+::: {.box}
+The R code behind every chart and table:
+
+- [**`w10-code.zip`**](w10-code.zip): the class script (the toy corpus, the
+  frequency charts, TF-IDF by hand, the sentimentr demo)
+- [**`w10-1-text-analysis-class.R`**](code/w10-1-text-analysis-class.R):
+  same content, runnable line by line; the reviews load from the
+  `text2vec` package, no download needed
+:::
+
+::: {.smaller-80 .muted}
+Required reading: [chapter 8 of *Introduction to R for Data
+Science*](https://bookdown.org/jdholster1/idsr/text-analysis.html).
+Recommended: the [HBR piece on fake
+reviews](https://hbr.org/2020/11/how-fake-customer-reviews-do-and-dont-work).
+Thursday: predicting sentiment with a **regularized logit**, and the
+in-class game.
+:::
+
+# Questions? {.divider}
