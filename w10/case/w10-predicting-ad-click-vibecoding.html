@@ -1486,8 +1486,8 @@ border-radius: 0px;
 </div>
 
 
-<div id="what-this-is" class="section level1" number="1">
-<h1><span class="header-section-number">1</span> What this is</h1>
+<div id="what-this-is" class="section level1">
+<h1>What this is</h1>
 <p><strong>What we are doing.</strong> An advertiser pays every time its
 ad is shown, but earns only when someone clicks. If we can predict
 <strong>which impressions are likely to turn into a click</strong>, the
@@ -1555,9 +1555,8 @@ impressions in total:</p>
 </tbody>
 </table>
 </div>
-<div id="task-1-load-and-explore" class="section level1" number="2">
-<h1><span class="header-section-number">2</span> Task 1: Load and
-explore</h1>
+<div id="task-1-load-and-explore" class="section level1">
+<h1>Task 1: Load and explore</h1>
 <p>Read the data, look at the first rows and a summary, and compute the
 <strong>baseline click rate</strong> (the share of impressions that got
 a click).</p>
@@ -1567,9 +1566,8 @@ a click).</p>
 <li>Which variables are categorical, and which are numeric?</li>
 </ul>
 </div>
-<div id="task-2-traintest-split" class="section level1" number="3">
-<h1><span class="header-section-number">3</span> Task 2: Train/test
-split</h1>
+<div id="task-2-traintest-split" class="section level1">
+<h1>Task 2: Train/test split</h1>
 <p>Split the data into a <strong>training set (70%)</strong> and a
 <strong>test set (30%)</strong>, at random. Fit everything on the
 training set; compute every metric on the test set.</p>
@@ -1579,9 +1577,8 @@ training set; compute every metric on the test set.</p>
 <li>What would happen if we trained and evaluated on the same data?</li>
 </ul>
 </div>
-<div id="task-3-fit-a-logistic-regression" class="section level1" number="4">
-<h1><span class="header-section-number">4</span> Task 3: Fit a logistic
-regression</h1>
+<div id="task-3-fit-a-logistic-regression" class="section level1">
+<h1>Task 3: Fit a logistic regression</h1>
 <p>Fit a logit that predicts <code>click</code> from <strong>pages
 viewed</strong> and <strong>ad position</strong>, on the training set.
 Show the coefficients in a readable table.</p>
@@ -1591,9 +1588,8 @@ Show the coefficients in a readable table.</p>
 decrease the odds of clicking?</li>
 </ul>
 </div>
-<div id="task-4-add-the-remaining-features" class="section level1" number="5">
-<h1><span class="header-section-number">5</span> Task 4: Add the
-remaining features</h1>
+<div id="task-4-add-the-remaining-features" class="section level1">
+<h1>Task 4: Add the remaining features</h1>
 <p>Fit a second logit that <strong>adds the remaining features</strong>
 (device, user segment, time on site, topic match, past click behavior).
 Compare the two models on <strong>test AUC</strong> and keep the better
@@ -1605,9 +1601,8 @@ training set?</li>
 <li>Which model wins, and by how much?</li>
 </ul>
 </div>
-<div id="task-5-find-the-best-pair-of-features" class="section level1" number="6">
-<h1><span class="header-section-number">6</span> Task 5: Find the best
-pair of features</h1>
+<div id="task-5-find-the-best-pair-of-features" class="section level1">
+<h1>Task 5: Find the best pair of features</h1>
 <p>With 7 features there are only 21 possible pairs. Fit a logit on
 every pair (a loop, or your AI assistant, makes this quick) and compare
 them on test AUC.</p>
@@ -1617,9 +1612,8 @@ them on test AUC.</p>
 <li>Why do you think those two carry so much of the signal?</li>
 </ul>
 </div>
-<div id="task-6-predict-and-classify-at-0.5" class="section level1" number="7">
-<h1><span class="header-section-number">7</span> Task 6: Predict and
-classify at 0.5</h1>
+<div id="task-6-predict-and-classify-at-0.5" class="section level1">
+<h1>Task 6: Predict and classify at 0.5</h1>
 <p>Use your model to predict the <strong>click probability</strong> of
 every test impression, then turn the probabilities into labels with the
 default decision rule: predict “click” when the probability is at least
@@ -1631,9 +1625,8 @@ rows.</p>
 <li>How would the results change if we used 0.3 or 0.7 instead?</li>
 </ul>
 </div>
-<div id="task-7-the-confusion-matrix-and-the-metrics" class="section level1" number="8">
-<h1><span class="header-section-number">8</span> Task 7: The confusion
-matrix and the metrics</h1>
+<div id="task-7-the-confusion-matrix-and-the-metrics" class="section level1">
+<h1>Task 7: The confusion matrix and the metrics</h1>
 <p>Count the four boxes on the test set (true positives, false
 positives, false negatives, true negatives), then compute
 <strong>accuracy, precision, recall, and F1</strong> from those counts,
@@ -1645,9 +1638,8 @@ which metric should we prioritize?</li>
 <li>What tradeoff exists between precision and recall?</li>
 </ul>
 </div>
-<div id="task-8-the-roc-curve" class="section level1" number="9">
-<h1><span class="header-section-number">9</span> Task 8: The ROC
-curve</h1>
+<div id="task-8-the-roc-curve" class="section level1">
+<h1>Task 8: The ROC curve</h1>
 <p>Plot the ROC curve for your model on the test set, with the
 random-guess diagonal for reference.</p>
 <p><strong>Questions</strong></p>
@@ -1656,8 +1648,8 @@ random-guess diagonal for reference.</p>
 <li>What does it mean if our curve is very close to that line?</li>
 </ul>
 </div>
-<div id="task-9-auc" class="section level1" number="10">
-<h1><span class="header-section-number">10</span> Task 9: AUC</h1>
+<div id="task-9-auc" class="section level1">
+<h1>Task 9: AUC</h1>
 <p>Compute the <strong>AUC</strong> of your model on the test set.</p>
 <p><strong>Questions</strong></p>
 <ul>
@@ -1665,9 +1657,8 @@ random-guess diagonal for reference.</p>
 mean?</li>
 </ul>
 </div>
-<div id="task-10-odds-ratios-drawn" class="section level1" number="11">
-<h1><span class="header-section-number">11</span> Task 10: Odds ratios,
-drawn</h1>
+<div id="task-10-odds-ratios-drawn" class="section level1">
+<h1>Task 10: Odds ratios, drawn</h1>
 <p>Turn the logit coefficients into <strong>odds ratios</strong>, drop
 the intercept (it is the baseline, not a feature effect), and show them
 as an <strong>ordered bar chart</strong> with a dashed line at 1 (no
@@ -1680,9 +1671,8 @@ interpret this?</li>
 coefficients?</li>
 </ul>
 </div>
-<div id="task-11-pick-a-threshold-for-a-business-goal" class="section level1" number="12">
-<h1><span class="header-section-number">12</span> Task 11: Pick a
-threshold for a business goal</h1>
+<div id="task-11-pick-a-threshold-for-a-business-goal" class="section level1">
+<h1>Task 11: Pick a threshold for a business goal</h1>
 <p>Choose a business goal, for example: the ad team wants at least
 <strong>60% precision</strong> (most of the impressions you flag should
 be real clickers), or the budget only allows targeting the top 20% of
@@ -1693,9 +1683,8 @@ impressions. Find the threshold that meets your goal.</p>
 <li>What does meeting it cost you on the other metric?</li>
 </ul>
 </div>
-<div id="if-you-finish-early" class="section level1" number="13">
-<h1><span class="header-section-number">13</span> If you finish
-early</h1>
+<div id="if-you-finish-early" class="section level1">
+<h1>If you finish early</h1>
 <ul>
 <li>Try a different business goal and check how much the threshold
 moves</li>
