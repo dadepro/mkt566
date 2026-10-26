@@ -37,9 +37,9 @@ goes live. The VP is smart but has never heard the words "recall" or
 # The data
 
 One row per ad impression, 5,000 impressions:
-[`ad_click_data.csv`](https://github.com/dadepro/mkt566/raw/main/w9/data/ad_click_data.csv)
-(the same data as the week 9 exercise). Put it in a fresh folder and work
-in an R script or an R Markdown file.
+[`ad_click_data.csv`](https://github.com/dadepro/mkt566/raw/main/w10/data/ad_click_data.csv)
+(the data you saw in the classifiers week). Put it in a fresh folder and
+work in an R script or an R Markdown file.
 
 | Column | What it is |
 |---|-----------|
@@ -76,10 +76,10 @@ train/test split** so every group's numbers are comparable.
    top 20% of impressions. Find the threshold that meets your goal and
    write down what it costs you on the other metric
 
-If you want more structure, the week 9
-[handout](https://raw.githack.com/dadepro/mkt566/main/w9/case/w9-predicting-ad-click-w-logit.html)
+If you want more structure, the
+[handout](https://raw.githack.com/dadepro/mkt566/main/w10/case/w10-predicting-ad-click-w-logit.html)
 walks through the same steps with the code given; the
-[vibecoding version](https://raw.githack.com/dadepro/mkt566/main/w9/case/w9-predicting-ad-click-vibecoding.html)
+[vibecoding version](https://raw.githack.com/dadepro/mkt566/main/w10/case/w10-predicting-ad-click-vibecoding.html)
 has the tasks only. As always, your AI assistant is allowed and
 encouraged; keep your `ai-log.md` going.
 
