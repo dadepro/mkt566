@@ -63,9 +63,9 @@ train/test split** so every group's numbers are comparable.
    impressions with a click)?
 2. **Split** into training (70%) and test (30%). Fit everything on the
    training set; compute every metric on the test set.
-3. **Fit a logit** of `click` on pages viewed and ad position, like in
-   class. Then fit a second logit that **adds the remaining features**
-   (device, user segment, time on site, topic match, past click behavior).
+3. **Fit a logit** of `click` on the **two features you think predict
+   clicks best**: your call, argue about it in the group before you run
+   anything. Then fit a second logit that **uses all the features**.
    Compare the two on test AUC and keep the better one as "your model"
 4. **Classify at 0.5** and build the confusion matrix on the test set:
    the four counts, then accuracy, precision, recall, and F1
@@ -134,8 +134,8 @@ are feeling brave. A slide a minute is a good pace for a 5-minute talk.
 
 - **Find the best pair of features.** With 7 features there are only 21
   possible pairs. Fit a logit on every pair (a loop, or your AI assistant,
-  makes this quick) and compare them on test AUC. How close do just two
-  features get to the full model?
+  makes this quick) and compare them on test AUC. Did your group's pick
+  from step 3 win? How close do just two features get to the full model?
 - Try a different business goal in Part 1, step 7 (say 60% precision, or
   the budget only allows targeting the top 20% of impressions) and check
   how much the threshold moves

@@ -1579,26 +1579,28 @@ training set; compute every metric on the test set.</p>
 </div>
 <div id="task-3-fit-a-logistic-regression" class="section level1">
 <h1>Task 3: Fit a logistic regression</h1>
-<p>Fit a logit that predicts <code>click</code> from <strong>pages
-viewed</strong> and <strong>ad position</strong>, on the training set.
-Show the coefficients in a readable table.</p>
+<p>Pick the <strong>two features you think predict clicks best</strong>
+(your call: argue about it in the group before you run anything), and
+fit a logit that predicts <code>click</code> from those two, on the
+training set. Show the coefficients in a readable table.</p>
 <p><strong>Questions</strong></p>
 <ul>
+<li>Why did you pick those two?</li>
 <li>Interpret the sign of each coefficient. Which variables increase or
 decrease the odds of clicking?</li>
 </ul>
 </div>
-<div id="task-4-add-the-remaining-features" class="section level1">
-<h1>Task 4: Add the remaining features</h1>
-<p>Fit a second logit that <strong>adds the remaining features</strong>
-(device, user segment, time on site, topic match, past click behavior).
+<div id="task-4-use-all-the-features" class="section level1">
+<h1>Task 4: Use all the features</h1>
+<p>Fit a second logit that <strong>uses all the features</strong>.
 Compare the two models on <strong>test AUC</strong> and keep the better
 one as “your model” for everything that follows.</p>
 <p><strong>Questions</strong></p>
 <ul>
 <li>Why do we compare the models on the test set rather than the
 training set?</li>
-<li>Which model wins, and by how much?</li>
+<li>Which model wins, and by how much? How close did your two picks get
+to the full model?</li>
 </ul>
 </div>
 <div id="task-5-predict-and-classify-at-0.5" class="section level1">
@@ -1680,9 +1682,9 @@ up?</li>
 <ul>
 <li><strong>Find the best pair of features.</strong> With 7 features
 there are only 21 possible pairs. Fit a logit on every pair (a loop, or
-your AI assistant, makes this quick) and compare them on test AUC. Which
-two features together get closest to the full model, and why do you
-think those two carry so much of the signal?</li>
+your AI assistant, makes this quick) and compare them on test AUC. Did
+the pair your group picked in Task 3 win? Why do you think the winning
+two carry so much of the signal?</li>
 <li>Try a different business goal (say 60% precision, or the budget only
 allows targeting the top 20% of impressions) and check how much the
 threshold moves</li>

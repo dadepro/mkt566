@@ -66,26 +66,29 @@ test set.
 
 # Task 3: Fit a logistic regression
 
-Fit a logit that predicts `click` from **pages viewed** and **ad
-position**, on the training set. Show the coefficients in a readable table.
+Pick the **two features you think predict clicks best** (your call: argue
+about it in the group before you run anything), and fit a logit that
+predicts `click` from those two, on the training set. Show the
+coefficients in a readable table.
 
 **Questions**
 
+- Why did you pick those two?
 - Interpret the sign of each coefficient. Which variables increase or
   decrease the odds of clicking?
 
-# Task 4: Add the remaining features
+# Task 4: Use all the features
 
-Fit a second logit that **adds the remaining features** (device, user
-segment, time on site, topic match, past click behavior). Compare the two
-models on **test AUC** and keep the better one as "your model" for
-everything that follows.
+Fit a second logit that **uses all the features**. Compare the two models
+on **test AUC** and keep the better one as "your model" for everything
+that follows.
 
 **Questions**
 
 - Why do we compare the models on the test set rather than the training
   set?
-- Which model wins, and by how much?
+- Which model wins, and by how much? How close did your two picks get to
+  the full model?
 
 # Task 5: Predict and classify at 0.5
 
@@ -160,9 +163,9 @@ threshold that clears the 75% bar.
 
 - **Find the best pair of features.** With 7 features there are only 21
   possible pairs. Fit a logit on every pair (a loop, or your AI assistant,
-  makes this quick) and compare them on test AUC. Which two features
-  together get closest to the full model, and why do you think those two
-  carry so much of the signal?
+  makes this quick) and compare them on test AUC. Did the pair your group
+  picked in Task 3 win? Why do you think the winning two carry so much of
+  the signal?
 - Try a different business goal (say 60% precision, or the budget only
   allows targeting the top 20% of impressions) and check how much the
   threshold moves
