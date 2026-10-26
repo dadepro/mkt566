@@ -1671,23 +1671,27 @@ interpret this?</li>
 coefficients?</li>
 </ul>
 </div>
-<div id="task-11-pick-a-threshold-for-a-business-goal" class="section level1">
-<h1>Task 11: Pick a threshold for a business goal</h1>
-<p>Choose a business goal, for example: the ad team wants at least
-<strong>60% precision</strong> (most of the impressions you flag should
-be real clickers), or the budget only allows targeting the top 20% of
-impressions. Find the threshold that meets your goal.</p>
+<div id="task-11-pick-a-threshold-for-the-business-goal" class="section level1">
+<h1>Task 11: Pick a threshold for the business goal</h1>
+<p>The goal, the same for every group: the ad team wants <strong>at
+least 75% precision</strong> (3 of every 4 impressions you flag should
+be real clickers), while keeping recall as high as possible. Raising the
+threshold buys precision by throwing away recall, so that means finding
+the <strong>lowest</strong> threshold that clears the 75% bar.</p>
 <p><strong>Questions</strong></p>
 <ul>
-<li>What is the lowest threshold that clears your goal?</li>
-<li>What does meeting it cost you on the other metric?</li>
+<li>What is the lowest threshold that clears 75% precision, and what
+recall does it leave you?</li>
+<li>Compared to the 0.5 cutoff, what did you gain and what did you give
+up?</li>
 </ul>
 </div>
 <div id="if-you-finish-early" class="section level1">
 <h1>If you finish early</h1>
 <ul>
-<li>Try a different business goal and check how much the threshold
-moves</li>
+<li>Try a different business goal (say 60% precision, or the budget only
+allows targeting the top 20% of impressions) and check how much the
+threshold moves</li>
 <li>Compute how much money the model saves under simple assumptions: say
 an impression costs 1 cent and a click is worth 50 cents. Compare
 showing the ad to everyone vs. only above your threshold</li>

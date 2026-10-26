@@ -153,21 +153,25 @@ chart** with a dashed line at 1 (no effect).
 - Why might odds ratios be more intuitive for managers than raw
   coefficients?
 
-# Task 11: Pick a threshold for a business goal
+# Task 11: Pick a threshold for the business goal
 
-Choose a business goal, for example: the ad team wants at least **60%
-precision** (most of the impressions you flag should be real clickers), or
-the budget only allows targeting the top 20% of impressions. Find the
-threshold that meets your goal.
+The goal, the same for every group: the ad team wants **at least 75%
+precision** (3 of every 4 impressions you flag should be real clickers),
+while keeping recall as high as possible. Raising the threshold buys
+precision by throwing away recall, so that means finding the **lowest**
+threshold that clears the 75% bar.
 
 **Questions**
 
-- What is the lowest threshold that clears your goal?
-- What does meeting it cost you on the other metric?
+- What is the lowest threshold that clears 75% precision, and what recall
+  does it leave you?
+- Compared to the 0.5 cutoff, what did you gain and what did you give up?
 
 # If you finish early
 
-- Try a different business goal and check how much the threshold moves
+- Try a different business goal (say 60% precision, or the budget only
+  allows targeting the top 20% of impressions) and check how much the
+  threshold moves
 - Compute how much money the model saves under simple assumptions: say an
   impression costs 1 cent and a click is worth 50 cents. Compare showing
   the ad to everyone vs. only above your threshold

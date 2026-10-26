@@ -1596,11 +1596,14 @@ F1</li>
 <li><strong>Odds ratios</strong>, as an ordered bar chart, intercept
 dropped, dashed line at 1: which features move the odds of a click, and
 by how much?</li>
-<li><strong>Pick the threshold for a business goal.</strong> Choose one,
-for example: the ad team wants at least 60% precision (most of the
-impressions you flag should be real clickers), or the budget only allows
-targeting the top 20% of impressions. Find the threshold that meets your
-goal and write down what it costs you on the other metric</li>
+<li><strong>Pick the threshold for the business goal.</strong> The goal,
+the same for every group: the ad team wants <strong>at least 75%
+precision</strong> (3 of every 4 impressions you flag should be real
+clickers), while keeping recall as high as possible. Raising the
+threshold buys precision by throwing away recall, so that means finding
+the <strong>lowest</strong> threshold that clears the 75% bar. Report
+your threshold, the precision you reach, and the recall it leaves you
+compared to the 0.5 cutoff</li>
 </ol>
 <p>The <a href="https://raw.githack.com/dadepro/mkt566/main/w10/case/w10-predicting-ad-click-vibecoding.html">exercise
 handout</a> spells out the same tasks with questions at every step,
@@ -1625,9 +1628,10 @@ times more likely to be clicked” beats “the coefficient is 0.9”</li>
 0.5 cutoff, and accuracy, precision, and recall translated into plain
 words: “of the impressions we flag, X% really click; we catch Y% of all
 real clickers”</li>
-<li><strong>The dial.</strong> Your business goal from Part 1, the
-threshold you chose to meet it, and the trade-off: what you gain and
-what you give up</li>
+<li><strong>The dial.</strong> The business goal (75% precision while
+losing as little recall as possible), the threshold that meets it, and
+the trade-off: what you gain and what you give up compared to the 0.5
+cutoff</li>
 <li><strong>The proof.</strong> The ROC curve with the AUC, and one
 sentence on what that number means</li>
 <li><strong>The recommendation.</strong> Should the ad team use this
@@ -1664,8 +1668,9 @@ should we do?”</li>
 <div id="if-you-finish-early" class="section level1">
 <h1>If you finish early</h1>
 <ul>
-<li>Try a different business goal in Part 1, step 8, and check how much
-the threshold moves</li>
+<li>Try a different business goal in Part 1, step 8 (say 60% precision,
+or the budget only allows targeting the top 20% of impressions) and
+check how much the threshold moves</li>
 <li>Compute how much money the model saves under simple assumptions: say
 an impression costs 1 cent and a click is worth 50 cents. Compare
 showing the ad to everyone vs. only above your threshold</li>
