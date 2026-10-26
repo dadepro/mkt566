@@ -1585,9 +1585,9 @@ set.</li>
 argue about it in the group before you run anything. Then fit a second
 logit that <strong>uses all the features</strong>. Compare the two on
 test AUC and keep the better one as “your model”</li>
-<li><strong>Classify at 0.5</strong> and build the confusion matrix on
-the test set: the four counts, then accuracy, precision, recall, and
-F1</li>
+<li><strong>Classify at 0.5</strong>, using the all-features logit (it
+should have won step 3), and build the confusion matrix on the test set:
+the four counts, then accuracy, precision, recall, and F1</li>
 <li><strong>Draw the ROC curve</strong> and compute the AUC</li>
 <li><strong>Odds ratios</strong>, as an ordered bar chart, intercept
 dropped, dashed line at 1: which features move the odds of a click, and
@@ -1604,8 +1604,10 @@ and what does that say about accuracy as the metric to watch here?</li>
 </ol>
 <p>The <a href="https://raw.githack.com/dadepro/mkt566/main/w10/case/w10-predicting-ad-click-vibecoding.html">exercise
 handout</a> spells out the same tasks with questions at every step,
-still with no code given. As always, your AI assistant is allowed and
-encouraged.</p>
+still with no code given. It also comes as an <a href="https://github.com/dadepro/mkt566/raw/main/w10/case/w10-predicting-ad-click-vibecoding.Rmd">R
+Markdown file</a> or a <a href="https://github.com/dadepro/mkt566/raw/main/w10/case/w10-predicting-ad-click-vibecoding.ipynb">Jupyter
+notebook</a> you can fill in. As always, your AI assistant is allowed
+and encouraged.</p>
 </div>
 <div id="part-2-the-slides-thursday" class="section level1">
 <h1>Part 2: The slides (Thursday)</h1>

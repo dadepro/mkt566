@@ -68,8 +68,9 @@ train/test split** so every group's numbers are comparable.
    clicks best**: your call, argue about it in the group before you run
    anything. Then fit a second logit that **uses all the features**.
    Compare the two on test AUC and keep the better one as "your model"
-4. **Classify at 0.5** and build the confusion matrix on the test set:
-   the four counts, then accuracy, precision, recall, and F1
+4. **Classify at 0.5**, using the all-features logit (it should have won
+   step 3), and build the confusion matrix on the test set: the four
+   counts, then accuracy, precision, recall, and F1
 5. **Draw the ROC curve** and compute the AUC
 6. **Odds ratios**, as an ordered bar chart, intercept dropped, dashed
    line at 1: which features move the odds of a click, and by how much?
@@ -86,7 +87,11 @@ train/test split** so every group's numbers are comparable.
 The
 [exercise handout](https://raw.githack.com/dadepro/mkt566/main/w10/case/w10-predicting-ad-click-vibecoding.html)
 spells out the same tasks with questions at every step, still with no code
-given. As always, your AI assistant is allowed and
+given. It also comes as an
+[R Markdown file](https://github.com/dadepro/mkt566/raw/main/w10/case/w10-predicting-ad-click-vibecoding.Rmd)
+or a
+[Jupyter notebook](https://github.com/dadepro/mkt566/raw/main/w10/case/w10-predicting-ad-click-vibecoding.ipynb)
+you can fill in. As always, your AI assistant is allowed and
 encouraged.
 
 # Part 2: The slides (Thursday)
