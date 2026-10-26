@@ -16,10 +16,11 @@ earns only when someone clicks. If we can predict **which impressions are
 likely to turn into a click**, the ad can go to the right people, in the
 right spot on the page, and less money is wasted. In this exercise you take
 5,000 past ad impressions and run the full classifier recipe from class on
-them: split the data, fit a logit, turn its probabilities into yes/no calls,
-grade the calls with the confusion matrix (accuracy, precision, recall, F1),
-draw the ROC curve, and read the model through odds ratios. The outcome is
-`click`: 1 if the user clicked the ad, 0 if not.
+them: split the data, fit and compare logit models, turn predicted
+probabilities into yes/no calls, grade the calls with the confusion matrix
+(accuracy, precision, recall, F1), draw the ROC curve, read the model
+through odds ratios, and pick a decision threshold that meets a business
+goal. The outcome is `click`: 1 if the user clicked the ad, 0 if not.
 
 **No code is given**: just the tasks. You (and your AI assistant) write
 every line yourself, the way you did for the variation, RateBeer, and
@@ -73,9 +74,33 @@ position**, on the training set. Show the coefficients in a readable table.
 - Interpret the sign of each coefficient. Which variables increase or
   decrease the odds of clicking?
 
-# Task 4: Predict and classify at 0.5
+# Task 4: Add the remaining features
 
-Use the model to predict the **click probability** of every test
+Fit a second logit that **adds the remaining features** (device, user
+segment, time on site, topic match, past click behavior). Compare the two
+models on **test AUC** and keep the better one as "your model" for
+everything that follows.
+
+**Questions**
+
+- Why do we compare the models on the test set rather than the training
+  set?
+- Which model wins, and by how much?
+
+# Task 5: Find the best pair of features
+
+With 7 features there are only 21 possible pairs. Fit a logit on every
+pair (a loop, or your AI assistant, makes this quick) and compare them on
+test AUC.
+
+**Questions**
+
+- Which two features together get closest to the full model?
+- Why do you think those two carry so much of the signal?
+
+# Task 6: Predict and classify at 0.5
+
+Use your model to predict the **click probability** of every test
 impression, then turn the probabilities into labels with the default
 decision rule: predict "click" when the probability is at least 0.5. Show
 the true outcome, the probability, and the label for a few rows.
@@ -85,7 +110,7 @@ the true outcome, the probability, and the label for a few rows.
 - What does the threshold of 0.5 mean in practice?
 - How would the results change if we used 0.3 or 0.7 instead?
 
-# Task 5: The confusion matrix and the metrics
+# Task 7: The confusion matrix and the metrics
 
 Count the four boxes on the test set (true positives, false positives,
 false negatives, true negatives), then compute **accuracy, precision,
@@ -97,7 +122,7 @@ recall, and F1** from those counts, with the formulas from the slides.
   which metric should we prioritize?
 - What tradeoff exists between precision and recall?
 
-# Task 6: The ROC curve
+# Task 8: The ROC curve
 
 Plot the ROC curve for your model on the test set, with the random-guess
 diagonal for reference.
@@ -107,7 +132,7 @@ diagonal for reference.
 - Why is the diagonal a "random guess" baseline?
 - What does it mean if our curve is very close to that line?
 
-# Task 7: AUC
+# Task 9: AUC
 
 Compute the **AUC** of your model on the test set.
 
@@ -115,7 +140,7 @@ Compute the **AUC** of your model on the test set.
 
 - What is the maximum possible AUC? What would an AUC of 0.5 mean?
 
-# Task 8: Odds ratios, drawn
+# Task 10: Odds ratios, drawn
 
 Turn the logit coefficients into **odds ratios**, drop the intercept (it is
 the baseline, not a feature effect), and show them as an **ordered bar
@@ -128,16 +153,21 @@ chart** with a dashed line at 1 (no effect).
 - Why might odds ratios be more intuitive for managers than raw
   coefficients?
 
+# Task 11: Pick a threshold for a business goal
+
+Choose a business goal, for example: the ad team wants at least **60%
+precision** (most of the impressions you flag should be real clickers), or
+the budget only allows targeting the top 20% of impressions. Find the
+threshold that meets your goal.
+
+**Questions**
+
+- What is the lowest threshold that clears your goal?
+- What does meeting it cost you on the other metric?
+
 # If you finish early
 
-- Add the remaining features (device, user segment, time on site, topic
-  match, past click behavior) to the model. Does the AUC improve, and by
-  how much?
-- **Find the best pair of features.** With 7 features there are only 21
-  possible pairs. Fit a logit on every pair (a loop, or your AI assistant,
-  makes this quick) and compare them on test AUC. Which two features
-  together get closest to the full model, and why do you think those two
-  carry so much of the signal?
-- Pick a threshold for a business goal, the way we did in class: say the ad
-  team wants at least 60% precision. What is the lowest threshold that
-  clears it, and what recall does it leave you?
+- Try a different business goal and check how much the threshold moves
+- Compute how much money the model saves under simple assumptions: say an
+  impression costs 1 cent and a click is worth 50 cents. Compare showing
+  the ad to everyone vs. only above your threshold
