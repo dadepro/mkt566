@@ -133,6 +133,11 @@ chart** with a dashed line at 1 (no effect).
 - Add the remaining features (device, user segment, time on site, topic
   match, past click behavior) to the model. Does the AUC improve, and by
   how much?
+- **Find the best pair of features.** With 7 features there are only 21
+  possible pairs. Fit a logit on every pair (a loop, or your AI assistant,
+  makes this quick) and compare them on test AUC. Which two features
+  together get closest to the full model, and why do you think those two
+  carry so much of the signal?
 - Pick a threshold for a business goal, the way we did in class: say the ad
   team wants at least 60% precision. What is the lowest threshold that
   clears it, and what recall does it leave you?
