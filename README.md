@@ -147,5 +147,5 @@ Course materials (slides, cases, code, and the syllabus) will be posted here as 
 - Tuesday, Oct. 27 and Thursday, Oct. 29 (both sessions in your project groups, laptops out):
   - **[Project brief](https://raw.githack.com/dadepro/mkt566/main/w10/case/w10-classifier-project.html)**: run the full classifier recipe on the ad-click data, build a short slide deck for a business audience, and present it on Thursday (about 5 minutes per group)
   - The data: [ad_click_data.csv](https://github.com/dadepro/mkt566/raw/main/w10/data/ad_click_data.csv)
-  - If you want more structure: the [handout](https://raw.githack.com/dadepro/mkt566/main/w10/case/w10-predicting-ad-click-w-logit.html) walks through the same steps with the code given; the [vibecoding version](https://raw.githack.com/dadepro/mkt566/main/w10/case/w10-predicting-ad-click-vibecoding.html) has the tasks only
+  - The [exercise handout](https://raw.githack.com/dadepro/mkt566/main/w10/case/w10-predicting-ad-click-vibecoding.html): the same tasks with questions at every step, no code given
   - Instructor solution: posted after the presentations

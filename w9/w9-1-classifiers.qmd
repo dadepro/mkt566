@@ -894,17 +894,14 @@ Same recipe, new question: **who clicks the ad?**
   the 0.5 cutoff, build the **confusion matrix** by hand, then compute
   **accuracy, precision, recall, and F1**, with questions at every step
 - Everything you need, also linked on the course page:
-  the **[handout](https://raw.githack.com/dadepro/mkt566/main/w10/case/w10-predicting-ad-click-w-logit.html)**,
-  the [R Markdown template](https://github.com/dadepro/mkt566/blob/main/w10/case/w10-predicting-ad-click-w-logit.Rmd),
+  the **[exercise handout](https://raw.githack.com/dadepro/mkt566/main/w10/case/w10-predicting-ad-click-vibecoding.html)**
+  (the tasks, **no code given**)
   and the [data](https://github.com/dadepro/mkt566/blob/main/w10/data/ad_click_data.csv)
-  (put the template and the data in **one folder**, then knit)
+  (put them in **one folder**)
 - One thing to notice: clicks here are
   **`r fmt_pct(mean(ad$click), 1)` of impressions**, not rare. The 0.5
   default behaves reasonably on this data; compare that with our churn data
   (`r fmt_pct(churn_rate, 1)`), where 0.5 barely ever fired
-- Feeling brave? Do the
-  **[vibecoding version](https://raw.githack.com/dadepro/mkt566/main/w10/case/w10-predicting-ad-click-vibecoding.html)**
-  instead: the same tasks, **no code given**
 - This exercise has become the **week 10 mini-project**: you will run it in
   your project groups and present the results in class
 

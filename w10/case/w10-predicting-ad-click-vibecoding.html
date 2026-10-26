@@ -11,9 +11,9 @@
 
 <meta name="author" content="Davide Proserpio" />
 
-<meta name="date" content="2026-10-19" />
+<meta name="date" content="2026-10-26" />
 
-<title>Exercise: Predict Ad Click Probability (the vibecoding version)</title>
+<title>Exercise: Predict Ad Click Probability</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -1479,10 +1479,9 @@ border-radius: 0px;
 
 
 
-<h1 class="title toc-ignore">Exercise: Predict Ad Click Probability (the
-vibecoding version)</h1>
+<h1 class="title toc-ignore">Exercise: Predict Ad Click Probability</h1>
 <h4 class="author">Davide Proserpio</h4>
-<h4 class="date">2026-10-19</h4>
+<h4 class="date">2026-10-26</h4>
 
 </div>
 
@@ -1499,15 +1498,13 @@ logit, turn its probabilities into yes/no calls, grade the calls with
 the confusion matrix (accuracy, precision, recall, F1), draw the ROC
 curve, and read the model through odds ratios. The outcome is
 <code>click</code>: 1 if the user clicked the ad, 0 if not.</p>
-<p>The same ad-click exercise as the regular handout, with <strong>no
-code given</strong>: just the tasks. You (and your AI assistant) write
-every line yourself, the way you did for the variation, RateBeer, and
-Airbnb cases.</p>
+<p><strong>No code is given</strong>: just the tasks. You (and your AI
+assistant) write every line yourself, the way you did for the variation,
+RateBeer, and Airbnb cases.</p>
 <p><strong>Setup.</strong> Put <code>ad_click_data.csv</code> in a fresh
 folder, open it in VS Code, and work in an R script or an R Markdown
-file. When you are done, compare your numbers and charts with the
-regular handout: they should match (set the seed to 123 and use a 70/30
-split to get identical results).</p>
+file. Use <strong>seed 123 and a 70/30 train/test split</strong> so
+every group’s numbers are comparable.</p>
 <p><strong>The data.</strong> One row per ad impression, 5,000
 impressions in total:</p>
 <table>

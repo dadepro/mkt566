@@ -76,11 +76,10 @@ train/test split** so every group's numbers are comparable.
    top 20% of impressions. Find the threshold that meets your goal and
    write down what it costs you on the other metric
 
-If you want more structure, the
-[handout](https://raw.githack.com/dadepro/mkt566/main/w10/case/w10-predicting-ad-click-w-logit.html)
-walks through the same steps with the code given; the
-[vibecoding version](https://raw.githack.com/dadepro/mkt566/main/w10/case/w10-predicting-ad-click-vibecoding.html)
-has the tasks only. As always, your AI assistant is allowed and
+The
+[exercise handout](https://raw.githack.com/dadepro/mkt566/main/w10/case/w10-predicting-ad-click-vibecoding.html)
+spells out the same tasks with questions at every step, still with no code
+given. As always, your AI assistant is allowed and
 encouraged; keep your `ai-log.md` going.
 
 # Part 2: The slides (Thursday)
