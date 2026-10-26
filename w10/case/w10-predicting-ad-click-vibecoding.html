@@ -1601,19 +1601,8 @@ training set?</li>
 <li>Which model wins, and by how much?</li>
 </ul>
 </div>
-<div id="task-5-find-the-best-pair-of-features" class="section level1">
-<h1>Task 5: Find the best pair of features</h1>
-<p>With 7 features there are only 21 possible pairs. Fit a logit on
-every pair (a loop, or your AI assistant, makes this quick) and compare
-them on test AUC.</p>
-<p><strong>Questions</strong></p>
-<ul>
-<li>Which two features together get closest to the full model?</li>
-<li>Why do you think those two carry so much of the signal?</li>
-</ul>
-</div>
-<div id="task-6-predict-and-classify-at-0.5" class="section level1">
-<h1>Task 6: Predict and classify at 0.5</h1>
+<div id="task-5-predict-and-classify-at-0.5" class="section level1">
+<h1>Task 5: Predict and classify at 0.5</h1>
 <p>Use your model to predict the <strong>click probability</strong> of
 every test impression, then turn the probabilities into labels with the
 default decision rule: predict “click” when the probability is at least
@@ -1625,8 +1614,8 @@ rows.</p>
 <li>How would the results change if we used 0.3 or 0.7 instead?</li>
 </ul>
 </div>
-<div id="task-7-the-confusion-matrix-and-the-metrics" class="section level1">
-<h1>Task 7: The confusion matrix and the metrics</h1>
+<div id="task-6-the-confusion-matrix-and-the-metrics" class="section level1">
+<h1>Task 6: The confusion matrix and the metrics</h1>
 <p>Count the four boxes on the test set (true positives, false
 positives, false negatives, true negatives), then compute
 <strong>accuracy, precision, recall, and F1</strong> from those counts,
@@ -1638,8 +1627,8 @@ which metric should we prioritize?</li>
 <li>What tradeoff exists between precision and recall?</li>
 </ul>
 </div>
-<div id="task-8-the-roc-curve" class="section level1">
-<h1>Task 8: The ROC curve</h1>
+<div id="task-7-the-roc-curve" class="section level1">
+<h1>Task 7: The ROC curve</h1>
 <p>Plot the ROC curve for your model on the test set, with the
 random-guess diagonal for reference.</p>
 <p><strong>Questions</strong></p>
@@ -1648,8 +1637,8 @@ random-guess diagonal for reference.</p>
 <li>What does it mean if our curve is very close to that line?</li>
 </ul>
 </div>
-<div id="task-9-auc" class="section level1">
-<h1>Task 9: AUC</h1>
+<div id="task-8-auc" class="section level1">
+<h1>Task 8: AUC</h1>
 <p>Compute the <strong>AUC</strong> of your model on the test set.</p>
 <p><strong>Questions</strong></p>
 <ul>
@@ -1657,8 +1646,8 @@ random-guess diagonal for reference.</p>
 mean?</li>
 </ul>
 </div>
-<div id="task-10-odds-ratios-drawn" class="section level1">
-<h1>Task 10: Odds ratios, drawn</h1>
+<div id="task-9-odds-ratios-drawn" class="section level1">
+<h1>Task 9: Odds ratios, drawn</h1>
 <p>Turn the logit coefficients into <strong>odds ratios</strong>, drop
 the intercept (it is the baseline, not a feature effect), and show them
 as an <strong>ordered bar chart</strong> with a dashed line at 1 (no
@@ -1671,8 +1660,8 @@ interpret this?</li>
 coefficients?</li>
 </ul>
 </div>
-<div id="task-11-pick-a-threshold-for-the-business-goal" class="section level1">
-<h1>Task 11: Pick a threshold for the business goal</h1>
+<div id="task-10-pick-a-threshold-for-the-business-goal" class="section level1">
+<h1>Task 10: Pick a threshold for the business goal</h1>
 <p>The goal, the same for every group: the ad team wants <strong>at
 least 75% precision</strong> (3 of every 4 impressions you flag should
 be real clickers), while keeping recall as high as possible. Raising the
@@ -1689,6 +1678,11 @@ up?</li>
 <div id="if-you-finish-early" class="section level1">
 <h1>If you finish early</h1>
 <ul>
+<li><strong>Find the best pair of features.</strong> With 7 features
+there are only 21 possible pairs. Fit a logit on every pair (a loop, or
+your AI assistant, makes this quick) and compare them on test AUC. Which
+two features together get closest to the full model, and why do you
+think those two carry so much of the signal?</li>
 <li>Try a different business goal (say 60% precision, or the budget only
 allows targeting the top 20% of impressions) and check how much the
 threshold moves</li>

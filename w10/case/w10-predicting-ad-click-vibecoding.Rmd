@@ -87,18 +87,7 @@ everything that follows.
   set?
 - Which model wins, and by how much?
 
-# Task 5: Find the best pair of features
-
-With 7 features there are only 21 possible pairs. Fit a logit on every
-pair (a loop, or your AI assistant, makes this quick) and compare them on
-test AUC.
-
-**Questions**
-
-- Which two features together get closest to the full model?
-- Why do you think those two carry so much of the signal?
-
-# Task 6: Predict and classify at 0.5
+# Task 5: Predict and classify at 0.5
 
 Use your model to predict the **click probability** of every test
 impression, then turn the probabilities into labels with the default
@@ -110,7 +99,7 @@ the true outcome, the probability, and the label for a few rows.
 - What does the threshold of 0.5 mean in practice?
 - How would the results change if we used 0.3 or 0.7 instead?
 
-# Task 7: The confusion matrix and the metrics
+# Task 6: The confusion matrix and the metrics
 
 Count the four boxes on the test set (true positives, false positives,
 false negatives, true negatives), then compute **accuracy, precision,
@@ -122,7 +111,7 @@ recall, and F1** from those counts, with the formulas from the slides.
   which metric should we prioritize?
 - What tradeoff exists between precision and recall?
 
-# Task 8: The ROC curve
+# Task 7: The ROC curve
 
 Plot the ROC curve for your model on the test set, with the random-guess
 diagonal for reference.
@@ -132,7 +121,7 @@ diagonal for reference.
 - Why is the diagonal a "random guess" baseline?
 - What does it mean if our curve is very close to that line?
 
-# Task 9: AUC
+# Task 8: AUC
 
 Compute the **AUC** of your model on the test set.
 
@@ -140,7 +129,7 @@ Compute the **AUC** of your model on the test set.
 
 - What is the maximum possible AUC? What would an AUC of 0.5 mean?
 
-# Task 10: Odds ratios, drawn
+# Task 9: Odds ratios, drawn
 
 Turn the logit coefficients into **odds ratios**, drop the intercept (it is
 the baseline, not a feature effect), and show them as an **ordered bar
@@ -153,7 +142,7 @@ chart** with a dashed line at 1 (no effect).
 - Why might odds ratios be more intuitive for managers than raw
   coefficients?
 
-# Task 11: Pick a threshold for the business goal
+# Task 10: Pick a threshold for the business goal
 
 The goal, the same for every group: the ad team wants **at least 75%
 precision** (3 of every 4 impressions you flag should be real clickers),
@@ -169,6 +158,11 @@ threshold that clears the 75% bar.
 
 # If you finish early
 
+- **Find the best pair of features.** With 7 features there are only 21
+  possible pairs. Fit a logit on every pair (a loop, or your AI assistant,
+  makes this quick) and compare them on test AUC. Which two features
+  together get closest to the full model, and why do you think those two
+  carry so much of the signal?
 - Try a different business goal (say 60% precision, or the budget only
   allows targeting the top 20% of impressions) and check how much the
   threshold moves

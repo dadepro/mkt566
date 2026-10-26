@@ -1584,11 +1584,6 @@ and ad position, like in class. Then fit a second logit that
 <strong>adds the remaining features</strong> (device, user segment, time
 on site, topic match, past click behavior). Compare the two on test AUC
 and keep the better one as “your model”</li>
-<li><strong>Find the best pair of features.</strong> With 7 features
-there are only 21 possible pairs. Fit a logit on every pair (a loop, or
-your AI assistant, makes this quick), compare them on test AUC, and
-report the winning pair. How close do just two features get to the full
-model? That comparison is worth a sentence in your talk</li>
 <li><strong>Classify at 0.5</strong> and build the confusion matrix on
 the test set: the four counts, then accuracy, precision, recall, and
 F1</li>
@@ -1668,7 +1663,11 @@ should we do?”</li>
 <div id="if-you-finish-early" class="section level1">
 <h1>If you finish early</h1>
 <ul>
-<li>Try a different business goal in Part 1, step 8 (say 60% precision,
+<li><strong>Find the best pair of features.</strong> With 7 features
+there are only 21 possible pairs. Fit a logit on every pair (a loop, or
+your AI assistant, makes this quick) and compare them on test AUC. How
+close do just two features get to the full model?</li>
+<li>Try a different business goal in Part 1, step 7 (say 60% precision,
 or the budget only allows targeting the top 20% of impressions) and
 check how much the threshold moves</li>
 <li>Compute how much money the model saves under simple assumptions: say
