@@ -78,7 +78,10 @@ train/test split** so every group's numbers are comparable.
    as high as possible. Raising the threshold buys precision by throwing
    away recall, so that means finding the **lowest** threshold that
    clears the 75% bar. Report your threshold, the precision you reach,
-   and the recall it leaves you compared to the 0.5 cutoff
+   and the recall it leaves you compared to the 0.5 cutoff. Check
+   accuracy at both thresholds too: does it move as much as precision and
+   recall do, and what does that say about accuracy as the metric to
+   watch here?
 
 The
 [exercise handout](https://raw.githack.com/dadepro/mkt566/main/w10/case/w10-predicting-ad-click-vibecoding.html)

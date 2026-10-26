@@ -158,6 +158,9 @@ threshold that clears the 75% bar.
 - What is the lowest threshold that clears 75% precision, and what recall
   does it leave you?
 - Compared to the 0.5 cutoff, what did you gain and what did you give up?
+- Compute accuracy at both thresholds. Does it move as much as precision
+  and recall do? What does that say about accuracy as the metric to watch
+  here?
 
 # If you finish early
 
