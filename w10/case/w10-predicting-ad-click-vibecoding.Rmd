@@ -147,9 +147,9 @@ chart** with a dashed line at 1 (no effect).
 
 # Task 10: Pick a threshold for the business goal
 
-The goal, the same for every group: the ad team wants **at least 75%
-precision** (3 of every 4 impressions you flag should be real clickers),
-while keeping recall as high as possible. Raising the threshold buys
+The ad team wants **at least 75% precision** (3 of every 4 impressions
+you flag should be real clickers), while keeping recall as high as
+possible. Raising the threshold buys
 precision by throwing away recall, so that means finding the **lowest**
 threshold that clears the 75% bar.
 

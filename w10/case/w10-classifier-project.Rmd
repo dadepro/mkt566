@@ -72,10 +72,9 @@ train/test split** so every group's numbers are comparable.
 5. **Draw the ROC curve** and compute the AUC
 6. **Odds ratios**, as an ordered bar chart, intercept dropped, dashed
    line at 1: which features move the odds of a click, and by how much?
-7. **Pick the threshold for the business goal.** The goal, the same for
-   every group: the ad team wants **at least 75% precision** (3 of every
-   4 impressions you flag should be real clickers), while keeping recall
-   as high as possible. Raising the threshold buys precision by throwing
+7. **Pick the threshold for the business goal.** The ad team wants **at
+   least 75% precision** (3 of every 4 impressions you flag should be
+   real clickers), while keeping recall as high as possible. Raising the threshold buys precision by throwing
    away recall, so that means finding the **lowest** threshold that
    clears the 75% bar. Report your threshold, the precision you reach,
    and the recall it leaves you compared to the 0.5 cutoff. Check
