@@ -65,75 +65,55 @@ test set.
 - Why is it important to separate training and testing sets?
 - What would happen if we trained and evaluated on the same data?
 
-# Task 3: Fit a logistic regression
+# Task 3: Fit two logits and keep the better one
 
 Pick the **two features you think predict clicks best** (your call: argue
 about it in the group before you run anything), and fit a logit that
 predicts `click` from those two, on the training set. Show the
-coefficients in a readable table.
+coefficients in a readable table. Then fit a second logit that **uses all
+the features**, compare the two models on **test AUC**, and keep the
+better one as "your model" for everything that follows.
 
 **Questions**
 
 - Why did you pick those two?
 - Interpret the sign of each coefficient. Which variables increase or
   decrease the odds of clicking?
-
-# Task 4: Use all the features
-
-Fit a second logit that **uses all the features**. Compare the two models
-on **test AUC** and keep the better one as "your model" for everything
-that follows.
-
-**Questions**
-
 - Why do we compare the models on the test set rather than the training
   set?
 - Which model wins, and by how much? How close did your two picks get to
   the full model?
 
-# Task 5: Predict and classify at 0.5
+# Task 4: Classify at 0.5 and build the confusion matrix
 
 Use your model to predict the **click probability** of every test
 impression, then turn the probabilities into labels with the default
 decision rule: predict "click" when the probability is at least 0.5. Show
-the true outcome, the probability, and the label for a few rows.
+the true outcome, the probability, and the label for a few rows. Then
+count the four boxes on the test set (true positives, false positives,
+false negatives, true negatives) and compute **accuracy, precision,
+recall, and F1** from those counts, with the formulas from the slides.
 
 **Questions**
 
 - What does the threshold of 0.5 mean in practice?
 - How would the results change if we used 0.3 or 0.7 instead?
-
-# Task 6: The confusion matrix and the metrics
-
-Count the four boxes on the test set (true positives, false positives,
-false negatives, true negatives), then compute **accuracy, precision,
-recall, and F1** from those counts, with the formulas from the slides.
-
-**Questions**
-
 - If the business cares most about "catching all potential clickers",
   which metric should we prioritize?
 - What tradeoff exists between precision and recall?
 
-# Task 7: The ROC curve
+# Task 5: The ROC curve and the AUC
 
 Plot the ROC curve for your model on the test set, with the random-guess
-diagonal for reference.
+diagonal for reference, and compute the **AUC**.
 
 **Questions**
 
 - Why is the diagonal a "random guess" baseline?
 - What does it mean if our curve is very close to that line?
-
-# Task 8: AUC
-
-Compute the **AUC** of your model on the test set.
-
-**Questions**
-
 - What is the maximum possible AUC? What would an AUC of 0.5 mean?
 
-# Task 9: Odds ratios, drawn
+# Task 6: Odds ratios, drawn
 
 Turn the logit coefficients into **odds ratios**, drop the intercept (it is
 the baseline, not a feature effect), and show them as an **ordered bar
@@ -146,7 +126,7 @@ chart** with a dashed line at 1 (no effect).
 - Why might odds ratios be more intuitive for managers than raw
   coefficients?
 
-# Task 10: Pick a threshold for the business goal
+# Task 7: Pick a threshold for the business goal
 
 The ad team wants **at least 75% precision** (3 of every 4 impressions
 you flag should be real clickers), while keeping recall as high as

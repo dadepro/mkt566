@@ -1578,79 +1578,60 @@ training set; compute every metric on the test set.</p>
 <li>What would happen if we trained and evaluated on the same data?</li>
 </ul>
 </div>
-<div id="task-3-fit-a-logistic-regression" class="section level1">
-<h1>Task 3: Fit a logistic regression</h1>
+<div id="task-3-fit-two-logits-and-keep-the-better-one" class="section level1">
+<h1>Task 3: Fit two logits and keep the better one</h1>
 <p>Pick the <strong>two features you think predict clicks best</strong>
 (your call: argue about it in the group before you run anything), and
 fit a logit that predicts <code>click</code> from those two, on the
-training set. Show the coefficients in a readable table.</p>
+training set. Show the coefficients in a readable table. Then fit a
+second logit that <strong>uses all the features</strong>, compare the
+two models on <strong>test AUC</strong>, and keep the better one as
+“your model” for everything that follows.</p>
 <p><strong>Questions</strong></p>
 <ul>
 <li>Why did you pick those two?</li>
 <li>Interpret the sign of each coefficient. Which variables increase or
 decrease the odds of clicking?</li>
-</ul>
-</div>
-<div id="task-4-use-all-the-features" class="section level1">
-<h1>Task 4: Use all the features</h1>
-<p>Fit a second logit that <strong>uses all the features</strong>.
-Compare the two models on <strong>test AUC</strong> and keep the better
-one as “your model” for everything that follows.</p>
-<p><strong>Questions</strong></p>
-<ul>
 <li>Why do we compare the models on the test set rather than the
 training set?</li>
 <li>Which model wins, and by how much? How close did your two picks get
 to the full model?</li>
 </ul>
 </div>
-<div id="task-5-predict-and-classify-at-0.5" class="section level1">
-<h1>Task 5: Predict and classify at 0.5</h1>
+<div id="task-4-classify-at-0.5-and-build-the-confusion-matrix" class="section level1">
+<h1>Task 4: Classify at 0.5 and build the confusion matrix</h1>
 <p>Use your model to predict the <strong>click probability</strong> of
 every test impression, then turn the probabilities into labels with the
 default decision rule: predict “click” when the probability is at least
 0.5. Show the true outcome, the probability, and the label for a few
-rows.</p>
-<p><strong>Questions</strong></p>
-<ul>
-<li>What does the threshold of 0.5 mean in practice?</li>
-<li>How would the results change if we used 0.3 or 0.7 instead?</li>
-</ul>
-</div>
-<div id="task-6-the-confusion-matrix-and-the-metrics" class="section level1">
-<h1>Task 6: The confusion matrix and the metrics</h1>
-<p>Count the four boxes on the test set (true positives, false
-positives, false negatives, true negatives), then compute
+rows. Then count the four boxes on the test set (true positives, false
+positives, false negatives, true negatives) and compute
 <strong>accuracy, precision, recall, and F1</strong> from those counts,
 with the formulas from the slides.</p>
 <p><strong>Questions</strong></p>
 <ul>
+<li>What does the threshold of 0.5 mean in practice?</li>
+<li>How would the results change if we used 0.3 or 0.7 instead?</li>
 <li>If the business cares most about “catching all potential clickers”,
 which metric should we prioritize?</li>
 <li>What tradeoff exists between precision and recall?</li>
 </ul>
 </div>
-<div id="task-7-the-roc-curve" class="section level1">
-<h1>Task 7: The ROC curve</h1>
+<div id="task-5-the-roc-curve-and-the-auc" class="section level1">
+<h1>Task 5: The ROC curve and the AUC</h1>
 <p>Plot the ROC curve for your model on the test set, with the
-random-guess diagonal for reference.</p>
+random-guess diagonal for reference, and compute the
+<strong>AUC</strong>.</p>
 <p><strong>Questions</strong></p>
 <ul>
 <li>Why is the diagonal a “random guess” baseline?</li>
 <li>What does it mean if our curve is very close to that line?</li>
-</ul>
-</div>
-<div id="task-8-auc" class="section level1">
-<h1>Task 8: AUC</h1>
-<p>Compute the <strong>AUC</strong> of your model on the test set.</p>
-<p><strong>Questions</strong></p>
-<ul>
 <li>What is the maximum possible AUC? What would an AUC of 0.5
 mean?</li>
 </ul>
 </div>
-<div id="task-9-odds-ratios-drawn" class="section level1">
-<h1>Task 9: Odds ratios, drawn</h1>
+<div id="task-6-odds-ratios-drawn" class="section level1">
+<h1>Task 6: Odds ratios, drawn</h1>
 <p>Turn the logit coefficients into <strong>odds ratios</strong>, drop
 the intercept (it is the baseline, not a feature effect), and show them
 as an <strong>ordered bar chart</strong> with a dashed line at 1 (no
@@ -1663,8 +1644,8 @@ interpret this?</li>
 coefficients?</li>
 </ul>
 </div>
-<div id="task-10-pick-a-threshold-for-the-business-goal" class="section level1">
-<h1>Task 10: Pick a threshold for the business goal</h1>
+<div id="task-7-pick-a-threshold-for-the-business-goal" class="section level1">
+<h1>Task 7: Pick a threshold for the business goal</h1>
 <p>The ad team wants <strong>at least 75% precision</strong> (3 of every
 4 impressions you flag should be real clickers), while keeping recall as
 high as possible. Raising the threshold buys precision by throwing away
