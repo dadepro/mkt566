@@ -109,7 +109,7 @@ diagonal for reference, and compute the **AUC**.
 
 - Why is the diagonal a "random guess" baseline, and what would it mean
   if our curve sat right on it?
-- What is the maximum possible AUC? What would an AUC of 0.5 mean?
+- What is the maximum possible AUC?
 
 # Task 6: Odds ratios, drawn
 
