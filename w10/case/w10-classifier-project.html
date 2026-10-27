@@ -11,7 +11,7 @@
 
 <meta name="author" content="Davide Proserpio" />
 
-<meta name="date" content="2026-10-26" />
+<meta name="date" content="2026-10-27" />
 
 <title>Mini-Project: Predict Ad Clicks and Present Your Results</title>
 
@@ -1482,7 +1482,7 @@ border-radius: 0px;
 <h1 class="title toc-ignore">Mini-Project: Predict Ad Clicks and Present
 Your Results</h1>
 <h4 class="author">Davide Proserpio</h4>
-<h4 class="date">2026-10-26</h4>
+<h4 class="date">2026-10-27</h4>
 
 </div>
 
@@ -1575,8 +1575,8 @@ prefers it).</p>
 and a 70/30 train/test split</strong> so every group’s numbers are
 comparable.</p>
 <ol style="list-style-type: decimal">
-<li><strong>Load and explore.</strong> What is the baseline click rate
-(the share of impressions with a click)?</li>
+<li><strong>Load and explore.</strong> Compute the baseline click rate
+(the share of impressions with a click)</li>
 <li><strong>Split</strong> into training (70%) and test (30%). Fit
 everything on the training set; compute every metric on the test
 set.</li>
@@ -1590,8 +1590,8 @@ should have won step 3), and build the confusion matrix on the test set:
 the four counts, then accuracy, precision, recall, and F1</li>
 <li><strong>Draw the ROC curve</strong> and compute the AUC</li>
 <li><strong>Odds ratios</strong>, as an ordered bar chart, intercept
-dropped, dashed line at 1: which features move the odds of a click, and
-by how much?</li>
+dropped, dashed line at 1, showing which features move the odds of a
+click and by how much</li>
 <li><strong>Pick the threshold for the business goal.</strong> The ad
 team wants <strong>at least 75% precision</strong> (3 of every 4
 impressions you flag should be real clickers), while keeping recall as

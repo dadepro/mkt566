@@ -60,8 +60,8 @@ prefers it).
 Run the full recipe from the classifiers week. Use **seed 123 and a 70/30
 train/test split** so every group's numbers are comparable.
 
-1. **Load and explore.** What is the baseline click rate (the share of
-   impressions with a click)?
+1. **Load and explore.** Compute the baseline click rate (the share of
+   impressions with a click)
 2. **Split** into training (70%) and test (30%). Fit everything on the
    training set; compute every metric on the test set.
 3. **Fit a logit** of `click` on the **two features you think predict
@@ -73,7 +73,8 @@ train/test split** so every group's numbers are comparable.
    counts, then accuracy, precision, recall, and F1
 5. **Draw the ROC curve** and compute the AUC
 6. **Odds ratios**, as an ordered bar chart, intercept dropped, dashed
-   line at 1: which features move the odds of a click, and by how much?
+   line at 1, showing which features move the odds of a click and by how
+   much
 7. **Pick the threshold for the business goal.** The ad team wants **at
    least 75% precision** (3 of every 4 impressions you flag should be
    real clickers), while keeping recall as high as possible. Raising the threshold buys precision by throwing
