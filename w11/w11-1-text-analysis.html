@@ -403,9 +403,109 @@ Davide Proserpio
 <li><strong>TF-IDF</strong> <span class="math inline">\(= \text{TF} \times \text{IDF}\)</span>: big only when both parts are big</li>
 </ul>
 </section>
-<section id="tf-idf-by-hand-on-the-toy-corpus" class="slide level2 smaller-80">
-<h2>TF-IDF by hand, on the toy corpus</h2>
-<p>For document A (“great phone great camera”, 4 words) with <span class="math inline">\(N = 3\)</span> documents:</p>
+<section id="tf-idf-by-hand-great-in-document-a" class="slide level2 smaller-80">
+<h2>TF-IDF by hand: “great” in document A</h2>
+<p>Document A is “great phone great camera”: <strong>4 words</strong>. The corpus has <span class="math inline">\(N = 3\)</span> documents. One word at a time, starting with “great”:</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Step</th>
+<th>Question</th>
+<th>Arithmetic</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1. Count</td>
+<td>how often is “great” in A?</td>
+<td>twice</td>
+<td>2</td>
+</tr>
+<tr class="even">
+<td>2. TF</td>
+<td>what share of A is “great”?</td>
+<td>2 / 4</td>
+<td>0.50</td>
+</tr>
+<tr class="odd">
+<td>3. DF</td>
+<td>how many documents contain “great”?</td>
+<td>A and C</td>
+<td>2 of 3</td>
+</tr>
+<tr class="even">
+<td>4. IDF</td>
+<td>how rare is that?</td>
+<td>log(3 / 2)</td>
+<td>0.405</td>
+</tr>
+<tr class="odd">
+<td>5. TF-IDF</td>
+<td>TF times IDF</td>
+<td>0.50 × 0.405</td>
+<td><strong>0.203</strong></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>“great” fills <strong>half</strong> of document A, a big TF. But 2 of the 3 documents contain it, so its IDF is small: the corpus treats it as <strong>ordinary</strong></li>
+<li>log here is the <strong>natural log</strong>: <code>log()</code> in R, <em>ln</em> on a calculator</li>
+</ul>
+</section>
+<section id="same-recipe-for-phone" class="slide level2 smaller-80">
+<h2>Same recipe for “phone”</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Step</th>
+<th>Question</th>
+<th>Arithmetic</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1. Count</td>
+<td>how often is “phone” in A?</td>
+<td>once</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td>2. TF</td>
+<td>what share of A is “phone”?</td>
+<td>1 / 4</td>
+<td>0.25</td>
+</tr>
+<tr class="odd">
+<td>3. DF</td>
+<td>how many documents contain “phone”?</td>
+<td>only A</td>
+<td>1 of 3</td>
+</tr>
+<tr class="even">
+<td>4. IDF</td>
+<td>how rare is that?</td>
+<td>log(3 / 1)</td>
+<td>1.099</td>
+</tr>
+<tr class="odd">
+<td>5. TF-IDF</td>
+<td>TF times IDF</td>
+<td>0.25 × 1.099</td>
+<td><strong>0.275</strong></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>“phone” appears <strong>half as often</strong> as “great”, so its TF is half as big</li>
+<li>But <strong>no other document has it</strong>, so its IDF is almost three times bigger</li>
+<li>Rarity wins: <strong>0.275 beats 0.203.</strong> “phone” identifies document A; “great” does not</li>
+</ul>
+</section>
+<section id="all-of-document-a-scored" class="slide level2 smaller-80">
+<h2>All of document A, scored</h2>
+<p>The same five steps for every word of A:</p>
 <div class="cell">
 <div class="cell-output-display">
 <table class="caption-top">
@@ -457,9 +557,8 @@ Davide Proserpio
 </div>
 </div>
 <ul>
-<li>“great” appears <strong>twice</strong> in A, but it is also in 2 of the 3 documents, so its IDF is low: TF-IDF = 0.203</li>
-<li>“phone” appears <strong>once</strong>, but <strong>only A</strong> has it: TF-IDF = 0.275, the highest score</li>
-<li>That is the whole idea: <strong>“great” is everywhere; “phone” tells you which review this is.</strong> The model should listen to “phone” more</li>
+<li>“camera” scores like “phone”: once in A, and no other document has it</li>
+<li>That is the whole idea: <strong>“great” is everywhere; “phone” and “camera” tell you which review this is.</strong> The model should listen to them more</li>
 </ul>
 </section>
 <section id="which-words-separate-good-reviews-from-bad-ones" class="slide level2 smaller-90">

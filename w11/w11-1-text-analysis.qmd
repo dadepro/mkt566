@@ -312,26 +312,53 @@ everywhere else**. TF-IDF scores exactly that, in two parts:
 - **TF-IDF** $= \text{TF} \times \text{IDF}$: big only when both parts are
   big
 
-## TF-IDF by hand, on the toy corpus {.smaller-80}
+## TF-IDF by hand: "great" in document A {.smaller-80}
 
-For document A ("`r toy$text[1]`", 4 words) with $N = 3$ documents:
+Document A is "`r toy$text[1]`": **4 words**. The corpus has $N = 3$
+documents. One word at a time, starting with "great":
+
+| Step | Question | Arithmetic | Result |
+|---|--------|------|---|
+| 1. Count | how often is "great" in A? | twice | 2 |
+| 2. TF | what share of A is "great"? | 2 / 4 | 0.50 |
+| 3. DF | how many documents contain "great"? | A and C | 2 of 3 |
+| 4. IDF | how rare is that? | log(3 / 2) | 0.405 |
+| 5. TF-IDF | TF times IDF | 0.50 × 0.405 | **0.203** |
+
+- "great" fills **half** of document A, a big TF. But 2 of the 3 documents
+  contain it, so its IDF is small: the corpus treats it as **ordinary**
+- log here is the **natural log**: `log()` in R, *ln* on a calculator
+
+## Same recipe for "phone" {.smaller-80}
+
+| Step | Question | Arithmetic | Result |
+|---|--------|------|---|
+| 1. Count | how often is "phone" in A? | once | 1 |
+| 2. TF | what share of A is "phone"? | 1 / 4 | 0.25 |
+| 3. DF | how many documents contain "phone"? | only A | 1 of 3 |
+| 4. IDF | how rare is that? | log(3 / 1) | 1.099 |
+| 5. TF-IDF | TF times IDF | 0.25 × 1.099 | **0.275** |
+
+- "phone" appears **half as often** as "great", so its TF is half as big
+- But **no other document has it**, so its IDF is almost three times bigger
+- Rarity wins: **0.275 beats 0.203.** "phone" identifies document A;
+  "great" does not
+
+## All of document A, scored {.smaller-80}
+
+The same five steps for every word of A:
 
 ```{r tfidf-toy}
 show <- tf_tab[doc == "A", .(word, `count in A` = N, `TF = count/4` = round(tf, 2),
                              `docs with word` = df,
                              `IDF = log(3/df)` = round(idf, 2),
                              `TF-IDF` = tf_idf)][order(-`TF-IDF`)]
-tfidf_great <- show[word == "great"][["TF-IDF"]]
-tfidf_phone <- show[word == "phone"][["TF-IDF"]]
 kable(show, align = "lccccc")
 ```
 
-- "great" appears **twice** in A, but it is also in 2 of the 3 documents,
-  so its IDF is low: TF-IDF = `r tfidf_great`
-- "phone" appears **once**, but **only A** has it: TF-IDF =
-  `r tfidf_phone`, the highest score
-- That is the whole idea: **"great" is everywhere; "phone" tells you which
-  review this is.** The model should listen to "phone" more
+- "camera" scores like "phone": once in A, and no other document has it
+- That is the whole idea: **"great" is everywhere; "phone" and "camera"
+  tell you which review this is.** The model should listen to them more
 
 ## Which words separate good reviews from bad ones {.smaller-90}
 
