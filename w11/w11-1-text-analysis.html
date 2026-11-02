@@ -624,7 +624,7 @@ Davide Proserpio
 </section>
 <section id="method-3-word-embeddings-in-plain-words" class="slide level2 smaller-90">
 <h2>Method 3, word embeddings, in plain words</h2>
-<p>Bag-of-words has one blind spot left: to it, “great” and “awesome” are as unrelated as “great” and “battery”: <strong>different columns, nothing shared</strong>.</p>
+<p>Methods 1 and 2 share a blind spot: both treat “great” and “awesome” as unrelated as “great” and “battery”: <strong>different columns, nothing shared</strong>. TF-IDF changes the numbers in the columns, not the columns themselves.</p>
 <ul>
 <li><strong>Embeddings</strong> fix that by giving every word a list of, say, 300 numbers (a <strong>vector</strong>), learned so that words used in similar contexts get <strong>similar vectors</strong>: awesome ends up close to great, far from battery</li>
 <li>The famous party trick: because meanings are positions, you can do <strong>arithmetic on them</strong>. Start from <em>king</em>, subtract <em>man</em>, add <em>woman</em>, and the nearest word to where you land is <strong><em>queen</em></strong>: the royalty part stayed, the gender flipped</li>

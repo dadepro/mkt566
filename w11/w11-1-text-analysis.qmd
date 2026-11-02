@@ -437,8 +437,9 @@ p_sep + labs(title = NULL)
 
 ## Method 3, word embeddings, in plain words {.smaller-90}
 
-Bag-of-words has one blind spot left: to it, "great" and "awesome" are as
+Methods 1 and 2 share a blind spot: both treat "great" and "awesome" as
 unrelated as "great" and "battery": **different columns, nothing shared**.
+TF-IDF changes the numbers in the columns, not the columns themselves.
 
 - **Embeddings** fix that by giving every word a list of, say, 300 numbers
   (a **vector**), learned so that words used in similar contexts get
