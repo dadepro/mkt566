@@ -163,7 +163,9 @@ models.**
 | **6. Model** | feed the numbers to a model | the logit from week 5; you run it in Homework 4 |
 
 ::: {.box}
-Steps 1 to 5 are new today. Step 6 is **not new**: once text is a matrix of
+Steps 1 to 3 prepare the text. Steps 4 and 5 are **today's two methods for
+turning it into numbers**: **bag-of-words** counts the words, **TF-IDF**
+weights the counts. Step 6 is **not new**: once text is a matrix of
 numbers, everything from weeks 4 to 9 applies unchanged.
 :::
 
@@ -261,7 +263,7 @@ ggplot(top_nostop, aes(x = term_count, y = reorder(term, term_count))) +
 - After removal, the top words are **movie, film, story, time**: now the
   counts start to mean something
 
-## Bag-of-words: the counting step {.smaller-80}
+## Method 1, bag-of-words: count the words {.smaller-80}
 
 Take a tiny, made-up corpus of three phone reviews, and **count every word
 in every document**:
@@ -298,10 +300,12 @@ On the real corpus, the same table is `r fmt_n(nrow(rv))` rows by
   common words**. A word that shows up in just a few reviews cannot teach
   the model much, so dropping it costs almost nothing
 
-## TF-IDF: up-weight the words that identify a document {.smaller-80}
+## Method 2, TF-IDF: weight the counts {.smaller-80}
 
-A word matters for a document when it is **common in that document but rare
-everywhere else**. TF-IDF scores exactly that, in two parts:
+Method 1 counts; method 2 **re-weights those counts** so that the words
+that identify a document stand out. A word matters for a document when it
+is **common in that document but rare everywhere else**. TF-IDF scores
+exactly that, in two parts:
 
 - **TF (term frequency)**: how much of document $d$ is word $t$?
   $\text{TF}(t,d) = \frac{\text{count of } t \text{ in } d}{\text{words in } d}$
@@ -422,6 +426,8 @@ unrelated as "great" and "battery": **different columns, nothing shared**.
   island
 
 ## Three ways to turn text into numbers {.smaller-80}
+
+The two methods you just saw, plus the one you only need to recognize:
 
 | Method | Each document becomes | Strength | Weakness |
 |---|-----|------|------|

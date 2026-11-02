@@ -235,7 +235,7 @@ Davide Proserpio
 </tbody>
 </table>
 <div class="box">
-<p>Steps 1 to 5 are new today. Step 6 is <strong>not new</strong>: once text is a matrix of numbers, everything from weeks 4 to 9 applies unchanged.</p>
+<p>Steps 1 to 3 prepare the text. Steps 4 and 5 are <strong>today’s two methods for turning it into numbers</strong>: <strong>bag-of-words</strong> counts the words, <strong>TF-IDF</strong> weights the counts. Step 6 is <strong>not new</strong>: once text is a matrix of numbers, everything from weeks 4 to 9 applies unchanged.</p>
 </div>
 </section>
 <section id="our-running-example-5000-movie-reviews" class="slide level2 smaller-80">
@@ -325,8 +325,8 @@ Davide Proserpio
 <li>After removal, the top words are <strong>movie, film, story, time</strong>: now the counts start to mean something</li>
 </ul>
 </section>
-<section id="bag-of-words-the-counting-step" class="slide level2 smaller-80">
-<h2>Bag-of-words: the counting step</h2>
+<section id="method-1-bag-of-words-count-the-words" class="slide level2 smaller-80">
+<h2>Method 1, bag-of-words: count the words</h2>
 <p>Take a tiny, made-up corpus of three phone reviews, and <strong>count every word in every document</strong>:</p>
 <ul>
 <li>A: “great phone great camera”</li>
@@ -394,9 +394,9 @@ Davide Proserpio
 <li>The first problem we fix on the next slide, with TF-IDF. The second you will fix in <strong>Homework 4</strong> the simple way: <strong>keep only the 1,000 most common words</strong>. A word that shows up in just a few reviews cannot teach the model much, so dropping it costs almost nothing</li>
 </ul>
 </section>
-<section id="tf-idf-up-weight-the-words-that-identify-a-document" class="slide level2 smaller-80">
-<h2>TF-IDF: up-weight the words that identify a document</h2>
-<p>A word matters for a document when it is <strong>common in that document but rare everywhere else</strong>. TF-IDF scores exactly that, in two parts:</p>
+<section id="method-2-tf-idf-weight-the-counts" class="slide level2 smaller-80">
+<h2>Method 2, TF-IDF: weight the counts</h2>
+<p>Method 1 counts; method 2 <strong>re-weights those counts</strong> so that the words that identify a document stand out. A word matters for a document when it is <strong>common in that document but rare everywhere else</strong>. TF-IDF scores exactly that, in two parts:</p>
 <ul>
 <li><strong>TF (term frequency)</strong>: how much of document <span class="math inline">\(d\)</span> is word <span class="math inline">\(t\)</span>? <span class="math inline">\(\text{TF}(t,d) = \frac{\text{count of } t \text{ in } d}{\text{words in } d}\)</span></li>
 <li><strong>IDF (inverse document frequency)</strong>: how rare is the word across documents? <span class="math inline">\(\text{IDF}(t) = \log\frac{N}{\text{docs containing } t}\)</span>, with <span class="math inline">\(N\)</span> the number of documents. A word in <strong>every</strong> document gets <span class="math inline">\(\log(1) = 0\)</span>: no weight at all</li>
@@ -596,6 +596,7 @@ Davide Proserpio
 </section>
 <section id="three-ways-to-turn-text-into-numbers" class="slide level2 smaller-80">
 <h2>Three ways to turn text into numbers</h2>
+<p>The two methods you just saw, plus the one you only need to recognize:</p>
 <table class="caption-top">
 <colgroup>
 <col style="width: 15%">
