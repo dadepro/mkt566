@@ -235,7 +235,7 @@ Davide Proserpio
 </tbody>
 </table>
 <div class="box">
-<p>Steps 1 to 3 prepare the text. Steps 4 and 5 are <strong>today’s two methods for turning it into numbers</strong>: <strong>bag-of-words</strong> counts the words, <strong>TF-IDF</strong> weights the counts. Step 6 is <strong>not new</strong>: once text is a matrix of numbers, everything from weeks 4 to 9 applies unchanged.</p>
+<p>Steps 1 to 3 prepare the text. Steps 4 and 5 turn it into numbers: that is where today’s <strong>three methods</strong> differ. Step 6 is <strong>not new</strong>: once text is a matrix of numbers, everything from weeks 4 to 9 applies unchanged.</p>
 </div>
 </section>
 <section id="our-running-example-5000-movie-reviews" class="slide level2 smaller-80">
@@ -323,6 +323,45 @@ Davide Proserpio
 <li>The raw top 15 was all <strong>the, a, and, of</strong>: grammar glue. These words appear in every document, so they cannot separate anything from anything</li>
 <li>Words like these are called <strong>stopwords</strong>, and step 3 simply deletes them from a standard list (the list is a choice: in some problems “not” matters, so check before deleting it)</li>
 <li>After removal, the top words are <strong>movie, film, story, time</strong>: now the counts start to mean something</li>
+</ul>
+</section>
+<section id="the-three-methods-we-will-learn" class="slide level2 smaller-90">
+<h2>The three methods we will learn</h2>
+<p>Three ways to turn text into numbers, in increasing order of sophistication:</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 15%">
+<col style="width: 31%">
+<col style="width: 52%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>Method</th>
+<th>In one line</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>1</strong></td>
+<td><strong>Bag-of-words</strong></td>
+<td>count how often each word appears in each document</td>
+</tr>
+<tr class="even">
+<td><strong>2</strong></td>
+<td><strong>TF-IDF</strong></td>
+<td>re-weight the counts so distinctive words stand out</td>
+</tr>
+<tr class="odd">
+<td><strong>3</strong></td>
+<td><strong>Embeddings</strong></td>
+<td>give every word a position on a map of meaning</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Methods 1 and 2 we do <strong>by hand</strong>, on a corpus of three tiny reviews, and they are what you will use in <strong>Homework 4</strong></li>
+<li>Method 3 you only need to <strong>recognize</strong>: it is the idea that modern language models build on</li>
 </ul>
 </section>
 <section id="method-1-bag-of-words-count-the-words" class="slide level2 smaller-80">
@@ -586,18 +625,18 @@ Davide Proserpio
 <li>The two sides are not symmetric: the sharpest negative word tilts about <strong>8x</strong>, the sharpest positive one only about <strong>4x</strong>. Complaints use extreme words; praise words also show up inside negative reviews (“the trailer was great, the movie was not”). <strong>No single word decides a review</strong>, which is why the model adds up thousands of small signals</li>
 </ul>
 </section>
-<section id="word-embeddings-in-plain-words" class="slide level2 smaller-90">
-<h2>Word embeddings, in plain words</h2>
+<section id="method-3-word-embeddings-in-plain-words" class="slide level2 smaller-90">
+<h2>Method 3, word embeddings, in plain words</h2>
 <p>Bag-of-words has one blind spot left: to it, “great” and “awesome” are as unrelated as “great” and “battery”: <strong>different columns, nothing shared</strong>.</p>
 <ul>
 <li><strong>Embeddings</strong> fix that by giving every word a list of, say, 300 numbers (a <strong>vector</strong>), learned so that words used in similar contexts get <strong>similar vectors</strong>: awesome ends up close to great, far from battery</li>
+<li>The famous party trick: because meanings are positions, you can do <strong>arithmetic on them</strong>. Start from <em>king</em>, subtract <em>man</em>, add <em>woman</em>, and the nearest word to where you land is <strong><em>queen</em></strong>: the royalty part stayed, the gender flipped</li>
 <li>They are learned from huge text collections by models like <strong>word2vec</strong> (guess the word from its neighbors), and you download them <strong>pretrained</strong> rather than training your own</li>
 <li>The trade-off by now is familiar: embeddings capture <strong>meaning</strong> but the 300 numbers are unreadable; counts are readable but treat every word as an island</li>
 </ul>
 </section>
-<section id="three-ways-to-turn-text-into-numbers" class="slide level2 smaller-80">
-<h2>Three ways to turn text into numbers</h2>
-<p>The two methods you just saw, plus the one you only need to recognize:</p>
+<section id="the-three-methods-side-by-side" class="slide level2 smaller-80">
+<h2>The three methods, side by side</h2>
 <table class="caption-top">
 <colgroup>
 <col style="width: 15%">

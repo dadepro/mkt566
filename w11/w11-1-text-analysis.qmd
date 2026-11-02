@@ -163,10 +163,9 @@ models.**
 | **6. Model** | feed the numbers to a model | the logit from week 5; you run it in Homework 4 |
 
 ::: {.box}
-Steps 1 to 3 prepare the text. Steps 4 and 5 are **today's two methods for
-turning it into numbers**: **bag-of-words** counts the words, **TF-IDF**
-weights the counts. Step 6 is **not new**: once text is a matrix of
-numbers, everything from weeks 4 to 9 applies unchanged.
+Steps 1 to 3 prepare the text. Steps 4 and 5 turn it into numbers: that is
+where today's **three methods** differ. Step 6 is **not new**: once text is
+a matrix of numbers, everything from weeks 4 to 9 applies unchanged.
 :::
 
 ## Our running example: 5,000 movie reviews {.smaller-80}
@@ -262,6 +261,21 @@ ggplot(top_nostop, aes(x = term_count, y = reorder(term, term_count))) +
   so check before deleting it)
 - After removal, the top words are **movie, film, story, time**: now the
   counts start to mean something
+
+## The three methods we will learn {.smaller-90}
+
+Three ways to turn text into numbers, in increasing order of sophistication:
+
+| | Method | In one line |
+|---|------|----------|
+| **1** | **Bag-of-words** | count how often each word appears in each document |
+| **2** | **TF-IDF** | re-weight the counts so distinctive words stand out |
+| **3** | **Embeddings** | give every word a position on a map of meaning |
+
+- Methods 1 and 2 we do **by hand**, on a corpus of three tiny reviews, and
+  they are what you will use in **Homework 4**
+- Method 3 you only need to **recognize**: it is the idea that modern
+  language models build on
 
 ## Method 1, bag-of-words: count the words {.smaller-80}
 
@@ -414,7 +428,7 @@ p_sep + labs(title = NULL)
   trailer was great, the movie was not"). **No single word decides a
   review**, which is why the model adds up thousands of small signals
 
-## Word embeddings, in plain words {.smaller-90}
+## Method 3, word embeddings, in plain words {.smaller-90}
 
 Bag-of-words has one blind spot left: to it, "great" and "awesome" are as
 unrelated as "great" and "battery": **different columns, nothing shared**.
@@ -422,6 +436,10 @@ unrelated as "great" and "battery": **different columns, nothing shared**.
 - **Embeddings** fix that by giving every word a list of, say, 300 numbers
   (a **vector**), learned so that words used in similar contexts get
   **similar vectors**: awesome ends up close to great, far from battery
+- The famous party trick: because meanings are positions, you can do
+  **arithmetic on them**. Start from *king*, subtract *man*, add *woman*,
+  and the nearest word to where you land is ***queen***: the royalty part
+  stayed, the gender flipped
 - They are learned from huge text collections by models like **word2vec**
   (guess the word from its neighbors), and you download them **pretrained**
   rather than training your own
@@ -429,9 +447,7 @@ unrelated as "great" and "battery": **different columns, nothing shared**.
   300 numbers are unreadable; counts are readable but treat every word as an
   island
 
-## Three ways to turn text into numbers {.smaller-80}
-
-The two methods you just saw, plus the one you only need to recognize:
+## The three methods, side by side {.smaller-80}
 
 | Method | Each document becomes | Strength | Weakness |
 |---|-----|------|------|
