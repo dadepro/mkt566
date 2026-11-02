@@ -292,8 +292,8 @@ Davide Proserpio
 <li>Real text is dirty: these reviews contain leftover HTML like <code>&lt;br /&gt;</code>, which would otherwise become a nonsense token. <strong>Look at your tokens before you model them</strong></li>
 </ul>
 </section>
-<section id="n-grams-when-one-word-is-not-enough" class="slide level2 smaller-90">
-<h2>N-grams: when one word is not enough</h2>
+<section id="step-2-continued-n-grams-when-one-word-is-not-enough" class="slide level2 smaller-90">
+<h2>Step 2 continued, n-grams: when one word is not enough</h2>
 <p>Splitting into single words destroys word order, and sometimes the order is the meaning:</p>
 <ul>
 <li>“good” and “<strong>not</strong> good” say opposite things, but as single tokens they both contribute the word <code>good</code></li>
@@ -301,15 +301,15 @@ Davide Proserpio
 <li>Single words are <strong>unigrams</strong>; you can go to trigrams and beyond, but the number of distinct terms explodes, so most marketing work stops at bigrams</li>
 </ul>
 </section>
-<section id="the-most-common-words" class="slide level2 smaller-90">
-<h2>The most common words</h2>
+<section id="step-3-the-problem-the-most-common-words" class="slide level2 smaller-90">
+<h2>Step 3, the problem: the most common words</h2>
 
 <img data-src="w11-1-text-analysis_files/figure-revealjs/freq-before-1.png" width="768" class="r-stretch"><div class="smaller-80 muted">
 <p>Every word in all 5,000 reviews, counted. What do you notice about the words at the top, and how useful would they be for telling a good review from a bad one?</p>
 </div>
 </section>
-<section id="stopwords-the-glue-gets-removed" class="slide level2 smaller-90 nostretch">
-<h2>Stopwords: the glue gets removed</h2>
+<section id="step-3-the-fix-stopwords-get-removed" class="slide level2 smaller-90 nostretch">
+<h2>Step 3, the fix: stopwords get removed</h2>
 <div class="cell">
 <div class="cell-output-display">
 <div>
@@ -362,10 +362,11 @@ Davide Proserpio
 <ul>
 <li>Methods 1 and 2 we do <strong>by hand</strong>, on a corpus of three tiny reviews, and they are what you will use in <strong>Homework 4</strong></li>
 <li>Method 3 you only need to <strong>recognize</strong>: it is the idea that modern language models build on</li>
+<li>Whichever method you choose, step 6 of the pipeline is the same: feed the matrix to the <strong>models you already know</strong></li>
 </ul>
 </section>
-<section id="method-1-bag-of-words-count-the-words" class="slide level2 smaller-80">
-<h2>Method 1, bag-of-words: count the words</h2>
+<section id="step-4-method-1-bag-of-words-count-the-words" class="slide level2 smaller-80">
+<h2>Step 4 (method 1), bag-of-words: count the words</h2>
 <p>Take a tiny, made-up corpus of three phone reviews, and <strong>count every word in every document</strong>:</p>
 <ul>
 <li>A: “great phone great camera”</li>
@@ -433,8 +434,8 @@ Davide Proserpio
 <li>The first problem we fix on the next slide, with TF-IDF. The second you will fix in <strong>Homework 4</strong> the simple way: <strong>keep only the 1,000 most common words</strong>. A word that shows up in just a few reviews cannot teach the model much, so dropping it costs almost nothing</li>
 </ul>
 </section>
-<section id="method-2-tf-idf-weight-the-counts" class="slide level2 smaller-80">
-<h2>Method 2, TF-IDF: weight the counts</h2>
+<section id="step-5-method-2-tf-idf-weight-the-counts" class="slide level2 smaller-80">
+<h2>Step 5 (method 2), TF-IDF: weight the counts</h2>
 <p>Method 1 counts; method 2 <strong>re-weights those counts</strong> so that the words that identify a document stand out. A word matters for a document when it is <strong>common in that document but rare everywhere else</strong>. TF-IDF scores exactly that, in two parts:</p>
 <ul>
 <li><strong>TF (term frequency)</strong>: how much of document <span class="math inline">\(d\)</span> is word <span class="math inline">\(t\)</span>? <span class="math inline">\(\text{TF}(t,d) = \frac{\text{count of } t \text{ in } d}{\text{words in } d}\)</span></li>

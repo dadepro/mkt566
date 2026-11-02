@@ -209,7 +209,7 @@ One sentence, worked through:
   which would otherwise become a nonsense token. **Look at your tokens
   before you model them**
 
-## N-grams: when one word is not enough {.smaller-90}
+## Step 2 continued, n-grams: when one word is not enough {.smaller-90}
 
 Splitting into single words destroys word order, and sometimes the order is
 the meaning:
@@ -221,7 +221,7 @@ the meaning:
 - Single words are **unigrams**; you can go to trigrams and beyond, but the
   number of distinct terms explodes, so most marketing work stops at bigrams
 
-## The most common words {.smaller-90}
+## Step 3, the problem: the most common words {.smaller-90}
 
 ```{r freq-before}
 #| fig-width: 8
@@ -241,7 +241,7 @@ words at the top, and how useful would they be for telling a good review
 from a bad one?
 :::
 
-## Stopwords: the glue gets removed {.smaller-90 .nostretch}
+## Step 3, the fix: stopwords get removed {.smaller-90 .nostretch}
 
 ```{r freq-after}
 #| fig-width: 8
@@ -276,8 +276,10 @@ Three ways to turn text into numbers, in increasing order of sophistication:
   they are what you will use in **Homework 4**
 - Method 3 you only need to **recognize**: it is the idea that modern
   language models build on
+- Whichever method you choose, step 6 of the pipeline is the same: feed the
+  matrix to the **models you already know**
 
-## Method 1, bag-of-words: count the words {.smaller-80}
+## Step 4 (method 1), bag-of-words: count the words {.smaller-80}
 
 Take a tiny, made-up corpus of three phone reviews, and **count every word
 in every document**:
@@ -314,7 +316,7 @@ On the real corpus, the same table is `r fmt_n(nrow(rv))` rows by
   common words**. A word that shows up in just a few reviews cannot teach
   the model much, so dropping it costs almost nothing
 
-## Method 2, TF-IDF: weight the counts {.smaller-80}
+## Step 5 (method 2), TF-IDF: weight the counts {.smaller-80}
 
 Method 1 counts; method 2 **re-weights those counts** so that the words
 that identify a document stand out. A word matters for a document when it
