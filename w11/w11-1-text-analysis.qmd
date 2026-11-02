@@ -129,8 +129,8 @@ half.
 - Every model we have used this semester (regression, logit, trees, forests)
   eats **rows and columns of numbers**
 - So the whole game today is one move: **turn text into numbers without
-  losing what it says**. Once that is done, Thursday's prediction step is
-  machinery you already know
+  losing what it says**. Once that is done, the prediction step is machinery
+  you already know, and **Homework 4 is where you run it yourselves**
 
 ## Why marketers care about text {.smaller-90}
 
@@ -160,7 +160,7 @@ models.**
 | **3. Drop stopwords** | remove glue words that carry no meaning | "the", "a", "and" go away |
 | **4. Count** | one row per document, one column per word | the bag-of-words matrix |
 | **5. Weight** | up-weight distinctive words | TF-IDF |
-| **6. Model** | feed the numbers to a model | the logit from week 5, Thursday |
+| **6. Model** | feed the numbers to a model | the logit from week 5; you run it in Homework 4 |
 
 ::: {.box}
 Steps 1 to 5 are new today. Step 6 is **not new**: once text is a matrix of
@@ -291,8 +291,8 @@ On the real corpus, the same table is `r fmt_n(nrow(rv))` rows by
 - Simple and interpretable: every column is a word you can read
 - Two problems remain: common words get big counts **just for being
   common**, and `r fmt_n(n_terms)` columns is far more columns than we have
-  reviews. The first problem we fix now; the second is **Thursday's whole
-  topic**
+  reviews. The first problem we fix now; the second you will handle in
+  **Homework 4** the simple way: keep only the most common terms
 
 ## TF-IDF: up-weight the words that identify a document {.smaller-80}
 
@@ -367,8 +367,8 @@ p_sep + labs(title = NULL)
   complaint words. Positive reviews lean on **excellent, wonderful,
   perfect, amazing**
 - Nobody told the data which words are "good": the labels plus simple
-  counting surfaced them. This is exactly the signal Thursday's model will
-  learn from
+  counting surfaced them. This is exactly the signal your Homework 4 model
+  will learn from
 - The two sides are not symmetric: the sharpest negative word tilts about
   **8x**, the sharpest positive one only about **4x**. Complaints use
   extreme words; praise words also show up inside negative reviews ("the
@@ -402,7 +402,8 @@ unrelated as "great" and "battery": **different columns, nothing shared**.
 Default advice for marketing problems: **start with TF-IDF**. It is fast,
 transparent, and with a linear model it is a strong baseline. Reach for
 embeddings when synonyms clearly matter and you have the labels to prove
-the gain. Thursday we test exactly this on our 5,000 reviews.
+the gain. Homework 4 tests what the text is worth on 20,000 real reviews:
+the same models with and without the word columns.
 :::
 
 # Measuring Opinion: Sentiment {.divider}
@@ -449,7 +450,7 @@ kable(demo_tab, align = "lc")
   out to a mildly positive score. Real reviews are full of this, which is
   why sentence-level scoring beats word counting
 
-## Way 2: train a classifier (Thursday) {.smaller-80}
+## Way 2: train a classifier (Homework 4) {.smaller-80}
 
 Supervised sentiment is **week 9 on text features**. Every step is something
 you already know:
@@ -459,14 +460,14 @@ you already know:
 | **1. Label** | each review marked positive or negative (ours already are) | the outcome, week 5 |
 | **2. Vectorize** | TF-IDF matrix: 5,000 rows, thousands of word columns | today |
 | **3. Split** | train/test, fit on train only | week 9 |
-| **4. Classify** | a logit on the word columns | week 5, plus Thursday's fix for "too many columns" |
+| **4. Classify** | a logit on the word columns | week 5; in Homework 4 you keep the 1,000 most common terms |
 | **5. Evaluate** | accuracy, precision, recall, AUC on the test set | week 9 |
 
 ::: {.box}
 When you have labels, the trained model beats the dictionary **in your
 domain**: it learns that "thin" is bad for batteries from your own
-reviews. Thursday we run this end to end and read which words the model
-trusts.
+reviews. In Homework 4 you run this end to end and read which words the
+model trusts.
 :::
 
 ## Beyond positive vs. negative {.smaller-90}

@@ -167,7 +167,7 @@ Davide Proserpio
 <ul>
 <li>Reviews, tweets, chat transcripts, survey comments: most of what customers tell you arrives as <strong>text</strong>, not as a spreadsheet</li>
 <li>Every model we have used this semester (regression, logit, trees, forests) eats <strong>rows and columns of numbers</strong></li>
-<li>So the whole game today is one move: <strong>turn text into numbers without losing what it says</strong>. Once that is done, Thursday’s prediction step is machinery you already know</li>
+<li>So the whole game today is one move: <strong>turn text into numbers without losing what it says</strong>. Once that is done, the prediction step is machinery you already know, and <strong>Homework 4 is where you run it yourselves</strong></li>
 </ul>
 </section>
 <section id="why-marketers-care-about-text" class="slide level2 smaller-90">
@@ -230,7 +230,7 @@ Davide Proserpio
 <tr class="even">
 <td><strong>6. Model</strong></td>
 <td>feed the numbers to a model</td>
-<td>the logit from week 5, Thursday</td>
+<td>the logit from week 5; you run it in Homework 4</td>
 </tr>
 </tbody>
 </table>
@@ -390,7 +390,7 @@ Davide Proserpio
 <ul>
 <li>Almost every cell is <strong>zero</strong>: a 200-word review touches 200 of the 41,891 columns. This is called a <strong>sparse matrix</strong>, and R stores only the non-zero cells</li>
 <li>Simple and interpretable: every column is a word you can read</li>
-<li>Two problems remain: common words get big counts <strong>just for being common</strong>, and 41,891 columns is far more columns than we have reviews. The first problem we fix now; the second is <strong>Thursday’s whole topic</strong></li>
+<li>Two problems remain: common words get big counts <strong>just for being common</strong>, and 41,891 columns is far more columns than we have reviews. The first problem we fix now; the second you will handle in <strong>Homework 4</strong> the simple way: keep only the most common terms</li>
 </ul>
 </section>
 <section id="tf-idf-up-weight-the-words-that-identify-a-document" class="slide level2 smaller-80">
@@ -481,7 +481,7 @@ Davide Proserpio
 </div>
 <ul>
 <li>Negative reviews lean on <strong>worst, waste, awful, stupid</strong>: direct complaint words. Positive reviews lean on <strong>excellent, wonderful, perfect, amazing</strong></li>
-<li>Nobody told the data which words are “good”: the labels plus simple counting surfaced them. This is exactly the signal Thursday’s model will learn from</li>
+<li>Nobody told the data which words are “good”: the labels plus simple counting surfaced them. This is exactly the signal your Homework 4 model will learn from</li>
 <li>The two sides are not symmetric: the sharpest negative word tilts about <strong>8x</strong>, the sharpest positive one only about <strong>4x</strong>. Complaints use extreme words; praise words also show up inside negative reviews (“the trailer was great, the movie was not”). <strong>No single word decides a review</strong>, which is why the model adds up thousands of small signals</li>
 </ul>
 </section>
@@ -533,7 +533,7 @@ Davide Proserpio
 </tbody>
 </table>
 <div class="box">
-<p>Default advice for marketing problems: <strong>start with TF-IDF</strong>. It is fast, transparent, and with a linear model it is a strong baseline. Reach for embeddings when synonyms clearly matter and you have the labels to prove the gain. Thursday we test exactly this on our 5,000 reviews.</p>
+<p>Default advice for marketing problems: <strong>start with TF-IDF</strong>. It is fast, transparent, and with a linear model it is a strong baseline. Reach for embeddings when synonyms clearly matter and you have the labels to prove the gain. Homework 4 tests what the text is worth on 20,000 real reviews: the same models with and without the word columns.</p>
 </div>
 </section></section>
 <section>
@@ -603,8 +603,8 @@ Davide Proserpio
 <li>Sentence 4 is the honest case: mixed opinions inside one review average out to a mildly positive score. Real reviews are full of this, which is why sentence-level scoring beats word counting</li>
 </ul>
 </section>
-<section id="way-2-train-a-classifier-thursday" class="slide level2 smaller-80">
-<h2>Way 2: train a classifier (Thursday)</h2>
+<section id="way-2-train-a-classifier-homework-4" class="slide level2 smaller-80">
+<h2>Way 2: train a classifier (Homework 4)</h2>
 <p>Supervised sentiment is <strong>week 9 on text features</strong>. Every step is something you already know:</p>
 <table class="caption-top">
 <colgroup>
@@ -638,7 +638,7 @@ Davide Proserpio
 <tr class="even">
 <td><strong>4. Classify</strong></td>
 <td>a logit on the word columns</td>
-<td>week 5, plus Thursday’s fix for “too many columns”</td>
+<td>week 5; in Homework 4 you keep the 1,000 most common terms</td>
 </tr>
 <tr class="odd">
 <td><strong>5. Evaluate</strong></td>
@@ -648,7 +648,7 @@ Davide Proserpio
 </tbody>
 </table>
 <div class="box">
-<p>When you have labels, the trained model beats the dictionary <strong>in your domain</strong>: it learns that “thin” is bad for batteries from your own reviews. Thursday we run this end to end and read which words the model trusts.</p>
+<p>When you have labels, the trained model beats the dictionary <strong>in your domain</strong>: it learns that “thin” is bad for batteries from your own reviews. In Homework 4 you run this end to end and read which words the model trusts.</p>
 </div>
 </section>
 <section id="beyond-positive-vs.-negative" class="slide level2 smaller-90">
