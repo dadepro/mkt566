@@ -290,9 +290,13 @@ On the real corpus, the same table is `r fmt_n(nrow(rv))` rows by
   stores only the non-zero cells
 - Simple and interpretable: every column is a word you can read
 - Two problems remain: common words get big counts **just for being
-  common**, and `r fmt_n(n_terms)` columns is far more columns than we have
-  reviews. The first problem we fix now; the second you will handle in
-  **Homework 4** the simple way: keep only the most common terms
+  common**, and the table is now **wider than it is tall**. A regression
+  needs more reviews than columns, so with more columns than reviews it
+  simply breaks
+- The first problem we fix on the next slide, with TF-IDF. The second you
+  will fix in **Homework 4** the simple way: **keep only the 1,000 most
+  common words**. A word that shows up in just a few reviews cannot teach
+  the model much, so dropping it costs almost nothing
 
 ## TF-IDF: up-weight the words that identify a document {.smaller-80}
 

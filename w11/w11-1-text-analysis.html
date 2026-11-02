@@ -390,7 +390,8 @@ Davide Proserpio
 <ul>
 <li>Almost every cell is <strong>zero</strong>: a 200-word review touches 200 of the 41,891 columns. This is called a <strong>sparse matrix</strong>, and R stores only the non-zero cells</li>
 <li>Simple and interpretable: every column is a word you can read</li>
-<li>Two problems remain: common words get big counts <strong>just for being common</strong>, and 41,891 columns is far more columns than we have reviews. The first problem we fix now; the second you will handle in <strong>Homework 4</strong> the simple way: keep only the most common terms</li>
+<li>Two problems remain: common words get big counts <strong>just for being common</strong>, and the table is now <strong>wider than it is tall</strong>. A regression needs more reviews than columns, so with more columns than reviews it simply breaks</li>
+<li>The first problem we fix on the next slide, with TF-IDF. The second you will fix in <strong>Homework 4</strong> the simple way: <strong>keep only the 1,000 most common words</strong>. A word that shows up in just a few reviews cannot teach the model much, so dropping it costs almost nothing</li>
 </ul>
 </section>
 <section id="tf-idf-up-weight-the-words-that-identify-a-document" class="slide level2 smaller-80">
