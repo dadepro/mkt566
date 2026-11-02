@@ -315,6 +315,10 @@ exactly that, in two parts:
   $\log(1) = 0$: no weight at all
 - **TF-IDF** $= \text{TF} \times \text{IDF}$: big only when both parts are
   big
+- The score is **never negative**: 0 means "this word is everywhere". And
+  there is no fixed maximum (the ceiling grows with the number of
+  documents), so compare TF-IDF scores **within** a corpus, never across
+  corpora
 
 ## TF-IDF by hand: "great" in document A {.smaller-80}
 

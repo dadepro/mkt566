@@ -401,6 +401,7 @@ Davide Proserpio
 <li><strong>TF (term frequency)</strong>: how much of document <span class="math inline">\(d\)</span> is word <span class="math inline">\(t\)</span>? <span class="math inline">\(\text{TF}(t,d) = \frac{\text{count of } t \text{ in } d}{\text{words in } d}\)</span></li>
 <li><strong>IDF (inverse document frequency)</strong>: how rare is the word across documents? <span class="math inline">\(\text{IDF}(t) = \log\frac{N}{\text{docs containing } t}\)</span>, with <span class="math inline">\(N\)</span> the number of documents. A word in <strong>every</strong> document gets <span class="math inline">\(\log(1) = 0\)</span>: no weight at all</li>
 <li><strong>TF-IDF</strong> <span class="math inline">\(= \text{TF} \times \text{IDF}\)</span>: big only when both parts are big</li>
+<li>The score is <strong>never negative</strong>: 0 means “this word is everywhere”. And there is no fixed maximum (the ceiling grows with the number of documents), so compare TF-IDF scores <strong>within</strong> a corpus, never across corpora</li>
 </ul>
 </section>
 <section id="tf-idf-by-hand-great-in-document-a" class="slide level2 smaller-80">
