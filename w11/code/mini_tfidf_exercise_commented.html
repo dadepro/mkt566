@@ -1485,8 +1485,29 @@ a Tiny Corpus</h1>
 </div>
 
 
-<div id="installload-packages" class="section level1" number="1">
-<h1><span class="header-section-number">1</span> Install/load
+<div id="what-this-exercise-does" class="section level1" number="1">
+<h1><span class="header-section-number">1</span> What this exercise
+does</h1>
+<p>In class we computed TF-IDF on one small example. Here you redo the
+whole calculation yourself, on a corpus small enough to check every
+number by hand: three short reviews, about forty words in total. A
+switch in the first data chunk swaps in 100 real movie reviews once you
+trust the mechanics.</p>
+<p>The steps mirror the lecture. Tokenize each review, lowercase it, and
+drop stopwords. Count how often each word appears in each document (the
+document-term matrix). Then compute the three ingredients one column at
+a time: <strong>TF</strong> (how much of the document is this word),
+<strong>DF</strong> (how many documents contain it), and
+<strong>IDF</strong> (the penalty for appearing everywhere). Multiplying
+TF and IDF gives <strong>TF-IDF</strong>, the score that surfaces the
+words that make each review different from the others. The last chunk
+plots the top terms per review so you can see that it worked.</p>
+<p>The code is heavily commented. Read the comments, run the chunks in
+order, and check at least one TF-IDF value with a calculator: that is
+the point of the tiny corpus.</p>
+</div>
+<div id="installload-packages" class="section level1" number="2">
+<h1><span class="header-section-number">2</span> Install/load
 packages</h1>
 <pre class="r"><code># ------------------------------------------------------------
 # Install missing packages and load them
@@ -1514,8 +1535,8 @@ if (length(new_packages)) {
 # Load all packages
 invisible(lapply(packages, library, character.only = TRUE))</code></pre>
 </div>
-<div id="tiny-corpus-3-reviews-4050-words-total" class="section level1" number="2">
-<h1><span class="header-section-number">2</span> Tiny corpus (3 reviews,
+<div id="tiny-corpus-3-reviews-4050-words-total" class="section level1" number="3">
+<h1><span class="header-section-number">3</span> Tiny corpus (3 reviews,
 ~40–50 words total)</h1>
 <pre class="r"><code># set mini_corpus = FALSE to use a larger dataset (100 movie reviews)
 mini_corpus = TRUE
@@ -1549,8 +1570,8 @@ head(docs)
 ## 3: Camera is good for daylight, battery ok, screen sharp; low-light noise, but overall decent value.</code></pre>
 <pre class="r"><code>numdocs = nrow(docs)</code></pre>
 </div>
-<div id="tokenize-clean-keep-unigrams" class="section level1" number="3">
-<h1><span class="header-section-number">3</span> Tokenize → clean → keep
+<div id="tokenize-clean-keep-unigrams" class="section level1" number="4">
+<h1><span class="header-section-number">4</span> Tokenize → clean → keep
 unigrams</h1>
 <pre class="r"><code># Preprocessing decisions (keep simple for pedagogy):
 # - lowercase words so &#39;Amazing&#39; and &#39;amazing&#39; match
@@ -1573,14 +1594,14 @@ tokens &lt;- lapply(tokens, function(x) {
 
 # Inspect tokens per doc
 data.table(doc_id = docs$doc_id, tokens = I(tokens))[1:min(numdocs, 10)]</code></pre>
-<pre><code>##    doc_id       tokens
-##    &lt;char&gt;       &lt;AsIs&gt;
-## 1:     r1 amazing,....
-## 2:     r2 battery,....
-## 3:     r3 camera, ....</code></pre>
+<pre><code>##    doc_id                                             tokens
+##    &lt;char&gt;                                             &lt;AsIs&gt;
+## 1:     r1   amazing,camera,battery,life,great,photos,...[11]
+## 2:     r2 battery,drains,quickly,camera,mediocre,app,...[12]
+## 3:     r3     camera,good,daylight,battery,ok,screen,...[13]</code></pre>
 </div>
-<div id="build-counts-documentterm-matrix-dtm-as-a-long-table" class="section level1" number="4">
-<h1><span class="header-section-number">4</span> Build counts
+<div id="build-counts-documentterm-matrix-dtm-as-a-long-table" class="section level1" number="5">
+<h1><span class="header-section-number">5</span> Build counts
 (Document–Term Matrix, DTM) as a long table</h1>
 <pre class="r"><code># Unnest tokens into a long table of (doc_id, term) rows
 long &lt;- data.table(
@@ -1597,8 +1618,8 @@ tf_counts[order(doc_id, -n)][1:min(numdocs, 10)]</code></pre>
 ## 2:     r1  camera     1
 ## 3:     r1 battery     1</code></pre>
 </div>
-<div id="compute-tf-df-idf-and-tfidf-by-hand" class="section level1" number="5">
-<h1><span class="header-section-number">5</span> Compute TF, DF, IDF,
+<div id="compute-tf-df-idf-and-tfidf-by-hand" class="section level1" number="6">
+<h1><span class="header-section-number">6</span> Compute TF, DF, IDF,
 and TF–IDF (by hand)</h1>
 <pre class="r"><code># N = number of documents
 N &lt;- nrow(docs)
@@ -1627,8 +1648,8 @@ dt[1:min(numdocs, 10)]</code></pre>
 ## 2:    fast     r1     1          11 0.09090909     1 1.098612 0.09987384
 ## 3:   great     r1     1          11 0.09090909     1 1.098612 0.09987384</code></pre>
 </div>
-<div id="make-compact-dtm-tfidf-matrices-wide-form" class="section level1" number="6">
-<h1><span class="header-section-number">6</span> Make compact DTM &amp;
+<div id="make-compact-dtm-tfidf-matrices-wide-form" class="section level1" number="7">
+<h1><span class="header-section-number">7</span> Make compact DTM &amp;
 TF–IDF matrices (wide form)</h1>
 <pre class="r"><code># Build matrices with documents as rows and terms as columns:
 # - DTM_counts: raw counts
@@ -1657,8 +1678,8 @@ DTM_counts[1:min(numdocs, 10), 1:10]</code></pre>
 ## 2: 0.00000000 0.09155102
 ## 3: 0.08450864 0.00000000</code></pre>
 </div>
-<div id="visualize-top-k-tfidf-terms-per-document" class="section level1" number="7">
-<h1><span class="header-section-number">7</span> Visualize: Top-k TF–IDF
+<div id="visualize-top-k-tfidf-terms-per-document" class="section level1" number="8">
+<h1><span class="header-section-number">8</span> Visualize: Top-k TF–IDF
 terms per document</h1>
 <pre class="r"><code># Choose top-k TF–IDF terms per doc to summarize each review
 topk &lt;- 3

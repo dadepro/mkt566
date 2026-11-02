@@ -8,6 +8,14 @@ output:
     number_sections: true
 ---
 
+# What this exercise does
+
+In class we computed TF-IDF on one small example. Here you redo the whole calculation yourself, on a corpus small enough to check every number by hand: three short reviews, about forty words in total. A switch in the first data chunk swaps in 100 real movie reviews once you trust the mechanics.
+
+The steps mirror the lecture. Tokenize each review, lowercase it, and drop stopwords. Count how often each word appears in each document (the document-term matrix). Then compute the three ingredients one column at a time: **TF** (how much of the document is this word), **DF** (how many documents contain it), and **IDF** (the penalty for appearing everywhere). Multiplying TF and IDF gives **TF-IDF**, the score that surfaces the words that make each review different from the others. The last chunk plots the top terms per review so you can see that it worked.
+
+The code is heavily commented. Read the comments, run the chunks in order, and check at least one TF-IDF value with a calculator: that is the point of the tiny corpus.
+
 ```{r setup, include=FALSE}
 set.seed(123)                                        # make results reproducible
 knitr::opts_chunk$set(message = FALSE, warning = FALSE)  # cleaner output

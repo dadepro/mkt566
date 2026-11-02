@@ -9,6 +9,14 @@ output:
     number_sections: true
 ---
 
+# What this exercise does
+
+In class we turned movie reviews into numbers. Here you apply the same recipe to a corpus you know: the seven Harry Potter books. The question is whether a computer can trace the emotional arc of a story just by counting words.
+
+We build a table with one row per word of the series (about a million rows, handled with `data.table`), remove stopwords, and match the remaining words to two sentiment dictionaries: **Bing**, which labels a word positive or negative, and **AFINN**, which scores it from -5 to +5. Averaging the AFINN scores within each chapter gives one sentiment number per chapter, and a rolling average over neighboring chapters smooths the line enough to see each book's arc: where the story darkens, and where it lifts.
+
+The code is heavily commented. Read the comments, run the chunks in order, and try the variations they suggest.
+
 ```{r setup, include=FALSE}
 # =====================  COMMENTS =====================
 # Purpose: Configure reproducibility and knitting behavior for this document.
@@ -31,6 +39,7 @@ set.seed(123)
 # - stringi: robust Unicode-aware string ops (tokenization here).
 # - tidytext: provides sentiment lexicons as data frames and stop_words.
 # - textdata: dependency to fetch lexicons (bing/afinn) the first time.
+#   The first run asks permission to download AFINN: answer 1 (Yes), once.
 # - zoo: rolling window operations for smoothing.
 # - devtools: only to install the 'harrypotter' package from GitHub once.
 # =============================================================
@@ -46,8 +55,13 @@ invisible(lapply(pkgs_dev, require, character.only=TRUE))
 # Install once if missing:
 # - The 'harrypotter' package exposes each book as a character vector of chapters.
 # - Installation pulls from GitHub; may require tools (Rtools/Xcode) on fresh machines.
-if (!requireNamespace("harrypotter", quietly = TRUE)) {
-  devtools::install_github("bradleyboehmke/harrypotter")
+# - Careful: TWO packages are named 'harrypotter'. The CRAN one has color palettes,
+#   not the books. We need the GitHub one, so we check for the books themselves,
+#   not just for a package with the right name.
+hp_has_books <- requireNamespace("harrypotter", quietly = TRUE) &&
+  "philosophers_stone" %in% data(package = "harrypotter")$results[, "Item"]
+if (!hp_has_books) {
+  devtools::install_github("bradleyboehmke/harrypotter", upgrade = "never")
 }
 library(harrypotter)
 ```
