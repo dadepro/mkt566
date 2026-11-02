@@ -158,14 +158,14 @@ models.**
 | **1. Clean** | lowercase, strip punctuation and HTML | "Great movie!" becomes "great movie" |
 | **2. Tokenize** | split the text into words | "great movie" becomes ["great", "movie"] |
 | **3. Drop stopwords** | remove glue words that carry no meaning | "the", "a", "and" go away |
-| **4. Count** | one row per document, one column per word | the bag-of-words matrix |
-| **5. Weight** | up-weight distinctive words | TF-IDF |
-| **6. Model** | feed the numbers to a model | the logit from week 5; you run it in Homework 4 |
+| **4. Turn into numbers** | one row per document, one column per word | the cells hold counts (bag-of-words) **or** weighted counts (TF-IDF) |
+| **5. Model** | feed the numbers to a model | the logit from week 5; you run it in Homework 4 |
 
 ::: {.box}
-Steps 1 to 3 prepare the text. Steps 4 and 5 turn it into numbers: that is
-where today's **three methods** differ. Step 6 is **not new**: once text is
-a matrix of numbers, everything from weeks 4 to 9 applies unchanged.
+Steps 1 to 3 prepare the text. Step 4 is **a choice between methods**:
+plain counts (**bag-of-words**), weighted counts (**TF-IDF**), or
+**embeddings**. Step 5 is **not new**: once text is a matrix of numbers,
+everything from weeks 4 to 9 applies unchanged.
 :::
 
 ## Our running example: 5,000 movie reviews {.smaller-80}
@@ -276,7 +276,7 @@ Three ways to turn text into numbers, in increasing order of sophistication:
   they are what you will use in **Homework 4**
 - Method 3 you only need to **recognize**: it is the idea that modern
   language models build on
-- Whichever method you choose, step 6 of the pipeline is the same: feed the
+- Whichever method you choose, step 5 of the pipeline is the same: feed the
   matrix to the **models you already know**
 
 ## Step 4 (method 1), bag-of-words: count the words {.smaller-80}
@@ -316,7 +316,7 @@ On the real corpus, the same table is `r fmt_n(nrow(rv))` rows by
   common words**. A word that shows up in just a few reviews cannot teach
   the model much, so dropping it costs almost nothing
 
-## Step 5 (method 2), TF-IDF: weight the counts {.smaller-80}
+## Step 4 (method 2), TF-IDF: weight the counts {.smaller-80}
 
 Method 1 counts; method 2 **re-weights those counts** so that the words
 that identify a document stand out. A word matters for a document when it
@@ -384,7 +384,12 @@ kable(show, align = "lccccc")
 - That is the whole idea: **"great" is everywhere; "phone" and "camera"
   tell you which review this is.** The model should listen to them more
 
-## Which words separate good reviews from bad ones {.smaller-90}
+## The payoff: which words separate good from bad {.smaller-90}
+
+We now have text as numbers. The question that justifies all the counting:
+do those numbers **carry signal**? Our `r fmt_n(nrow(rv))` reviews come
+**labeled** positive or negative, so we can simply compare which words each
+side uses more:
 
 ```{r sep-chart}
 #| fig-width: 8
@@ -509,7 +514,7 @@ kable(demo_tab, align = "lc")
   out to a mildly positive score. Real reviews are full of this, which is
   why sentence-level scoring beats word counting
 
-## Way 2: train a classifier (Homework 4) {.smaller-80}
+## Way 2: train a classifier {.smaller-80}
 
 Supervised sentiment is **week 9 on text features**. Every step is something
 you already know:
@@ -519,14 +524,15 @@ you already know:
 | **1. Label** | each review marked positive or negative (ours already are) | the outcome, week 5 |
 | **2. Vectorize** | TF-IDF matrix: 5,000 rows, thousands of word columns | today |
 | **3. Split** | train/test, fit on train only | week 9 |
-| **4. Classify** | a logit on the word columns | week 5; in Homework 4 you keep the 1,000 most common terms |
+| **4. Classify** | a logit on the word columns | week 5, keeping only the most common words so the matrix stays manageable |
 | **5. Evaluate** | accuracy, precision, recall, AUC on the test set | week 9 |
 
 ::: {.box}
-When you have labels, the trained model beats the dictionary **in your
-domain**: it learns that "thin" is bad for batteries from your own
-reviews. In Homework 4 you run this end to end and read which words the
-model trusts.
+A dictionary scores a word the same way everywhere. A trained model learns
+from **your own reviews**: if customers write "thin" mostly when they
+complain about battery life, the model learns that "thin" signals a bad
+review, something no general dictionary knows. That is why, when you have
+labels, the trained model usually wins.
 :::
 
 ## Beyond positive vs. negative {.smaller-90}

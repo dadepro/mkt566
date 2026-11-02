@@ -218,24 +218,19 @@ Davide Proserpio
 <td>“the”, “a”, “and” go away</td>
 </tr>
 <tr class="even">
-<td><strong>4. Count</strong></td>
+<td><strong>4. Turn into numbers</strong></td>
 <td>one row per document, one column per word</td>
-<td>the bag-of-words matrix</td>
+<td>the cells hold counts (bag-of-words) <strong>or</strong> weighted counts (TF-IDF)</td>
 </tr>
 <tr class="odd">
-<td><strong>5. Weight</strong></td>
-<td>up-weight distinctive words</td>
-<td>TF-IDF</td>
-</tr>
-<tr class="even">
-<td><strong>6. Model</strong></td>
+<td><strong>5. Model</strong></td>
 <td>feed the numbers to a model</td>
 <td>the logit from week 5; you run it in Homework 4</td>
 </tr>
 </tbody>
 </table>
 <div class="box">
-<p>Steps 1 to 3 prepare the text. Steps 4 and 5 turn it into numbers: that is where today’s <strong>three methods</strong> differ. Step 6 is <strong>not new</strong>: once text is a matrix of numbers, everything from weeks 4 to 9 applies unchanged.</p>
+<p>Steps 1 to 3 prepare the text. Step 4 is <strong>a choice between methods</strong>: plain counts (<strong>bag-of-words</strong>), weighted counts (<strong>TF-IDF</strong>), or <strong>embeddings</strong>. Step 5 is <strong>not new</strong>: once text is a matrix of numbers, everything from weeks 4 to 9 applies unchanged.</p>
 </div>
 </section>
 <section id="our-running-example-5000-movie-reviews" class="slide level2 smaller-80">
@@ -362,7 +357,7 @@ Davide Proserpio
 <ul>
 <li>Methods 1 and 2 we do <strong>by hand</strong>, on a corpus of three tiny reviews, and they are what you will use in <strong>Homework 4</strong></li>
 <li>Method 3 you only need to <strong>recognize</strong>: it is the idea that modern language models build on</li>
-<li>Whichever method you choose, step 6 of the pipeline is the same: feed the matrix to the <strong>models you already know</strong></li>
+<li>Whichever method you choose, step 5 of the pipeline is the same: feed the matrix to the <strong>models you already know</strong></li>
 </ul>
 </section>
 <section id="step-4-method-1-bag-of-words-count-the-words" class="slide level2 smaller-80">
@@ -434,8 +429,8 @@ Davide Proserpio
 <li>The first problem we fix on the next slide, with TF-IDF. The second you will fix in <strong>Homework 4</strong> the simple way: <strong>keep only the 1,000 most common words</strong>. A word that shows up in just a few reviews cannot teach the model much, so dropping it costs almost nothing</li>
 </ul>
 </section>
-<section id="step-5-method-2-tf-idf-weight-the-counts" class="slide level2 smaller-80">
-<h2>Step 5 (method 2), TF-IDF: weight the counts</h2>
+<section id="step-4-method-2-tf-idf-weight-the-counts" class="slide level2 smaller-80">
+<h2>Step 4 (method 2), TF-IDF: weight the counts</h2>
 <p>Method 1 counts; method 2 <strong>re-weights those counts</strong> so that the words that identify a document stand out. A word matters for a document when it is <strong>common in that document but rare everywhere else</strong>. TF-IDF scores exactly that, in two parts:</p>
 <ul>
 <li><strong>TF (term frequency)</strong>: how much of document <span class="math inline">\(d\)</span> is word <span class="math inline">\(t\)</span>? <span class="math inline">\(\text{TF}(t,d) = \frac{\text{count of } t \text{ in } d}{\text{words in } d}\)</span></li>
@@ -602,8 +597,9 @@ Davide Proserpio
 <li>That is the whole idea: <strong>“great” is everywhere; “phone” and “camera” tell you which review this is.</strong> The model should listen to them more</li>
 </ul>
 </section>
-<section id="which-words-separate-good-reviews-from-bad-ones" class="slide level2 smaller-90">
-<h2>Which words separate good reviews from bad ones</h2>
+<section id="the-payoff-which-words-separate-good-from-bad" class="slide level2 smaller-90">
+<h2>The payoff: which words separate good from bad</h2>
+<p>We now have text as numbers. The question that justifies all the counting: do those numbers <strong>carry signal</strong>? Our 5,000 reviews come <strong>labeled</strong> positive or negative, so we can simply compare which words each side uses more:</p>
 
 <img data-src="w11-1-text-analysis_files/figure-revealjs/sep-chart-1.png" width="768" class="r-stretch"><div class="smaller-80 muted">
 <p>For every word, we counted how often positive reviews use it and how often negative reviews use it (per 10,000 words), then took the ratio. “worst” at 8x on the left means negative reviews use it 8 times more often than positive ones. What do you see?</p>
@@ -745,8 +741,8 @@ Davide Proserpio
 <li>Sentence 4 is the honest case: mixed opinions inside one review average out to a mildly positive score. Real reviews are full of this, which is why sentence-level scoring beats word counting</li>
 </ul>
 </section>
-<section id="way-2-train-a-classifier-homework-4" class="slide level2 smaller-80">
-<h2>Way 2: train a classifier (Homework 4)</h2>
+<section id="way-2-train-a-classifier" class="slide level2 smaller-80">
+<h2>Way 2: train a classifier</h2>
 <p>Supervised sentiment is <strong>week 9 on text features</strong>. Every step is something you already know:</p>
 <table class="caption-top">
 <colgroup>
@@ -780,7 +776,7 @@ Davide Proserpio
 <tr class="even">
 <td><strong>4. Classify</strong></td>
 <td>a logit on the word columns</td>
-<td>week 5; in Homework 4 you keep the 1,000 most common terms</td>
+<td>week 5, keeping only the most common words so the matrix stays manageable</td>
 </tr>
 <tr class="odd">
 <td><strong>5. Evaluate</strong></td>
@@ -790,7 +786,7 @@ Davide Proserpio
 </tbody>
 </table>
 <div class="box">
-<p>When you have labels, the trained model beats the dictionary <strong>in your domain</strong>: it learns that “thin” is bad for batteries from your own reviews. In Homework 4 you run this end to end and read which words the model trusts.</p>
+<p>A dictionary scores a word the same way everywhere. A trained model learns from <strong>your own reviews</strong>: if customers write “thin” mostly when they complain about battery life, the model learns that “thin” signals a bad review, something no general dictionary knows. That is why, when you have labels, the trained model usually wins.</p>
 </div>
 </section>
 <section id="beyond-positive-vs.-negative" class="slide level2 smaller-90">
