@@ -148,4 +148,22 @@ Course materials (slides, cases, code, and the syllabus) will be posted here as 
   - **[Project brief](https://raw.githack.com/dadepro/mkt566/main/w10/case/w10-classifier-project.html)**: run the full classifier recipe on the ad-click data and build a short slide deck for a business audience; on Thursday a few groups, drawn at random, present (about 5 minutes per group), so every group comes with slides ready
   - The data: [ad_click_data.csv](https://github.com/dadepro/mkt566/raw/main/w10/data/ad_click_data.csv)
   - The [exercise handout](https://raw.githack.com/dadepro/mkt566/main/w10/case/w10-predicting-ad-click-vibecoding.html): the same tasks with questions at every step, no code given; also available as an [Rmd](https://github.com/dadepro/mkt566/raw/main/w10/case/w10-predicting-ad-click-vibecoding.Rmd) or a [Jupyter notebook](https://github.com/dadepro/mkt566/raw/main/w10/case/w10-predicting-ad-click-vibecoding.ipynb) to fill in
-  - Instructor solution: posted after the presentations
+  - **[Instructor solution](https://raw.githack.com/dadepro/mkt566/main/w10/case/w10-predicting-ad-click-solutions.html)**: all seven tasks worked in R, plus the if-you-finish-early extras (best pair of features, other business goals, the money calculation)
+
+### Week 11: User-generated content, text analysis, and sentiment prediction
+- Tuesday, Nov. 3
+  - Slides ([html](https://raw.githack.com/dadepro/mkt566/main/w11/w11-1-text-analysis.html), [pdf](https://raw.githack.com/dadepro/mkt566/main/w11/w11-1-text-analysis.pdf)): text analysis, turning words into numbers: tokens, stopwords, TF-IDF, and sentiment
+  - **Homework 4 is released today**: on Brightspace, due Tuesday, Nov. 24
+  - Code from class: [w11-code.zip](https://github.com/dadepro/mkt566/raw/main/w11/w11-code.zip) or browse [w11/code/](https://github.com/dadepro/mkt566/tree/main/w11/code)
+  - Readings:
+    - [Chapter 8 of  Introduction to R for Data Science](https://bookdown.org/jdholster1/idsr/text-analysis.html)
+    - Text analysis in R: [Word embeddings](https://m-clark.github.io/text-analysis-with-R/word-embeddings.html)
+    - [Reputation Systems](https://dl.acm.org/doi/pdf/10.1145/355112.355122)
+    - [HBR: How fake Customer Reviews do-and don't-work](https://hbr.org/2020/11/how-fake-customer-reviews-do-and-dont-work)
+    - [Detecting Fake Review Buyers Using Network Structure: Direct Evidence from Amazon](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4147920)
+  - Optional readings:
+    - [Fake It Till You Make It: Reputation, Competition, and Yelp Review Fraud](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2293164)
+    - [Using Traditional Text Analysis and Large Language Models in Service Failure and Recovery](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5139918)
+  - Practice on your own: the Harry Potter sentiment replica ([R Markdown](https://github.com/dadepro/mkt566/blob/main/w11/code/w11-harry_potter_sentiment_datatable_commented.Rmd), [HTML](https://raw.githack.com/dadepro/mkt566/main/w11/code/w11-harry_potter_sentiment_datatable_commented.html)) and cleaning review text and computing TF-IDF by hand ([R Markdown](https://github.com/dadepro/mkt566/blob/main/w11/code/mini_tfidf_exercise_commented.Rmd), [HTML](https://raw.githack.com/dadepro/mkt566/main/w11/code/mini_tfidf_exercise_commented.html))
+- Thursday, Nov. 5
+  - Guest speaker: [Andrea Ciufo](https://www.linkedin.com/in/andrea-ciufo/), Data Scientist, Marketing Effectiveness at dentsu

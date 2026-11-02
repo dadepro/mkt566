@@ -1,0 +1,308 @@
+---
+title: "Exercise: Predict Ad Click Probability — Solutions"
+author: "Davide Proserpio"
+date: "`r format(Sys.Date(), '%Y-%m-%d')`"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    number_sections: false
+---
+
+```{r setup, include=FALSE}
+# Fixed seed so the split (and every number below) is reproducible
+set.seed(123)
+knitr::opts_chunk$set(message = FALSE, warning = FALSE, fig.width = 7, fig.height = 5)
+
+pkgs <- c("pROC", "ggplot2", "stargazer", "data.table")
+to_install <- pkgs[!pkgs %in% installed.packages()[, 1]]
+if (length(to_install) > 0) install.packages(to_install, quiet = TRUE)
+invisible(lapply(pkgs, library, character.only = TRUE))
+```
+
+This is the instructor solution to the week 10 mini-project exercise. Your
+numbers may differ slightly from the ones below: with the same seed,
+different split functions (R's `sample()`, `caTools`, scikit-learn) draw
+different random splits. The story should be the same.
+
+# Task 1: Load and explore
+
+```{r load}
+df <- fread("../data/ad_click_data.csv")
+head(df)
+summary(df)
+
+# Baseline click rate: the share of impressions that got a click
+mean(df$click)
+```
+
+**Which variable is the outcome, and which features are categorical vs. numeric?**
+
+The outcome is **`click`**, coded 0/1. Categorical features: **`device`**,
+**`ad_position`**, **`user_segment`** (plus the two 0/1 dummies
+**`topic_match`** and **`past_ctr_hi`**). Numeric features:
+**`pages_viewed`** and **`time_on_site`**. The baseline click rate is about
+**30%**: useful later, because any model has to beat the "predict the base
+rate for everyone" benchmark.
+
+# Task 2: Train/test split
+
+```{r split}
+train_idx <- sample(nrow(df), size = round(0.7 * nrow(df)))
+train <- df[train_idx, ]
+test  <- df[-train_idx, ]
+```
+
+**Why do we evaluate the model on data it never saw during training?**
+
+Because performance on the training data is **optimistic**: the model has
+already seen those rows and can fit their noise. The test set gives an
+honest estimate of how the model will do on **new** impressions, which is
+the only thing the ad team cares about.
+
+# Task 3: Fit two logits and keep the better one
+
+Our pick: **`past_ctr_hi`** and **`topic_match`**. The logic: one describes
+the *user* (do they click ads in general?) and one describes the *ad* (is
+it relevant to the page they are reading?). Any pick with a sensible
+argument is fine; the comparison below tells you how good yours was.
+
+```{r fit}
+logit_pair <- glm(click ~ past_ctr_hi + topic_match,
+                  data = train, family = binomial())
+logit_full <- glm(click ~ device + ad_position + user_segment +
+                    pages_viewed + time_on_site + topic_match + past_ctr_hi,
+                  data = train, family = binomial())
+
+stargazer(logit_pair, logit_full, type = "text", no.space = TRUE,
+          column.labels = c("Our two picks", "All features"))
+```
+
+```{r compare}
+p_pair <- predict(logit_pair, newdata = test, type = "response")
+p_full <- predict(logit_full, newdata = test, type = "response")
+
+auc_pair <- as.numeric(auc(roc(test$click, p_pair, quiet = TRUE)))
+auc_full <- as.numeric(auc(roc(test$click, p_full, quiet = TRUE)))
+data.frame(model = c("our two picks", "all features"),
+           test_auc = round(c(auc_pair, auc_full), 3))
+```
+
+**Which model wins, and by how much? How close did your two picks get?**
+
+The **all-features model wins** (test AUC about **0.80**), so it is "your
+model" from here on. Our pick is the best possible pair and still lands
+around **0.76**: two well-chosen features carry most of the signal, but the
+full model adds a real margin. For reference, the pair from class
+(`pages_viewed` + `ad_position`) only reaches about **0.60**, so groups'
+Task 3 numbers should range roughly from 0.55 to 0.76 depending on the
+pick.
+
+# Task 4: Classify at 0.5 and build the confusion matrix
+
+We use the **all-features model** (the winner from Task 3).
+
+```{r predict}
+test$p_hat <- p_full
+test$y_hat <- as.integer(test$p_hat >= 0.5)
+head(test[, c("click", "p_hat", "y_hat")])
+```
+
+```{r metrics}
+TP <- sum(test$y_hat == 1 & test$click == 1)
+FP <- sum(test$y_hat == 1 & test$click == 0)
+FN <- sum(test$y_hat == 0 & test$click == 1)
+TN <- sum(test$y_hat == 0 & test$click == 0)
+print(paste("TP:", TP, "FP:", FP, "FN:", FN, "TN:", TN))
+
+accuracy  <- (TP + TN) / (TP + FP + FN + TN)
+precision <- TP / (TP + FP)
+recall    <- TP / (TP + FN)
+f1        <- 2 * precision * recall / (precision + recall)
+data.frame(Threshold = 0.50,
+           Accuracy = round(accuracy, 3), Precision = round(precision, 3),
+           Recall = round(recall, 3), F1 = round(f1, 3))
+```
+
+**What does the threshold of 0.5 mean in practice?**
+
+We flag an impression (show the ad, in business terms) when the model says
+the click probability is at least 50%. There is nothing special about 0.5:
+it is just the default, and Task 7 moves it on purpose.
+
+**If the business cares most about "catching all potential clickers", which metric?**
+
+**Recall**: of all the impressions that really end in a click, the share we
+flagged. Here recall at 0.5 is about **48%**, so the default cutoff already
+misses half the real clickers; precision (about **67%**) says two thirds of
+what we flag is a real clicker, against a 33% base rate in the test set.
+
+# Task 5: The ROC curve and the AUC
+
+```{r rocplot}
+roc_obj <- roc(response = test$click, predictor = test$p_hat, quiet = TRUE)
+ggplot(data.frame(FPR = 1 - roc_obj$specificities,
+                  TPR = roc_obj$sensitivities), aes(FPR, TPR)) +
+  geom_line(linewidth = 1) +
+  geom_abline(slope = 1, intercept = 0, linetype = "dashed") +
+  labs(title = "ROC curve, all-features model",
+       x = "False Positive Rate", y = "True Positive Rate") +
+  theme_minimal(base_size = 13)
+
+round(as.numeric(auc(roc_obj)), 3)
+```
+
+**Why is the diagonal a "random guess" baseline?**
+
+A classifier that ranks impressions at random catches true positives at the
+same rate it triggers false positives, so its curve is the 45-degree line.
+A curve hugging the diagonal means the model barely separates clickers from
+non-clickers.
+
+**What is the maximum possible AUC?**
+
+Max is **1.0** (every clicker ranked above every non-clicker). Our
+**0.80** means: pick a random clicker and a random non-clicker, and the
+model scores the clicker higher 80% of the time.
+
+# Task 6: Odds ratios, drawn
+
+```{r odds, fig.height=4}
+or <- exp(coef(logit_full))
+or <- or[names(or) != "(Intercept)"]
+or_dt <- data.table(feature = names(or), odds_ratio = as.numeric(or))[order(odds_ratio)]
+or_dt[, feature := factor(feature, levels = feature)]
+ggplot(or_dt, aes(x = odds_ratio, y = feature)) +
+  geom_col(fill = "#990000", width = 0.6) +
+  geom_vline(xintercept = 1, linetype = "dashed", color = "grey40") +
+  geom_text(aes(label = round(odds_ratio, 2)), hjust = -0.15, size = 3.5) +
+  scale_x_continuous(expand = expansion(mult = c(0, 0.15))) +
+  labs(title = "Odds ratios (dashed line = no effect)",
+       x = "Odds ratio: how the feature multiplies the odds of a click",
+       y = NULL) +
+  theme_minimal(base_size = 13)
+```
+
+**If the top ad position has an odds ratio of about 2.5, how should we interpret it?**
+
+The **odds** of a click are about **2.5 times higher** for an ad at the top
+of the page than at the bottom (the reference level), holding everything
+else fixed. The chart tells the story the slides need: past click behavior
+and topic match dominate, position and device matter, and `time_on_site`
+sits at 1 (no effect).
+
+# Task 7: Pick a threshold for the business goal
+
+The goal: at least **75% precision**, at the **lowest** threshold that
+clears it, so recall stays as high as possible.
+
+```{r threshold}
+grid <- seq(0.05, 0.95, by = 0.01)
+res <- rbindlist(lapply(grid, function(t) {
+  pred <- as.integer(test$p_hat >= t)
+  tp <- sum(pred == 1 & test$click == 1)
+  fp <- sum(pred == 1 & test$click == 0)
+  fn <- sum(pred == 0 & test$click == 1)
+  tn <- sum(pred == 0 & test$click == 0)
+  data.table(threshold = t, flagged = tp + fp,
+             precision = ifelse(tp + fp > 0, tp / (tp + fp), NA),
+             recall = tp / (tp + fn),
+             accuracy = (tp + tn) / length(pred))
+}))
+
+# The lowest threshold clearing the 75% precision bar
+best <- res[precision >= 0.75][which.min(threshold)]
+best[, lapply(.SD, round, 3)]
+
+# The trade-off around it, and at the default cutoff
+res[threshold %in% c(0.50, 0.55, 0.60, best$threshold, 0.70, 0.80),
+    lapply(.SD, round, 3)]
+```
+
+**The answer.** The lowest threshold that clears 75% precision is about
+**0.63**: precision **75.5%**, recall **33.5%**, flagging 220 of the 1,500
+test impressions. Compared with the 0.5 cutoff we buy about **8 points of
+precision** and pay about **14 points of recall**.
+
+**Does accuracy move as much?**
+
+No: accuracy goes from **75.1% to 74.5%**, essentially flat through a
+trade-off that completely changes what the ad team would do. With a 33%
+click rate, accuracy is propped up by the easy "no click" majority (always
+predicting no-click already scores 67%), which is why the business goal is
+stated in precision and recall, not accuracy.
+
+# If you finish early
+
+## The best pair of features
+
+```{r bestpair}
+feats <- c("device", "ad_position", "user_segment", "pages_viewed",
+           "time_on_site", "topic_match", "past_ctr_hi")
+pairs <- combn(feats, 2, simplify = FALSE)
+pair_auc <- rbindlist(lapply(pairs, function(p) {
+  m <- glm(reformulate(p, "click"), data = train, family = binomial())
+  pr <- predict(m, newdata = test, type = "response")
+  data.table(pair = paste(p, collapse = " + "),
+             test_auc = round(as.numeric(auc(roc(test$click, pr, quiet = TRUE))), 3))
+}))
+pair_auc[order(-test_auc)]
+```
+
+The winner is **`past_ctr_hi` + `topic_match`** at about **0.76**, within
+0.04 of the full model: the user's click history and the ad's relevance
+carry most of the signal. That is exactly the pair we picked in Task 3, so
+for us the answer to "did your pick win?" is yes; a group that picked
+differently sees here how close it came. Pairs built on `time_on_site` sit
+at the bottom, barely above a coin flip.
+
+## A different business goal
+
+```{r othergoal}
+# Say the bar is 60% precision instead
+res[precision >= 0.60][which.min(threshold)][, lapply(.SD, round, 3)]
+```
+
+A 60% bar is already cleared near the default cutoff, with much higher
+recall: the stricter the precision requirement, the more clickers you give
+up.
+
+```{r budget20}
+# Or the budget only allows targeting the top 20% of impressions
+cutoff20 <- quantile(test$p_hat, 0.80)
+flagged  <- test[p_hat >= cutoff20]
+data.table(cutoff    = round(cutoff20, 3),
+           flagged   = nrow(flagged),
+           precision = round(mean(flagged$click), 3),
+           recall    = round(sum(flagged$click) / sum(test$click), 3))
+```
+
+A top-20% budget flags **300 of the 1,500** test impressions, which lands
+the cutoff at about **0.54**: between the default 0.5 and the 0.63 that the
+75% precision goal required. Precision comes out near **69%** and recall
+near **42%**. Note what happened: the budget picked the threshold for us,
+and that threshold misses the 75% bar. If the ad team insists on both the
+budget and the precision goal, something has to give.
+
+## How much money does the model save?
+
+```{r money}
+# An impression costs 1 cent; a click is worth 50 cents
+everyone <- test[, .(impressions = .N, clicks = sum(click))]
+targeted <- test[p_hat >= best$threshold, .(impressions = .N, clicks = sum(click))]
+money <- rbind(cbind(policy = "show everyone", everyone),
+               cbind(policy = "show above threshold", targeted))
+money[, cost := impressions * 1]
+money[, revenue := clicks * 50]
+money[, profit := revenue - cost]
+money[, profit_per_impression := round(profit / impressions, 2)]
+money[]
+```
+
+With these numbers, showing the ad to **everyone** earns more in total
+(clicks are worth 50 times an impression, and a third of impressions
+click), but the targeted policy earns far more **per impression**. The
+managerial answer: if impressions are unlimited and this cheap, show
+everyone; under a limited budget, spend it above the threshold first. A
+good group notices that the right policy depends on the economics, not just
+the model.
