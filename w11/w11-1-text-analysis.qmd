@@ -158,7 +158,7 @@ models.**
 | **1. Clean** | lowercase, strip punctuation and HTML | "Great movie!" becomes "great movie" |
 | **2. Tokenize** | split the text into words | "great movie" becomes ["great", "movie"] |
 | **3. Drop stopwords** | remove glue words that carry no meaning | "the", "a", "and" go away |
-| **4. Turn into numbers** | one row per document, one column per word | the cells hold counts (bag-of-words) **or** weighted counts (TF-IDF) |
+| **4. Turn into numbers** | one row per document, numbers in the columns | counts (bag-of-words), weighted counts (TF-IDF), **or** an average of word vectors (embeddings) |
 | **5. Model** | feed the numbers to a model | the logit from week 5; you run it in Homework 4 |
 
 ::: {.box}
