@@ -491,36 +491,6 @@ TF-IDF changes the numbers in the columns, not the columns themselves.
   300 numbers are unreadable; counts are readable but treat every word as an
   island
 
-## What an embedding actually looks like {.smaller-80}
-
-```{r emb-stripes}
-#| fig-width: 8
-#| fig-height: 2.3
-# Real values: the first 40 (of 300) numbers of four words, straight from
-# Google's pretrained word2vec vectors. Precomputed in data/embedding_stripes.csv.
-stripes <- fread("data/embedding_stripes.csv")
-sl <- melt(stripes, id.vars = "word", variable.name = "dim", value.name = "val")
-sl[, dim := as.integer(gsub("d", "", dim)) + 1]
-sl[, word := factor(word, levels = rev(c("terrible", "awful", "battery", "keyboard")))]
-ggplot(sl, aes(x = dim, y = word, fill = val)) +
-  geom_tile(color = "white", linewidth = 0.3) +
-  scale_fill_gradient2(low = blue, mid = "white", high = usc_red,
-                       midpoint = 0, guide = "none") +
-  labs(title = "Four Words, the First 40 of Their 300 Numbers Each",
-       x = "one cell = one number (blue = negative, red = positive)", y = NULL) +
-  theme_minimal(base_size = 14) +
-  theme(axis.text.x = element_blank(), panel.grid = element_blank(),
-        axis.text.y = element_text(size = 13))
-```
-
-- Each **row is one word**, each cell one of its numbers. This is all a
-  word is to the computer
-- **"terrible" and "awful" have nearly the same stripe** (similarity 0.75).
-  "keyboard" shares almost nothing with them (0.08)
-- No single cell means anything on its own. The **pattern** is the meaning,
-  and similar patterns mean similar words, which is what the next slide
-  draws as a map
-
 ## The map of meaning, drawn {.smaller-90}
 
 ```{r emb-map}
