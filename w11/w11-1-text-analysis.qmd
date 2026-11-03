@@ -624,7 +624,7 @@ kable(demo_tab, align = "lc")
 |---|---------|---------|
 | **Needs** | thousands of labeled reviews | nothing: works on day one |
 | **Knows your domain** | yes: learns from your own reviews that "thin" is bad for a battery | no: one score per word, the same everywhere |
-| **Accuracy** | usually higher, and you can **measure** it on your test set | lower, and without labels you cannot even measure it |
+| **Accuracy** | usually higher, and you can **measure** it on your test set | usually lower, and you cannot check it: with no labels, there is no answer key to compare the scores against |
 | **Cost** | collecting the labels | free |
 
 ::: {.box}
