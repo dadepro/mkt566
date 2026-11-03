@@ -455,6 +455,68 @@ TF-IDF changes the numbers in the columns, not the columns themselves.
   300 numbers are unreadable; counts are readable but treat every word as an
   island
 
+## The map of meaning, drawn {.smaller-90}
+
+```{r emb-map}
+#| fig-width: 8
+#| fig-height: 4.2
+# Real coordinates: 14 words pulled from Google's pretrained word2vec vectors
+# (GoogleNews-vectors-negative300.bin, 300 numbers per word), squashed to the
+# best flat 2D view with PCA. Coordinates precomputed in data/embedding_map.csv.
+library(ggrepel)
+emb <- fread("data/embedding_map.csv")
+emb[, group := fcase(
+  word %in% c("battery", "keyboard", "camera", "screen"), "gadget words",
+  word %in% c("king", "queen", "man", "woman"), "people words",
+  default = "opinion words")]
+arrow_dt <- data.table(x = c(emb[word == "king", x], emb[word == "man", x]),
+                       y = c(emb[word == "king", y], emb[word == "man", y]),
+                       xend = c(emb[word == "queen", x], emb[word == "woman", x]),
+                       yend = c(emb[word == "queen", y], emb[word == "woman", y]))
+p_emb <- ggplot(emb, aes(x, y, color = group)) +
+  geom_segment(data = arrow_dt, aes(x = x, y = y, xend = xend, yend = yend),
+               inherit.aes = FALSE, color = "grey45",
+               arrow = arrow(length = unit(0.22, "cm")), linewidth = 0.5) +
+  geom_point(size = 3) +
+  geom_text_repel(aes(label = word), size = 4.8, seed = 7,
+                  box.padding = 0.4, point.padding = 0.25,
+                  show.legend = FALSE, max.overlaps = Inf) +
+  scale_color_manual(values = setNames(c(blue, usc_red, "grey30"),
+                     c("gadget words", "opinion words", "people words")),
+                     name = NULL) +
+  labs(x = NULL, y = NULL,
+       title = "14 Words From Google's Pretrained Vectors, on One Map") +
+  theme_minimal(base_size = 14) +
+  theme(legend.position = "top", axis.text = element_blank(),
+        panel.grid.minor = element_blank())
+p_emb
+```
+
+::: {.smaller-80 .muted}
+Each word's 300 numbers, squashed onto one flat map (the axes have no
+units; only distances and directions matter). The two gray arrows connect
+king to queen and man to woman. What do you see?
+:::
+
+## Reading the map {.smaller-80 .nostretch}
+
+```{r emb-map-2}
+#| fig-width: 8
+#| fig-height: 2.4
+p_emb + labs(title = NULL) + theme(legend.position = "none")
+```
+
+- **Similar words sit together**, in groups nobody labeled: gadget words,
+  people words, opinion words. That is what "similar contexts get similar
+  vectors" looks like
+- **The two arrows are parallel**: king to queen is the same move as man to
+  woman. Directions carry meaning, which is why king $-$ man $+$ woman
+  lands on queen (similarity 0.73; the runner-up scores 0.10)
+- Look closely at the opinion cluster: **"awful" sits right next to
+  "awesome"**. Embeddings know these words are used in the same kinds of
+  sentences, not whether the sentence was happy. For good vs bad you still
+  need labels, which is where the classifier comes in
+
 ## The three methods, side by side {.smaller-80}
 
 | Method | Each document becomes | Strength | Weakness |
@@ -558,8 +620,11 @@ Two directions you should know exist, both one Google away:
   banking complaints. Re-check whenever you change domains
 - **Volume is not representativeness**: the people who write reviews are
   not your average customers (week 1's Groupon paper all over again)
-- **Correlation is not causation**, still: angry reviews predict churn;
-  that does not mean the words cause it
+- **Correlation is not causation**, still: customers who write angry
+  reviews often cancel soon after, so text is great for flagging **who** is
+  at risk. But the angry words are a **symptom** of a bad experience, not
+  the cause of leaving: both the review and the cancellation come from
+  whatever went wrong. Fix what went wrong, not the words
 
 ## Wrap-up
 

@@ -632,6 +632,30 @@ Davide Proserpio
 <li>The trade-off by now is familiar: embeddings capture <strong>meaning</strong> but the 300 numbers are unreadable; counts are readable but treat every word as an island</li>
 </ul>
 </section>
+<section id="the-map-of-meaning-drawn" class="slide level2 smaller-90">
+<h2>The map of meaning, drawn</h2>
+
+<img data-src="w11-1-text-analysis_files/figure-revealjs/emb-map-1.png" width="768" class="r-stretch"><div class="smaller-80 muted">
+<p>Each word’s 300 numbers, squashed onto one flat map (the axes have no units; only distances and directions matter). The two gray arrows connect king to queen and man to woman. What do you see?</p>
+</div>
+</section>
+<section id="reading-the-map" class="slide level2 smaller-80 nostretch">
+<h2>Reading the map</h2>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="w11-1-text-analysis_files/figure-revealjs/emb-map-2-1.png" width="768"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li><strong>Similar words sit together</strong>, in groups nobody labeled: gadget words, people words, opinion words. That is what “similar contexts get similar vectors” looks like</li>
+<li><strong>The two arrows are parallel</strong>: king to queen is the same move as man to woman. Directions carry meaning, which is why king <span class="math inline">\(-\)</span> man <span class="math inline">\(+\)</span> woman lands on queen (similarity 0.73; the runner-up scores 0.10)</li>
+<li>Look closely at the opinion cluster: <strong>“awful” sits right next to “awesome”</strong>. Embeddings know these words are used in the same kinds of sentences, not whether the sentence was happy. For good vs bad you still need labels, which is where the classifier comes in</li>
+</ul>
+</section>
 <section id="the-three-methods-side-by-side" class="slide level2 smaller-80">
 <h2>The three methods, side by side</h2>
 <table class="caption-top">
@@ -803,7 +827,7 @@ Davide Proserpio
 <li><strong>Sarcasm and context</strong>: “Great, it broke after two days” scores positive on words. Dictionaries fall for it; trained models only partly escape it</li>
 <li><strong>The domain shifts</strong>: a dictionary built on movie reviews mis-scores banking complaints. Re-check whenever you change domains</li>
 <li><strong>Volume is not representativeness</strong>: the people who write reviews are not your average customers (week 1’s Groupon paper all over again)</li>
-<li><strong>Correlation is not causation</strong>, still: angry reviews predict churn; that does not mean the words cause it</li>
+<li><strong>Correlation is not causation</strong>, still: customers who write angry reviews often cancel soon after, so text is great for flagging <strong>who</strong> is at risk. But the angry words are a <strong>symptom</strong> of a bad experience, not the cause of leaving: both the review and the cancellation come from whatever went wrong. Fix what went wrong, not the words</li>
 </ul>
 </section>
 <section id="wrap-up" class="slide level2">
