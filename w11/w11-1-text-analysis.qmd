@@ -137,7 +137,7 @@ have. From the classifiers weeks, the three things to remember:
 All three show up again in Homework 4.
 :::
 
-## One new word you need: leakage {.smaller-80}
+## Be aware of leakage {.smaller-80}
 
 **Leakage** is when the training data contains information that the model
 will not have when it is used. A leaky model looks accurate in testing,
