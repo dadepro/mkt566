@@ -161,6 +161,30 @@ Davide Proserpio
 <li>Thursday: <strong>guest speaker</strong>, Andrea Ciufo, Data Scientist, Marketing Effectiveness at dentsu</li>
 </ul>
 </section>
+<section id="refresher-when-the-outcome-is-rare" class="slide level2 smaller-80">
+<h2>Refresher: when the outcome is rare</h2>
+<p>Homework 4 asks you to predict an outcome that most reviews do <strong>not</strong> have. From the classifiers weeks, the three things to remember:</p>
+<ul>
+<li><strong>Accuracy lies.</strong> Predicting “no” for everyone scores high and catches nobody. Grade with <strong>precision</strong> (of the ones you flagged, how many are real?) and <strong>recall</strong> (of the real ones, how many did you catch?)</li>
+<li><strong>The 0.5 cutoff is a dial, not a law.</strong> Flagging too few? Lower the threshold: recall goes up, precision goes down. Pick the cutoff that fits the business goal, like the ad team’s 75% precision bar last week</li>
+<li><strong>Rebalancing (oversampling, class weights) is a last resort.</strong> If you use it, rebalance the <strong>training part only</strong>, and read the scores as a ranking, not as probabilities</li>
+</ul>
+<div class="box">
+<p>All three show up again in Homework 4.</p>
+</div>
+</section>
+<section id="one-new-word-you-need-leakage" class="slide level2 smaller-80">
+<h2>One new word you need: leakage</h2>
+<p><strong>Leakage</strong> is when the training data contains information that the model will not have when it is used. A leaky model looks accurate in testing, because it is peeking at the answer. It fails in the real world, where that information does not exist.</p>
+<ul>
+<li>The clearest case: a feature <strong>computed from the outcome</strong> you are trying to predict</li>
+<li>The subtler case: a feature <strong>recorded after the outcome</strong>. A hospital predicts readmissions using each patient’s number of follow-up visits, and looks brilliant. But follow-up visits happen <em>after</em> discharge: on the day the model must predict, that number does not exist yet</li>
+<li>The test, for every column: <strong>would this value exist, exactly as recorded, at the moment the prediction is made?</strong></li>
+</ul>
+<div class="box">
+<p>Homework 4 opens with a <strong>leakage audit</strong>: that one question, asked of every column in a real dataset.</p>
+</div>
+</section>
 <section id="a-promise-from-the-classifiers-week" class="slide level2 smaller-90">
 <h2>A promise from the classifiers week</h2>
 <p>The neural network slide in the classifiers deck said: in marketing, the fancy models shine on <strong>text and images</strong>. Today we make good on the text half.</p>

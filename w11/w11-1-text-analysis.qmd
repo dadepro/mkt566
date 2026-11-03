@@ -118,6 +118,47 @@ fmt_n <- function(x) format(x, big.mark = ",")
 - Thursday: **guest speaker**, Andrea Ciufo, Data Scientist, Marketing
   Effectiveness at dentsu
 
+## Refresher: when the outcome is rare {.smaller-80}
+
+Homework 4 asks you to predict an outcome that most reviews do **not**
+have. From the classifiers weeks, the three things to remember:
+
+- **Accuracy lies.** Predicting "no" for everyone scores high and catches
+  nobody. Grade with **precision** (of the ones you flagged, how many are
+  real?) and **recall** (of the real ones, how many did you catch?)
+- **The 0.5 cutoff is a dial, not a law.** Flagging too few? Lower the
+  threshold: recall goes up, precision goes down. Pick the cutoff that fits
+  the business goal, like the ad team's 75% precision bar last week
+- **Rebalancing (oversampling, class weights) is a last resort.** If you use
+  it, rebalance the **training part only**, and read the scores as a
+  ranking, not as probabilities
+
+::: {.box}
+All three show up again in Homework 4.
+:::
+
+## One new word you need: leakage {.smaller-80}
+
+**Leakage** is when the training data contains information that the model
+will not have when it is used. A leaky model looks accurate in testing,
+because it is peeking at the answer. It fails in the real world, where that
+information does not exist.
+
+- The clearest case: a feature **computed from the outcome** you are trying
+  to predict
+- The subtler case: a feature **recorded after the outcome**. A hospital
+  predicts readmissions using each patient's number of follow-up visits,
+  and looks brilliant. But follow-up visits happen *after* discharge: on
+  the day the model must predict, that number does not exist yet
+- The test, for every column:
+  **would this value exist, exactly as recorded, at the moment the
+  prediction is made?**
+
+::: {.box}
+Homework 4 opens with a **leakage audit**: that one question, asked of
+every column in a real dataset.
+:::
+
 ## A promise from the classifiers week {.smaller-90}
 
 The neural network slide in the classifiers deck said: in marketing, the
