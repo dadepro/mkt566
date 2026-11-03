@@ -529,12 +529,32 @@ columns.
 - Where it earns money: track **customer satisfaction** without surveys,
   watch a **campaign** land in real time, spot a **brand crisis** while it
   is still small, prioritize the angriest **support tickets**
-- Two ways to measure it, and they differ in what they need: a
-  **dictionary** or **labeled data**
+- Two ways to measure it: **train a classifier** on labeled reviews, or
+  use a ready-made **dictionary**
 
-## Way 1: a dictionary of charged words {.smaller-90}
+## Way 1: train a classifier {.smaller-80}
 
-Lexicon-based sentiment (the `sentimentr` package in R):
+Supervised sentiment is **week 9 on text features**. Every step is something
+you already know:
+
+| Step | What you do | Where you learned it |
+|---|---------|-------|
+| **1. Label** | each review marked positive or negative (ours already are) | the outcome, week 5 |
+| **2. Vectorize** | TF-IDF matrix: 5,000 rows, thousands of word columns | today |
+| **3. Split** | train/test, fit on train only | week 9 |
+| **4. Classify** | a logit on the word columns | week 5, keeping only the most common words so the matrix stays manageable |
+| **5. Evaluate** | accuracy, precision, recall, AUC on the test set | week 9 |
+
+::: {.box}
+Nothing here is new: it is the week 9 recipe with words as the features.
+The catch is the first row: you need **labels**, thousands of reviews
+already marked positive or negative. What if you have none? That is way 2.
+:::
+
+## Way 2: a dictionary of words {.smaller-90}
+
+No labels? Use scores somebody else already assigned. Lexicon-based
+sentiment (the `sentimentr` package in R):
 
 - Start from a **dictionary**: thousands of words pre-scored by humans
   (great = +0.75, terrible = -0.75, table = 0)
@@ -542,12 +562,6 @@ Lexicon-based sentiment (the `sentimentr` package in R):
 - The good packages also handle **valence shifters**: "**not** great" flips
   the sign, "**absolutely** terrible" amplifies it. This is why they work at
   the sentence level, not word by word
-
-::: {.box}
-No training data needed: you can score a million reviews on day one. The
-price: the dictionary does not know your domain ("thin" is bad for a
-laptop battery and good for a laptop).
-:::
 
 ## sentimentr, live on four sentences {.smaller-80}
 
@@ -564,25 +578,19 @@ kable(demo_tab, align = "lc")
   out to a mildly positive score. Real reviews are full of this, which is
   why sentence-level scoring beats word counting
 
-## Way 2: train a classifier {.smaller-80}
+## Classifier or dictionary? {.smaller-80}
 
-Supervised sentiment is **week 9 on text features**. Every step is something
-you already know:
-
-| Step | What you do | Where you learned it |
-|---|---------|-------|
-| **1. Label** | each review marked positive or negative (ours already are) | the outcome, week 5 |
-| **2. Vectorize** | TF-IDF matrix: 5,000 rows, thousands of word columns | today |
-| **3. Split** | train/test, fit on train only | week 9 |
-| **4. Classify** | a logit on the word columns | week 5, keeping only the most common words so the matrix stays manageable |
-| **5. Evaluate** | accuracy, precision, recall, AUC on the test set | week 9 |
+| | Way 1: classifier | Way 2: dictionary |
+|---|---------|---------|
+| **Needs** | thousands of labeled reviews | nothing: works on day one |
+| **Knows your domain** | yes: learns from your own reviews that "thin" is bad for a battery | no: one score per word, the same everywhere |
+| **Accuracy** | usually higher, and you can **measure** it on your test set | lower, and without labels you cannot even measure it |
+| **Cost** | collecting the labels | free |
 
 ::: {.box}
-A dictionary scores a word the same way everywhere. A trained model learns
-from **your own reviews**: if customers write "thin" mostly when they
-complain about battery life, the model learns that "thin" signals a bad
-review, something no general dictionary knows. That is why, when you have
-labels, the trained model usually wins.
+Rule of thumb: **have labels? Train the classifier. No labels? Start with
+the dictionary**, then hand-label a few hundred reviews to check it before
+you trust it at scale.
 :::
 
 ## Beyond positive vs. negative {.smaller-90}

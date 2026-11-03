@@ -706,65 +706,11 @@ Davide Proserpio
 <ul>
 <li><strong>Sentiment</strong> is the polarity of an opinion: positive, negative, or neutral. “Is this review happy or angry?”</li>
 <li>Where it earns money: track <strong>customer satisfaction</strong> without surveys, watch a <strong>campaign</strong> land in real time, spot a <strong>brand crisis</strong> while it is still small, prioritize the angriest <strong>support tickets</strong></li>
-<li>Two ways to measure it, and they differ in what they need: a <strong>dictionary</strong> or <strong>labeled data</strong></li>
+<li>Two ways to measure it: <strong>train a classifier</strong> on labeled reviews, or use a ready-made <strong>dictionary</strong></li>
 </ul>
 </section>
-<section id="way-1-a-dictionary-of-charged-words" class="slide level2 smaller-90">
-<h2>Way 1: a dictionary of charged words</h2>
-<p>Lexicon-based sentiment (the <code>sentimentr</code> package in R):</p>
-<ul>
-<li>Start from a <strong>dictionary</strong>: thousands of words pre-scored by humans (great = +0.75, terrible = -0.75, table = 0)</li>
-<li>Score a sentence by <strong>averaging the scores of its words</strong></li>
-<li>The good packages also handle <strong>valence shifters</strong>: “<strong>not</strong> great” flips the sign, “<strong>absolutely</strong> terrible” amplifies it. This is why they work at the sentence level, not word by word</li>
-</ul>
-<div class="box">
-<p>No training data needed: you can score a million reviews on day one. The price: the dictionary does not know your domain (“thin” is bad for a laptop battery and good for a laptop).</p>
-</div>
-</section>
-<section id="sentimentr-live-on-four-sentences" class="slide level2 smaller-80">
-<h2>sentimentr, live on four sentences</h2>
-<div class="cell">
-<div class="cell-output-display">
-<table class="caption-top">
-<colgroup>
-<col style="width: 76%">
-<col style="width: 23%">
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: left;">Sentence</th>
-<th style="text-align: center;">Sentiment score</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">This movie is great.</td>
-<td style="text-align: center;">0.25</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">This movie is not great.</td>
-<td style="text-align: center;">-0.22</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Absolutely terrible, I want my money back.</td>
-<td style="text-align: center;">-0.28</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">The plot is slow at first, but the ending is fantastic.</td>
-<td style="text-align: center;">0.13</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<ul>
-<li>Sentence 1 vs.&nbsp;sentence 2: the <strong>“not”</strong> flips a clearly positive score to a negative one. A plain word count would have scored both as positive, because both contain “great”</li>
-<li>Sentence 3: “absolutely” <strong>amplifies</strong> “terrible”, the most negative score of the four</li>
-<li>Sentence 4 is the honest case: mixed opinions inside one review average out to a mildly positive score. Real reviews are full of this, which is why sentence-level scoring beats word counting</li>
-</ul>
-</section>
-<section id="way-2-train-a-classifier" class="slide level2 smaller-80">
-<h2>Way 2: train a classifier</h2>
+<section id="way-1-train-a-classifier" class="slide level2 smaller-80">
+<h2>Way 1: train a classifier</h2>
 <p>Supervised sentiment is <strong>week 9 on text features</strong>. Every step is something you already know:</p>
 <table class="caption-top">
 <colgroup>
@@ -808,7 +754,100 @@ Davide Proserpio
 </tbody>
 </table>
 <div class="box">
-<p>A dictionary scores a word the same way everywhere. A trained model learns from <strong>your own reviews</strong>: if customers write “thin” mostly when they complain about battery life, the model learns that “thin” signals a bad review, something no general dictionary knows. That is why, when you have labels, the trained model usually wins.</p>
+<p>Nothing here is new: it is the week 9 recipe with words as the features. The catch is the first row: you need <strong>labels</strong>, thousands of reviews already marked positive or negative. What if you have none? That is way 2.</p>
+</div>
+</section>
+<section id="way-2-a-dictionary-of-words" class="slide level2 smaller-90">
+<h2>Way 2: a dictionary of words</h2>
+<p>No labels? Use scores somebody else already assigned. Lexicon-based sentiment (the <code>sentimentr</code> package in R):</p>
+<ul>
+<li>Start from a <strong>dictionary</strong>: thousands of words pre-scored by humans (great = +0.75, terrible = -0.75, table = 0)</li>
+<li>Score a sentence by <strong>averaging the scores of its words</strong></li>
+<li>The good packages also handle <strong>valence shifters</strong>: “<strong>not</strong> great” flips the sign, “<strong>absolutely</strong> terrible” amplifies it. This is why they work at the sentence level, not word by word</li>
+</ul>
+</section>
+<section id="sentimentr-live-on-four-sentences" class="slide level2 smaller-80">
+<h2>sentimentr, live on four sentences</h2>
+<div class="cell">
+<div class="cell-output-display">
+<table class="caption-top">
+<colgroup>
+<col style="width: 76%">
+<col style="width: 23%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Sentence</th>
+<th style="text-align: center;">Sentiment score</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">This movie is great.</td>
+<td style="text-align: center;">0.25</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">This movie is not great.</td>
+<td style="text-align: center;">-0.22</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Absolutely terrible, I want my money back.</td>
+<td style="text-align: center;">-0.28</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">The plot is slow at first, but the ending is fantastic.</td>
+<td style="text-align: center;">0.13</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<ul>
+<li>Sentence 1 vs.&nbsp;sentence 2: the <strong>“not”</strong> flips a clearly positive score to a negative one. A plain word count would have scored both as positive, because both contain “great”</li>
+<li>Sentence 3: “absolutely” <strong>amplifies</strong> “terrible”, the most negative score of the four</li>
+<li>Sentence 4 is the honest case: mixed opinions inside one review average out to a mildly positive score. Real reviews are full of this, which is why sentence-level scoring beats word counting</li>
+</ul>
+</section>
+<section id="classifier-or-dictionary" class="slide level2 smaller-80">
+<h2>Classifier or dictionary?</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 14%">
+<col style="width: 42%">
+<col style="width: 42%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>Way 1: classifier</th>
+<th>Way 2: dictionary</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Needs</strong></td>
+<td>thousands of labeled reviews</td>
+<td>nothing: works on day one</td>
+</tr>
+<tr class="even">
+<td><strong>Knows your domain</strong></td>
+<td>yes: learns from your own reviews that “thin” is bad for a battery</td>
+<td>no: one score per word, the same everywhere</td>
+</tr>
+<tr class="odd">
+<td><strong>Accuracy</strong></td>
+<td>usually higher, and you can <strong>measure</strong> it on your test set</td>
+<td>lower, and without labels you cannot even measure it</td>
+</tr>
+<tr class="even">
+<td><strong>Cost</strong></td>
+<td>collecting the labels</td>
+<td>free</td>
+</tr>
+</tbody>
+</table>
+<div class="box">
+<p>Rule of thumb: <strong>have labels? Train the classifier. No labels? Start with the dictionary</strong>, then hand-label a few hundred reviews to check it before you trust it at scale.</p>
 </div>
 </section>
 <section id="beyond-positive-vs.-negative" class="slide level2 smaller-90">
