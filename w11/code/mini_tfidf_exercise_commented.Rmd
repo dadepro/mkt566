@@ -10,11 +10,19 @@ output:
 
 # What this exercise does
 
-In class we computed TF-IDF on one small example. Here you redo the whole calculation yourself, on a corpus small enough to check every number by hand: three short reviews, about forty words in total. A switch in the first data chunk swaps in 100 real movie reviews once you trust the mechanics.
+In class we computed TF-IDF by hand on a tiny corpus. This exercise does the same thing in code, step by step.
 
-The steps mirror the lecture. Tokenize each review, lowercase it, and drop stopwords. Count how often each word appears in each document (the document-term matrix). Then compute the three ingredients one column at a time: **TF** (how much of the document is this word), **DF** (how many documents contain it), and **IDF** (the penalty for appearing everywhere). Multiplying TF and IDF gives **TF-IDF**, the score that surfaces the words that make each review different from the others. The last chunk plots the top terms per review so you can see that it worked.
+You will:
 
-The code is heavily commented. Read the comments, run the chunks in order, and check at least one TF-IDF value with a calculator: that is the point of the tiny corpus.
+1. Start with **three short reviews**, about forty words in total. Small on purpose: you can check every number by hand.
+2. **Clean the text**: lowercase it, split it into words, drop the stopwords.
+3. **Count**: how often does each word appear in each review?
+4. **Compute TF, IDF, and TF-IDF** for every word, exactly as we did on the slides.
+5. **Plot** each review's top TF-IDF words: the words that make it different from the other two.
+
+How to work: read the comments, run the chunks in order, and **check at least one TF-IDF value with a calculator**. That is the whole point of the tiny corpus.
+
+When everything makes sense, set `mini_corpus = FALSE` in the first data chunk and rerun. The same code then runs on 100 real movie reviews.
 
 ```{r setup, include=FALSE}
 set.seed(123)                                        # make results reproducible
