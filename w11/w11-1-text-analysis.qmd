@@ -162,8 +162,7 @@ every column in a real dataset.
 ## A promise from the classifiers week {.smaller-90}
 
 The neural network slide in the classifiers deck said: in marketing, the
-fancy models shine on **text and images**. Today we make good on the text
-half.
+fancy models shine on **text and images**. Today we do the text part.
 
 - Reviews, tweets, chat transcripts, survey comments: most of what customers
   tell you arrives as **text**, not as a spreadsheet
