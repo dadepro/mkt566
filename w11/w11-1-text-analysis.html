@@ -627,7 +627,6 @@ Davide Proserpio
 <p>Methods 1 and 2 share a blind spot: both treat “great” and “awesome” as unrelated as “great” and “battery”: <strong>different columns, nothing shared</strong>. TF-IDF changes the numbers in the columns, not the columns themselves.</p>
 <ul>
 <li><strong>Embeddings</strong> fix that by giving every word a list of, say, 300 numbers (a <strong>vector</strong>), learned so that words used in similar contexts get <strong>similar vectors</strong>: awesome ends up close to great, far from battery</li>
-<li>The famous party trick: because meanings are positions, you can do <strong>arithmetic on them</strong>. Start from <em>king</em>, subtract <em>man</em>, add <em>woman</em>, and the nearest word to where you land is <strong><em>queen</em></strong>: the royalty part stayed, the gender flipped</li>
 <li>They are learned from huge text collections by models like <strong>word2vec</strong> (guess the word from its neighbors), and you download them <strong>pretrained</strong> rather than training your own</li>
 <li>The trade-off by now is familiar: embeddings capture <strong>meaning</strong> but the 300 numbers are unreadable; counts are readable but treat every word as an island</li>
 </ul>
@@ -636,7 +635,7 @@ Davide Proserpio
 <h2>The map of meaning, drawn</h2>
 
 <img data-src="w11-1-text-analysis_files/figure-revealjs/emb-map-1.png" width="768" class="r-stretch"><div class="smaller-80 muted">
-<p>Each word’s 300 numbers, squashed onto one flat map (the axes have no units; only distances and directions matter). The two gray arrows connect king to queen and man to woman. What do you see?</p>
+<p>Each word’s 300 numbers, squashed onto one flat map (the axes have no units; only distances matter). Nobody told the computer what these words mean. What do you see?</p>
 </div>
 </section>
 <section id="reading-the-map" class="slide level2 smaller-80 nostretch">
@@ -652,7 +651,6 @@ Davide Proserpio
 </div>
 <ul>
 <li><strong>Similar words sit together</strong>, in groups nobody labeled: gadget words, people words, opinion words. That is what “similar contexts get similar vectors” looks like</li>
-<li><strong>The two arrows are parallel</strong>: king to queen is the same move as man to woman. Directions carry meaning, which is why king <span class="math inline">\(-\)</span> man <span class="math inline">\(+\)</span> woman lands on queen (similarity 0.73; the runner-up scores 0.10)</li>
 <li>Look closely at the opinion cluster: <strong>“awful” sits right next to “awesome”</strong>. Embeddings know these words are used in the same kinds of sentences, not whether the sentence was happy. For good vs bad you still need labels, which is where the classifier comes in</li>
 </ul>
 </section>
