@@ -1,0 +1,17 @@
+# MKT566 peer evaluation form.
+# How to fill it in: replace every ALL-CAPS placeholder. One row per person: the first
+# row is you, the rows below are your teammates. Add or delete teammate rows so there
+# is exactly one row for every member of your group, including you.
+# Points go from 1 (lowest) to 10 (highest). Judge each person on: attended all
+# meetings, on time and ready to work; completed all tasks, on time and done well;
+# contributed to the group effort (did their fair share, helped teammates);
+# contributed to the group process (kept meetings on track, settled conflicts).
+# The comments column is for specific comments about the group effort; it can stay
+# empty. If you write commas in a comment, put the whole comment in double quotes.
+# Do not change the column names. Save the file as .csv and submit it on Brightspace.
+evaluator_name,group_number,teammate_name,is_self,points_1_to_10,comments
+YOUR FULL NAME,GROUP NUMBER,YOUR FULL NAME,yes,,
+YOUR FULL NAME,GROUP NUMBER,TEAMMATE FULL NAME,no,,
+YOUR FULL NAME,GROUP NUMBER,TEAMMATE FULL NAME,no,,
+YOUR FULL NAME,GROUP NUMBER,TEAMMATE FULL NAME,no,,
+YOUR FULL NAME,GROUP NUMBER,TEAMMATE FULL NAME,no,,
