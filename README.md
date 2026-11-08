@@ -184,3 +184,10 @@ Course materials (slides, cases, code, and the syllabus) will be posted here as 
   - Optional readings:
     - [Difference-in-Differences](https://bookdown.org/mike/data_analysis/sec-difference-in-differences.html)
     - [Matching methods](https://bookdown.org/mike/data_analysis/sec-matching-methods.html)
+
+### Week 13: Causality (cont.) and group project work
+- Tuesday, Nov. 17
+  - Causal inference exercises: [selection](https://github.com/dadepro/mkt566/blob/main/w12/exercise/exercise_causality_observational_student.R), [matching](https://github.com/dadepro/mkt566/blob/main/w12/exercise/exercise_matching_student.R)
+- Thursday, Nov. 19
+  - Last teaching day: class time to work on your **group project** with your team (bring laptops)
+  - Final presentations are on Dec. 1 and 3
