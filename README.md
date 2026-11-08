@@ -167,3 +167,20 @@ Course materials (slides, cases, code, and the syllabus) will be posted here as 
   - Practice on your own: the Harry Potter sentiment replica ([R Markdown](https://github.com/dadepro/mkt566/blob/main/w11/code/w11-harry_potter_sentiment_datatable_commented.Rmd), [HTML](https://raw.githack.com/dadepro/mkt566/main/w11/code/w11-harry_potter_sentiment_datatable_commented.html)) and cleaning review text and computing TF-IDF by hand ([R Markdown](https://github.com/dadepro/mkt566/blob/main/w11/code/mini_tfidf_exercise_commented.Rmd), [HTML](https://raw.githack.com/dadepro/mkt566/main/w11/code/mini_tfidf_exercise_commented.html))
 - Thursday, Nov. 5
   - Guest speaker: [Andrea Ciufo](https://www.linkedin.com/in/andrea-ciufo/), Data Scientist, Marketing Effectiveness at dentsu
+
+### Week 12: Causality: Randomized experiments and observational data
+- Tuesday, Nov. 10
+  - [Slides](https://raw.githack.com/dadepro/mkt566/main/w12/w12-1-experiments.pdf), [alternative link](https://www.dropbox.com/scl/fi/rpps32sm2diltjfd00b8y/w11-1-experiments.pdf?rlkey=kt5aw58jz4j0ec0n332dngohq&st=ms5blw7b&dl=0): randomized experiments and ad measurement
+  - Readings:
+    - [Measuring advertising incrementality using Ghost Ads](https://medium.com/@eric_seufert/measuring-advertising-incrementality-using-ghost-ads-2357bb465191)
+    - [What is the difference between attribution vs. incrementality?](https://www.measured.com/faq/attribution-vs-incrementality/)
+  - Optional readings:
+    - [Retail Media ROAS Demystified](https://ovative.com/wp-content/uploads/2025/05/Retail-Media-ROAS-Demystified-Ovative-Albertsons-Kellogg-Business-School.pdf)
+- Thursday, Nov. 12
+  - [Slides](https://raw.githack.com/dadepro/mkt566/main/w12/w12-2-obs-data.pdf): causal inference from observational data
+  - Readings:
+    - [HBR: Research: Products Labeled as Sustainable Sell Better](https://raw.githack.com/dadepro/mkt566/main/articles-papers/Products-Labeled-Sustainable-Sell-Better.pdf)
+    - [The impact of sustainability programs on consumer purchase behavior: Evidence from Amazon](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5045830)
+  - Optional readings:
+    - [Difference-in-Differences](https://bookdown.org/mike/data_analysis/sec-difference-in-differences.html)
+    - [Matching methods](https://bookdown.org/mike/data_analysis/sec-matching-methods.html)
