@@ -1,0 +1,160 @@
+---
+title: "Exercise: Did the Coupon Work?"
+author: "Davide Proserpio"
+date: "`r format(Sys.Date(), '%Y-%m-%d')`"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    number_sections: false
+---
+
+# What this is
+
+**What we are doing.** An online retailer sent some customers a coupon and
+wants to know what it did to sales. That question sounds easy and is not:
+the customers who got the coupon are usually **different** from the ones
+who did not, so comparing their sales mixes the effect of the coupon with
+the effect of being a different kind of customer. In this exercise you
+measure the same coupon in **three versions of the world**, and see which
+methods from class survive in each one.
+
+**The answer key is built in.** We simulated the data, so we know the
+truth: in every scenario, the coupon raises sales by **exactly 2.0 per
+customer**. In real life you never know the true effect; here you do, and
+your job is to see which method recovers it and which one fails.
+
+**No code is given**: just the tasks. You (and your AI assistant) write
+every line yourself, the way you did for the RateBeer, Airbnb, and ad-click
+cases. Work in R or Python.
+
+**Setup.** Put `causality_data.csv` in a fresh folder and work in an R
+script or R Markdown file. No seed and no train/test split are needed: the
+data are fixed, so everyone gets the same numbers. For the matching tasks
+you will need the `MatchIt` package in R (Python users: ask your assistant
+for a nearest-neighbor propensity-score matching implementation).
+
+**The data.** One file, 15,000 rows: 5,000 customers in each of three
+scenarios. The same columns mean the same things everywhere:
+
+| Column | What it is |
+|---|-----------|
+| `scenario` | which version of the world the row belongs to: 1, 2, or 3 |
+| `sales` | the outcome: the customer's sales |
+| `coupon` | the treatment: 1 if the customer received the coupon, 0 if not |
+| `price_sensitivity` | how price-sensitive the customer is (standardized) |
+| `mobile` | 1 if the customer shops on mobile, 0 if desktop |
+| `intent_to_buy` | filled in only for scenario 3. **Ignore it until Task 5** |
+
+The three worlds:
+
+- **Scenario 1**: the coupon was sent to customers **at random**, a proper
+  experiment
+- **Scenario 2**: the coupon was **targeted**: marketing chose who gets it
+  based on customer traits you can see in the file
+- **Scenario 3**: the coupon was targeted using everything marketing knew
+  about the customer, **including things that are not in your columns**
+
+# Task 1: Load and explore
+
+Read the data and split it into the three scenarios. For each scenario,
+report the **share of customers who received the coupon**.
+
+**Questions**
+
+- In plain words: why is "average sales of coupon customers minus average
+  sales of no-coupon customers" not automatically the effect of the coupon?
+
+# Task 2: Scenario 1, the experiment
+
+Work with the scenario 1 rows only.
+
+1. **Balance check**: compare the means of `price_sensitivity` and
+   `mobile` between the coupon and no-coupon groups (a t-test per
+   variable).
+2. **Estimate the effect** three ways: the difference in mean sales
+   between the two groups (t-test), a regression of `sales` on `coupon`,
+   and the same regression adding `price_sensitivity` and `mobile` as
+   controls.
+
+**Questions**
+
+- Are the two groups comparable before the coupon does anything? What is
+  it about this scenario that makes them comparable?
+- How close do your estimates get to the true 2.0? Adding controls barely
+  moves the estimate but shrinks its standard error: why?
+
+# Task 3: Scenario 2, the targeted coupon
+
+Same recipe as Task 2, on the scenario 2 rows: balance check first, then
+the three estimates.
+
+**Questions**
+
+- Which variable is most out of balance, and what does that tell you about
+  how marketing targeted the coupon?
+- The naive comparison misses 2.0 badly while the regression with controls
+  comes back to it. Explain both facts: what biased the naive comparison,
+  and why does controlling fix it **in this scenario**?
+
+# Task 4: Scenario 3, the hidden targeting
+
+On the scenario 3 rows, regress `sales` on `coupon` without and with the
+controls `price_sensitivity` and `mobile` (keep ignoring `intent_to_buy`).
+
+**Questions**
+
+- Neither estimate lands on 2.0, not even the one with controls. What went
+  wrong, when the same recipe worked in scenario 2?
+- What two things must a missing variable do, at the same time, to create
+  this kind of bias?
+
+# Task 5: The reveal
+
+Scenario 3 has one more column: `intent_to_buy`, a measure of how much the
+customer already wanted to buy. Marketing used it to target the coupon; so
+far you pretended not to have it. **Add it to the regression** from
+Task 4.
+
+**Questions**
+
+- What happens to the coupon estimate?
+- In real data, a variable like this is usually never recorded. What does
+  that say about "just add more controls" as a strategy for fixing a
+  targeted comparison?
+
+# Task 6: Matching
+
+Back to **scenario 2**. Instead of controlling with a regression, make the
+comparison fair by construction: estimate each customer's **propensity
+score** (the probability of receiving the coupon given
+`price_sensitivity` and `mobile`) and run **nearest-neighbor matching with
+a caliper of 0.01** (in R: `matchit()` from the `MatchIt` package). Check
+balance **before and after** matching.
+
+**Questions**
+
+- Did matching make the coupon and no-coupon groups comparable? Point to
+  the balance numbers.
+
+# Task 7: The effect on the matched sample
+
+Estimate the effect of the coupon on the **matched data** (a regression of
+`sales` on `coupon` using the matching weights). This is the **ATT**: the
+effect of the coupon on the customers who got it.
+
+**Questions**
+
+- How close is the matched estimate to 2.0, compared with the naive
+  comparison from Task 3?
+- If you ran the same matching on **scenario 3**, would it fix the bias?
+  Why not?
+
+# If you finish early
+
+- Re-run the matching in Task 6 with a looser and a tighter caliper. What
+  happens to the number of matched customers, and to balance? What is the
+  trade-off?
+- The retailer believes the naive scenario 3 estimate and rolls the coupon
+  out to 1 million customers expecting that sales lift. Using the true
+  effect of 2.0, how large is the disappointment, in total sales?

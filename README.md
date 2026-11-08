@@ -187,7 +187,8 @@ Course materials (slides, cases, code, and the syllabus) will be posted here as 
 
 ### Week 13: Causality (cont.) and group project work
 - Tuesday, Nov. 17
-  - Causal inference exercises: [selection](https://github.com/dadepro/mkt566/blob/main/w12/exercise/exercise_causality_observational_student.R), [matching](https://github.com/dadepro/mkt566/blob/main/w12/exercise/exercise_matching_student.R)
+  - **[Causality exercise](https://raw.githack.com/dadepro/mkt566/main/w12/exercise/w12-causality-vibecoding.html)**: did the coupon work? The same coupon in three worlds (randomized, targeted, hidden targeting), then matching; no code given, work with your AI assistant; also available as an [R Markdown file](https://github.com/dadepro/mkt566/raw/main/w12/exercise/w12-causality-vibecoding.Rmd) to fill in
+  - The data: [causality_data.csv](https://github.com/dadepro/mkt566/raw/main/w12/exercise/causality_data.csv)
 - Thursday, Nov. 19
   - Last teaching day: class time to work on your **group project** with your team (bring laptops)
   - Final presentations are on Dec. 1 and 3
