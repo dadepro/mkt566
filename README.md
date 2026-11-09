@@ -15,7 +15,7 @@ For more information about this course, please look at the **[syllabus](https://
 
 **Group project:** add your group members to the **[sign-up sheet](https://docs.google.com/spreadsheets/d/1Jna-Noy_q3fSUGYgK7wW49jKpS5l3lKt2Q14QZ004xw/edit?usp=sharing)**.
 
-**[Peer evaluations form](https://github.com/dadepro/mkt566/raw/main/syllabus/peer-eval-form.zip)**
+**[Peer evaluations form](https://github.com/dadepro/mkt566/raw/main/syllabus/peer-eval-form.xlsx)**
 
 ### Lectures
 
