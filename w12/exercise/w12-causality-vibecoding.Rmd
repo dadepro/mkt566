@@ -81,8 +81,7 @@ Work with the scenario 1 rows only.
 
 - Are the two groups comparable before the coupon does anything? What is
   it about this scenario that makes them comparable?
-- How close do your estimates get to the true 2.0? Adding controls barely
-  moves the estimate but shrinks its standard error: why?
+- How close do your estimates get to the true 2.0?
 
 # Task 3: Scenario 2, the targeted coupon
 
