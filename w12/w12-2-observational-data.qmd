@@ -400,7 +400,6 @@ $$Y_{it} = \alpha + \beta\, \text{Treated}_i + \gamma\, \text{After}_t + \tau\, 
 - $\beta$: the pre-existing gap between the groups (A is $100k more expensive)
 - $\gamma$: the common trend (prices rose $30k everywhere)
 - $\tau$: the **difference-in-differences**, the effect (−$10k)
-- With many units and many periods, the same idea uses **unit fixed effects** (each unit's own level) and **time fixed effects** (each period's common shock). The treatment coefficient keeps the same meaning
 
 # Case: Amazon's Climate Pledge Friendly {.divider}
 
@@ -451,7 +450,7 @@ Using today's vocabulary: what is the confounding story, and what is the selecti
 - A **difference-in-differences** that exploits products joining CPF **at different times** (staggered adoption)
 - A **short window**, 12 weeks before and after joining, so that fewer other things can change in the meantime
 - **Controls** for the things that do change: price, discounts, ad spend, ratings and reviews
-- Robustness checks, including the cross-market design at the end
+- Robustness checks
 
 ## The data {.smaller-90}
 
@@ -460,28 +459,6 @@ Using today's vocabulary: what is the confounding story, and what is the selecti
 - **Weekly** data, July 2021 to January 2024: about **4 million** product-week observations
 - Two outcomes: weekly **sales** and **units shipped**
 - Controls: price, discount, ad spend, ratings, and reviews
-
-## Staggered adoption
-
-![](img/goodman-bacon.png){fig-align="center" width="60%"}
-
-::: {.smaller-80 .muted}
-Figure from Goodman-Bacon (2021). Three groups of products over time. What do you see?
-:::
-
-## Staggered adoption, explained {.smaller-90}
-
-::: {.columns}
-::: {.column width="48%"}
-![](img/goodman-bacon.png){width="100%"}
-:::
-::: {.column width="52%"}
-- Group $k$ joins early (at $t^*_k$), group $\ell$ joins late (at $t^*_\ell$), group $U$ **never joins**
-- Each group's outcome **jumps** when it joins, and all three share the same upward trend: that is parallel trends
-- For an early joiner, the controls are the **not-yet-treated** (group $\ell$, before $t^*_\ell$) and the **never-treated**. For a late joiner, the never-treated, and the already-treated whose jump is behind them
-- The staggered DiD pools all these comparisons into one estimate, with product and week fixed effects
-:::
-:::
 
 ## Results: the gap between CPF and control products, week by week
 
@@ -511,48 +488,14 @@ kable(main_tab, align = "lcccc")
 - With controls for price, promotions, ad spend, ratings, and reviews: **`r to_pct(0.118)`** more sales, **`r to_pct(0.043)`** more units
 - The controls cut the estimate by about **20%** for sales and **27%** for units: part of the raw jump was sellers doing other things when they joined. The rest is the badge
 
-## Can we do better? The cross-market design {.smaller-90}
-
-The remaining worry: unobservable differences between CPF and non-CPF products. The strongest answer is to compare a product **with itself**.
-
-- Certification is **country-specific**: a product can be CPF in the **UK** and not in **Germany**, because some certifications only count in one market
-- So the same product, same seller, same quality, is treated in one country and untreated in the other. The only difference is the badge
-- The comparison: the product's UK sales vs. its own German sales, before and after it becomes CPF in the UK
-- Caveat: this measures the effect for the products that end up in this situation (a **local** effect), which may differ from the average product
-
-## Cross-market results, week by week
-
-![](img/cpf-crossmarket.png){fig-align="center" width="92%"}
-
-::: {.smaller-80 .muted}
-Same picture, same product on both sides of the comparison. What do you see?
-:::
-
-## Cross-market results: the numbers {.smaller-80}
-
-Product-pair and week fixed effects, standard errors clustered by product.
-
-```{r cross-tab}
-kable(cross_tab, align = "lcccc")
-```
-
-- Before joining, the gap is flat at zero; after, sales rise by `r to_pct(0.170)` without controls and **`r to_pct(0.086)`** with controls, units by `r to_pct(0.119)` and **`r to_pct(0.077)`**
-- The effect survives when the product is its own control. The unobservable-differences story cannot explain it
-
-## Where CPF works best {.smaller-90}
-
-- **By visibility**: less visible products (fewer reviews, lower search rank) benefit **more**. The badge brings attention to products that had little
-- **By category**: **consumables** (beauty, health, personal care, cleaning, grocery) see larger effects than **hardlines** (appliances, hardware, toys) and **softlines** (apparel, footwear, bags)
-- Why consumables? These are products you put in or on your body or your home. They emphasize safety and quality control, and customers may read the badge as **an extra check** that the product is what it says
-
 ## What the case concludes {.smaller-90}
 
 - The CPF badge **does** change purchase behavior: with controls, **`r to_pct(0.118)` more sales** and **`r to_pct(0.043)` more units** in the 12 weeks after joining
 - Making sustainable products **easier to find** lets customers act on the preferences they state in surveys
-- Brands that join sustainability programs benefit, especially less visible ones
+- Brands that join sustainability programs benefit
 
 ::: {.box}
-The causal claim rests on **parallel pre-trends** (checked in the plots), **controls** for what sellers change when they join, and a design where **the product is its own control**. None of these is a coin flip; together they make the number credible.
+The causal claim rests on **parallel pre-trends** (checked in the plot) and **controls** for what sellers change when they join. Neither is a coin flip; together they make the number credible.
 :::
 
 # Wrapping Up {.divider}

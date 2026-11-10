@@ -697,7 +697,6 @@ Davide Proserpio
 <li><span class="math inline">\(\beta\)</span>: the pre-existing gap between the groups (A is $100k more expensive)</li>
 <li><span class="math inline">\(\gamma\)</span>: the common trend (prices rose $30k everywhere)</li>
 <li><span class="math inline">\(\tau\)</span>: the <strong>difference-in-differences</strong>, the effect (−$10k)</li>
-<li>With many units and many periods, the same idea uses <strong>unit fixed effects</strong> (each unit’s own level) and <strong>time fixed effects</strong> (each period’s common shock). The treatment coefficient keeps the same meaning</li>
 </ul>
 </section></section>
 <section>
@@ -756,7 +755,7 @@ Davide Proserpio
 <li>A <strong>difference-in-differences</strong> that exploits products joining CPF <strong>at different times</strong> (staggered adoption)</li>
 <li>A <strong>short window</strong>, 12 weeks before and after joining, so that fewer other things can change in the meantime</li>
 <li><strong>Controls</strong> for the things that do change: price, discounts, ad spend, ratings and reviews</li>
-<li>Robustness checks, including the cross-market design at the end</li>
+<li>Robustness checks</li>
 </ul>
 </section>
 <section id="the-data" class="slide level2 smaller-90">
@@ -768,27 +767,6 @@ Davide Proserpio
 <li>Two outcomes: weekly <strong>sales</strong> and <strong>units shipped</strong></li>
 <li>Controls: price, discount, ad spend, ratings, and reviews</li>
 </ul>
-</section>
-<section id="staggered-adoption" class="slide level2">
-<h2>Staggered adoption</h2>
-
-<img data-src="img/goodman-bacon.png" class="quarto-figure quarto-figure-center r-stretch" style="width:60.0%"><div class="smaller-80 muted">
-<p>Figure from Goodman-Bacon (2021). Three groups of products over time. What do you see?</p>
-</div>
-</section>
-<section id="staggered-adoption-explained" class="slide level2 smaller-90">
-<h2>Staggered adoption, explained</h2>
-<div class="columns">
-<div class="column" style="width:48%;">
-<p><img data-src="img/goodman-bacon.png" style="width:100.0%"></p>
-</div><div class="column" style="width:52%;">
-<ul>
-<li>Group <span class="math inline">\(k\)</span> joins early (at <span class="math inline">\(t^*_k\)</span>), group <span class="math inline">\(\ell\)</span> joins late (at <span class="math inline">\(t^*_\ell\)</span>), group <span class="math inline">\(U\)</span> <strong>never joins</strong></li>
-<li>Each group’s outcome <strong>jumps</strong> when it joins, and all three share the same upward trend: that is parallel trends</li>
-<li>For an early joiner, the controls are the <strong>not-yet-treated</strong> (group <span class="math inline">\(\ell\)</span>, before <span class="math inline">\(t^*_\ell\)</span>) and the <strong>never-treated</strong>. For a late joiner, the never-treated, and the already-treated whose jump is behind them</li>
-<li>The staggered DiD pools all these comparisons into one estimate, with product and week fixed effects</li>
-</ul>
-</div></div>
 </section>
 <section id="results-the-gap-between-cpf-and-control-products-week-by-week" class="slide level2">
 <h2>Results: the gap between CPF and control products, week by week</h2>
@@ -860,93 +838,15 @@ Davide Proserpio
 <li>The controls cut the estimate by about <strong>20%</strong> for sales and <strong>27%</strong> for units: part of the raw jump was sellers doing other things when they joined. The rest is the badge</li>
 </ul>
 </section>
-<section id="can-we-do-better-the-cross-market-design" class="slide level2 smaller-90">
-<h2>Can we do better? The cross-market design</h2>
-<p>The remaining worry: unobservable differences between CPF and non-CPF products. The strongest answer is to compare a product <strong>with itself</strong>.</p>
-<ul>
-<li>Certification is <strong>country-specific</strong>: a product can be CPF in the <strong>UK</strong> and not in <strong>Germany</strong>, because some certifications only count in one market</li>
-<li>So the same product, same seller, same quality, is treated in one country and untreated in the other. The only difference is the badge</li>
-<li>The comparison: the product’s UK sales vs.&nbsp;its own German sales, before and after it becomes CPF in the UK</li>
-<li>Caveat: this measures the effect for the products that end up in this situation (a <strong>local</strong> effect), which may differ from the average product</li>
-</ul>
-</section>
-<section id="cross-market-results-week-by-week" class="slide level2">
-<h2>Cross-market results, week by week</h2>
-
-<img data-src="img/cpf-crossmarket.png" class="quarto-figure quarto-figure-center r-stretch" style="width:92.0%"><div class="smaller-80 muted">
-<p>Same picture, same product on both sides of the comparison. What do you see?</p>
-</div>
-</section>
-<section id="cross-market-results-the-numbers" class="slide level2 smaller-80">
-<h2>Cross-market results: the numbers</h2>
-<p>Product-pair and week fixed effects, standard errors clustered by product.</p>
-<div class="cell">
-<div class="cell-output-display">
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th style="text-align: left;"></th>
-<th style="text-align: center;">log Sales</th>
-<th style="text-align: center;">log Units</th>
-<th style="text-align: center;">log Sales</th>
-<th style="text-align: center;">log Units</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">After × Treated</td>
-<td style="text-align: center;">0.170***</td>
-<td style="text-align: center;">0.119***</td>
-<td style="text-align: center;">0.086***</td>
-<td style="text-align: center;">0.077***</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"></td>
-<td style="text-align: center;">(0.023)</td>
-<td style="text-align: center;">(0.012)</td>
-<td style="text-align: center;">(0.016)</td>
-<td style="text-align: center;">(0.008)</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Controls</td>
-<td style="text-align: center;">No</td>
-<td style="text-align: center;">No</td>
-<td style="text-align: center;">Yes</td>
-<td style="text-align: center;">Yes</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Observations</td>
-<td style="text-align: center;">167,040</td>
-<td style="text-align: center;">167,040</td>
-<td style="text-align: center;">166,869</td>
-<td style="text-align: center;">166,869</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<ul>
-<li>Before joining, the gap is flat at zero; after, sales rise by 18.5% without controls and <strong>9.0%</strong> with controls, units by 12.6% and <strong>8.0%</strong></li>
-<li>The effect survives when the product is its own control. The unobservable-differences story cannot explain it</li>
-</ul>
-</section>
-<section id="where-cpf-works-best" class="slide level2 smaller-90">
-<h2>Where CPF works best</h2>
-<ul>
-<li><strong>By visibility</strong>: less visible products (fewer reviews, lower search rank) benefit <strong>more</strong>. The badge brings attention to products that had little</li>
-<li><strong>By category</strong>: <strong>consumables</strong> (beauty, health, personal care, cleaning, grocery) see larger effects than <strong>hardlines</strong> (appliances, hardware, toys) and <strong>softlines</strong> (apparel, footwear, bags)</li>
-<li>Why consumables? These are products you put in or on your body or your home. They emphasize safety and quality control, and customers may read the badge as <strong>an extra check</strong> that the product is what it says</li>
-</ul>
-</section>
 <section id="what-the-case-concludes" class="slide level2 smaller-90">
 <h2>What the case concludes</h2>
 <ul>
 <li>The CPF badge <strong>does</strong> change purchase behavior: with controls, <strong>12.5% more sales</strong> and <strong>4.4% more units</strong> in the 12 weeks after joining</li>
 <li>Making sustainable products <strong>easier to find</strong> lets customers act on the preferences they state in surveys</li>
-<li>Brands that join sustainability programs benefit, especially less visible ones</li>
+<li>Brands that join sustainability programs benefit</li>
 </ul>
 <div class="box">
-<p>The causal claim rests on <strong>parallel pre-trends</strong> (checked in the plots), <strong>controls</strong> for what sellers change when they join, and a design where <strong>the product is its own control</strong>. None of these is a coin flip; together they make the number credible.</p>
+<p>The causal claim rests on <strong>parallel pre-trends</strong> (checked in the plot) and <strong>controls</strong> for what sellers change when they join. Neither is a coin flip; together they make the number credible.</p>
 </div>
 </section></section>
 <section>
