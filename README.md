@@ -170,14 +170,14 @@ Course materials (slides, cases, code, and the syllabus) will be posted here as 
 
 ### Week 12: Causality: Randomized experiments and observational data
 - Tuesday, Nov. 10
-  - [Slides](https://raw.githack.com/dadepro/mkt566/main/w12/w12-1-experiments.pdf): randomized experiments and ad measurement
+  - Slides ([html](https://raw.githack.com/dadepro/mkt566/main/w12/w12-1-experiments.html), [pdf](https://raw.githack.com/dadepro/mkt566/main/w12/w12-1-experiments.pdf)): randomized experiments and ad measurement
   - Readings:
     - [Measuring advertising incrementality using Ghost Ads](https://medium.com/@eric_seufert/measuring-advertising-incrementality-using-ghost-ads-2357bb465191)
     - [What is the difference between attribution vs. incrementality?](https://www.measured.com/faq/attribution-vs-incrementality/)
   - Optional readings:
     - [Retail Media ROAS Demystified](https://ovative.com/wp-content/uploads/2025/05/Retail-Media-ROAS-Demystified-Ovative-Albertsons-Kellogg-Business-School.pdf)
 - Thursday, Nov. 12
-  - [Slides](https://raw.githack.com/dadepro/mkt566/main/w12/w12-2-observational-data.pdf): causal inference from observational data
+  - Slides ([html](https://raw.githack.com/dadepro/mkt566/main/w12/w12-2-observational-data.html), [pdf](https://raw.githack.com/dadepro/mkt566/main/w12/w12-2-observational-data.pdf)): causal inference from observational data
   - Readings:
     - [HBR: Research: Products Labeled as Sustainable Sell Better](https://raw.githack.com/dadepro/mkt566/main/articles-papers/Products-Labeled-Sustainable-Sell-Better.pdf)
     - [The impact of sustainability programs on consumer purchase behavior: Evidence from Amazon](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5045830)
