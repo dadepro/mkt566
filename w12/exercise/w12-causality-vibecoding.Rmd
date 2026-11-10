@@ -53,7 +53,7 @@ The three worlds:
 - **Scenario 2**: the coupon was **targeted**: marketing chose who gets it
   based on customer traits you can see in the file
 - **Scenario 3**: the coupon was targeted using everything marketing knew
-  about the customer, **including things that are not in your columns**
+  about the customer, **including things that are not in your data**
 
 # Task 1: Load and explore
 
