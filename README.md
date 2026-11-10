@@ -170,7 +170,7 @@ Course materials (slides, cases, code, and the syllabus) will be posted here as 
 
 ### Week 12: Causality: Randomized experiments and observational data
 - Tuesday, Nov. 10
-  - [Slides](https://raw.githack.com/dadepro/mkt566/main/w12/w12-1-experiments.pdf), [alternative link](https://www.dropbox.com/scl/fi/rpps32sm2diltjfd00b8y/w11-1-experiments.pdf?rlkey=kt5aw58jz4j0ec0n332dngohq&st=ms5blw7b&dl=0): randomized experiments and ad measurement
+  - [Slides](https://raw.githack.com/dadepro/mkt566/main/w12/w12-1-experiments.pdf): randomized experiments and ad measurement
   - Readings:
     - [Measuring advertising incrementality using Ghost Ads](https://medium.com/@eric_seufert/measuring-advertising-incrementality-using-ghost-ads-2357bb465191)
     - [What is the difference between attribution vs. incrementality?](https://www.measured.com/faq/attribution-vs-incrementality/)
