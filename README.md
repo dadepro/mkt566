@@ -177,7 +177,7 @@ Course materials (slides, cases, code, and the syllabus) will be posted here as 
   - Optional readings:
     - [Retail Media ROAS Demystified](https://ovative.com/wp-content/uploads/2025/05/Retail-Media-ROAS-Demystified-Ovative-Albertsons-Kellogg-Business-School.pdf)
 - Thursday, Nov. 12
-  - [Slides](https://raw.githack.com/dadepro/mkt566/main/w12/w12-2-obs-data.pdf): causal inference from observational data
+  - [Slides](https://raw.githack.com/dadepro/mkt566/main/w12/w12-2-observational-data.pdf): causal inference from observational data
   - Readings:
     - [HBR: Research: Products Labeled as Sustainable Sell Better](https://raw.githack.com/dadepro/mkt566/main/articles-papers/Products-Labeled-Sustainable-Sell-Better.pdf)
     - [The impact of sustainability programs on consumer purchase behavior: Evidence from Amazon](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5045830)
