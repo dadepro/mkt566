@@ -515,7 +515,3 @@ An in-class exercise, no code given, with your AI assistant:
 - One retailer, one coupon, **three versions of the world**: assigned at random, targeted on things you can see, targeted on things you cannot
 - You run the naive comparison, regression with controls, and matching in each world, and see **which method survives where**
 - The data are simulated, so the true effect is known: you grade your own estimates
-
-::: {.box}
-Bring your laptop. R users: `install.packages("MatchIt")` before class.
-:::
