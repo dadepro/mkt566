@@ -275,10 +275,6 @@ $$\text{Sales}_i = \alpha + \tau\, \text{Coupon}_i + \beta\, X_i + \varepsilon_i
 - The part they miss is in $\varepsilon_i$, correlated with the coupon. $\tau$ is biased, and **no amount of data on the same variables** fixes it
 - There is no test that tells you whether you have all the confounders. You argue it, and a skeptic argues back
 
-::: {.box}
-Tuesday's exercise puts you in exactly this situation, with data where you can check what the truth is.
-:::
-
 # Approach 2: Matching {.divider}
 
 ## Matching: the idea {.smaller-90}
@@ -333,7 +329,7 @@ kable(did, align = "lccc")
 ```
 
 ::: {.smaller-90 .muted}
-What did the ban do to house prices in City A? Three candidate answers: +$20k, +$120k (520 minus 400), or something else. Which one, and why?
+What did the ban do to house prices in City A?
 :::
 
 ## A policy question, explained {.smaller-80}
