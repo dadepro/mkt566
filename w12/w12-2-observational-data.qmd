@@ -200,7 +200,6 @@ Does the promotion cause the extra sales? What else could produce this pattern?
 
 - Maybe the promotion works. Or maybe store managers run promotions **when demand is already high** (a holiday, a local event, a good neighborhood)
 - Then **demand** drives both: demand → promotion, and demand → sales. The promotion gets credit for sales that demand produced
-- This is the ice-cream-and-drownings trap from Tuesday, in a marketing setting. Demand is the summer
 
 ::: {.box}
 A confounder makes the treated and untreated groups **different kinds of units** before the treatment does anything. Comparing their averages mixes the treatment with the difference.
