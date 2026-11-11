@@ -1123,8 +1123,9 @@ Davide Proserpio
 <li>3.5 pp is 1.7 times the true 2.0 pp.&nbsp;This is <strong>selection</strong>, the same problem as the targeted coupon</li>
 </ul>
 </section>
-<section id="attempt-3-exposed-vs.-the-control-users-who-would-have-been-exposed" class="slide level2 smaller-90">
-<h2>Attempt 3: exposed vs.&nbsp;the control users who would have been exposed</h2>
+<section id="attempt-3-heavy-users-vs.-heavy-users" class="slide level2 smaller-90">
+<h2>Attempt 3: heavy users vs.&nbsp;heavy users</h2>
+<p>The ad only reaches heavy users. So compare the <strong>same kind of people</strong>: heavy users in the treatment group, who saw the ad, with heavy users in the holdout, who <strong>would have seen it</strong> had ads been turned on for them.</p>
 <div class="cell">
 <div class="cell-output-display">
 <table class="caption-top">
@@ -1160,10 +1161,58 @@ Davide Proserpio
 </div>
 </div>
 <ul>
-<li>Compare the heavy users who saw the ad (6.0%) with the heavy users in the holdout, who <strong>would have seen it</strong> had ads been turned on for them (4.0%)</li>
-<li>Gap: <strong>2.0 pp</strong>. Right: same kind of people, and the only difference between them is the ad</li>
-<li>Same 360 conversions as Attempt 1 (2.0 pp × 18,000 exposed = 360), but measured on the 18,000 people the ad could affect instead of spread over 90,000: a gap five times bigger, much easier to tell from noise</li>
-<li>The problem: nobody in the holdout saw an ad, so <strong>how do you know who would have been exposed?</strong></li>
+<li>Treatment group, heavy users: 20% × 90,000 = <strong>18,000</strong> people. They saw the ad: 6.0% convert (last column)</li>
+<li>Holdout, heavy users: 20% × 10,000 = <strong>2,000</strong> people. No ads for them: 4.0% convert (column “Converts without ads”)</li>
+<li>Gap: 6.0% − 4.0% = <strong>2.0 pp</strong>, the true effect of seeing the ad. Right, because the two sides are the same kind of people, split at random. The only difference between them is the ad</li>
+</ul>
+</section>
+<section id="attempt-1-and-attempt-3-side-by-side" class="slide level2 smaller-90">
+<h2>Attempt 1 and Attempt 3, side by side</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 43%">
+<col style="width: 28%">
+<col style="width: 28%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th style="text-align: center;">Attempt 1: everyone</th>
+<th style="text-align: center;">Attempt 3: heavy users only</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>People compared, treatment vs.&nbsp;holdout</td>
+<td style="text-align: center;">90,000 vs.&nbsp;10,000</td>
+<td style="text-align: center;">18,000 vs.&nbsp;2,000</td>
+</tr>
+<tr class="even">
+<td>Conversion rates</td>
+<td style="text-align: center;">3.2% vs.&nbsp;2.8%</td>
+<td style="text-align: center;">6.0% vs.&nbsp;4.0%</td>
+</tr>
+<tr class="odd">
+<td>Gap</td>
+<td style="text-align: center;">0.4 pp</td>
+<td style="text-align: center;">2.0 pp</td>
+</tr>
+<tr class="even">
+<td>Incremental conversions</td>
+<td style="text-align: center;">0.4 pp × 90,000 = 360</td>
+<td style="text-align: center;">2.0 pp × 18,000 = 360</td>
+</tr>
+<tr class="odd">
+<td>z (gap divided by its standard error)</td>
+<td style="text-align: center;">2.3</td>
+<td style="text-align: center;">4.2</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>Both are right</strong>, and they agree on the total: 360 incremental conversions. Attempt 1 is the effect per person <strong>targeted</strong>; Attempt 3 is the effect per person who <strong>saw the ad</strong></li>
+<li><strong>Attempt 3 is sharper.</strong> The light users (80% of everyone) never see the ad, so in Attempt 1 they add noise and no signal. Without them the gap is 5 times bigger, and z goes from 2.3 to 4.2 (same formula as in the A/B test)</li>
+<li><strong>The catch</strong>: we know who the heavy users are because we made up the data. Real data has no such column. In the holdout nobody saw an ad, so <strong>how do you know which 2,000 would have seen one?</strong></li>
 </ul>
 <div class="box">
 <p>That question is what the “ghost ads” design answers.</p>

@@ -117,6 +117,14 @@ kinds_tab <- data.table(
   `Share of the audience` = c(pct(share_exposed, 0), pct(1 - share_exposed, 0)),
   `Converts without ads` = c(pct(base_exposed), pct(base_unexposed)),
   `Converts if shown the ad` = c(pct(treat_exposed), paste0(pct(base_unexposed), " (never shown)")))
+# Attempt 3 head counts, and how clearly each attempt stands out from noise
+# (z = gap / standard error, same formula as the A/B test)
+n_hold_exposed <- share_exposed * n_hold
+se_a1 <- sqrt(cr_treat * (1 - cr_treat) / n_treat + cr_hold * (1 - cr_hold) / n_hold)
+se_a3 <- sqrt(treat_exposed * (1 - treat_exposed) / n_exposed +
+              base_exposed * (1 - base_exposed) / n_hold_exposed)
+z_a1 <- lift / se_a1
+z_a3 <- effect / se_a3
 
 # --- 6. attribution rules on one customer journey ---
 journey <- data.table(
@@ -579,16 +587,31 @@ kable(kinds_tab, align = "lccc")
 - Wrong, and it is the most common number in ad reports. The two groups are **different kinds of people**: heavy users convert at `r pct(base_exposed)` with no ad at all, light users at `r pct(base_unexposed)`. The gap is mostly who they are, not the ad
 - `r pp(treat_exposed - base_unexposed)` is `r round((treat_exposed - base_unexposed) / effect, 1)` times the true `r pp(effect)`. This is **selection**, the same problem as the targeted coupon
 
-## Attempt 3: exposed vs. the control users who would have been exposed {.smaller-90}
+## Attempt 3: heavy users vs. heavy users {.smaller-90}
+
+The ad only reaches heavy users. So compare the **same kind of people**: heavy users in the treatment group, who saw the ad, with heavy users in the holdout, who **would have seen it** had ads been turned on for them.
 
 ```{r kinds-4}
 kable(kinds_tab, align = "lccc")
 ```
 
-- Compare the heavy users who saw the ad (`r pct(treat_exposed)`) with the heavy users in the holdout, who **would have seen it** had ads been turned on for them (`r pct(base_exposed)`)
-- Gap: **`r pp(effect)`**. Right: same kind of people, and the only difference between them is the ad
-- Same `r fmt_n(incr_conv)` conversions as Attempt 1 (`r pp(effect)` × `r fmt_n(n_exposed)` exposed = `r fmt_n(incr_conv)`), but measured on the `r fmt_n(n_exposed)` people the ad could affect instead of spread over `r fmt_n(n_treat)`: a gap five times bigger, much easier to tell from noise
-- The problem: nobody in the holdout saw an ad, so **how do you know who would have been exposed?**
+- Treatment group, heavy users: `r pct(share_exposed, 0)` × `r fmt_n(n_treat)` = **`r fmt_n(n_exposed)`** people. They saw the ad: `r pct(treat_exposed)` convert (last column)
+- Holdout, heavy users: `r pct(share_exposed, 0)` × `r fmt_n(n_hold)` = **`r fmt_n(n_hold_exposed)`** people. No ads for them: `r pct(base_exposed)` convert (column "Converts without ads")
+- Gap: `r pct(treat_exposed)` − `r pct(base_exposed)` = **`r pp(effect)`**, the true effect of seeing the ad. Right, because the two sides are the same kind of people, split at random. The only difference between them is the ad
+
+## Attempt 1 and Attempt 3, side by side {.smaller-90}
+
+| | Attempt 1: everyone | Attempt 3: heavy users only |
+|-----------------|:---------:|:---------:|
+| People compared, treatment vs. holdout | `r fmt_n(n_treat)` vs. `r fmt_n(n_hold)` | `r fmt_n(n_exposed)` vs. `r fmt_n(n_hold_exposed)` |
+| Conversion rates | `r pct(cr_treat)` vs. `r pct(cr_hold)` | `r pct(treat_exposed)` vs. `r pct(base_exposed)` |
+| Gap | `r pp(lift)` | `r pp(effect)` |
+| Incremental conversions | `r pp(lift)` × `r fmt_n(n_treat)` = `r fmt_n(incr_conv)` | `r pp(effect)` × `r fmt_n(n_exposed)` = `r fmt_n(effect * n_exposed)` |
+| z (gap divided by its standard error) | `r sprintf("%.1f", z_a1)` | `r sprintf("%.1f", z_a3)` |
+
+- **Both are right**, and they agree on the total: `r fmt_n(incr_conv)` incremental conversions. Attempt 1 is the effect per person **targeted**; Attempt 3 is the effect per person who **saw the ad**
+- **Attempt 3 is sharper.** The light users (`r pct(1 - share_exposed, 0)` of everyone) never see the ad, so in Attempt 1 they add noise and no signal. Without them the gap is `r round(effect / lift)` times bigger, and z goes from `r sprintf("%.1f", z_a1)` to `r sprintf("%.1f", z_a3)` (same formula as in the A/B test)
+- **The catch**: we know who the heavy users are because we made up the data. Real data has no such column. In the holdout nobody saw an ad, so **how do you know which `r fmt_n(n_hold_exposed)` would have seen one?**
 
 ::: {.box}
 That question is what the "ghost ads" design answers.
