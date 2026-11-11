@@ -115,8 +115,16 @@ kinds_tab <- data.table(
   `Kind of person` = c("Heavy internet users (the ad reaches them)",
                        "Light users (the ad never reaches them)"),
   `Share of the audience` = c(pct(share_exposed, 0), pct(1 - share_exposed, 0)),
-  `Converts without ads` = c(pct(base_exposed), pct(base_unexposed)),
-  `Converts if shown the ad` = c(pct(treat_exposed), paste0(pct(base_unexposed), " (never shown)")))
+  `Converts without ads<br>(control group)` = c(pct(base_exposed), pct(base_unexposed)),
+  `Converts if shown the ad<br>(treatment group)` = c(pct(treat_exposed), paste0(pct(base_unexposed), " (never shown)")))
+# Print kinds_tab as a pipe table with hand-set column widths (the dash counts
+# are the relative widths), so the row labels stay on one line
+show_kinds <- function() {
+  hdr  <- paste0("| ", paste(names(kinds_tab), collapse = " | "), " |")
+  sep  <- paste0("|:", strrep("-", 46), "|:", strrep("-", 20), ":|:", strrep("-", 20), ":|:", strrep("-", 24), ":|")
+  rows <- apply(kinds_tab, 1, function(r) paste0("| ", paste(r, collapse = " | "), " |"))
+  knitr::asis_output(paste0("\n", paste(c(hdr, sep, rows), collapse = "\n"), "\n"))
+}
 # Attempt 3 head counts, and how clearly each attempt stands out from noise
 # (z = gap / standard error, same formula as the A/B test)
 n_hold_exposed <- share_exposed * n_hold
@@ -543,7 +551,7 @@ Same campaign. The dashboard said `r round(roas_attr, 1)`; the experiment says t
 Same campaign as the holdout slide. "Ads turned on" does not mean "sees the ads": most people in the treatment group **never see an ad**, because an ad only appears if the person visits a site where your bid wins the auction. Say that happens to `r pct(share_exposed, 0)` of them (`r fmt_n(n_exposed)` of the `r fmt_n(n_treat)`), and they are not a random `r pct(share_exposed, 0)`: they are the heavy internet users.
 
 ```{r kinds}
-kable(kinds_tab, align = "lccc")
+show_kinds()
 ```
 
 ::: {.smaller-90 .muted}
@@ -555,7 +563,7 @@ What is the true causal effect of seeing the ad? Which two numbers in the table 
 Same campaign as the holdout slide. "Ads turned on" does not mean "sees the ads": most people in the treatment group **never see an ad**, because an ad only appears if the person visits a site where your bid wins the auction. Say that happens to `r pct(share_exposed, 0)` of them (`r fmt_n(n_exposed)` of the `r fmt_n(n_treat)`), and they are not a random `r pct(share_exposed, 0)`: they are the heavy internet users.
 
 ```{r kinds-explained}
-kable(kinds_tab, align = "lccc")
+show_kinds()
 ```
 
 ::: {.box}
@@ -567,7 +575,7 @@ The true effect of seeing the ad is **`r pp(effect)`** (`r pct(treat_exposed)` �
 The obvious choice, and what we did on the holdout slide: compare everyone in the treatment group (ads turned on, whether they saw one or not) with everyone in the holdout (ads turned off). Same two kinds of people as before:
 
 ```{r kinds-2}
-kable(kinds_tab, align = "lccc")
+show_kinds()
 ```
 
 - Treatment group: heavy users saw the ad, light users did not. Average rate = `r pct(share_exposed, 0)` × `r pct(treat_exposed)` + `r pct(1 - share_exposed, 0)` × `r pct(base_unexposed)` = `r pct(treat_all)`
@@ -580,7 +588,7 @@ kable(kinds_tab, align = "lccc")
 The tempting fix for the dilution: inside the treatment group (ads turned on), compare only the people who actually saw an ad with the people who never did:
 
 ```{r kinds-3}
-kable(kinds_tab, align = "lccc")
+show_kinds()
 ```
 
 - Saw the ad: `r pct(treat_exposed)` convert. Did not see it: `r pct(base_unexposed)`. Gap: **`r pp(treat_exposed - base_unexposed)`**
@@ -592,14 +600,14 @@ kable(kinds_tab, align = "lccc")
 The ad only reaches heavy users. So compare the **same kind of people**: heavy users in the treatment group, who saw the ad, with heavy users in the holdout, who **would have seen it** had ads been turned on for them.
 
 ```{r kinds-4}
-kable(kinds_tab, align = "lccc")
+show_kinds()
 ```
 
-- Treatment group, heavy users: `r pct(share_exposed, 0)` × `r fmt_n(n_treat)` = **`r fmt_n(n_exposed)`** people. They saw the ad: `r pct(treat_exposed)` convert (last column)
-- Holdout, heavy users: `r pct(share_exposed, 0)` × `r fmt_n(n_hold)` = **`r fmt_n(n_hold_exposed)`** people. No ads for them: `r pct(base_exposed)` convert (column "Converts without ads")
+- Treatment group, heavy users: `r pct(share_exposed, 0)` × `r fmt_n(n_treat)` = **`r fmt_n(n_exposed)`** people. They saw the ad: `r pct(treat_exposed)` convert (treatment group column)
+- Holdout, heavy users: `r pct(share_exposed, 0)` × `r fmt_n(n_hold)` = **`r fmt_n(n_hold_exposed)`** people. No ads for them: `r pct(base_exposed)` convert (control group column)
 - Gap: `r pct(treat_exposed)` − `r pct(base_exposed)` = **`r pp(effect)`**, the true effect of seeing the ad. Right, because the two sides are the same kind of people, split at random. The only difference between them is the ad
 
-## Attempt 1 and Attempt 3, side by side {.smaller-90}
+## Attempt 1 and Attempt 3, side by side {.smaller-80}
 
 | | Attempt 1: everyone | Attempt 3: heavy users only |
 |-----------------|:---------:|:---------:|
@@ -607,15 +615,16 @@ kable(kinds_tab, align = "lccc")
 | Conversion rates | `r pct(cr_treat)` vs. `r pct(cr_hold)` | `r pct(treat_exposed)` vs. `r pct(base_exposed)` |
 | Gap | `r pp(lift)` | `r pp(effect)` |
 | Incremental conversions | `r pp(lift)` × `r fmt_n(n_treat)` = `r fmt_n(incr_conv)` | `r pp(effect)` × `r fmt_n(n_exposed)` = `r fmt_n(effect * n_exposed)` |
-| z (gap divided by its standard error) | `r sprintf("%.1f", z_a1)` | `r sprintf("%.1f", z_a3)` |
+| Standard error of the gap | `r sprintf("%.3f", 100 * se_a1)` pp | `r sprintf("%.3f", 100 * se_a3)` pp |
+| z = gap / standard error | `r sprintf("%.1f", 100 * lift)` / `r sprintf("%.3f", 100 * se_a1)` = `r sprintf("%.1f", z_a1)` | `r sprintf("%.1f", 100 * effect)` / `r sprintf("%.3f", 100 * se_a3)` = `r sprintf("%.1f", z_a3)` |
+
+::: {.smaller-80 .muted}
+Standard error: the formula from the A/B test, √(p<sub>T</sub>(1 − p<sub>T</sub>) / n<sub>T</sub> + p<sub>H</sub>(1 − p<sub>H</sub>) / n<sub>H</sub>), with T = treatment and H = holdout, using the rates and group sizes in the first two rows. Attempt 1: √(`r sprintf("%.3f", cr_treat)` × `r sprintf("%.3f", 1 - cr_treat)` / `r fmt_n(n_treat)` + `r sprintf("%.3f", cr_hold)` × `r sprintf("%.3f", 1 - cr_hold)` / `r fmt_n(n_hold)`) = `r sprintf("%.5f", se_a1)` = `r sprintf("%.3f", 100 * se_a1)` pp. Attempt 3: √(`r sprintf("%.3f", treat_exposed)` × `r sprintf("%.3f", 1 - treat_exposed)` / `r fmt_n(n_exposed)` + `r sprintf("%.3f", base_exposed)` × `r sprintf("%.3f", 1 - base_exposed)` / `r fmt_n(n_hold_exposed)`) = `r sprintf("%.5f", se_a3)` = `r sprintf("%.3f", 100 * se_a3)` pp.
+:::
 
 - **Both are right**, and they agree on the total: `r fmt_n(incr_conv)` incremental conversions. Attempt 1 is the effect per person **targeted**; Attempt 3 is the effect per person who **saw the ad**
-- **Attempt 3 is sharper.** The light users (`r pct(1 - share_exposed, 0)` of everyone) never see the ad, so in Attempt 1 they add noise and no signal. Without them the gap is `r round(effect / lift)` times bigger, and z goes from `r sprintf("%.1f", z_a1)` to `r sprintf("%.1f", z_a3)` (same formula as in the A/B test)
-- **The catch**: we know who the heavy users are because we made up the data. Real data has no such column. In the holdout nobody saw an ad, so **how do you know which `r fmt_n(n_hold_exposed)` would have seen one?**
-
-::: {.box}
-That question is what the "ghost ads" design answers.
-:::
+- **Attempt 3 is sharper.** The light users (`r pct(1 - share_exposed, 0)` of everyone) never see the ad, so in Attempt 1 they add noise and no signal. Without them the gap is `r round(effect / lift)` times bigger. The standard error grows too (fewer people), but by less, so z goes from `r sprintf("%.1f", z_a1)` to `r sprintf("%.1f", z_a3)`
+- **The catch**: we know who the heavy users are because we made up the data. Real data has no such column. In the holdout nobody saw an ad, so **how do you know which `r fmt_n(n_hold_exposed)` would have seen one?** That question is what the "ghost ads" design answers
 
 ## The "ghost ads" design {.smaller-90}
 

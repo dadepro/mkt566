@@ -961,17 +961,17 @@ Davide Proserpio
 <div class="cell-output-display">
 <table class="caption-top">
 <colgroup>
-<col style="width: 37%">
-<col style="width: 20%">
-<col style="width: 19%">
+<col style="width: 40%">
+<col style="width: 18%">
+<col style="width: 18%">
 <col style="width: 22%">
 </colgroup>
 <thead>
 <tr class="header">
 <th style="text-align: left;">Kind of person</th>
 <th style="text-align: center;">Share of the audience</th>
-<th style="text-align: center;">Converts without ads</th>
-<th style="text-align: center;">Converts if shown the ad</th>
+<th style="text-align: center;">Converts without ads<br>(control group)</th>
+<th style="text-align: center;">Converts if shown the ad<br>(treatment group)</th>
 </tr>
 </thead>
 <tbody>
@@ -1002,17 +1002,17 @@ Davide Proserpio
 <div class="cell-output-display">
 <table class="caption-top">
 <colgroup>
-<col style="width: 37%">
-<col style="width: 20%">
-<col style="width: 19%">
+<col style="width: 40%">
+<col style="width: 18%">
+<col style="width: 18%">
 <col style="width: 22%">
 </colgroup>
 <thead>
 <tr class="header">
 <th style="text-align: left;">Kind of person</th>
 <th style="text-align: center;">Share of the audience</th>
-<th style="text-align: center;">Converts without ads</th>
-<th style="text-align: center;">Converts if shown the ad</th>
+<th style="text-align: center;">Converts without ads<br>(control group)</th>
+<th style="text-align: center;">Converts if shown the ad<br>(treatment group)</th>
 </tr>
 </thead>
 <tbody>
@@ -1043,17 +1043,17 @@ Davide Proserpio
 <div class="cell-output-display">
 <table class="caption-top">
 <colgroup>
-<col style="width: 37%">
-<col style="width: 20%">
-<col style="width: 19%">
+<col style="width: 40%">
+<col style="width: 18%">
+<col style="width: 18%">
 <col style="width: 22%">
 </colgroup>
 <thead>
 <tr class="header">
 <th style="text-align: left;">Kind of person</th>
 <th style="text-align: center;">Share of the audience</th>
-<th style="text-align: center;">Converts without ads</th>
-<th style="text-align: center;">Converts if shown the ad</th>
+<th style="text-align: center;">Converts without ads<br>(control group)</th>
+<th style="text-align: center;">Converts if shown the ad<br>(treatment group)</th>
 </tr>
 </thead>
 <tbody>
@@ -1087,17 +1087,17 @@ Davide Proserpio
 <div class="cell-output-display">
 <table class="caption-top">
 <colgroup>
-<col style="width: 37%">
-<col style="width: 20%">
-<col style="width: 19%">
+<col style="width: 40%">
+<col style="width: 18%">
+<col style="width: 18%">
 <col style="width: 22%">
 </colgroup>
 <thead>
 <tr class="header">
 <th style="text-align: left;">Kind of person</th>
 <th style="text-align: center;">Share of the audience</th>
-<th style="text-align: center;">Converts without ads</th>
-<th style="text-align: center;">Converts if shown the ad</th>
+<th style="text-align: center;">Converts without ads<br>(control group)</th>
+<th style="text-align: center;">Converts if shown the ad<br>(treatment group)</th>
 </tr>
 </thead>
 <tbody>
@@ -1130,17 +1130,17 @@ Davide Proserpio
 <div class="cell-output-display">
 <table class="caption-top">
 <colgroup>
-<col style="width: 37%">
-<col style="width: 20%">
-<col style="width: 19%">
+<col style="width: 40%">
+<col style="width: 18%">
+<col style="width: 18%">
 <col style="width: 22%">
 </colgroup>
 <thead>
 <tr class="header">
 <th style="text-align: left;">Kind of person</th>
 <th style="text-align: center;">Share of the audience</th>
-<th style="text-align: center;">Converts without ads</th>
-<th style="text-align: center;">Converts if shown the ad</th>
+<th style="text-align: center;">Converts without ads<br>(control group)</th>
+<th style="text-align: center;">Converts if shown the ad<br>(treatment group)</th>
 </tr>
 </thead>
 <tbody>
@@ -1161,12 +1161,12 @@ Davide Proserpio
 </div>
 </div>
 <ul>
-<li>Treatment group, heavy users: 20% × 90,000 = <strong>18,000</strong> people. They saw the ad: 6.0% convert (last column)</li>
-<li>Holdout, heavy users: 20% × 10,000 = <strong>2,000</strong> people. No ads for them: 4.0% convert (column “Converts without ads”)</li>
+<li>Treatment group, heavy users: 20% × 90,000 = <strong>18,000</strong> people. They saw the ad: 6.0% convert (treatment group column)</li>
+<li>Holdout, heavy users: 20% × 10,000 = <strong>2,000</strong> people. No ads for them: 4.0% convert (control group column)</li>
 <li>Gap: 6.0% − 4.0% = <strong>2.0 pp</strong>, the true effect of seeing the ad. Right, because the two sides are the same kind of people, split at random. The only difference between them is the ad</li>
 </ul>
 </section>
-<section id="attempt-1-and-attempt-3-side-by-side" class="slide level2 smaller-90">
+<section id="attempt-1-and-attempt-3-side-by-side" class="slide level2 smaller-80">
 <h2>Attempt 1 and Attempt 3, side by side</h2>
 <table class="caption-top">
 <colgroup>
@@ -1203,20 +1203,25 @@ Davide Proserpio
 <td style="text-align: center;">2.0 pp × 18,000 = 360</td>
 </tr>
 <tr class="odd">
-<td>z (gap divided by its standard error)</td>
-<td style="text-align: center;">2.3</td>
-<td style="text-align: center;">4.2</td>
+<td>Standard error of the gap</td>
+<td style="text-align: center;">0.175 pp</td>
+<td style="text-align: center;">0.473 pp</td>
+</tr>
+<tr class="even">
+<td>z = gap / standard error</td>
+<td style="text-align: center;">0.4 / 0.175 = 2.3</td>
+<td style="text-align: center;">2.0 / 0.473 = 4.2</td>
 </tr>
 </tbody>
 </table>
+<div class="smaller-80 muted">
+<p>Standard error: the formula from the A/B test, √(p<sub>T</sub>(1 − p<sub>T</sub>) / n<sub>T</sub> + p<sub>H</sub>(1 − p<sub>H</sub>) / n<sub>H</sub>), with T = treatment and H = holdout, using the rates and group sizes in the first two rows. Attempt 1: √(0.032 × 0.968 / 90,000 + 0.028 × 0.972 / 10,000) = 0.00175 = 0.175 pp.&nbsp;Attempt 3: √(0.060 × 0.940 / 18,000 + 0.040 × 0.960 / 2,000) = 0.00473 = 0.473 pp.</p>
+</div>
 <ul>
 <li><strong>Both are right</strong>, and they agree on the total: 360 incremental conversions. Attempt 1 is the effect per person <strong>targeted</strong>; Attempt 3 is the effect per person who <strong>saw the ad</strong></li>
-<li><strong>Attempt 3 is sharper.</strong> The light users (80% of everyone) never see the ad, so in Attempt 1 they add noise and no signal. Without them the gap is 5 times bigger, and z goes from 2.3 to 4.2 (same formula as in the A/B test)</li>
-<li><strong>The catch</strong>: we know who the heavy users are because we made up the data. Real data has no such column. In the holdout nobody saw an ad, so <strong>how do you know which 2,000 would have seen one?</strong></li>
+<li><strong>Attempt 3 is sharper.</strong> The light users (80% of everyone) never see the ad, so in Attempt 1 they add noise and no signal. Without them the gap is 5 times bigger. The standard error grows too (fewer people), but by less, so z goes from 2.3 to 4.2</li>
+<li><strong>The catch</strong>: we know who the heavy users are because we made up the data. Real data has no such column. In the holdout nobody saw an ad, so <strong>how do you know which 2,000 would have seen one?</strong> That question is what the “ghost ads” design answers</li>
 </ul>
-<div class="box">
-<p>That question is what the “ghost ads” design answers.</p>
-</div>
 </section>
 <section id="the-ghost-ads-design" class="slide level2 smaller-90">
 <h2>The “ghost ads” design</h2>
