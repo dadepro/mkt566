@@ -635,14 +635,25 @@ Davide Proserpio
 </section>
 <section id="the-key-assumption-parallel-trends" class="slide level2 smaller-90">
 <h2>The key assumption: parallel trends</h2>
-<ul>
-<li><strong>Parallel trends</strong>: without the treatment, the treated and control groups would have moved <strong>the same way</strong>. Any gap between them would have stayed constant</li>
-<li>It is an assumption about a world that did not happen, so it can never be fully tested. But it can be made <strong>credible</strong>: if the two groups moved in parallel for many periods <strong>before</strong> the treatment, it is plausible they would have continued</li>
-<li>That check, the <strong>pre-trends test</strong>, is why DiD studies plot the gap between the groups period by period. You will see those plots in the Amazon case in a minute</li>
+<p>The dashed line borrowed City B’s trend. That only works if, without the ban, the two cities would have moved <strong>the same way</strong>: the <strong>parallel trends</strong> assumption. Here are the same two cities <strong>year by year</strong>, in two versions of the world. In both, 2022 (before) and 2024 (after) are the numbers from our table, so DiD says −$10k in both.</p>
+
+<img data-src="w12-2-observational-data_files/figure-revealjs/trends-plot-1.png" width="960" class="r-stretch"><div class="smaller-80 muted">
+<p>What do you see before the ban? In which version do you believe the −$10k?</p>
+</div>
+</section>
+<section id="parallel-trends-explained" class="slide level2 smaller-80">
+<h2>Parallel trends, explained</h2>
+
+<img data-src="w12-2-observational-data_files/figure-revealjs/trends-plot-2-1.png" style="width:84.0%" class="r-stretch"><ul>
+<li><strong>Version 1</strong>: the gap is $100k every year before the ban and changes only after it. City A would plausibly have kept following City B (the dashed line). The −$10k is credible</li>
+<li><strong>Version 2</strong>: City A was already growing more slowly, $10k a year against City B’s $15k. After the ban it kept its own pace: the ban did nothing, and DiD still says −$10k</li>
 </ul>
 <div class="box">
-<p>If the groups were already diverging before the treatment, DiD will attribute the divergence to the treatment. Always look at the pre-period.</p>
+<p>Parallel trends is about a world that did not happen, so it cannot be tested directly. What you can check is the <strong>pre-period</strong>. That is why DiD studies plot the groups period by period, as you will see in the Amazon case.</p>
 </div>
+<style>
+.reveal section img[src*="trends-plot-2"], .reveal section img[data-src*="trends-plot-2"] { display: block; margin-left: auto; margin-right: auto; }
+</style>
 </section>
 <section id="when-did-fits" class="slide level2 smaller-90">
 <h2>When DiD fits</h2>
@@ -755,7 +766,6 @@ Davide Proserpio
 <li>A <strong>difference-in-differences</strong> that exploits products joining CPF <strong>at different times</strong> (staggered adoption)</li>
 <li>A <strong>short window</strong>, 12 weeks before and after joining, so that fewer other things can change in the meantime</li>
 <li><strong>Controls</strong> for the things that do change: price, discounts, ad spend, ratings and reviews</li>
-<li>Robustness checks</li>
 </ul>
 </section>
 <section id="the-data" class="slide level2 smaller-90">
@@ -846,7 +856,7 @@ Davide Proserpio
 <li>Brands that join sustainability programs benefit</li>
 </ul>
 <div class="box">
-<p>The causal claim rests on <strong>parallel pre-trends</strong> (checked in the plot) and <strong>controls</strong> for what sellers change when they join. Neither is a coin flip; together they make the number credible.</p>
+<p>The causal claim rests on <strong>parallel pre-trends</strong> (checked in the plot) and <strong>controls</strong> for what sellers change when they join.</p>
 </div>
 </section></section>
 <section>

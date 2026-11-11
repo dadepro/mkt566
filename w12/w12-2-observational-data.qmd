@@ -123,6 +123,60 @@ p_did <- function(show_cf = FALSE) {
   g
 }
 
+# --- 3b. parallel trends: the same two cities year by year, in two versions of the world ---
+# Both versions hit the table's numbers in 2022 (before) and 2024 (after), so DiD = -10 in both.
+# Version 1: A and B move in parallel before the ban. Version 2: A was already growing more slowly.
+yrs    <- 2019:2024
+b_path <- c(355, 370, 385, 400, 415, 430)   # City B: +15 a year throughout
+a_par  <- c(455, 470, 485, 500, 510, 520)   # version 1: +15 a year before the ban, +10 after
+a_div  <- c(470, 480, 490, 500, 510, 520)   # version 2: +10 a year throughout (no effect of the ban)
+cf_yrs <- 2022:2024
+cf_path <- a_par[yrs == 2022] + (b_path[yrs %in% cf_yrs] - b_path[yrs == 2022])   # A's 2022 level + B's trend
+stopifnot(a_par[yrs == 2022] == 500, a_div[yrs == 2022] == 500, a_par[yrs == 2024] == 520, a_div[yrs == 2024] == 520,
+          b_path[yrs == 2022] == 400, b_path[yrs == 2024] == 430, cf_path[3] == 530,
+          all(diff(a_par - b_path)[1:3] == 0))
+city_a <- "City A (bans Airbnb)"; city_b <- "City B (no ban)"
+trends <- rbind(
+  data.table(version = 1, city = city_a, year = yrs, price = a_par),
+  data.table(version = 1, city = city_b, year = yrs, price = b_path),
+  data.table(version = 2, city = city_a, year = yrs, price = a_div),
+  data.table(version = 2, city = city_b, year = yrs, price = b_path))
+trends_cf <- rbind(data.table(version = 1, city = cf_name, year = cf_yrs, price = cf_path),
+                   data.table(version = 2, city = cf_name, year = cf_yrs, price = cf_path))
+p_trends <- function(explain = FALSE) {
+  d <- if (explain) rbind(trends, trends_cf) else copy(trends)
+  d[, city := factor(city, levels = c(city_a, cf_name, city_b))]
+  d[, city := droplevels(city)]
+  strip <- if (explain) c(`1` = "Version 1: parallel before the ban", `2` = "Version 2: already diverging before the ban")
+           else c(`1` = "Version 1", `2` = "Version 2")
+  cols <- setNames(c(usc_red, usc_red, blue), c(city_a, cf_name, city_b))
+  lts  <- setNames(c("solid", "dashed", "solid"), c(city_a, cf_name, city_b))
+  # value labels: first year, last year before the ban, last year
+  lab <- d[(year %in% c(2019, 2022, 2024) & city != cf_name) | (city == cf_name & year == 2024)]
+  lab[, vj := fifelse(city == city_a & year == 2024, 1.9, fifelse(city == city_b, 1.9, -0.9))]
+  g <- ggplot(d, aes(x = year, y = price, group = city, color = city, linetype = city)) +
+    geom_vline(xintercept = 2022.5, linetype = "dotted", color = grey, linewidth = 0.8) +
+    annotate("text", x = 2022.58, y = 345, label = "ban", hjust = 0, color = grey, size = 4.5) +
+    geom_line(linewidth = 1.2) + geom_point(size = 3) +
+    geom_text(data = lab, aes(label = paste0("$", price, "k"), vjust = vj), size = 4.2, show.legend = FALSE) +
+    facet_wrap(~ version, labeller = as_labeller(strip)) +
+    scale_color_manual(values = cols, name = NULL) +
+    scale_linetype_manual(values = lts, name = NULL) +
+    scale_x_continuous(breaks = yrs, expand = expansion(mult = 0.08)) +
+    scale_y_continuous(limits = c(335, 560)) +
+    labs(title = if (explain) NULL else "Average house price, year by year", x = NULL, y = "Thousands of dollars") +
+    theme_minimal(base_size = 14) +
+    theme(legend.position = "top", panel.grid.minor = element_blank(),
+          strip.text = element_text(face = "bold", size = 13), panel.spacing = unit(1.5, "lines"))
+  if (explain) {
+    note <- data.table(version = c(1, 2), year = 2020.5, price = c(428, 430),
+                       label = c("gap: $100k every year", "gap: $115k, $110k, $105k, $100k"))
+    g <- g + geom_text(data = note, aes(x = year, y = price, label = label), inherit.aes = FALSE,
+                       color = grey, size = 4.2)
+  }
+  g
+}
+
 # --- 4. CPF results, retyped from the paper (log points) ---
 to_pct <- function(b) pct(exp(b) - 1)
 main_tab <- data.table(
@@ -368,13 +422,39 @@ p_did(TRUE)
 
 ## The key assumption: parallel trends {.smaller-90}
 
-- **Parallel trends**: without the treatment, the treated and control groups would have moved **the same way**. Any gap between them would have stayed constant
-- It is an assumption about a world that did not happen, so it can never be fully tested. But it can be made **credible**: if the two groups moved in parallel for many periods **before** the treatment, it is plausible they would have continued
-- That check, the **pre-trends test**, is why DiD studies plot the gap between the groups period by period. You will see those plots in the Amazon case in a minute
+The dashed line borrowed City B's trend. That only works if, without the ban, the two cities would have moved **the same way**: the **parallel trends** assumption. Here are the same two cities **year by year**, in two versions of the world. In both, 2022 (before) and 2024 (after) are the numbers from our table, so DiD says −$10k in both.
+
+```{r trends-plot}
+#| fig-width: 10
+#| fig-height: 3.7
+p_trends(FALSE)
+```
+
+::: {.smaller-80 .muted}
+What do you see before the ban? In which version do you believe the −$10k?
+:::
+
+## Parallel trends, explained {.smaller-80}
+
+```{r trends-plot-2}
+#| fig-width: 10
+#| fig-height: 3.3
+#| out-width: "84%"
+p_trends(TRUE)
+```
+
+- **Version 1**: the gap is $100k every year before the ban and changes only after it. City A would plausibly have kept following City B (the dashed line). The −$10k is credible
+- **Version 2**: City A was already growing more slowly, $10k a year against City B's $15k. After the ban it kept its own pace: the ban did nothing, and DiD still says −$10k
 
 ::: {.box}
-If the groups were already diverging before the treatment, DiD will attribute the divergence to the treatment. Always look at the pre-period.
+Parallel trends is about a world that did not happen, so it cannot be tested directly. What you can check is the **pre-period**. That is why DiD studies plot the groups period by period, as you will see in the Amazon case.
 :::
+
+```{=html}
+<style>
+.reveal section img[src*="trends-plot-2"], .reveal section img[data-src*="trends-plot-2"] { display: block; margin-left: auto; margin-right: auto; }
+</style>
+```
 
 ## When DiD fits {.smaller-90}
 
@@ -450,7 +530,6 @@ Using today's vocabulary: what is the confounding story, and what is the selecti
 - A **difference-in-differences** that exploits products joining CPF **at different times** (staggered adoption)
 - A **short window**, 12 weeks before and after joining, so that fewer other things can change in the meantime
 - **Controls** for the things that do change: price, discounts, ad spend, ratings and reviews
-- Robustness checks
 
 ## The data {.smaller-90}
 
@@ -495,7 +574,7 @@ kable(main_tab, align = "lcccc")
 - Brands that join sustainability programs benefit
 
 ::: {.box}
-The causal claim rests on **parallel pre-trends** (checked in the plot) and **controls** for what sellers change when they join. Neither is a coin flip; together they make the number credible.
+The causal claim rests on **parallel pre-trends** (checked in the plot) and **controls** for what sellers change when they join.
 :::
 
 # Wrapping Up {.divider}
