@@ -148,12 +148,3 @@ effect of the coupon on the customers who got it.
   comparison from Task 3?
 - If you ran the same matching on **scenario 3**, would it fix the bias?
   Why not?
-
-# If you finish early
-
-- Re-run the matching in Task 6 with a looser and a tighter caliper. What
-  happens to the number of matched customers, and to balance? What is the
-  trade-off?
-- The retailer believes the naive scenario 3 estimate and rolls the coupon
-  out to 1 million customers expecting that sales lift. Using the true
-  effect of 2.0, how large is the disappointment, in total sales?
