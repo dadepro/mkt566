@@ -125,11 +125,12 @@ p_did <- function(show_cf = FALSE) {
 
 # --- 3b. parallel trends: the same two cities year by year, in two versions of the world ---
 # Both versions hit the table's numbers in 2022 (before) and 2024 (after), so DiD = -10 in both.
-# Version 1: A and B move in parallel before the ban. Version 2: A was already growing more slowly.
+# Version 1: A and B move in parallel before the ban. Version 2: A was falling while B was rising
+# (opposite directions, so the lack of parallel trends is obvious at a glance).
 yrs    <- 2019:2024
 b_path <- c(355, 370, 385, 400, 415, 430)   # City B: +15 a year throughout
 a_par  <- c(455, 470, 485, 500, 510, 520)   # version 1: +15 a year before the ban, +10 after
-a_div  <- c(470, 480, 490, 500, 510, 520)   # version 2: +10 a year throughout (no effect of the ban)
+a_div  <- c(530, 520, 510, 500, 510, 520)   # version 2: -10 a year before the ban, +10 after
 cf_yrs <- 2022:2024
 cf_path <- a_par[yrs == 2022] + (b_path[yrs %in% cf_yrs] - b_path[yrs == 2022])   # A's 2022 level + B's trend
 stopifnot(a_par[yrs == 2022] == 500, a_div[yrs == 2022] == 500, a_par[yrs == 2024] == 520, a_div[yrs == 2024] == 520,
@@ -147,7 +148,7 @@ p_trends <- function(explain = FALSE) {
   d <- if (explain) rbind(trends, trends_cf) else copy(trends)
   d[, city := factor(city, levels = c(city_a, cf_name, city_b))]
   d[, city := droplevels(city)]
-  strip <- if (explain) c(`1` = "Version 1: parallel before the ban", `2` = "Version 2: already diverging before the ban")
+  strip <- if (explain) c(`1` = "Version 1: parallel before the ban", `2` = "Version 2: not parallel before the ban")
            else c(`1` = "Version 1", `2` = "Version 2")
   cols <- setNames(c(usc_red, usc_red, blue), c(city_a, cf_name, city_b))
   lts  <- setNames(c("solid", "dashed", "solid"), c(city_a, cf_name, city_b))
@@ -169,8 +170,9 @@ p_trends <- function(explain = FALSE) {
     theme(legend.position = "top", panel.grid.minor = element_blank(),
           strip.text = element_text(face = "bold", size = 13), panel.spacing = unit(1.5, "lines"))
   if (explain) {
-    note <- data.table(version = c(1, 2), year = 2020.5, price = c(428, 430),
-                       label = c("gap: $100k every year", "gap: $115k, $110k, $105k, $100k"))
+    gaps2 <- paste0("$", (a_div - b_path)[yrs <= 2022], "k", collapse = ", ")
+    note <- data.table(version = c(1, 2), year = 2020.5, price = c(428, 440),
+                       label = c("gap: $100k every year", paste("gap:", gaps2)))
     g <- g + geom_text(data = note, aes(x = year, y = price, label = label), inherit.aes = FALSE,
                        color = grey, size = 4.2)
   }
@@ -444,7 +446,7 @@ p_trends(TRUE)
 ```
 
 - **Version 1**: the gap is $100k every year before the ban and changes only after it. City A would plausibly have kept following City B (the dashed line). The −$10k is credible
-- **Version 2**: City A was already growing more slowly, $10k a year against City B's $15k. After the ban it kept its own pace: the ban did nothing, and DiD still says −$10k
+- **Version 2**: before the ban City A was **falling** $10k a year while City B was **rising** $15k a year. They were never moving together, so City B's trend (the dashed line) says nothing about City A. DiD still says −$10k, yet City A's prices turned **up** after the ban
 
 ::: {.box}
 Parallel trends is about a world that did not happen, so it cannot be tested directly. What you can check is the **pre-period**. That is why DiD studies plot the groups period by period, as you will see in the Amazon case.
