@@ -108,7 +108,7 @@ controls `price_sensitivity` and `mobile` (keep ignoring `intent_to_buy`).
 - What two things must a missing variable do, at the same time, to create
   this kind of bias?
 
-# Task 5: The reveal
+# Task 5: Scenario 3, adding the missing variable
 
 Scenario 3 has one more column: `intent_to_buy`, a measure of how much the
 customer already wanted to buy. Marketing used it to target the coupon; so
