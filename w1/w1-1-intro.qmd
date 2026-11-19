@@ -313,7 +313,7 @@ I have data on **Airbnb, TripAdvisor, Expedia, and Yelp**. Ask me if you want it
 | Mid-term proposal slides (~15 min incl. Q&A) | October 12 (presented Oct 13, 15) |
 | Notebook with cleaning and analysis (HTML or PDF) | December 3 |
 | Final presentation slides (~15 min incl. Q&A) | November 30 (presented Dec 1, 3) |
-| Peer evaluations | December 15 |
+| Peer evaluations | December 3 |
 
 : {tbl-colwidths="[62,38]"}
 
