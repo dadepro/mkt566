@@ -194,7 +194,8 @@ Course materials (slides, cases, code, and the syllabus) will be posted here as 
   - Last teaching day: class time to work on your **group project** with your team (bring laptops)
   - Final presentations are on Dec. 1 and 3
 
-### Week 14: Thanksgiving, no class
+### Week 14: Thanksgiving break, no class
+- Tuesday, Nov. 24, and Thursday, Nov. 26: no class (Thanksgiving holiday)
 
 ### Week 15: Group project presentations
 - Tuesday, Dec. 1
