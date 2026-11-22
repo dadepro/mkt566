@@ -1,0 +1,411 @@
+---
+title: "Exercise: Did the Coupon Work? — Solutions"
+author: "Davide Proserpio"
+date: "`r format(Sys.Date(), '%Y-%m-%d')`"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    number_sections: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(message = FALSE, warning = FALSE, fig.width = 7, fig.height = 4.5)
+
+# Packages:
+#   data.table: reads the csv and does the group-by summaries
+#   MatchIt:    propensity-score matching (Tasks 6 and 7)
+#   stargazer:  prints regression tables side by side
+#   ggplot2:    the balance plot in Task 6
+pkgs <- c("data.table", "MatchIt", "stargazer", "ggplot2")
+to_install <- pkgs[!pkgs %in% installed.packages()[, 1]]
+if (length(to_install) > 0) install.packages(to_install, quiet = TRUE)
+invisible(lapply(pkgs, library, character.only = TRUE))
+```
+
+This is the instructor solution to the causality exercise. The data are
+fixed (no seed, no split), so your numbers should match the ones below to
+the third decimal. The true effect of the coupon is **2.0** in every
+scenario.
+
+# Task 1: Load and explore
+
+```{r load}
+# Read the data. fread() is data.table's csv reader; it returns a data.table
+df <- fread("causality_data.csv")
+
+# First rows: one row = one customer. intent_to_buy is empty (NA) outside
+# scenario 3
+head(df)
+
+# One data set per scenario. In data.table, df[condition] keeps the rows
+# where the condition is TRUE
+s1 <- df[scenario == 1]   # the experiment: coupon assigned at random
+s2 <- df[scenario == 2]   # targeted on variables we see (price_sensitivity, mobile)
+s3 <- df[scenario == 3]   # targeted on those AND on something we do not see
+
+# Share of customers who received the coupon, by scenario.
+# coupon is 0/1, so its mean is the share of 1s. .N counts the rows in
+# each group
+df[, .(customers = .N, share_coupon = round(mean(coupon), 3)), by = scenario]
+```
+
+**Why is "average sales of coupon customers minus average sales of
+no-coupon customers" not automatically the effect of the coupon?**
+
+Because the two groups may have been different **before** the coupon
+arrived. The difference in average sales mixes two things: what the coupon
+did, and how the kind of customer who gets a coupon differs from the kind
+who does not. Only when the groups are comparable to begin with (as in an
+experiment) is the difference in means the effect of the coupon. The
+coupon share already hints at this: about half of the customers in
+scenarios 1 and 2, but **59%** in scenario 3, where marketing targeted
+harder.
+
+# Task 2: Scenario 1, the experiment
+
+```{r s1-balance}
+# Balance check: are the two groups alike BEFORE the coupon does anything?
+# For each pre-treatment variable we compare its average in the no-coupon
+# group (coupon = 0) with its average in the coupon group (coupon = 1).
+#
+# t.test(y ~ group, data) runs a two-sample t-test. It prints:
+#   - the two group means, at the bottom ("mean in group 0", "mean in group 1")
+#   - a p-value for the null hypothesis "the two means are equal"
+# A p-value above 0.05 means the gap between the groups is the kind of gap
+# chance produces: the groups are balanced on that variable
+t.test(price_sensitivity ~ coupon, data = s1)
+
+# mobile is 0/1, so its mean is the share of mobile shoppers in each group
+t.test(mobile ~ coupon, data = s1)
+```
+
+> **How to read the t-test output.** The two numbers under "sample
+> estimates" are the group averages: group 0 is the no-coupon group, group
+> 1 the coupon group. The p-value tests whether those two averages differ
+> by more than chance. The confidence interval is for the difference
+> **group 0 minus group 1** (R's order, not ours), which is why we compute
+> the coupon-minus-no-coupon gap ourselves below.
+
+```{r s1-estimates}
+# Estimate 1: the difference in mean sales, coupon minus no-coupon.
+# The t-test prints the two means and the p-value, but not the gap itself,
+# so we compute it: average sales of the coupon customers minus average
+# sales of the no-coupon customers
+t.test(sales ~ coupon, data = s1)
+s1[, mean(sales[coupon == 1]) - mean(sales[coupon == 0])]
+
+# Estimate 2: a regression of sales on the coupon dummy.
+# With a single 0/1 regressor, the coupon coefficient IS the difference in
+# means above. The regression adds a standard error and lets us add controls
+ols1  <- lm(sales ~ coupon, data = s1)
+
+# Estimate 3: the same regression with the two pre-treatment variables as
+# controls. The coupon coefficient now compares customers with the same
+# price sensitivity and the same device
+ols1c <- lm(sales ~ coupon + price_sensitivity + mobile, data = s1)
+
+# The two regressions side by side, one column each
+stargazer(ols1, ols1c, type = "text", no.space = TRUE,
+          title = "Scenario 1: random coupon",
+          dep.var.labels = "Sales", keep.stat = c("n", "rsq"),
+          covariate.labels = c("Coupon", "Price sensitivity", "Mobile"))
+```
+
+> **How to read the regression table.** Each column is one regression.
+> Each cell shows the coefficient with its standard error in parentheses
+> underneath; the stars mark p < 0.10 (\*), p < 0.05 (\*\*), and p < 0.01
+> (\*\*\*). The number we care about is the **Coupon** row: the estimated
+> effect of receiving the coupon on sales, holding the other variables in
+> that column fixed. An estimate is "close to 2.0" if 2.0 is within about
+> two standard errors of it.
+
+**Are the two groups comparable before the coupon does anything? What
+makes them comparable?**
+
+Yes. Average price sensitivity is **0.007** in the no-coupon group and
+**−0.008** in the coupon group (p = 0.58); the mobile share is **47.6%**
+against **50.1%** (p = 0.07). Neither gap is bigger than chance produces.
+They are comparable because the coupon was assigned **at random**: a coin
+flip cannot know anything about the customer, so it cannot favor one kind
+of customer over another, on the variables we see or on the ones we do
+not.
+
+**How close do the estimates get to 2.0?**
+
+The difference in means and the regression without controls both give
+**2.202** (standard error 0.114); with controls, **2.144** (standard error
+0.099). All three are within two standard errors of the true 2.0. The
+controls do not move the estimate because, under random assignment, there
+is no confounding to remove.
+
+# Task 3: Scenario 2, the targeted coupon
+
+```{r s2-balance}
+# Same balance check as in Task 2, on the scenario 2 rows.
+# This time we expect gaps: marketing chose who gets the coupon
+t.test(price_sensitivity ~ coupon, data = s2)
+t.test(mobile ~ coupon, data = s2)
+```
+
+```{r s2-estimates}
+# Same three estimates as in Task 2, on the scenario 2 rows
+
+# Estimate 1: difference in mean sales, coupon minus no-coupon
+t.test(sales ~ coupon, data = s2)
+s2[, mean(sales[coupon == 1]) - mean(sales[coupon == 0])]
+
+# Estimate 2: regression without controls (same number as Estimate 1)
+ols2  <- lm(sales ~ coupon, data = s2)
+
+# Estimate 3: regression with the two targeting variables as controls
+ols2c <- lm(sales ~ coupon + price_sensitivity + mobile, data = s2)
+
+stargazer(ols2, ols2c, type = "text", no.space = TRUE,
+          title = "Scenario 2: targeted coupon",
+          dep.var.labels = "Sales", keep.stat = c("n", "rsq"),
+          covariate.labels = c("Coupon", "Price sensitivity", "Mobile"))
+```
+
+**Which variable is most out of balance, and what does that say about
+how marketing targeted the coupon?**
+
+**Price sensitivity**: the coupon group averages **0.41**, the no-coupon
+group **−0.42**, a gap of 0.8 standard deviations (p < 0.001). Mobile is
+also out of balance (**53.3%** vs. **44.1%**, p < 0.001), but by less.
+Marketing sent the coupon mostly to price-sensitive customers, and
+somewhat more to mobile shoppers.
+
+**The naive comparison misses 2.0 badly while the regression with controls
+comes back to it. Why?**
+
+The naive comparison gives **3.280**, well above 2.0. In these data,
+price-sensitive and mobile customers buy more (the controls have positive
+coefficients: about 1.2 per unit of price sensitivity and about 3.0 for
+mobile). Marketing sent the coupon to exactly those customers, so the
+coupon group would have had higher sales **even without the coupon**. The
+naive comparison credits that head start to the coupon.
+
+With controls the estimate is **1.974** (standard error 0.110), on top of
+2.0. Controlling works **in this scenario** because marketing targeted on
+`price_sensitivity` and `mobile` only, and both are in the file. Once we
+compare customers with the same price sensitivity and the same device, who
+gets the coupon is as good as random.
+
+# Task 4: Scenario 3, the hidden targeting
+
+```{r s3-estimates}
+# Scenario 3 rows. Same two regressions as before: without controls, and
+# with price_sensitivity and mobile. intent_to_buy is still ignored, as the
+# task says
+ols3  <- lm(sales ~ coupon, data = s3)
+ols3c <- lm(sales ~ coupon + price_sensitivity + mobile, data = s3)
+
+stargazer(ols3, ols3c, type = "text", no.space = TRUE,
+          title = "Scenario 3: hidden targeting, intent_to_buy ignored",
+          dep.var.labels = "Sales", keep.stat = c("n", "rsq"),
+          covariate.labels = c("Coupon", "Price sensitivity", "Mobile"))
+```
+
+**Neither estimate lands on 2.0, not even with controls. What went
+wrong?**
+
+Without controls, **3.628**; with the same controls that worked in
+scenario 2, **2.455** (standard error 0.118), still four standard errors
+above the truth. The controls remove the part of the targeting that ran
+through price sensitivity and mobile, but marketing also used something
+**that is not in these two columns**. Customers with that something got
+the coupon more often **and** buy more, so the coupon still gets credit
+for sales it did not produce. No amount of data on the same two variables
+can fix this.
+
+**What two things must a missing variable do, at the same time, to create
+this bias?**
+
+1. It must affect **who gets the coupon** (it is correlated with the
+   treatment).
+2. It must affect **sales** on its own (it is correlated with the
+   outcome).
+
+A variable that does only one of the two is harmless: if it drives sales
+but not the coupon, it just adds noise; if it drives the coupon but not
+sales, the coupon group is different in a way that does not matter for
+the outcome.
+
+# Task 5: Scenario 3, adding the missing variable
+
+```{r s3-intent}
+# intent_to_buy is 0/1: 1 = the customer already wanted to buy.
+# Its mean within each group is the share of high-intent customers.
+# If marketing used it to target, the share should be higher in the
+# coupon group
+s3[, .(share_high_intent = round(mean(intent_to_buy), 3)), by = coupon]
+
+# The Task 4 regression with intent_to_buy added as a third control
+ols3i <- lm(sales ~ coupon + price_sensitivity + mobile + intent_to_buy, data = s3)
+
+# Left column: Task 4 (intent_to_buy ignored). Right column: with it
+stargazer(ols3c, ols3i, type = "text", no.space = TRUE,
+          title = "Scenario 3: adding the hidden variable",
+          dep.var.labels = "Sales", keep.stat = c("n", "rsq"),
+          covariate.labels = c("Coupon", "Price sensitivity", "Mobile", "Intent to buy"))
+```
+
+**What happens to the coupon estimate?**
+
+It drops from **2.455** to **1.772** (standard error 0.111), within about
+two standard errors of 2.0. The bias is gone; what is left is sampling
+noise. The table shows why it mattered: high-intent customers are **57%**
+of the coupon group but **39%** of the no-coupon group, and intent is
+worth about **3.1** in sales on its own. That is the head start the coupon
+had been taking credit for.
+
+**What does this say about "just add more controls" as a strategy?**
+
+It only works if you happen to have the variable that drove the targeting.
+Intent to buy is exactly the kind of thing a marketing team acts on and a
+data file never records (it lives in a model score, a sales rep's
+judgment, or the customer's head). You cannot test whether you have all
+the confounders; the data look the same in scenario 2 and scenario 3, and
+only one of them gives the right answer. The credibility of a controlled
+comparison rests on an **argument** about how the treatment was assigned,
+not on the number of controls.
+
+# Task 6: Matching
+
+```{r match}
+# Back to scenario 2. matchit() does two things in one call:
+#
+#   1. It estimates the propensity score: a logit regression of coupon on
+#      price_sensitivity and mobile (distance = "logit"). Each customer gets
+#      a predicted probability of receiving the coupon.
+#
+#   2. It pairs each coupon customer with the no-coupon customer whose
+#      propensity score is closest (method = "nearest"), but only if the two
+#      scores are within the caliper: 0.01 standard deviations of the score.
+#      A coupon customer with no control that close stays unmatched.
+#
+# The formula reads "coupon explained by price_sensitivity and mobile":
+# the treatment on the left, the variables marketing targeted on the right
+m_out <- matchit(coupon ~ price_sensitivity + mobile, data = s2,
+                 method = "nearest", distance = "logit", caliper = 0.01)
+
+# Printing the object summarizes what was done
+m_out
+```
+
+```{r match-balance}
+# summary() of the matchit object holds the balance statistics
+sm <- summary(m_out)
+
+# Sample sizes. "All" = the full scenario 2 data (before matching),
+# "Matched" = customers who found a partner, "Unmatched" = set aside.
+# Columns: Control = no-coupon customers, Treated = coupon customers
+sm$nn
+
+# Balance before and after matching, from two tables inside the summary:
+#   sm$sum.all      balance in the full data (before matching)
+#   sm$sum.matched  balance in the matched customers only (after matching)
+# We keep one column from each: "Std. Mean Diff.", the standardized mean
+# difference. It is the gap between the two group means divided by the
+# standard deviation, so that variables on different scales can be
+# compared. Rule of thumb: below 0.1 in absolute value counts as balanced.
+# The row called "distance" is MatchIt's name for the propensity score
+# itself; we relabel it
+balance <- data.table(
+  variable = sub("^distance$", "propensity score", rownames(sm$sum.all)),
+  smd_before = round(sm$sum.all[, "Std. Mean Diff."], 3),
+  smd_after  = round(sm$sum.matched[, "Std. Mean Diff."], 3))
+balance
+```
+
+> **How to read the matching output.** `sm$nn` says how many coupon
+> customers found a look-alike and how many did not. The `balance` table
+> says how far apart the two groups are on each variable, before and after
+> matching: numbers near zero after matching mean the matched groups look
+> the same on that variable. Scenario 2 has more coupon customers than
+> no-coupon customers, so even with a loose caliper not every coupon
+> customer can get a partner.
+
+```{r love-plot, fig.height=3.5}
+# The same table as a picture (a "love plot"): one row per variable, a
+# grey dot for the gap before matching and a red dot for the gap after.
+# The dashed line is the 0.1 cutoff for "balanced"
+
+# Reshape the table from wide (two columns of gaps) to long (one row per
+# variable and sample), which is what ggplot wants
+long <- melt(balance, id.vars = "variable",
+             variable.name = "sample", value.name = "smd")
+
+# Readable labels for the legend, and variables listed in the table's order
+long[, sample := factor(sample, levels = c("smd_before", "smd_after"),
+                        labels = c("Before matching", "After matching"))]
+long[, variable := factor(variable, levels = rev(balance$variable))]
+
+# The plot: absolute gap on the x-axis (we care about the size, not the
+# sign), one variable per row, color = before/after
+ggplot(long, aes(x = abs(smd), y = variable, color = sample)) +
+  geom_vline(xintercept = 0.1, linetype = "dashed", color = "grey50") +
+  geom_point(size = 3) +
+  scale_color_manual(values = c("grey40", "#990000")) +
+  scale_x_continuous(limits = c(0, 1), expand = expansion(mult = c(0, 0.05))) +
+  labs(x = "Absolute standardized mean difference", y = NULL, color = NULL) +
+  theme_minimal(base_size = 13) +
+  theme(legend.position = "top")
+```
+
+**Did matching make the groups comparable?**
+
+Yes, for the coupon customers who found a match. Before matching, the
+standardized difference in price sensitivity between the groups is
+**0.92** (and 0.19 for mobile); after matching it is **0.01** (and
+−0.04). Anything below 0.1 counts as balanced. The price was sample size:
+there are **2,538** coupon customers and only 2,462 controls, and with the
+0.01 caliper only **1,556** coupon customers get a look-alike. The rest,
+mostly the most price-sensitive ones, have no close control and are set
+aside.
+
+# Task 7: The effect on the matched sample
+
+```{r att}
+# match.data() returns the matched customers only (the 1,556 pairs, so
+# 3,112 rows), with two new columns:
+#   weights   the matching weight (1 for every matched customer here)
+#   subclass  which pair the customer belongs to
+md <- match.data(m_out)
+
+# The effect on the matched sample: a regression of sales on coupon, using
+# the matching weights. With one-to-one matching every weight is 1, so this
+# is simply the difference in mean sales between the matched coupon
+# customers and their look-alikes. Writing weights = weights is the general
+# recipe: it also works for matching schemes where the weights differ
+att <- lm(sales ~ coupon, data = md, weights = weights)
+
+# Left column: the naive regression on all of scenario 2 (from Task 3).
+# Right column: the same regression on the matched sample
+stargazer(ols2, att, type = "text", no.space = TRUE,
+          title = "Scenario 2: naive vs. matched",
+          dep.var.labels = "Sales", keep.stat = c("n", "rsq"),
+          column.labels = c("Naive, all customers", "Matched sample"),
+          covariate.labels = "Coupon")
+```
+
+**How close is the matched estimate to 2.0, compared with the naive
+comparison?**
+
+The matched estimate is **1.841** (standard error 0.139), within about one
+standard error of 2.0; the naive comparison was **3.280**. Matching
+recovers the truth the same way the regression with controls did, by
+comparing coupon customers with no-coupon customers who look the same on
+price sensitivity and device, but it does it by construction rather than
+by a formula. It also answers a slightly different question: the effect
+**on the customers who got the coupon** (the ATT), not on everyone.
+
+**Would the same matching fix scenario 3?**
+
+No. Matching on `price_sensitivity` and `mobile` makes the groups alike on
+those two variables and nothing else. The groups would still differ on
+intent to buy, and the matched estimate would be biased just like the
+regression with controls was. Matching and regression rest on the **same
+assumption**: that everything driving the targeting is in the data.
+Matching is not a cure for a hidden confounder.
